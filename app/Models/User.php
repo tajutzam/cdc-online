@@ -35,6 +35,7 @@ class User extends Authenticatable
         'visible_nik',
         'visible_ttl',
         'visible_no_telp',
+        'alamat',
         'visible_fullname',
     ];
 

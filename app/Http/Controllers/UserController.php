@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\TokenMiddleware;
+use App\Http\Requests\UpdateVisibleRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -39,6 +40,15 @@ class UserController extends Controller
             'message' => 'fetch success',
             'data' => $data
         ], 200);
+    }
+
+    public function updateVisibility(UpdateVisibleRequest $updateVisibleRequest)
+    {
+        $request = $updateVisibleRequest->all();
+        $rawToken = $updateVisibleRequest->header('Authorization');
+        $token = Str::after($rawToken, "Bearer ");
+        return $this->userService->updateVisible($request, $token);
+
     }
 
 }

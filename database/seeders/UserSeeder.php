@@ -26,7 +26,8 @@ class UserSeeder extends Seeder
             "foto" => "foto.png",
             "linkedin" => "linkedin.com/zam",
             "ttl" => "banyuwangi 10 september 2022",
-            'level' => 'user'
+            'level' => 'user',
+            "alamat" => 'jawa timur , banyuwangi'
         ]);
     }
 }

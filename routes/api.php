@@ -17,9 +17,11 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+// user
 Route::get("/user", [UserController::class, "getOneUser"]);
 Route::get("/users" , [UserController::class , "findAllUser"]);
+Route::put("/user/visibility/update" , [UserController::class , "updateVisibility"]);
+
 
 Route::post("/auth/login", [AuthController::class, "login"]);
 

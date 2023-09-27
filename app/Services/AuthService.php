@@ -99,7 +99,6 @@ class AuthService
 
     public function registerUser(array $request)
     {
-
         try {
             //code...
             $data = $this->user->create([
@@ -108,7 +107,8 @@ class AuthService
                 "no_telp" => $request['no_telp'],
                 "nik" => $request['nik'],
                 "password" => Hash::make($request['password']),
-                'level' => 'user'
+                'level' => 'user',
+                "alamat" => $request['alamat']
             ]);
             return true;
         } catch (\Throwable $th) {
