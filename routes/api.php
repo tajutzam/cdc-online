@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenMiddleware;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +19,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get("/user", [UserController::class, "getOneUser"]);
+Route::get("/users" , [UserController::class , "findAllUser"]);
 
-Route::post("/login", [AuthController::class, "login"]);
+Route::post("/auth/login", [AuthController::class, "login"]);
 
-Route::post("/register", [AuthController::class, "register"]);
+Route::post("/auth/user/register", [AuthController::class, "registerUser"]);

@@ -39,9 +39,10 @@ class LoginRequest extends FormRequest
 
             'message' => $validator->errors()->first(),
 
-            'data' => null
+            'data' => null,
+            'code' => 400
 
-        ]));
+        ], 400));
 
     }
 

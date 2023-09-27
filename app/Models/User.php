@@ -30,7 +30,12 @@ class User extends Authenticatable
         'instagram',
         'facebook',
         'level',
-        'token'
+        'token',
+        'visible_email',
+        'visible_nik',
+        'visible_ttl',
+        'visible_no_telp',
+        'visible_fullname',
     ];
 
     /**

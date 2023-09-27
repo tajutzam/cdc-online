@@ -23,20 +23,40 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $data = $request->validate([
-            'emailOrNik' => 'required|string',
-            'password' => 'required|string',
-        ], [
-            'emailOrNik.required' => 'Email atau NIK harus diisi.',
-            'password.required' => 'Password harus diisi.',
-        ]);
+        $data = $request->validate($request->rules(), $request->messages());
 
         return $this->authService->login($request->input('emailOrNik'), $request->input('password'));
     }
 
-    public function register(RegisterRequest $registerRequest)
+    public function registerUser(RegisterRequest $request)
     {
-        
+        $request->validate($request->rules(), $request->messages());
+
+        $requestData = $request->all();
+        $isRegister = $this->authService->registerUser($requestData);
+        if ($isRegister) {
+            return response()->json(
+                [
+                    'status' => true,
+                    'code' => 201,
+                    'message' => 'Berhasil Registrasi silahkan login',
+                    'data' => $isRegister
+                ],
+                201,
+                ['Content-type' => 'application/json']
+            );
+        } else {
+            return response()->json(
+                [
+                    'status' => false,
+                    'code' => 400,
+                    'message' => 'Gagal registrasi terjadi kesalahan',
+                    'data' => $isRegister
+                ],
+                400,
+                ['Content-type' => 'application/json']
+            );
+        }
     }
 
 }

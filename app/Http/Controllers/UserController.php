@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 class UserController extends Controller
 {
     //
-
     private UserService $userService;
 
     public function __construct()
@@ -23,6 +22,17 @@ class UserController extends Controller
     {
         $token = $request->header('Authorization');
         $data = $this->userService->findUserByToken(Str::after($token, 'Bearer '));
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'message' => 'fetch success',
+            'data' => $data
+        ], 200);
+    }
+
+    public function findAllUser()
+    {
+        $data = $this->userService->findAllUser();
         return response()->json([
             'status' => true,
             'code' => 200,
