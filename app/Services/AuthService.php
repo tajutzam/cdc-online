@@ -16,9 +16,7 @@ use Illuminate\Support\Str;
 class AuthService
 {
 
-
     private User $user;
-
 
     public function __construct()
     {
@@ -29,7 +27,6 @@ class AuthService
     {
         $data = $this->user->where('email', $emailOrNikRequest)->first();
         if (isset($data)) {
-            $isMatch = Hash::check($password, $data->password);
             $isMatch = Hash::check($password, $data->password);
             if ($isMatch) {
                 $token = $this->createNewToken($data->id);
@@ -115,7 +112,6 @@ class AuthService
             ]);
             return true;
         } catch (\Throwable $th) {
-            dd($th);
             //throw $th;
             return false;
         }
