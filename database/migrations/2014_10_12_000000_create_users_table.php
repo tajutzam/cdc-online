@@ -19,7 +19,9 @@ return new class extends Migration {
             $table->string('ttl', 500)->nullable(true);
             $table->string('nik', 17)->unique();
             $table->string('no_telp', 15);
-            $table->boolean('visible_email')->default(true);
+            $table->string('alamat', 255)->nullable(false);
+            $table->boolean('visible_alamat')->default(true);
+            $table->boolean('visible_email')->default(false);
             $table->boolean('visible_fullname')->default(true);
             $table->boolean('visible_ttl')->default(true);
             $table->boolean('visible_nik')->default(true);
