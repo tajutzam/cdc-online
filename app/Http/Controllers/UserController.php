@@ -57,8 +57,8 @@ class UserController extends Controller
         return $this->userService->findAllFolowersLogin($token);
     }
 
-    public function findFollowersByUserId($id)
+    public function findAllFolowersJoin($id)
     {
-        return $this->userService->findAllFollowersByIdUser($id);
+        return $this->userService->findAllFollowersByUserId($id);
     }
 }

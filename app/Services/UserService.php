@@ -134,26 +134,25 @@ class UserService
         $userByToken = $this->findUserByToken($token);
         $data = [];
         if (isset($userByToken)) {
-            $user = User::find($userByToken['id']);
-            $followers = $this->follower->where('user_id', $user->id)->get()->toArray();
-            foreach ($followers as $follower) {
-                # code... iterate to find detail users
-                $tempUser = User::find($follower['folowers_id']);
-                $temp = $this->castToUserResponse($tempUser);
-                array_push($data, $temp);
+            $data = [];
+            $followersIds = User::join('folowers', 'users.id', '=', 'folowers.user_id')
+                ->where('users.id', $userByToken['id'])
+                ->pluck('folowers.folowers_id')
+                ->toArray();
+            $usersByFollowersId = User::whereIn('id', $followersIds)->get();
+            foreach ($usersByFollowersId as $user) {
+                $tempUser = $this->castToUserResponse($user);
+                array_push($data, $tempUser);
             }
-            return response()->json(
-                [
-                    'status' => true,
-                    'message' => 'success fetch data',
-                    'data' => [
-                        'total_followers' => sizeof($data),
-                        'followers' => $data
-                    ],
-                    'code' => 200
+            return response()->json([
+                'status' => true,
+                'messages' => 'success fetch data',
+                'data' => [
+                    'total_followers' => sizeof($data),
+                    'followers' => $data
                 ],
-                200
-            );
+                'code' => 200
+            ], 200);
         } else {
             return response()->json([
                 'status' => false,
@@ -164,38 +163,27 @@ class UserService
         }
     }
 
-    public function findAllFollowersByIdUser($id)
+
+    public function findAllFollowersByUserId($id)
     {
-        $user = User::find($id);
         $data = [];
-        if (isset($user)) {
-            $user = User::find($id);
-            $followers = $this->follower->where('user_id', $user->id)->get()->toArray();
-            foreach ($followers as $follower) {
-                # code... iterate to find detail users
-                $tempUser = User::find($follower['folowers_id']);
-                $temp = $this->castToUserResponse($tempUser);
-                array_push($data, $temp);
-            }
-            return response()->json(
-                [
-                    'status' => true,
-                    'message' => 'success fetch data',
-                    'data' => [
-                        'total_followers' => sizeof($data),
-                        'followers' => $data
-                    ],
-                    'code' => 200
-                ],
-                200
-            );
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'user id not found',
-                'data' => null,
-                'code' => 400
-            ], 400);
+        $followersIds = User::join('folowers', 'users.id', '=', 'folowers.user_id')
+            ->where('users.id', $id)
+            ->pluck('folowers.folowers_id')
+            ->toArray();
+        $usersByFollowersId = User::whereIn('id', $followersIds)->get();
+        foreach ($usersByFollowersId as $user) {
+            $tempUser = $this->castToUserResponse($user);
+            array_push($data, $tempUser);
         }
+        return response()->json([
+            'status' => true,
+            'messages' => 'success fetch data',
+            'data' => [
+                'total_followers' => sizeof($data),
+                'followers' => $data
+            ],
+            'code' => 200
+        ], 200);
     }
 }
