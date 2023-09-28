@@ -48,7 +48,17 @@ class UserController extends Controller
         $rawToken = $updateVisibleRequest->header('Authorization');
         $token = Str::after($rawToken, "Bearer ");
         return $this->userService->updateVisible($request, $token);
-
     }
 
+    public function findFolowersByUserLogin(Request $request)
+    {
+        $rawToken = $request->header('Authorization');
+        $token = Str::after($rawToken, "Bearer ");
+        return $this->userService->findAllFolowersLogin($token);
+    }
+
+    public function findAllFolowersJoin($id)
+    {
+        return $this->userService->findAllFollowersByUserId($id);
+    }
 }

@@ -92,7 +92,7 @@ class AuthService
         $token = Str::random(150);
         $this->user->where('id', $id)->update([
             'token' => $token,
-            'token_expire' => Carbon::now()->addHours(2) // expire token 2 hours
+            'token_expire' => Carbon::now()->addWeek() // expire token 1 week
         ]);
         return $token;
     }
@@ -101,7 +101,7 @@ class AuthService
     {
         try {
             //code...
-            $data = $this->user->create([
+            $this->user->create([
                 "fullname" => $request['fullname'],
                 "email" => $request['email'],
                 "no_telp" => $request['no_telp'],

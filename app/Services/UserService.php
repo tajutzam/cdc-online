@@ -3,18 +3,19 @@
 
 namespace App\Services;
 
+use App\Models\Follower;
 use App\Models\User;
 
 class UserService
 {
-
-
     private User $userModel;
+    private Follower $follower;
 
 
     public function __construct()
     {
         $this->userModel = new User();
+        $this->follower = new Follower();
     }
 
 
@@ -40,17 +41,35 @@ class UserService
         return $response;
     }
 
-
     private function castToUserResponse($user)
     {
         return [
+            "id" => $user->id,
             "fullname" => $user->visible_fullname == 1 ? $user->fullname : "***",
             "email" => $user->visible_email == 1 ? $user->email : "***",
             "nik" => $user->visible_nik == 1 ? $user->nik : "***",
             "no_telp" => $user->visible_no_telp == 1 ? $user->no_telp : "***",
             "foto" => $user->foto,
             'alamat' => $user->visible_alamat == 1 ? $user->alamat : "***",
+            "about" => $user->about,
+            "gender" => $user->gender,
             "level" => $user->level
+        ];
+    }
+
+    private function castToUserResponseFromArray($user)
+    {
+        return [
+            "id" => $user['id'],
+            "fullname" => $user['visible_fullname'] == 1 ? $user['fullname'] : "***",
+            "email" => $user['visible_email'] == 1 ? $user['email'] : "***",
+            "nik" => $user['visible_nik'] == 1 ? $user['nik'] : "***",
+            "no_telp" => $user['visible_no_telp'] == 1 ? $user['no_telp'] : "***",
+            "foto" => $user['foto'],
+            'alamat' => $user['visible_alamat'] == 1 ? $user['alamat'] : "***",
+            "about" => $user['about'],
+            "gender" => $user['gender'],
+            "level" => $user['level']
         ];
     }
 
@@ -64,7 +83,6 @@ class UserService
                 'data' => null
             ], 401);
         }
-
         // dd($request['type']);
         if ($request['type'] != 'email' && $request['type'] != 'nik' && $request['type'] != 'no_telp' && $request['type'] != 'ttl' && $request['type'] != 'alamat') {
             return response()->json([
@@ -73,11 +91,7 @@ class UserService
                 'message' => 'tipe tidak valid , tolong pilih email , nik , no_telp , ttl , atau alamat'
             ], 400);
         }
-
-
         $key = "";
-
-
         switch ($request['type']) {
             case "email":
                 $key = 'visible_email';
@@ -95,7 +109,6 @@ class UserService
                 $key = "visible_alamat";
                 break;
         }
-
         try {
             //code...
             $updated = $this->userModel->where('token', $token)->update([
@@ -115,5 +128,62 @@ class UserService
                 'message' => $th->getMessage()
             ], 500);
         }
+    }
+    public function findAllFolowersLogin($token)
+    {
+        $userByToken = $this->findUserByToken($token);
+        $data = [];
+        if (isset($userByToken)) {
+            $data = [];
+            $followersIds = User::join('folowers', 'users.id', '=', 'folowers.user_id')
+                ->where('users.id', $userByToken['id'])
+                ->pluck('folowers.folowers_id')
+                ->toArray();
+            $usersByFollowersId = User::whereIn('id', $followersIds)->get();
+            foreach ($usersByFollowersId as $user) {
+                $tempUser = $this->castToUserResponse($user);
+                array_push($data, $tempUser);
+            }
+            return response()->json([
+                'status' => true,
+                'messages' => 'success fetch data',
+                'data' => [
+                    'total_followers' => sizeof($data),
+                    'followers' => $data
+                ],
+                'code' => 200
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'your token is not valid',
+                'data' => null,
+                'code' => 401
+            ], 401);
+        }
+    }
+
+
+    public function findAllFollowersByUserId($id)
+    {
+        $data = [];
+        $followersIds = User::join('folowers', 'users.id', '=', 'folowers.user_id')
+            ->where('users.id', $id)
+            ->pluck('folowers.folowers_id')
+            ->toArray();
+        $usersByFollowersId = User::whereIn('id', $followersIds)->get();
+        foreach ($usersByFollowersId as $user) {
+            $tempUser = $this->castToUserResponse($user);
+            array_push($data, $tempUser);
+        }
+        return response()->json([
+            'status' => true,
+            'messages' => 'success fetch data',
+            'data' => [
+                'total_followers' => sizeof($data),
+                'followers' => $data
+            ],
+            'code' => 200
+        ], 200);
     }
 }

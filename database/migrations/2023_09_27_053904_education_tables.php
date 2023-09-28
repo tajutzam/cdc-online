@@ -14,8 +14,8 @@ return new class extends Migration {
     {
         //
         Schema::create('education', function (Blueprint $table) {
-            $table->id();
-            $table->string('user_id')->nullable(false);
+            $table->uuid('education_id')->primary();
+            $table->uuid('user_id')->nullable(false);
             $table->string('lulusan')->nullable(false);
             $table->string('jurusan')->nullable(false);
             $table->string('prodi')->nullable(false);

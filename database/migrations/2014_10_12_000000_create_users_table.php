@@ -13,12 +13,14 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('fullname');
             $table->string('email')->unique();
             $table->string('ttl', 500)->nullable(true);
             $table->string('nik', 17)->unique();
             $table->string('no_telp', 15);
+            $table->enum('gender', ['female', 'male'])->nullable(true);
+            $table->string('about', 500)->nullable(true);
             $table->string('alamat', 255)->nullable(false);
             $table->boolean('visible_alamat')->default(true);
             $table->boolean('visible_email')->default(false);

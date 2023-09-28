@@ -3,15 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+
 class User extends Authenticatable
 {
     use Notifiable;
-
+    use Uuids;
     /**
      * The attributes that are mass assignable.
      *
@@ -37,6 +40,8 @@ class User extends Authenticatable
         'visible_no_telp',
         'alamat',
         'visible_fullname',
+        'gender',
+        'about'
     ];
 
     /**
@@ -51,5 +56,14 @@ class User extends Authenticatable
 
 
     protected $table = 'users';
+
+    protected $hidden = [
+        'password'
+    ];
+
+    public function followers()
+    {
+        return $this->hasMany(Follower::class, 'folowers_id');
+    }
 
 }
