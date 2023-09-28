@@ -75,49 +75,57 @@ class UserService
 
     public function updateVisible($request, $token)
     {
-        $user = $this->findUserByToken($token);
-        if ($user == null) {
-            return response()->json([
-                'status' => false,
-                'message' => 'your token is not valid',
-                'data' => null
-            ], 401);
+
+        $key = [];
+
+        foreach ($request['type'] as $value) {
+            # code...
+            if ($value['key'] != 'email' && $value['key'] != 'nik' && $value['key'] != 'no_telp' && $value['key'] != 'ttl' && $value['key'] != 'alamat') {
+                return response()->json([
+                    'status' => false,
+                    'code' => 400,
+                    'message' => 'tipe tidak valid , tolong pilih email , nik , no_telp , ttl , atau alamat'
+                ], 400);
+            }
+
+            switch ($value['key']) {
+                case "email":
+                    array_push($key, [
+                        'visible_email' => $request['value']
+                    ]);
+                    break;
+                case "nik":
+                    array_push($key, [
+                        "visible_nik" => $request['value']
+                    ]);
+                    break;
+                case "ttl":
+                    array_push($key, ["visible_ttl" => $request['value']]);
+                    break;
+                case "no_telp":
+                    array_push($key, ["visible_no_telp" => $request['value']]);
+                    break;
+                case "alamat":
+                    array_push($key, ["visible_alamat" => $request['value']]);
+                    break;
+            }
         }
-        // dd($request['type']);
-        if ($request['type'] != 'email' && $request['type'] != 'nik' && $request['type'] != 'no_telp' && $request['type'] != 'ttl' && $request['type'] != 'alamat') {
-            return response()->json([
-                'status' => false,
-                'code' => 400,
-                'message' => 'tipe tidak valid , tolong pilih email , nik , no_telp , ttl , atau alamat'
-            ], 400);
+        $finalKey = [];
+
+        foreach ($key as $item) {
+            foreach ($item as $key => $value) {
+                // Remove the "visible_" prefix and convert the key to camelCase
+                $finalKey[$key] = $value;
+            }
         }
-        $key = "";
-        switch ($request['type']) {
-            case "email":
-                $key = 'visible_email';
-                break;
-            case "nik":
-                $key = "visible_nik";
-                break;
-            case "ttl":
-                $key = "visible_ttl";
-                break;
-            case "no_telp":
-                $key = "visible_no_telp";
-                break;
-            case "alamat":
-                $key = "visible_alamat";
-                break;
-        }
+        // dd($finalKey);
         try {
             //code...
-            $updated = $this->userModel->where('token', $token)->update([
-                $key => $request['value'] == 1 ? true : false,
-            ]);
+            $updated = $this->userModel->where('token', $token)->update($finalKey);
             return response()->json([
                 "status" => true,
                 "code" => 200,
-                "message" => "berhasil memperbarui visibility " . $request['type'],
+                "message" => "berhasil memperbarui visibility ",
                 "data" => $updated
             ]);
         } catch (\Throwable $th) {
