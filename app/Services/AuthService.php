@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\Education;
 use App\Models\User;
 
 use Carbon\Carbon;
@@ -18,9 +19,12 @@ class AuthService
 
     private User $user;
 
+    private Education $education;
+
     public function __construct()
     {
         $this->user = new User();
+        $this->education = new Education();
     }
 
     public function login($emailOrNikRequest, $password)
@@ -101,7 +105,7 @@ class AuthService
     {
         try {
             //code...
-            $this->user->create([
+            $user = $this->user->create([
                 "fullname" => $request['fullname'],
                 "email" => $request['email'],
                 "no_telp" => $request['no_telp'],
@@ -110,12 +114,13 @@ class AuthService
                 'level' => 'user',
                 "alamat" => $request['alamat']
             ]);
+            $this->education->create([
+                'user_id' => $user->id,
+            ]);
             return true;
         } catch (\Throwable $th) {
             //throw $th;
             return false;
         }
     }
-
-
 }
