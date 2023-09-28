@@ -198,5 +198,4 @@ class UserService
             ], 400);
         }
     }
-
 }
