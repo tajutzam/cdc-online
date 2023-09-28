@@ -129,7 +129,6 @@ class UserService
             ], 500);
         }
     }
-
     public function findAllFolowersLogin($token)
     {
         $userByToken = $this->findUserByToken($token);
