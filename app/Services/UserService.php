@@ -39,6 +39,7 @@ class UserService
             array_push($response, $userCast);
         }
         return $response;
+
     }
 
     private function castToUserResponse($user)
@@ -193,5 +194,11 @@ class UserService
             ],
             'code' => 200
         ], 200);
+    }
+
+    public function extractUserId($token): string
+    {
+        $user = $this->findUserByToken($token);
+        return $user['id'];
     }
 }
