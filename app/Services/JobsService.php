@@ -90,7 +90,7 @@ class JobsService
             'message' => 'Success fetch data',
             'data' => $data,
             'code' => 202
-        ], 201);
+        ], 202);
     }
 
 }
