@@ -76,7 +76,7 @@ class EducationService
     {
         // todo
 
-        $education = $this->education->find($educationId)->first(); // search education by id
+        $education = $this->education->where('id' , $educationId)->first(); // search education by id
         if (!isset($education)) {
             return response()->json([
                 'status' => false,

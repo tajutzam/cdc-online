@@ -26,24 +26,24 @@ class EducationController extends Controller
     {
         $request->validate($request->rules(), $request->messages());
         $token = $request->bearerToken();
-        $user = $this->userService->findUserByToken($token);
+        $id = $this->userService->extractUserId($token);
 
-        return $this->educationService->addNewEducationUser($request->all(), $user['id']);
+        return $this->educationService->addNewEducationUser($request->all(), $id);
     }
 
     public function showEducationUserLogin(Request $request)
     {
         $token = $request->bearerToken();
-        $user = $this->userService->findUserByToken($token);
-        return $this->educationService->showEducationUser($user['id']);
+        $id = $this->userService->extractUserId($token);
+        return $this->educationService->showEducationUser($id);
     }
 
 
     public function updateEducationUserLogin(UpdateEducationRequest $updateEducationRequest, $idEducation)
     {
         $token = $updateEducationRequest->bearerToken();
-        $user = $this->userService->findUserByToken($token);
-        return $this->educationService->updateEducationUser($updateEducationRequest->all(), $user['id'], $idEducation);
+        $id = $this->userService->extractUserId($token);
+        return $this->educationService->updateEducationUser($updateEducationRequest->all(), $id, $idEducation);
     }
 
 }

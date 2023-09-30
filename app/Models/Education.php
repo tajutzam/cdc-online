@@ -24,6 +24,11 @@ class Education extends Model
         "perguruan"
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, "user_id");
+    }
+
 
 
 }
