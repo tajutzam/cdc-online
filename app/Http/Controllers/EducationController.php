@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateEducationRequest;
 use App\Services\EducationService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class EducationController extends Controller
 {
@@ -45,5 +46,31 @@ class EducationController extends Controller
         $id = $this->userService->extractUserId($token);
         return $this->educationService->updateEducationUser($updateEducationRequest->all(), $id, $idEducation);
     }
+
+    public function deleteEducationById(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id_education' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first(),
+                'data' => null,
+                'code' => 400
+            ], 400);
+        }
+
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        return $this->educationService->deleteEducationByIdAndUserLogin($request->input('id_education'), $userId);
+    }
+
+    public function findEducationByIdAndUserId(Request $request, $id)
+    {
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        return $this->educationService->findEducationById($id, $userId);
+    }
+
 
 }
