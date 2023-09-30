@@ -25,17 +25,20 @@ Route::get("/users", [UserController::class, "findAllUser"]);
 Route::put("/user/visibility/update", [UserController::class, "updateVisibility"]);
 Route::get("/user/followers", [UserController::class, "findFolowersByUserLogin"]);
 Route::get("/user/followers/{id}", [UserController::class, "findAllFolowersJoin"]);
-Route::post("/user/education/add", [EducationController::class, "addNewEducationUser"]);
 // education
+Route::post("/user/education/add", [EducationController::class, "addNewEducationUser"]);
 Route::get("/user/education", [EducationController::class, "showEducationUserLogin"]);
 Route::put("/user/education/{idEducation}", [EducationController::class, "updateEducationUserLogin"]);
-
+Route::delete("/user/education", [EducationController::class, "deleteEducationById"]);
+Route::get("/user/education/{id}", [EducationController::class, "findEducationByIdAndUserId"]);
 //jobs
 Route::post("/user/jobs", [JobsController::class, "addNewJobsUser"]);
+
 Route::get("/user/jobs/{id}", [JobsController::class, "findJobsUserLoginById"]);
 Route::get("/user/jobs", [JobsController::class, "showJobsUserLogin"]);
 Route::put("/user/jobs", [JobsController::class, "updateJobsUserLogin"]);
 Route::delete('/user/jobs', [JobsController::class, "removeJobsUserLoginById"]);
+
 // auth
 Route::post("/auth/login", [AuthController::class, "login"]);
 Route::post("/auth/user/register", [AuthController::class, "registerUser"]);
