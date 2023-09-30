@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EducationController;
+use App\Http\Controllers\JobsController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenMiddleware;
 use App\Services\UserService;
@@ -23,6 +25,14 @@ Route::get("/users", [UserController::class, "findAllUser"]);
 Route::put("/user/visibility/update", [UserController::class, "updateVisibility"]);
 Route::get("/user/followers", [UserController::class, "findFolowersByUserLogin"]);
 Route::get("/user/followers/{id}", [UserController::class, "findAllFolowersJoin"]);
+Route::post("/user/education/add", [EducationController::class, "addNewEducationUser"]);
+// education
+Route::get("/user/education", [EducationController::class, "showEducationUserLogin"]);
+Route::put("/user/education/{idEducation}", [EducationController::class, "updateEducationUserLogin"]);
+
+//jobs
+Route::post("/user/jobs" , [JobsController::class , "addNewJobsUser"]);
+Route::get("/user/jobs" , [JobsController::class , "showJobsUserLogin"]);
 // auth
 Route::post("/auth/login", [AuthController::class, "login"]);
 Route::post("/auth/user/register", [AuthController::class, "registerUser"]);
