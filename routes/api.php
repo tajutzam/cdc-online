@@ -31,8 +31,11 @@ Route::get("/user/education", [EducationController::class, "showEducationUserLog
 Route::put("/user/education/{idEducation}", [EducationController::class, "updateEducationUserLogin"]);
 
 //jobs
-Route::post("/user/jobs" , [JobsController::class , "addNewJobsUser"]);
-Route::get("/user/jobs" , [JobsController::class , "showJobsUserLogin"]);
+Route::post("/user/jobs", [JobsController::class, "addNewJobsUser"]);
+Route::get("/user/jobs/{id}", [JobsController::class, "findJobsUserLoginById"]);
+Route::get("/user/jobs", [JobsController::class, "showJobsUserLogin"]);
+Route::put("/user/jobs", [JobsController::class, "updateJobsUserLogin"]);
+Route::delete('/user/jobs', [JobsController::class, "removeJobsUserLoginById"]);
 // auth
 Route::post("/auth/login", [AuthController::class, "login"]);
 Route::post("/auth/user/register", [AuthController::class, "registerUser"]);
