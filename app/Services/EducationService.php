@@ -19,7 +19,7 @@ class EducationService
         $this->user = new User();
     }
 
-    public function addNewEducationUser($request , $userId)
+    public function addNewEducationUser($request, $userId)
     {
         // todo 
         $user = $this->user->where('id', $userId)->first();
@@ -76,7 +76,7 @@ class EducationService
     {
         // todo
 
-        $education = $this->education->where('id' , $educationId)->first(); // search education by id
+        $education = $this->education->where('id', $educationId)->first(); // search education by id
         if (!isset($education)) {
             return response()->json([
                 'status' => false,
@@ -138,6 +138,49 @@ class EducationService
             'data' => $data,
             'code' => 200
         ], 200);
+    }
+
+
+
+    public function deleteEducationByIdAndUserLogin($educationId, $userId)
+    {
+        $education = $this->education->where('id', $educationId)->where('user_id', $userId)->first();
+        if (isset($education)) {
+            try {
+                $isdeleted = $education->delete();
+                return response()->json([
+                    'status' => $isdeleted == 1 ? true : false,
+                    'message' => $isdeleted == 1 ? "Berhasil menghapus data pendidikan" : "Gagal menghapus data pendidikan",
+                    "data" => $isdeleted,
+                    'code' => $isdeleted == true ? 200 : 400
+                ], $isdeleted == true ? 200 : 400);
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Gagal menghapus data pendidikan ' . $th->getMessage(),
+                    'data' => null,
+                    'code' => 500
+                ], 500);
+            }
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Pendidikan tidak ditemukan',
+                'data' => null,
+                'code' => 400
+            ], 400);
+        }
+    }
+
+
+    public function findEducationById($educationId, $userId)
+    {
+        $data = $this->education->where('id', $educationId)->where('user_id', $userId)->get()->toArray();
+        if (sizeof($data) != 0) {
+            return response()->json(["status" => true, "message" => "Succes fetch data", "data" => $this->castToEducationFromArrayToPojo($data[0]), 'code' => 200], 200);
+        } else {
+            return response()->json(["status" => true, "message" => "data not found", "data" => [], 'code' => 404], 404);
+        }
     }
 
     private function castToEducationFromArrayToPojo($education)
