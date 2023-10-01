@@ -103,4 +103,10 @@ class UserController extends Controller
         $userId = $this->userService->extractUserId($request->bearerToken());
         return $this->userService->showUserFollowed($userId);
     }
+
+    public function showUserFolowedById($id)
+    {
+        return $this->userService->showUserFollowed($id);
+
+    }
 }

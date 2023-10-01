@@ -28,6 +28,7 @@ Route::get("/user/followers/{id}", [UserController::class, "findAllFolowersJoin"
 Route::post("/user/followers", [UserController::class, "followUser"]);
 Route::delete("/user/followers", [UserController::class, "unfollowUser"]);
 Route::get("/user/followed", [UserController::class, "showUserFolowed"]);
+Route::get("/user/followed/{id}", [UserController::class, 'showUserFolowedById']);
 // education
 Route::post("/user/education/add", [EducationController::class, "addNewEducationUser"]);
 Route::get("/user/education", [EducationController::class, "showEducationUserLogin"]);
