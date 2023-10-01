@@ -16,15 +16,15 @@ class FollowerSeeder extends Seeder
     public function run()
     {
 
-        $users = User::all()->toArray();
-        //
-        Follower::create([
-            'user_id' => $users[0]['id'],
-            'folowers_id' => $users[1]['id']
-        ]);
-        Follower::create([
-            'user_id' => $users[0]['id'],
-            'folowers_id' => $users[2]['id']
-        ]);
+        // $users = User::all()->toArray();
+        // //
+        // Follower::create([
+        //     'user_id' => $users[0]['id'],
+        //     'folowers_id' => $users[1]['id']
+        // ]);
+        // Follower::create([
+        //     'user_id' => $users[0]['id'],
+        //     'folowers_id' => $users[2]['id']
+        // ]);
     }
 }
