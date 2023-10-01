@@ -3,19 +3,24 @@
 
 namespace App\Services;
 
+use App\Models\Followed;
 use App\Models\Follower;
 use App\Models\User;
+use Illuminate\Http\Client\Response;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class UserService
 {
     private User $userModel;
     private Follower $follower;
-
+    private Followed $followed;
 
     public function __construct()
     {
         $this->userModel = new User();
         $this->follower = new Follower();
+        $this->followed = new Followed();
     }
 
 
@@ -68,6 +73,8 @@ class UserService
         foreach ($data as $key => $value) {
             $followersIds = collect($value['followers'])->pluck('folowers_id')->toArray();
             $followers = [];
+            $userData = $this->castToUserResponseFromArray($value);
+
             // Mengambil data jobs dan educations dari $value
             $jobs = $value['jobs'];
             $educations = $value['educations'];
@@ -87,6 +94,7 @@ class UserService
             }
             // Menyimpan hanya followers.folowers_id dalam array $tempUser
             $tempUser = [
+                'user' => $userData,
                 'followers' => $followers,
                 'jobs' => $jobs,
                 'educations' => $educationData,
@@ -251,6 +259,26 @@ class UserService
         ];
     }
 
+    private function castToUserResponseFromArray($user)
+    {
+        return [
+            "id" => $user['id'],
+            "fullname" => $user['visible_fullname'] == 1 ? $user['fullname'] : "***",
+            "email" => $user['visible_email'] == 1 ? $user['email'] : "***",
+            "nik" => $user['visible_nik'] == 1 ? $user['nik'] : "***",
+            "no_telp" => $user['visible_no_telp'] == 1 ? $user['no_telp'] : "***",
+            "foto" => $user['foto'],
+            'alamat' => $user['visible_alamat'] == 1 ? $user['alamat'] : "***",
+            "about" => $user['about'],
+            "gender" => $user['gender'],
+            "level" => $user['level'],
+            "linkedin" => $user['linkedin'],
+            "facebook" => $user['facebook'],
+            "instagram" => $user['instagram'],
+            'twiter' => $user['twiter']
+        ];
+    }
+
     private function castToEducations($education)
     {
         $strata = '';
@@ -286,9 +314,169 @@ class UserService
             "no_ijasah" => $education['no_ijasah'],
         ];
 
-
-
     }
 
+    public function followUser($idUserLogin, $userId)
+    {
+        $userFollower = $this->userModel->where('id', $userId)->first();
+        if (isset($userFollower)) {
+            try {
+                $isFolowed = $this->followed->where('user_id', $userId)->where('folowed_id', $idUserLogin)->first();
+                if (isset($isFolowed)) {
+                    // jika user sudah memfolow
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Ops , kamu sudah mengikuti user tersebut',
+                        'code' => 400,
+                        'data' => 0
+                    ], 400);
+                } else {
+                    try {
+                        //code...
+                        $isCreated = $this->followed->create([
+                            'user_id' => $userId,
+                            "folowed_id" => $idUserLogin
+                        ]);
+                        if (isset($isCreated)) {
+                            $isCreatedFolowers = $this->follower->create([
+                                'user_id' => $userId,
+                                "folowers_id" => $idUserLogin
+                            ]);
+                            if (isset($isCreatedFolowers)) {
+                                return response()->json([
+                                    'status' => true,
+                                    'message' => 'berhasil mengikuti user',
+                                    'data' => $isCreated,
+                                    'code' => 201
+                                ], 201);
+                            } else {
+                                DB::rollBack();
+                                return response()->json([
+                                    'status' => true,
+                                    'message' => 'gagal mengikuti user',
+                                    'data' => $isCreated,
+                                    'code' => 500
+                                ], 500);
+                            }
+                        }
+                    } catch (\Throwable $th) {
+                        DB::rollback();
+                        //throw $th;
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Gagal mengikuti user ' . $th->getMessage(),
+                            'code' => 500,
+                            'data' => 0
+                        ], 500);
+                    }
+                }
+            } catch (\Throwable $th) {
+                DB::rollback();
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Gagal mengikuti user ' . $th->getMessage(),
+                    'code' => 500,
+                    'data' => 0
+                ], 500);
+            }
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal mengikuti user , user tidak ditemukan',
+                'code' => 404,
+                'data' => null
+            ], 404);
+        }
+    }
 
+    public function unfollowUser($idUserLogin, $userId): JsonResponse
+    {
+        $tempFolowed = $this->followed->where('user_id', $userId)->where('folowed_id', $idUserLogin)->first();
+        if (isset($tempFolowed)) {
+            try {
+                //code...
+                $isDelete = $tempFolowed->delete();
+                if ($isDelete) {
+                    $checkUserFolower = $this->follower->where('user_id', $userId)->where('folowers_id', $idUserLogin)->first();
+                    if (isset($checkUserFolower)) {
+                        // remove user 
+                        $isUnfollow = $checkUserFolower->delete();
+                        if ($isUnfollow) {
+                            return response()->json([
+                                'status' => true,
+                                'message' => 'berhasil unfollow user',
+                                'code' => 200,
+                                'data' => $isDelete
+                            ], 200);
+                        } else {
+                            return response()->json([
+                                'status' => false,
+                                'message' => 'Gagal berhenti mengikuti , user sudah berhenti mengikuti',
+                                'code' => 400,
+                                'data' => null
+                            ], 400);
+                        }
+                    } else {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Gagal berhenti mengikuti , user sudah berhenti mengikuti',
+                            'code' => 400,
+                            'data' => null
+                        ], 400);
+                    }
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Gagal unfollow user',
+                        'code' => 400,
+                        'data' => $isDelete
+                    ], 200);
+                }
+            } catch (\Throwable $th) {
+                //throw $th;
+                return response()->json(
+                    [
+                        'status' => false,
+                        'message' => 'Gagal unfollow user ' . $th->getMessage(),
+                        'code' => 500,
+                        'data' => null
+                    ],
+                    500
+                );
+            }
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal unfollow user , user tidak ditemukan',
+                'data' => null,
+                'code' => 404
+            ], 404);
+        }
+    }
+
+    public function showUserFollowed($id)
+    {
+        $response = [];
+        $user = $this->userModel->where('id', $id)->first();
+        $response = $this->castToUserResponse($user);
+        $response['followed'] = [];
+        $followersIds = User::join('folowed', 'users.id', '=', 'folowed.folowed_id')
+            ->where('users.id', $id)
+            ->pluck('folowed.user_id')
+            ->toArray();
+        $usersByFollowersId = User::whereIn('id', $followersIds)->get();
+        foreach ($usersByFollowersId as $user) {
+            $tempUser = $this->castToUserResponse($user);
+            array_push($response['followed'], $tempUser);
+        }
+        return response()->json([
+            'status' => true,
+            'messages' => 'success fetch data',
+            'data' => [
+                'total_followers' => sizeof($response['followed']),
+                'user' => $response
+            ],
+            'code' => 200
+        ], 200);
+    }
 }

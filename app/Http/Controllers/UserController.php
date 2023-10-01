@@ -6,6 +6,7 @@ use App\Http\Middleware\TokenMiddleware;
 use App\Http\Requests\UpdateVisibleRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -60,5 +61,46 @@ class UserController extends Controller
     public function findAllFolowersJoin($id)
     {
         return $this->userService->findAllFollowersByUserId($id);
+    }
+
+    public function followUser(Request $request)
+    {
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first(),
+                'data' => null,
+                'code' => 400
+            ], 400);
+        }
+        return $this->userService->followUser($userId, $request->input('user_id'));
+    }
+
+    public function unfollowUser(Request $request)
+    {
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first(),
+                'data' => null,
+                'code' => 400
+            ], 400);
+        }
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        return $this->userService->unfollowUser($userId, $request->input('user_id'));
+    }
+
+    public function showUserFolowed(Request $request)
+    {
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        return $this->userService->showUserFollowed($userId);
     }
 }
