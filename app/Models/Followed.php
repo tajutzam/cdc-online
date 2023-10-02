@@ -6,18 +6,18 @@ use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Follower extends Model
+class Followed extends Model
 {
-    use HasFactory, Uuids;
+    use HasFactory , Uuids;
 
-    protected $table = 'folowers';
+    protected $table = "folowed";
 
     protected $fillable = [
         'user_id',
-        'folowers_id'
+        'folowed_id'
     ];
 
-    public function followerDetails()
+    public function followedDetails()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
