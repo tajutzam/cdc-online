@@ -105,8 +105,6 @@ class UserService
     }
 
 
-
-
     public function updateVisible($request, $token)
     {
 
@@ -248,6 +246,7 @@ class UserService
             "nik" => $user->visible_nik == 1 ? $user->nik : "***",
             "no_telp" => $user->visible_no_telp == 1 ? $user->no_telp : "***",
             "foto" => $user->foto,
+            'ttl' => $user->ttl,
             'alamat' => $user->visible_alamat == 1 ? $user->alamat : "***",
             "about" => $user->about,
             "gender" => $user->gender,
@@ -268,6 +267,7 @@ class UserService
             "nik" => $user['visible_nik'] == 1 ? $user['nik'] : "***",
             "no_telp" => $user['visible_no_telp'] == 1 ? $user['no_telp'] : "***",
             "foto" => $user['foto'],
+            'ttl' => $user['ttl'],
             'alamat' => $user['visible_alamat'] == 1 ? $user['alamat'] : "***",
             "about" => $user['about'],
             "gender" => $user['gender'],
