@@ -27,7 +27,7 @@ class RegisterRequest extends FormRequest
             //
             "fullname" => 'required',
             'nik' => 'required|unique:users,nik',
-            'no_telp' => 'required',
+            'no_telp' => 'required|max:15',
             'email' => 'required|email|unique:users,email',
             'alamat' => 'required'
         ];
@@ -55,10 +55,10 @@ class RegisterRequest extends FormRequest
     {
 
         return [
-
             'fullname.required' => 'Nama lengkap tidak boleh kosong',
             'nik.required' => 'Nik tidak boleh kosong',
             'no_telp.requireq' => 'No telepon tidak boleh kosong',
+            'no_telp.max' => 'No telepon tidak boleh lebih dari 15 karakter',
             'email.required' => 'email tidak boleh kosong',
             'email.email' => 'email tidak sesuai format',
             'nik.unique' => "nik sudah digunakan oleh user lain",

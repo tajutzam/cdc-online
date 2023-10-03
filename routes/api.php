@@ -23,12 +23,15 @@ use Illuminate\Support\Facades\Route;
 Route::get("/user", [UserController::class, "getOneUser"]);
 Route::get("/users", [UserController::class, "findAllUser"]);
 Route::put("/user/visibility/update", [UserController::class, "updateVisibility"]);
+Route::put("/user/profile", [UserController::class, "updateProfileUserLogin"]);
 Route::get("/user/followers", [UserController::class, "findFolowersByUserLogin"]);
 Route::get("/user/followers/{id}", [UserController::class, "findAllFolowersJoin"]);
 Route::post("/user/followers", [UserController::class, "followUser"]);
 Route::delete("/user/followers", [UserController::class, "unfollowUser"]);
 Route::get("/user/followed", [UserController::class, "showUserFolowed"]);
 Route::get("/user/followed/{id}", [UserController::class, 'showUserFolowedById']);
+Route::put("/user/profile/email", [UserController::class, "updateEmailUserLogin"]);
+Route::post("/user/profile/image", [UserController::class, "updateFotoProfile"]);
 // education
 Route::post("/user/education/add", [EducationController::class, "addNewEducationUser"]);
 Route::get("/user/education", [EducationController::class, "showEducationUserLogin"]);
@@ -46,3 +49,4 @@ Route::delete('/user/jobs', [JobsController::class, "removeJobsUserLoginById"]);
 // auth
 Route::post("/auth/login", [AuthController::class, "login"]);
 Route::post("/auth/user/register", [AuthController::class, "registerUser"]);
+Route::get("/user/verivication/email", [AuthController::class, "updateEmailVerified"]);

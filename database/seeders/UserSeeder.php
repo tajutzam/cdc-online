@@ -28,7 +28,8 @@ class UserSeeder extends Seeder
             'level' => 'user',
             "alamat" => 'jawa timur , banyuwangi',
             'gender' => 'male',
-            'about' => "saya adalah orang yang memiliki tekat tinggi"
+            'about' => "saya adalah orang yang memiliki tekat tinggi",
+            'email_verivied' => 1
         ]);
         User::create([
             "email" => "second@gmail.com",
@@ -41,7 +42,8 @@ class UserSeeder extends Seeder
             'level' => 'user',
             "alamat" => 'jawa timur , banyuwangi',
             'gender' => 'male',
-            'about' => "second abour"
+            'about' => "second abour",
+            'email_verivied' => 1
         ]);
         User::create([
             "email" => "thrid@gmail.com",
@@ -54,7 +56,8 @@ class UserSeeder extends Seeder
             'level' => 'user',
             "alamat" => 'thrid',
             'gender' => 'female',
-            'about' => "thrid  about"
+            'about' => "thrid  about",
+            'email_verivied' => 1
         ]);
     }
 }

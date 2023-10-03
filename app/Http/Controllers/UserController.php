@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\TokenMiddleware;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\UpdateVisibleRequest;
 use App\Services\UserService;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -32,9 +34,9 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function findAllUser()
+    public function findAllUser(Request $request)
     {
-        $data = $this->userService->findAllUser();
+        $data = $this->userService->findAllUser($request->get('page'), $request->get('angkatan'), $request->get('prodi'));
         return response()->json([
             'status' => true,
             'code' => 200,
@@ -109,4 +111,46 @@ class UserController extends Controller
         return $this->userService->showUserFollowed($id);
 
     }
+
+    public function updateProfileUserLogin(UpdateProfileRequest $updateProfileRequest)
+    {
+        $updateProfileRequest->validate($updateProfileRequest->rules(), $updateProfileRequest->messages());
+        $userId = $this->userService->extractUserId($updateProfileRequest->bearerToken());
+        return $this->userService->updateUserLogin($updateProfileRequest->all(), $userId);
+    }
+
+    public function updateEmailUserLogin(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), ['email' => 'required|email|unique:users,email']);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first(),
+                'code' => 400
+            ], 400);
+        }
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        return $this->userService->updateEmail($userId, $request->input('email'));
+    }
+
+    public function updateFotoProfile(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first(),
+                'code' => 400,
+                'data' => null
+            ], 400);
+        }
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        return $this->userService->updateFotoProfile($request->file('image'), $userId);
+    }
+
 }

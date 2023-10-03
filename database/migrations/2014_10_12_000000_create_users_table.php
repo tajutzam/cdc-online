@@ -21,13 +21,13 @@ return new class extends Migration {
             $table->string('no_telp', 15);
             $table->enum('gender', ['female', 'male'])->nullable(true);
             $table->string('about', 500)->nullable(true);
-            $table->string('alamat', 255)->nullable(false);
+            $table->string('alamat', 255)->nullable(true);
             $table->boolean('visible_alamat')->default(true);
-            $table->boolean('visible_email')->default(false);
+            $table->boolean('visible_email')->default(true);
             $table->boolean('visible_fullname')->default(true);
             $table->boolean('visible_ttl')->default(true);
-            $table->boolean('visible_nik')->default(true);
-            $table->boolean('visible_no_telp')->default(true);
+            $table->boolean('visible_nik')->default(false);
+            $table->boolean('visible_no_telp')->default(false);
             $table->string('foto', 255)->nullable(true);
             $table->string('linkedin')->nullable(true);
             $table->string('twiter')->nullable(true);
@@ -37,6 +37,9 @@ return new class extends Migration {
             $table->timestamp('token_expire')->nullable(true);
             $table->enum('level', ['user', 'admin']);
             $table->string('password');
+            $table->enum('account_status', ['noob', 'beginner', 'intermediate', 'star'])->default('noob');
+            $table->boolean('email_verivied')->default(false);
+            $table->timestamp('expire_email')->nullable(true);
             $table->timestamps();
         });
     }
