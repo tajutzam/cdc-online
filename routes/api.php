@@ -23,10 +23,10 @@ use Illuminate\Support\Facades\Route;
 // user
 Route::get("/user", [UserController::class, "getOneUser"]);
 Route::get("/users", [UserController::class, "findAllUser"]);
-Route::get("/user/{id}", [UserController::class, "findUserById"]);
+Route::get("/user/detail/{id}", [UserController::class, "findUserById"]);
 Route::put("/user/visibility/update", [UserController::class, "updateVisibility"]);
 Route::put("/user/profile", [UserController::class, "updateProfileUserLogin"]);
-Route::get("/user/followers", [UserController::class, "findFolowersByUserLogin"]);
+Route::get("/user/followers", [UserController::class, "findAllFollowers"]);
 Route::get("/user/followers/{id}", [UserController::class, "findAllFolowersJoin"]);
 Route::post("/user/followers", [UserController::class, "followUser"]);
 Route::delete("/user/followers", [UserController::class, "unfollowUser"]);

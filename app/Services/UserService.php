@@ -133,7 +133,12 @@ class UserService
         ];
         $responsePojo = $tempUser;
 
-        return $responsePojo;
+        return response()->json([
+            'status' => true,
+            'message' => 'success fetch data',
+            'code' => 200,
+            'data' => $responsePojo
+        ], 200);
     }
 
 
@@ -149,7 +154,7 @@ class UserService
                             $subquery->whereRaw('LOWER(tahun_masuk) LIKE ?', ['%' . strtolower($angkatan) . '%'])
                                 ->orWhereRaw('LOWER(tahun_masuk)  LIKE ?', ['%' . strtolower($angkatan) . '%']);
                         })
-                        ->whereRaw('LOWER(prodi) LIKE ?', ['%' . strtolower($prodi) . '%']);
+                        ->whereRaw('TRIM(LOWER(prodi)) LIKE ?', ['%' . strtolower($prodi) . '%']);
                 } else {
                     $query->whereRaw('LOWER(perguruan) LIKE ?', ['%' . strtolower('Politeknik Negeri Jember') . '%'])
 
@@ -339,7 +344,9 @@ class UserService
     private function castToUserResponse($user)
     {
 
-        $url = url('/') . "/users/" . $user->foto;
+        $fotoName = isset($user->foto) == true ? $user->foto : '';
+
+        $url = url('/') . "/users/" . $fotoName;
         return [
             "id" => $user->id,
             "fullname" => $user->visible_fullname == 1 ? $user->fullname : "***",
@@ -564,26 +571,35 @@ class UserService
     {
         $response = [];
         $user = $this->userModel->where('id', $id)->first();
-        $response = $this->castToUserResponse($user);
-        $response['followed'] = [];
-        $followersIds = User::join('folowed', 'users.id', '=', 'folowed.folowed_id')
-            ->where('users.id', $id)
-            ->pluck('folowed.user_id')
-            ->toArray();
-        $usersByFollowersId = User::whereIn('id', $followersIds)->get();
-        foreach ($usersByFollowersId as $user) {
-            $tempUser = $this->castToUserResponse($user);
-            array_push($response['followed'], $tempUser);
+        if (isset($user)) {
+            $response = $this->castToUserResponse($user);
+            $response['followed'] = [];
+            $followersIds = User::join('folowed', 'users.id', '=', 'folowed.folowed_id')
+                ->where('users.id', $id)
+                ->pluck('folowed.user_id')
+                ->toArray();
+            $usersByFollowersId = User::whereIn('id', $followersIds)->get();
+            foreach ($usersByFollowersId as $user) {
+                $tempUser = $this->castToUserResponse($user);
+                array_push($response['followed'], $tempUser);
+            }
+            return response()->json([
+                'status' => true,
+                'messages' => 'success fetch data',
+                'data' => [
+                    'total_followers' => sizeof($response['followed']),
+                    'user' => $response
+                ],
+                'code' => 200
+            ], 200);
         }
         return response()->json([
-            'status' => true,
-            'messages' => 'success fetch data',
-            'data' => [
-                'total_followers' => sizeof($response['followed']),
-                'user' => $response
-            ],
-            'code' => 200
-        ], 200);
+            'status' => false,
+            'message' => 'User not found',
+            'code' => 404,
+            'data' => null
+        ], 404);
+
     }
 
     public function updateUserLogin($request, $userId)
