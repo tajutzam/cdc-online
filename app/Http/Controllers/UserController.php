@@ -55,6 +55,7 @@ class UserController extends Controller
 
     public function findFolowersByUserLogin(Request $request)
     {
+        dd($request);
         $rawToken = $request->header('Authorization');
         $token = Str::after($rawToken, "Bearer ");
         return $this->userService->findAllFolowersLogin($token);
