@@ -21,10 +21,18 @@ class AuthService
 
     private Education $education;
 
+    private EmailService $emailService;
+
+    private UserService $userService;
+
+
+
     public function __construct()
     {
-        $this->user = new User();
         $this->education = new Education();
+        $this->emailService = new EmailService();
+        $this->user = new User();
+        $this->userService = new UserService();
     }
 
     public function login($emailOrNikRequest, $password)
@@ -33,16 +41,26 @@ class AuthService
         if (isset($data)) {
             $isMatch = Hash::check($password, $data->password);
             if ($isMatch) {
-                $token = $this->createNewToken($data->id);
-                $response = [
-                    "status" => true,
-                    "message" => "Berhasil Login",
-                    "code" => 200,
-                    "data" => [
-                        "token" => $token
-                    ]
-                ];
-                return response($response, 200, ['Content-type' => 'application/json']);
+                if ($data->email_verivied) {
+                    $token = $this->createNewToken($data->id);
+                    $response = [
+                        "status" => true,
+                        "message" => "Berhasil Login",
+                        "code" => 200,
+                        "data" => [
+                            "token" => $token
+                        ]
+                    ];
+                    return response($response, 200, ['Content-type' => 'application/json']);
+                } else {
+                    $response = [
+                        "status" => false,
+                        "message" => "Gagal login , akun anda belum di aktifasi",
+                        "code" => 400,
+                        "data" => null
+                    ];
+                    return response($response, 400, ['Content-type' => 'application/json']);
+                }
 
             } else {
                 $response = [
@@ -103,8 +121,10 @@ class AuthService
 
     public function registerUser(array $request)
     {
+
         try {
             //code...
+            $expired = Carbon::now()->addHour();
             $user = $this->user->create([
                 "fullname" => $request['fullname'],
                 "email" => $request['email'],
@@ -112,15 +132,45 @@ class AuthService
                 "nik" => $request['nik'],
                 "password" => Hash::make($request['password']),
                 'level' => 'user',
-                "alamat" => $request['alamat']
+                "alamat" => $request['alamat'],
+                'expire_email' => $expired
             ]);
-            $this->education->create([
+            $isCreated = $this->education->create([
                 'user_id' => $user->id,
+                'perguruan' => 'Politeknik Negeri Jember'
             ]);
+            if (isset($isCreated)) {
+                $link = url('/') . '/api/user/verivication/email?id=' . "$user->id";
+                // user berhasil registrasi , kirim email
+                $this->emailService->sendEmailVerifikasi($user->email, $link, $expired->format('F j - H:i'));
+            }
             return true;
         } catch (\Throwable $th) {
             //throw $th;
             return false;
         }
     }
+
+
+    public function updateVeriviedEmail($id)
+    {
+        $user = $this->user->where('id', $id)->first();
+        if (Carbon::now()->greaterThan($user->expire_email)) {
+            return view('emails.expire', ['resendLink' => 'localhost:8000/api/users']);
+        } else {
+            $value = $this->userService->updateEmailVerivied($id, true);
+            if ($value['status']) {
+                return view('emails.success-verivied');
+            } else {
+                if ($value['code'] == 404) {
+                    return view('emails.error-verivied', ['data' => 'Ops , akunmu gagal diverifikasi , user tidak ditemukan']);
+                } else if ($value['code'] == 102) {
+                    return view('emails.error-verivied', ['data' => 'Akun mu sudah diverifikasi silahkan login']);
+                } else if ($value['code'] == 103) {
+                    return view('emails.error-verivied', ['data' => 'Ops , akunmu gagal diverifikasi , terjadi kesalahan']);
+                }
+            }
+        }
+    }
+
 }

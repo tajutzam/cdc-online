@@ -554,4 +554,37 @@ class UserService
     {
 
     }
+
+    public function updateEmailVerivied($id, $value)
+    {
+        $user = $this->userModel->where('id', $id)->first();
+        if (isset($user)) {
+            $isUpdate = $user->update([
+                'email_verivied' => $value
+            ]);
+            if ($user->email_verivied) {
+                return [
+                    'status' => false,
+                    'code' => 102 // user sudah melakukan verivikasi
+                ];
+            }
+            if ($isUpdate) {
+                return [
+                    'status' => true,
+                    'code' => 101 // 101 untuk berhasil verivikasi
+                ];
+            } else {
+                return [
+                    'status' => false,
+                    'code' => 103 // 103 untuk User gagal verivikasi
+                ];
+            }
+        } else {
+            return [
+                'status' => false,
+                'code' => 404 // 404 user tidak ditemukan
+            ];
+        }
+    }
+
 }
