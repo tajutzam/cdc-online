@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Models\Education;
 use App\Models\Followed;
 use App\Models\Follower;
 use App\Models\User;
@@ -15,12 +16,14 @@ class UserService
     private User $userModel;
     private Follower $follower;
     private Followed $followed;
+    private Education $education;
 
     public function __construct()
     {
         $this->userModel = new User();
         $this->follower = new Follower();
         $this->followed = new Followed();
+        $this->education = new Education();
     }
 
 
@@ -65,17 +68,36 @@ class UserService
     }
 
 
-    public function findAllUser($pageNumber) // need pagination 
+    public function findAllUser($pageNumber, $angkatan, $prodi) // need pagination 
     {
-
         $perPage = 10; // Jumlah item per halaman, sesuaikan dengan kebutuhan Anda
 
-        $pagination = $this->userModel->with('jobs', 'educations', 'followers')->paginate($perPage, ['*'], 'page', $pageNumber);
-        $data = $pagination->items();
+        $education = $this->education
+            ->where(function ($query) use ($prodi, $angkatan) {
+                if (isset($angkatan)) {
+                    $query->
+                        WhereRaw('LOWER(perguruan) LIKE ?', ['%' . 'politeknik negeri jember' . '%'])->
+                        orWhereRaw('LOWER(prodi) LIKE ?', ['%' . strtolower($prodi) . '%'])
+                        ->whereRaw('LOWER(tahun_masuk) LIKE ?', ['%' . strtolower($angkatan) . '%']);
+                } else {
+                    $query->
+                        WhereRaw('LOWER(perguruan) LIKE ?', ['%' . 'politeknik negeri jember' . '%'])->
+                        whereRaw('LOWER(prodi) LIKE ?', ['%' . strtolower($prodi) . '%']);
+                }
+            })
+            ->get()
+            ->pluck('user_id')
+            ->toArray();
+        $queryData = $this->userModel->with('jobs', 'educations', 'followers')
+            ->whereIn('id', $education);
+        $paginate = $queryData->paginate($perPage, ['*'], 'page', $pageNumber);
+        $data = $paginate->items();
+
         $responsePojo = [
-            "total_page" => $pagination->lastPage(),
-            "total_items" => $pagination->total()
+            "total_page" => $paginate->lastPage(),
+            "total_items" => $paginate->total()
         ];
+
         foreach ($data as $key => $value) {
             $followersIds = collect($value['followers'])->pluck('folowers_id')->toArray();
             $followers = [];
@@ -109,8 +131,6 @@ class UserService
         }
         return $responsePojo;
     }
-
-
 
 
     public function updateVisible($request, $token)
@@ -199,9 +219,6 @@ class UserService
             'code' => 200
         ], 200);
     }
-
-
-
 
     public function findAllFollowersByUserId($id)
     {
@@ -491,8 +508,6 @@ class UserService
     public function updateUserLogin($request, $userId)
     {
         try {
-
-
             //code...
             $isUpdate = $this->userModel->where('id', $userId)->update([
 

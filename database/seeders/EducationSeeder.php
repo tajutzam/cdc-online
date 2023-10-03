@@ -20,6 +20,8 @@ class EducationSeeder extends Seeder
     {
         //
         $user = User::where('email', "test@gmail.com")->first();
+        $secondUser = User::where('email', "second@gmail.com")->first();
+
 
         Education::create(
             [
@@ -28,6 +30,17 @@ class EducationSeeder extends Seeder
                 "jurusan" => "Teknologi Informasi",
                 "prodi" => "Teknik Infomatika",
                 "tahun_masuk" => "2021",
+                "tahun_lulus" => "2025",
+                "perguruan" => "Politeknik Negeri Jember"
+            ]
+        );
+        Education::create(
+            [
+                'user_id' => $secondUser->id,
+                "strata" => "D4",
+                "jurusan" => "Teknologi Informasi",
+                "prodi" => "Teknik Infomatika",
+                "tahun_masuk" => "2022",
                 "tahun_lulus" => "2025",
                 "perguruan" => "Politeknik Negeri Jember"
             ]

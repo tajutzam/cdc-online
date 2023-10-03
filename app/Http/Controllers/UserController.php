@@ -35,7 +35,7 @@ class UserController extends Controller
 
     public function findAllUser(Request $request)
     {
-        $data = $this->userService->findAllUser($request->get('page'));
+        $data = $this->userService->findAllUser($request->get('page'), $request->get('angkatan'), $request->get('prodi'));
         return response()->json([
             'status' => true,
             'code' => 200,
