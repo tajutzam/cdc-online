@@ -72,6 +72,70 @@ class UserService
         return $responsePojo;
     }
 
+    public function findUserById($id, $token)
+    {
+        $data = $this->userModel->with('jobs', 'educations', 'followers', 'followed')->where('id', $id)->first();
+
+        if (!isset($data)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User tidak ditemukan',
+                'code' => 404,
+                'data' => null
+            ], 404);
+        }
+
+        $data = $data->toArray();
+
+        $responsePojo = [];
+
+        $user = $this->userModel->where('id', $id)->first();
+
+        $userLoginId = $this->extractUserId($token);
+
+        $followersData = $data['followers'];
+        $isFollow = false;
+        foreach ($followersData as $key => $value) {
+            # code...
+            if ($value['folowers_id'] == $userLoginId) {
+                $isFollow = true;
+            }
+        }
+
+        $userPojo = $this->castToUserResponse($user);
+        $userPojo['$isFollow'] = $isFollow;
+
+        $followersIds = collect($data['followers'])->pluck('folowers_id')->toArray();
+        $followers = [];
+        // Mengambil data jobs dan educations dari $value
+        $jobs = $data['jobs'];
+        $educations = $data['educations'];
+        $educationData = [];
+
+        $usersByFollowersId = User::whereIn('id', $followersIds)->get();
+        foreach ($usersByFollowersId as $user) {
+            $tempFolowers = $this->castToUserResponse($user);
+            array_push($followers, $tempFolowers);
+        }
+
+        // cast to education pojo
+        foreach ($educations as $key => $value) {
+            # code...
+            $tempEducation = $this->castToEducations($value);
+            array_push($educationData, $tempEducation);
+        }
+        // Menyimpan hanya followers.folowers_id dalam array $tempUser
+        $tempUser = [
+            'user' => $userPojo,
+            'followers' => $followers,
+            'jobs' => $jobs,
+            'educations' => $educationData,
+        ];
+        $responsePojo = $tempUser;
+
+        return $responsePojo;
+    }
+
 
     public function findAllUser($pageNumber, $angkatan, $prodi) // need pagination 
     {
@@ -205,6 +269,8 @@ class UserService
             ], 500);
         }
     }
+
+
     public function findAllFolowersLogin($token)
     {
         $data = [];

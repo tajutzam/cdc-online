@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 // user
 Route::get("/user", [UserController::class, "getOneUser"]);
 Route::get("/users", [UserController::class, "findAllUser"]);
+Route::get("/user/{id}", [UserController::class, "findUserById"]);
 Route::put("/user/visibility/update", [UserController::class, "updateVisibility"]);
 Route::put("/user/profile", [UserController::class, "updateProfileUserLogin"]);
 Route::get("/user/followers", [UserController::class, "findFolowersByUserLogin"]);
