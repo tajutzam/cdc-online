@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\JobsController;
+use App\Http\Controllers\StudyProgramPublicController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenMiddleware;
 use App\Services\UserService;
@@ -50,3 +51,7 @@ Route::delete('/user/jobs', [JobsController::class, "removeJobsUserLoginById"]);
 Route::post("/auth/login", [AuthController::class, "login"]);
 Route::post("/auth/user/register", [AuthController::class, "registerUser"]);
 Route::get("/user/verivication/email", [AuthController::class, "updateEmailVerified"]);
+
+
+// prodi
+Route::get("/prodi" , [StudyProgramPublicController::class , "findAll"]);
