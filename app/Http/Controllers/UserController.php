@@ -147,7 +147,7 @@ class UserController extends Controller
                 'message' => $validator->errors()->first(),
                 'code' => 400,
                 'data' => null
-            ]);
+            ], 400);
         }
         $userId = $this->userService->extractUserId($request->bearerToken());
         return $this->userService->updateFotoProfile($request->file('image'), $userId);
