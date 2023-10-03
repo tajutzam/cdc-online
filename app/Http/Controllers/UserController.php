@@ -153,4 +153,15 @@ class UserController extends Controller
         return $this->userService->updateFotoProfile($request->file('image'), $userId);
     }
 
+    public function findUserById(Request $request, $id)
+    {
+        $data = $this->userService->findUserById($id, $request->bearerToken());
+        return response()->json([
+            'status' => true,
+            'message' => 'success fetch data',
+            'data' => $data,
+            'code' => 200
+        ], 200);
+    }
+
 }

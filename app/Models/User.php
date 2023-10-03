@@ -78,4 +78,10 @@ class User extends Authenticatable
         return $this->hasMany(Jobs::class, "user_id");
     }
 
+    public function followed()
+    {
+        return $this->hasMany(Followed::class, 'folowed_id');
+
+    }
+
 }
