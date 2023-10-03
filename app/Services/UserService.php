@@ -9,7 +9,9 @@ use App\Models\Follower;
 use App\Models\User;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class UserService
 {
@@ -18,12 +20,15 @@ class UserService
     private Followed $followed;
     private Education $education;
 
+    private EmailService $emailService;
+
     public function __construct()
     {
         $this->userModel = new User();
         $this->follower = new Follower();
         $this->followed = new Followed();
         $this->education = new Education();
+        $this->emailService = new EmailService();
     }
 
 
@@ -75,19 +80,22 @@ class UserService
         $education = $this->education
             ->where(function ($query) use ($prodi, $angkatan) {
                 if (isset($angkatan)) {
-                    $query->
-                        WhereRaw('LOWER(perguruan) LIKE ?', ['%' . 'politeknik negeri jember' . '%'])->
-                        orWhereRaw('LOWER(prodi) LIKE ?', ['%' . strtolower($prodi) . '%'])
-                        ->whereRaw('LOWER(tahun_masuk) LIKE ?', ['%' . strtolower($angkatan) . '%']);
+                    $query->whereRaw('LOWER(perguruan) LIKE ?', ['%' . strtolower('Politeknik Negeri Jember') . '%'])
+                        ->where(function ($subquery) use ($angkatan) {
+                            $subquery->whereRaw('LOWER(tahun_masuk) LIKE ?', ['%' . strtolower($angkatan) . '%'])
+                                ->orWhereRaw('LOWER(tahun_masuk)  LIKE ?', ['%' . strtolower($angkatan) . '%']);
+                        })
+                        ->whereRaw('LOWER(prodi) LIKE ?', ['%' . strtolower($prodi) . '%']);
                 } else {
-                    $query->
-                        WhereRaw('LOWER(perguruan) LIKE ?', ['%' . 'politeknik negeri jember' . '%'])->
-                        whereRaw('LOWER(prodi) LIKE ?', ['%' . strtolower($prodi) . '%']);
+                    $query->whereRaw('LOWER(perguruan) LIKE ?', ['%' . strtolower('Politeknik Negeri Jember') . '%'])
+
+                        ->whereRaw('LOWER(prodi) LIKE ?', ['%' . strtolower($prodi) . '%']);
                 }
             })
             ->get()
             ->pluck('user_id')
             ->toArray();
+
         $queryData = $this->userModel->with('jobs', 'educations', 'followers')
             ->whereIn('id', $education);
         $paginate = $queryData->paginate($perPage, ['*'], 'page', $pageNumber);
@@ -264,13 +272,15 @@ class UserService
 
     private function castToUserResponse($user)
     {
+
+        $url = url('/') . "/users/" . $user->foto;
         return [
             "id" => $user->id,
             "fullname" => $user->visible_fullname == 1 ? $user->fullname : "***",
             "email" => $user->visible_email == 1 ? $user->email : "***",
             "nik" => $user->visible_nik == 1 ? $user->nik : "***",
             "no_telp" => $user->visible_no_telp == 1 ? $user->no_telp : "***",
-            "foto" => $user->foto,
+            "foto" => $url,
             'alamat' => $user->visible_alamat == 1 ? $user->alamat : "***",
             "about" => $user->about,
             "gender" => $user->gender,
@@ -285,13 +295,16 @@ class UserService
 
     private function castToUserResponseFromArray($user)
     {
+
+        $url = url('/') . "/users/" . $user['foto'];
+
         return [
             "id" => $user['id'],
             "fullname" => $user['visible_fullname'] == 1 ? $user['fullname'] : "***",
             "email" => $user['visible_email'] == 1 ? $user['email'] : "***",
             "nik" => $user['visible_nik'] == 1 ? $user['nik'] : "***",
             "no_telp" => $user['visible_no_telp'] == 1 ? $user['no_telp'] : "***",
-            "foto" => $user['foto'],
+            "foto" => $url,
             'alamat' => $user['visible_alamat'] == 1 ? $user['alamat'] : "***",
             "about" => $user['about'],
             "gender" => $user['gender'],
@@ -550,24 +563,69 @@ class UserService
         }
     }
 
-    public function updateFotoProfile($request)
+    public function updateFotoProfile($image, $id)
     {
+        $folder = "users";
+        $fileName = time() . '.' . $image->extension();
+        $urlResource = $image->move($folder, $fileName);
+        $user = $this->userModel->where('id', $id)->first();
 
+        $oldFileName = $user->foto;
+        $oldPath = "public/$folder/" . $oldFileName;
+
+        $this->deleteFile($oldPath); // delete old  images
+
+        if (isset($user)) {
+            $isUpdated = $user->update([
+                'foto' => $fileName
+            ]);
+            if ($isUpdated) {
+                $url = url('/') . "/" . $urlResource;
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Berhasil memperbarui foto profile',
+                    'code' => 200,
+                    'data' => $url
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Gagal mengupdate foto profile',
+                    'code' => 500,
+                    'data' => nullOrEmptyString()
+                ], 500);
+            }
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal mengupdate foto profile',
+                'code' => 500,
+                'data' => nullOrEmptyString()
+            ], 500);
+        }
+    }
+
+    private function deleteFile($path)
+    {
+        if (Storage::exists($path)) {
+            Storage::delete($path);
+        }
     }
 
     public function updateEmailVerivied($id, $value)
     {
         $user = $this->userModel->where('id', $id)->first();
         if (isset($user)) {
-            $isUpdate = $user->update([
-                'email_verivied' => $value
-            ]);
+
             if ($user->email_verivied) {
                 return [
                     'status' => false,
                     'code' => 102 // user sudah melakukan verivikasi
                 ];
             }
+            $isUpdate = $user->update([
+                'email_verivied' => $value
+            ]);
             if ($isUpdate) {
                 return [
                     'status' => true,
@@ -586,5 +644,45 @@ class UserService
             ];
         }
     }
+
+    public function updateEmail($id, $email)
+    {
+        $user = $this->userModel->where('id', $id)->first();
+        $expired = Carbon::now()->addHour();
+        if (isset($user)) {
+            $isUpdate = $user->update([
+                'email' => $email,
+                'email_verivied' => false,
+                'expire_email' => $expired,
+                'token' => null
+            ]);
+            if ($isUpdate) {
+                try {
+                    //code...
+                    $link = url('/') . '/api/user/verivication/email?id=' . "$user->id";
+                    $this->emailService->sendEmailVerifikasi($email, $link, $expired->format('F j - H:i'));
+                    return response()->json([
+                        'status' => true,
+                        'message' => "Berhasil update email , silahkan verivikasi email dan login ulang",
+                        'code' => 200
+                    ], 200);
+                } catch (\Throwable $th) {
+                    //throw $th;
+                    return response()->json([
+                        'status' => false,
+                        'message' => $th->getMessage(),
+                        'code' => 500
+                    ], 500);
+                }
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'gagal melakukan update email',
+                    'code' => 400
+                ], 400);
+            }
+        }
+    }
+
 
 }
