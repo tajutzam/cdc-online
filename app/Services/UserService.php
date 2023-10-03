@@ -149,7 +149,7 @@ class UserService
                             $subquery->whereRaw('LOWER(tahun_masuk) LIKE ?', ['%' . strtolower($angkatan) . '%'])
                                 ->orWhereRaw('LOWER(tahun_masuk)  LIKE ?', ['%' . strtolower($angkatan) . '%']);
                         })
-                        ->whereRaw('LOWER(prodi) LIKE ?', ['%' . strtolower($prodi) . '%']);
+                        ->whereRaw('TRIM(LOWER(prodi)) LIKE ?', ['%' . strtolower($prodi) . '%']);
                 } else {
                     $query->whereRaw('LOWER(perguruan) LIKE ?', ['%' . strtolower('Politeknik Negeri Jember') . '%'])
 
@@ -273,6 +273,7 @@ class UserService
 
     public function findAllFolowersLogin($token)
     {
+        dd($token);
         $data = [];
         $followersIds = User::join('folowers', 'users.id', '=', 'folowers.user_id')
             ->where('users.token', $token)
@@ -283,6 +284,7 @@ class UserService
             $tempUser = $this->castToUserResponse($user);
             array_push($data, $tempUser);
         }
+        dd($data);
         return response()->json([
             'status' => true,
             'messages' => 'success fetch data',
