@@ -65,11 +65,17 @@ class UserService
     }
 
 
-    public function findAllUser()
+    public function findAllUser($pageNumber) // need pagination 
     {
-        $data = $this->userModel->with('jobs', 'educations', 'followers')->get()->toArray();
-        $responsePojo = [];
 
+        $perPage = 10; // Jumlah item per halaman, sesuaikan dengan kebutuhan Anda
+
+        $pagination = $this->userModel->with('jobs', 'educations', 'followers')->paginate($perPage, ['*'], 'page', $pageNumber);
+        $data = $pagination->items();
+        $responsePojo = [
+            "total_page" => $pagination->lastPage(),
+            "total_items" => $pagination->total()
+        ];
         foreach ($data as $key => $value) {
             $followersIds = collect($value['followers'])->pluck('folowers_id')->toArray();
             $followers = [];
@@ -255,7 +261,8 @@ class UserService
             "linkedin" => $user->linkedin,
             "facebook" => $user->facebook,
             "instagram" => $user->instagram,
-            'twiter' => $user->twiter
+            'twiter' => $user->twiter,
+            'account_status' => $user->account_status
         ];
     }
 
@@ -275,7 +282,8 @@ class UserService
             "linkedin" => $user['linkedin'],
             "facebook" => $user['facebook'],
             "instagram" => $user['instagram'],
-            'twiter' => $user['twiter']
+            'twiter' => $user['twiter'],
+            'account_status' => $user['account_status']
         ];
     }
 
@@ -478,5 +486,57 @@ class UserService
             ],
             'code' => 200
         ], 200);
+    }
+
+    public function updateUserLogin($request, $userId)
+    {
+        try {
+
+
+            //code...
+            $isUpdate = $this->userModel->where('id', $userId)->update([
+
+                'fullname' => $request['fullname'],
+                'ttl' => $request['ttl'],
+                'about' => $request['about'],
+                'linkedin' => $request['linkedin'],
+                'instagram' => $request['instagram'],
+                'twiter' => $request['x'],
+                'facebook' => $request['facebook'],
+                'no_telp' => $request['no_telp'],
+                'gender' => $request['gender'],
+                'alamat' => $request['alamat'],
+                'nik' => $request['nik']
+
+            ]);
+            if ($isUpdate) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Success memperbarui profile',
+                    'data' => $isUpdate,
+                    'code' => 200
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Gagal memperbarui profile',
+                    'data' => $isUpdate,
+                    'code' => 400
+                ], 400);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal memperbarui profile ' . $th->getMessage(),
+                'data' => null,
+                'code' => 500
+            ], 500);
+        }
+    }
+
+    public function updateFotoProfile($request)
+    {
+
     }
 }

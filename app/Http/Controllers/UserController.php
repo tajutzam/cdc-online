@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\TokenMiddleware;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\UpdateVisibleRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -32,9 +33,9 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function findAllUser()
+    public function findAllUser(Request $request)
     {
-        $data = $this->userService->findAllUser();
+        $data = $this->userService->findAllUser($request->get('page'));
         return response()->json([
             'status' => true,
             'code' => 200,
@@ -109,4 +110,12 @@ class UserController extends Controller
         return $this->userService->showUserFollowed($id);
 
     }
+
+    public function updateProfileUserLogin(UpdateProfileRequest $updateProfileRequest)
+    {
+        $updateProfileRequest->validate($updateProfileRequest->rules(), $updateProfileRequest->messages());
+        $userId = $this->userService->extractUserId($updateProfileRequest->bearerToken());
+        return $this->userService->updateUserLogin($updateProfileRequest->all(), $userId);
+    }
+
 }
