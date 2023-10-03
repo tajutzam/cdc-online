@@ -53,9 +53,9 @@ class UserController extends Controller
         return $this->userService->updateVisible($request, $token);
     }
 
-    public function findFolowersByUserLogin(Request $request)
+    public function findAllFollowers(Request $request)
     {
-        dd($request);
+
         $token = $request->bearerToken();
         return $this->userService->findAllFolowersLogin($token);
     }
@@ -155,13 +155,8 @@ class UserController extends Controller
 
     public function findUserById(Request $request, $id)
     {
-        $data = $this->userService->findUserById($id, $request->bearerToken());
-        return response()->json([
-            'status' => true,
-            'message' => 'success fetch data',
-            'data' => $data,
-            'code' => 200
-        ], 200);
+        return $this->userService->findUserById($id, $request->bearerToken());
+
     }
 
 }
