@@ -9,6 +9,7 @@ use App\Models\Follower;
 use App\Models\User;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class UserService
@@ -18,12 +19,15 @@ class UserService
     private Followed $followed;
     private Education $education;
 
+    private EmailService $emailService;
+
     public function __construct()
     {
         $this->userModel = new User();
         $this->follower = new Follower();
         $this->followed = new Followed();
         $this->education = new Education();
+        $this->emailService = new EmailService();
     }
 
 
@@ -559,15 +563,16 @@ class UserService
     {
         $user = $this->userModel->where('id', $id)->first();
         if (isset($user)) {
-            $isUpdate = $user->update([
-                'email_verivied' => $value
-            ]);
+
             if ($user->email_verivied) {
                 return [
                     'status' => false,
                     'code' => 102 // user sudah melakukan verivikasi
                 ];
             }
+            $isUpdate = $user->update([
+                'email_verivied' => $value
+            ]);
             if ($isUpdate) {
                 return [
                     'status' => true,
@@ -586,5 +591,45 @@ class UserService
             ];
         }
     }
+
+    public function updateEmail($id, $email)
+    {
+        $user = $this->userModel->where('id', $id)->first();
+        $expired = Carbon::now()->addHour();
+        if (isset($user)) {
+            $isUpdate = $user->update([
+                'email' => $email,
+                'email_verivied' => false,
+                'expire_email' => $expired,
+                'token' => null
+            ]);
+            if ($isUpdate) {
+                try {
+                    //code...
+                    $link = url('/') . '/api/user/verivication/email?id=' . "$user->id";
+                    $this->emailService->sendEmailVerifikasi($email, $link, $expired->format('F j - H:i'));
+                    return response()->json([
+                        'status' => true,
+                        'message' => "Berhasil update email , silahkan verivikasi email dan login ulang",
+                        'code' => 200
+                    ], 200);
+                } catch (\Throwable $th) {
+                    //throw $th;
+                    return response()->json([
+                        'status' => false,
+                        'message' => $th->getMessage(),
+                        'code' => 500
+                    ], 500);
+                }
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'gagal melakukan update email',
+                    'code' => 400
+                ], 400);
+            }
+        }
+    }
+
 
 }

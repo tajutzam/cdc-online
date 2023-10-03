@@ -118,4 +118,19 @@ class UserController extends Controller
         return $this->userService->updateUserLogin($updateProfileRequest->all(), $userId);
     }
 
+    public function updateEmailUserLogin(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), ['email' => 'required|email|unique:users,email']);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first(),
+                'code' => 400
+            ], 400);
+        }
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        return $this->userService->updateEmail($userId, $request->input('email'));
+    }
+
 }
