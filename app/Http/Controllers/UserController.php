@@ -6,6 +6,7 @@ use App\Http\Middleware\TokenMiddleware;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\UpdateVisibleRequest;
 use App\Services\UserService;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -131,6 +132,25 @@ class UserController extends Controller
         }
         $userId = $this->userService->extractUserId($request->bearerToken());
         return $this->userService->updateEmail($userId, $request->input('email'));
+    }
+
+    public function updateFotoProfile(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first(),
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        return $this->userService->updateFotoProfile($request->file('image'), $userId);
     }
 
 }

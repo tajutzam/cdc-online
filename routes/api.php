@@ -31,6 +31,7 @@ Route::delete("/user/followers", [UserController::class, "unfollowUser"]);
 Route::get("/user/followed", [UserController::class, "showUserFolowed"]);
 Route::get("/user/followed/{id}", [UserController::class, 'showUserFolowedById']);
 Route::put("/user/profile/email", [UserController::class, "updateEmailUserLogin"]);
+Route::post("/user/profile/image", [UserController::class, "updateFotoProfile"]);
 // education
 Route::post("/user/education/add", [EducationController::class, "addNewEducationUser"]);
 Route::get("/user/education", [EducationController::class, "showEducationUserLogin"]);
