@@ -41,7 +41,9 @@ class User extends Authenticatable
         'alamat',
         'visible_fullname',
         'gender',
-        'about'
+        'about',
+        'email_verivied',
+        'expire_email'
     ];
 
     /**
