@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\JobsController;
+use App\Http\Controllers\QuisionerController;
 use App\Http\Controllers\StudyProgramPublicController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenMiddleware;
@@ -54,4 +55,10 @@ Route::get("/user/verivication/email", [AuthController::class, "updateEmailVerif
 
 
 // prodi
-Route::get("/prodi" , [StudyProgramPublicController::class , "findAll"]);
+Route::get("/prodi", [StudyProgramPublicController::class, "findAll"]);
+
+
+Route::post("/user/quisioner/identity", [QuisionerController::class, 'addQuisionerIdentity']);
+Route::post("/user/quisioner/main", [QuisionerController::class, "addQuisionerMain"]);
+Route::post("/user/quisioner/furthestudy", [QuisionerController::class, 'addQuisionerFurtheStudy']);
+Route::get("/user/quisioner/check" , [QuisionerController::class , 'showUpdateQuisionerLevel']); 

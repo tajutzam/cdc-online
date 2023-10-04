@@ -43,7 +43,8 @@ class User extends Authenticatable
         'gender',
         'about',
         'email_verivied',
-        'expire_email'
+        'expire_email',
+        'account_status'
     ];
 
     /**
