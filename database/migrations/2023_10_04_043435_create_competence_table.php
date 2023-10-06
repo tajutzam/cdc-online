@@ -25,6 +25,7 @@ class CreateCompetenceTable extends Migration
         Schema::create('competence', function (Blueprint $table) {
             $table->id();
             $table->enum('f1761', $this->option);
+            $table->enum('f1762', $this->option);
             $table->enum('f1763', $this->option);
             $table->enum('f1764', $this->option);
             $table->enum('f1765', $this->option);
@@ -38,7 +39,6 @@ class CreateCompetenceTable extends Migration
             $table->enum('f1773', $this->option);
             $table->enum('f1774', $this->option);
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
-
             $table->timestamps();
         });
     }

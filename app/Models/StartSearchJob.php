@@ -5,20 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StudyMethod extends Model
+class StartSearchJob extends Model
 {
     use HasFactory;
 
-    protected $table = 'study_method';
+    protected $table = 'start_search_jobs';
 
     protected $fillable = [
-        'f21',
-        'f22',
-        'f23',
-        'f24',
-        'f25',
-        'f26',
-        'f27',
+        'f301',
+        'f302',
+        'f303',
         'user_id',
     ];
 
@@ -28,4 +24,3 @@ class StudyMethod extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 }
-

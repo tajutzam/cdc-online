@@ -30,7 +30,7 @@ class CreateHowToFindJobsTable extends Migration
             $table->boolean('f413');
             $table->boolean('f414');
             $table->boolean('f415');
-            $table->string('f416', 255);
+            $table->string('f416', 255)->nullable(true);
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
 
             $table->timestamps();

@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -43,8 +45,39 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (Throwable $e) {
+            if ($e instanceof BadRequestException) {
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'code' => 400,
+                    'data' => null,
+                    'message' => $e->getMessage()
+                ], 400);
+            }
+            if ($e instanceof NotFoundException) {
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'code' => 404,
+                    'data' => null,
+                    'message' => $e->getMessage()
+                ], 404);
+            }
+            if ($e instanceof NotFoundHttpException) {
+                // Menampilkan halaman 404
+                return response()->view('errors.404', [], 404);
+            }
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'code' => 500,
+                'data' => null,
+                'message' => $e->getMessage()
+            ], 500);
         });
+
     }
+
+
 }

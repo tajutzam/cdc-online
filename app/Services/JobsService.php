@@ -4,7 +4,7 @@
 
 namespace App\Services;
 
-
+use Illuminate\Support\Facades\DB;
 
 class JobsService
 {
@@ -21,6 +21,7 @@ class JobsService
     {
 
         $isActiveJobs = $request['is_jobs_now'];
+        DB::beginTransaction();
 
         if ($isActiveJobs) {
             try {
@@ -40,6 +41,7 @@ class JobsService
                     'code' => 201
                 ], 201);
             } catch (\Throwable $th) {
+                DB::rollBack();
                 return response()->json([
                     'status' => false,
                     'message' => 'Gagal menambahkan pekerjaan baru ' . $th->getMessage(),
@@ -66,6 +68,7 @@ class JobsService
                     'code' => 201
                 ], 201);
             } catch (\Throwable $th) {
+                DB::rollBack();
                 return response()->json([
                     'status' => false,
                     'message' => 'Gagal menambahkan pekerjaan baru ' . $th->getMessage(),
