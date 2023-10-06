@@ -57,8 +57,14 @@ Route::get("/user/verivication/email", [AuthController::class, "updateEmailVerif
 // prodi
 Route::get("/prodi", [StudyProgramPublicController::class, "findAll"]);
 
-
+// quisioner
 Route::post("/user/quisioner/identity", [QuisionerController::class, 'addQuisionerIdentity']);
 Route::post("/user/quisioner/main", [QuisionerController::class, "addQuisionerMain"]);
 Route::post("/user/quisioner/furthestudy", [QuisionerController::class, 'addQuisionerFurtheStudy']);
-Route::get("/user/quisioner/check" , [QuisionerController::class , 'showUpdateQuisionerLevel']); 
+Route::post("/user/quisioner/competence", [QuisionerController::class, 'addQuisionerCompetence']);
+Route::post("/user/quisioner/studymethod", [QuisionerController::class, 'addQuisionerStudyMethod']);
+Route::post("/user/quisioner/jobstreet", [QuisionerController::class, 'addQuisionerJobStreet']);
+Route::post("/user/quisioner/howtofindjobs", [QuisionerController::class, 'addQuisionerHowFindJobs']);
+Route::post("/user/quisioner/companyapplied" , [QuisionerController::class , 'addQuisionerCompanyApplied']);
+Route::post("/user/quisioner/jobsuitability" , [QuisionerController::class , 'addQuisionerjobSuitability']);
+Route::get("/user/quisioner/check", [QuisionerController::class, 'showUpdateQuisionerLevel']);
