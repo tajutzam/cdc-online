@@ -62,7 +62,7 @@ class AuthController extends Controller
     public function updateEmailVerified(Request $request)
     {
         $id = $request->get('id');
-        return $this->authService->updateVeriviedEmail($id, true);
+        return $this->authService->updateVeriviedEmail($id);
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\TokenMiddleware;
+use App\Http\Middleware\VeriviedMiddleware;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\UpdateVisibleRequest;
 use App\Services\UserService;
@@ -18,7 +19,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware(TokenMiddleware::class);
+        $this->middleware([TokenMiddleware::class]);
         $this->userService = new UserService();
     }
 

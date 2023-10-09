@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\VeriviedMiddleware;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel as KernelContract;
@@ -59,7 +60,7 @@ class Kernel implements KernelContract
             // ... other middleware
         ],
         'api' => [
-
+            'veriviedMiddleare' => VeriviedMiddleware::class
         ]
     ];
     /**

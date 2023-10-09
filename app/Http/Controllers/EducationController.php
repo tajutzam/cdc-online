@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\TokenMiddleware;
+use App\Http\Middleware\VeriviedMiddleware;
 use App\Http\Requests\AddEducationRequest;
 use App\Http\Requests\UpdateEducationRequest;
 use App\Services\EducationService;
@@ -20,7 +21,7 @@ class EducationController extends Controller
     {
         $this->educationService = new EducationService();
         $this->userService = new UserService();
-        $this->middleware(TokenMiddleware::class); // user need token to access this controller
+        $this->middleware([TokenMiddleware::class , VeriviedMiddleware::class]); // user need token to access this controller
     }
 
     public function addNewEducationUser(AddEducationRequest $request)

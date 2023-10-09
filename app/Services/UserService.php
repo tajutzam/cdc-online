@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\NotFoundException;
 use App\Models\Education;
 use App\Models\Followed;
 use App\Models\Follower;
@@ -768,5 +769,16 @@ class UserService
         }
     }
 
+
+
+    public function checkUserStatus($token)
+    {
+        $userId = $this->extractUserId($token);
+        $user = $this->userModel->find($userId)->first();
+        if (isset($user)) {
+            return $user->account_status;
+        }
+        throw new NotFoundException('ops , Nampaknya user yang kamu cari tidak ditemukan');
+    }
 
 }

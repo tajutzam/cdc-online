@@ -184,21 +184,13 @@ class QuisionerService
                         'furthe_study_section' => true,
                     ]);
                     if ($isUpdate) {
-                        $isUpdateUser = $user->update([
-                            'account_status' => 'beginner'
-                        ]);
-                        if ($isUpdateUser) {
-                            DB::commit();
-                            return $this->successResponse(['quis_terjawab' => $isCreated], 201, 'Berhasil mengisi kuisioner');
-                        } else {
-                            throw new NotFoundException('gagal mengisi quisioner , user tidak ditemukan', 404);
-                        }
+                        DB::commit();
+                        return $this->successResponse(['quis_terjawab' => $isCreated], 201, 'Berhasil mengisi kuisioner');
                     }
                     throw new Exception('Gagal untuk mengisi kuisioner , terjadi keslaahan', 500);
                 } else {
                     throw new Exception('Gagal untuk mengisi kuisioner , terjadi keslaahan', 500);
                 }
-
             }
             throw new BadRequestException('Harap isi quisioner sebelumnya terlebih dahulu', 400);
         }
@@ -308,13 +300,10 @@ class QuisionerService
         $created = $this->startSearchJob->create($jobsStreetData);
         $user = $this->user->find($userId);
         if (isset($created)) {
-            $userUpdated = $user->update(
-                ['account_status' => 'intermediate']
-            );
             $isUpdate = $quisionerLevel->update([
                 'jobs_street_section' => true
             ]);
-            if ($isUpdate && $userUpdated) {
+            if ($isUpdate) {
                 DB::commit();
                 return $this->successResponse(['quis_terjawab' => $created], 201, 'Berhasil mengisi kuisioner');
             }
@@ -381,7 +370,7 @@ class QuisionerService
             throw new BadRequestException('Ops , nampaknya kamu sudah mengisi kuisioner ini');
         }
         DB::beginTransaction();
-         $comapnyAppliedData = [
+        $comapnyAppliedData = [
             'f6' => $request['job_applications_before_first_job'],
             'f7' => $request['job_applications_responses'],
             'f7a' => $request['interview_invitations'],
@@ -434,7 +423,7 @@ class QuisionerService
         $user = $this->user->find($userId);
         if (isset($created)) {
             $userUpdated = $user->update(
-                ['account_status' => 'star']
+                ['account_status' => true]
             );
             $isUpdate = $quisionerLevel->update([
                 'job_suitability_section' => true

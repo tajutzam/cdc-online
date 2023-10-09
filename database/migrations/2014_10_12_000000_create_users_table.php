@@ -37,7 +37,7 @@ return new class extends Migration {
             $table->timestamp('token_expire')->nullable(true);
             $table->enum('level', ['user', 'admin']);
             $table->string('password');
-            $table->enum('account_status', ['noob', 'beginner', 'intermediate', 'star'])->default('noob');
+            $table->boolean('account_status')->default(false) ;
             $table->boolean('email_verivied')->default(false);
             $table->timestamp('expire_email')->nullable(true);
             $table->timestamps();

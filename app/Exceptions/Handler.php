@@ -68,6 +68,15 @@ class Handler extends ExceptionHandler
                 // Menampilkan halaman 404
                 return response()->view('errors.404', [], 404);
             }
+
+            if ($e instanceof ForbiddenException) {
+                return response()->json([
+                    'status' => false,
+                    'code' => 403,
+                    'data' => null,
+                    'message' => $e->getMessage()
+                ], 403);
+            }
             DB::rollBack();
             return response()->json([
                 'status' => false,
