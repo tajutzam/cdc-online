@@ -11,7 +11,7 @@ class Post extends Model
     use HasFactory, Uuids;
 
     protected $table = 'post';
-    
+
 
     protected $fillable = [
         'user_id',
@@ -22,4 +22,12 @@ class Post extends Model
         'expired',
         'image'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, "user_id");
+    }
+
+
+
 }

@@ -84,6 +84,20 @@ class PostService
         return $this->successResponse($data, 200, 'success fetch data');
     }
 
+    public function getPostByUserId($id, $page)
+    {
+        $dataPost = $this->post->where('user_id', $id)->paginate(10, ['*'], 'page', $page);
+        $data = [
+            'total_page' => $dataPost->lastPage(),
+            'total_item' => $dataPost->total(),
+        ];
+        foreach ($dataPost as $datum) {
+            $tempPost = $this->castToResponse($datum);
+            array_push($data, $tempPost);
+        }
+        return $this->successResponse($data, 200, 'success fetch data');
+    }
+
     public function findById($id)
     {
         return $this->post->find($id);

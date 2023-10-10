@@ -42,8 +42,22 @@ class PostController extends Controller
     }
 
     public function getAllPost(Request $request)
-    {   
+    {
         return $this->postService->getAllPost($request->get('page'));
+    }
+
+    public function getPostUserLogin(Request $request)
+    {
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        return $this->postService->getPostByUserId($userId, $request->get('page'));
+    }
+
+    public function getPostByUserId(Request $request, $id)
+    {
+
+        $this->userService->findUserById($id , $request->bearerToken());
+
+        return $this->postService->getPostByUserId($id, $request->get('page'));
     }
 
 

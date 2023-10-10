@@ -95,4 +95,6 @@ Route::post("/user/quisioner/jobsuitability", [QuisionerController::class, 'addQ
 Route::get("/user/quisioner/check", [QuisionerController::class, 'showUpdateQuisionerLevel']);
 
 Route::post("/user/post", [PostController::class, 'addPost'])->middleware([TokenMiddleware::class]);
-Route::get("/user/post" , [PostController::class , 'getAllPost'])->middleware([TokenMiddleware::class]);
+Route::get("/user/post", [PostController::class, 'getAllPost'])->middleware([TokenMiddleware::class]);
+Route::get("/user/post/login", [PostController::class, 'getPostUserLogin'])->middleware([TokenMiddleware::class]);
+Route::get("/user/post/detail/{id}", [PostController::class, 'getPostByUserId'])->middleware([TokenMiddleware::class]);
