@@ -29,7 +29,8 @@ class UserSeeder extends Seeder
             "alamat" => 'jawa timur , banyuwangi',
             'gender' => 'male',
             'about' => "saya adalah orang yang memiliki tekat tinggi",
-            'email_verivied' => 1
+            'email_verivied' => 1,
+            'account_status' => 0
         ]);
         User::create([
             "email" => "second@gmail.com",

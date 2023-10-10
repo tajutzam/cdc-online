@@ -14,7 +14,16 @@ class CreatePostTable extends Migration
     public function up()
     {
         Schema::create('post', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id');
+            $table->foreignUuid('user_id')->references('id')->on('users')->onDelete('cascade')->cascadeOnUpdate();
+            $table->string('link_apply')->nullable(false);
+            $table->string('description')->nullable(false);
+            $table->string('company')->nullable(false);
+            $table->string('position')->nullable(false);
+            $table->timestamp('expired')->nullable(false);
+            $table->timestamp('post_at')->default(\Illuminate\Support\Carbon::now());
+            $table->string('image')->nullable(false);
+            $table->enum('type_jobs', ['Purnawaktu', 'Paruh Waktu', 'Wiraswasta', 'Pekerja Lepas', 'Kontrak', 'Musiman']);
             $table->timestamps();
         });
     }

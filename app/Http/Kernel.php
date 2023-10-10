@@ -60,8 +60,8 @@ class Kernel implements KernelContract
             // ... other middleware
         ],
         'api' => [
-            'veriviedMiddleare' => VeriviedMiddleware::class
-        ]
+        ],
+        
     ];
     /**
      * The application's route middleware.
@@ -70,6 +70,7 @@ class Kernel implements KernelContract
      */
     protected $routeMiddleware = [
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'verified' => VeriviedMiddleware::class
     ];
 
     /**

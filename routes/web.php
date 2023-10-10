@@ -22,3 +22,7 @@ Route::prefix('admin')->group(function () {
         return view('admin.dashboard');
     });
 });
+
+Route::get('/info' , function(){
+    echo phpinfo();
+});

@@ -143,7 +143,7 @@ class UserService
     }
 
 
-    public function findAllUser($pageNumber, $angkatan, $prodi) // need pagination 
+    public function findAllUser($pageNumber, $angkatan, $prodi, $id) // need pagination 
     {
         $perPage = 10; // Jumlah item per halaman, sesuaikan dengan kebutuhan Anda
 
@@ -166,7 +166,7 @@ class UserService
             ->pluck('user_id')
             ->toArray();
 
-        $queryData = $this->userModel->with('jobs', 'educations', 'followers')
+        $queryData = $this->userModel->with('jobs', 'educations', 'followers')->where('id' , '<>' , $id)
             ->whereIn('id', $education);
         $paginate = $queryData->paginate($perPage, ['*'], 'page', $pageNumber);
         $data = $paginate->items();
@@ -774,7 +774,8 @@ class UserService
     public function checkUserStatus($token)
     {
         $userId = $this->extractUserId($token);
-        $user = $this->userModel->find($userId)->first();
+        $user = $this->userModel->where('id' , $userId)->first();
+
         if (isset($user)) {
             return $user->account_status;
         }

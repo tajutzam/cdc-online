@@ -22,6 +22,7 @@ class VeriviedMiddleware
 
         
         $verivied = $userService->checkUserStatus($request->bearerToken());
+
         if ($verivied) {
             return $next($request);
         }
