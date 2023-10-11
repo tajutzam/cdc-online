@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             'gender' => 'male',
             'about' => "saya adalah orang yang memiliki tekat tinggi",
             'email_verivied' => 1,
-            'account_status' => 0
+            'account_status' => 1
         ]);
         User::create([
             "email" => "second@gmail.com",

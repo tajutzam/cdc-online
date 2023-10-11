@@ -94,7 +94,10 @@ Route::post("/user/quisioner/companyapplied", [QuisionerController::class, 'addQ
 Route::post("/user/quisioner/jobsuitability", [QuisionerController::class, 'addQuisionerjobSuitability']);
 Route::get("/user/quisioner/check", [QuisionerController::class, 'showUpdateQuisionerLevel']);
 
-Route::post("/user/post", [PostController::class, 'addPost'])->middleware([TokenMiddleware::class]);
+Route::post("/user/post", [PostController::class, 'addPost'])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 Route::get("/user/post", [PostController::class, 'getAllPost'])->middleware([TokenMiddleware::class]);
 Route::get("/user/post/login", [PostController::class, 'getPostUserLogin'])->middleware([TokenMiddleware::class]);
 Route::get("/user/post/detail/{id}", [PostController::class, 'getPostByUserId'])->middleware([TokenMiddleware::class]);
+Route::put("/user/post/update/{id}", [PostController::class, "updatePost"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
+Route::delete("/user/post/delete/{id}", [PostController::class, "deletePost"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
+Route::put("/user/post/update/comment/{id}", [PostController::class, 'updateComment'])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);

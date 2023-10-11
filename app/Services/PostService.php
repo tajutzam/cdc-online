@@ -4,14 +4,19 @@
 
 namespace App\Services;
 
+use App\Exceptions\BadRequestException;
+use App\Exceptions\NotFoundException;
 use App\Models\Post;
 use App\Models\User;
 use Cloudinary\Api\Exception\BadRequest;
+use Cloudinary\Api\Exception\NotFound;
 use Exception;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Iloveimg\Iloveimg;
 use Intervention\Image\Facades\Image;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PostService
 {
@@ -72,7 +77,7 @@ class PostService
     public function getAllPost($page)
     {
         $now = Carbon::now(); // Mendapatkan tanggal saat ini menggunakan Carbon
-        $expiredPosts = $this->post->where('expired', '>', $now)->paginate(10, ['*'], 'page', $page);
+        $expiredPosts = $this->post->where('expired', '>', $now)->where('verivied' , true)->paginate(10, ['*'], 'page', $page);
         $data = [
             'total_page' => $expiredPosts->lastPage(),
             'total_item' => $expiredPosts->total()
@@ -87,20 +92,85 @@ class PostService
     public function getPostByUserId($id, $page)
     {
         $dataPost = $this->post->where('user_id', $id)->paginate(10, ['*'], 'page', $page);
-        $data = [
+        $dataPagination = [
             'total_page' => $dataPost->lastPage(),
             'total_item' => $dataPost->total(),
         ];
+        $data['posts']=[];
+        $data['pagination'] = $dataPagination;
         foreach ($dataPost as $datum) {
             $tempPost = $this->castToResponse($datum);
-            array_push($data, $tempPost);
+            array_push($data['posts'], $tempPost);
         }
         return $this->successResponse($data, 200, 'success fetch data');
     }
 
+    public function updatePost($request, $userId, $id)
+    {
+        DB::beginTransaction();
+        $post = $this->findById($id);
+        if ($post->user_id == $userId) {
+            $isUpdate = $post->update(
+                [
+                    'description' => $request['description'],
+                    'link' => $request['link'],
+                    'type_jobs' => $request['type_jobs'],
+                    'company' => $request['company'],
+                    'position' => $request['position'],
+                    'post_at' => $request['post_at'],
+                    'expired' => $request['expired']
+                ]
+            );
+            if ($isUpdate) {
+                Db::commit();
+                return $this->successResponse($isUpdate, 200, 'success update post lowongan pekerjaan');
+            }
+            Db::rollback();
+        }
+        throw new BadRequestException('Ops , user tidak memiliki postingan tersebut');
+    }
+
+    public function deletePost($id, $userId)
+    {
+        DB::beginTransaction();
+        $post = $this->findById($id);
+        if ($post->user_id == $userId) {
+            $isDelete = $post->delete();
+            if ($isDelete) {
+                Db::commit();
+                return $this->successResponse(true, 200, 'success delete postingan');
+            } else {
+                throw new Exception('ops , gagal menghapus postingan terjadi kesalahan');
+            }
+        }
+        throw new NotFoundException('Ops , user tidak memiliki postingan tersebut');
+    }
+
+    public function updateComment($id, $userId, $option)
+    {
+        DB::beginTransaction();
+        $post = $this->findById($id);
+        if ($post->user_id == $userId) {
+            $isUpdate = $post->update([
+                'can_comment' => $option
+            ]);
+            if ($isUpdate) {
+                DB::commit();
+                return $this->successResponse($isUpdate, 200, 'berhasil memperbarui setelan komentar');
+            }
+            Db::rollBack();
+            throw new Exception('ops , gagal memperbarui setelan komentar');
+        }
+        throw new NotFoundException('ops , user tidak memiliki postingan tersebut');
+    }
+
     public function findById($id)
     {
-        return $this->post->find($id);
+        $post = $this->post->where('id', $id)->first();
+        if (isset($post)) {
+            return $post;
+        }
+        throw new NotFoundException('Ops , postingan tidak ditemukan');
     }
 
     public function info()
@@ -121,7 +191,9 @@ class PostService
             'company' => $data->company,
             'position' => $data->position,
             'expired' => $data->expired,
-            'post_at' => $data->post_at
+            'post_at' => $data->post_at,
+            'can_comment' => $data->can_comment,
+            'verified' => $data->verivied
         ];
     }
 

@@ -20,7 +20,9 @@ class Post extends Model
         'company',
         'position',
         'expired',
-        'image'
+        'image',
+        'can_comment',
+        'verivied'
     ];
 
     public function user()
