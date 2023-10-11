@@ -44,7 +44,9 @@ class User extends Authenticatable
         'about',
         'email_verivied',
         'expire_email',
-        'account_status'
+        'account_status',
+        'kode_prodi',
+        'nim'
     ];
 
     /**

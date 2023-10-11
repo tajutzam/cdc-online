@@ -37,9 +37,13 @@ return new class extends Migration {
             $table->timestamp('token_expire')->nullable(true);
             $table->enum('level', ['user', 'admin']);
             $table->string('password');
-            $table->boolean('account_status')->default(false) ;
+            $table->boolean('account_status')->default(false);
             $table->boolean('email_verivied')->default(false);
             $table->timestamp('expire_email')->nullable(true);
+            $table->string('fcm_token')->nullable(true);
+            $table->string('nim')->unique();
+            $table->integer('kode_prodi');
+            $table->foreign('kode_prodi')->references('id')->on('quis_identitas_prodi')->onUpdate('cascade');
             $table->timestamps();
         });
     }

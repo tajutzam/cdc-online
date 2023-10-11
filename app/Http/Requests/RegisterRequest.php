@@ -29,7 +29,9 @@ class RegisterRequest extends FormRequest
             'nik' => 'required|unique:users,nik',
             'no_telp' => 'required|max:15',
             'email' => 'required|email|unique:users,email',
-            'alamat' => 'required'
+            'alamat' => 'required',
+            'nim' => 'required|string|unique:users,nim',
+            'kode_prodi' => 'required|numeric'
         ];
     }
 
