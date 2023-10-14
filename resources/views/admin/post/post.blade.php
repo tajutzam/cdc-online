@@ -55,7 +55,7 @@
                         </td>
                         <td>{{ $item['company'] }}</td>
                         <td>{{ $item['description'] }}</td>
-                        <td><img style="height: 100px; width: 100px" src="{{$item['image']}}" alt="foto poster"></td>
+                        <td><img style="height: 100px; width: 100px" src="{{ $item['image'] }}" alt="foto poster"></td>
                         <td>{{ $item['position'] }}</td>
                         <td class="text-center">
                             <a href="#" class="user-info" data-bs-toggle="modal" data-bs-target="#detail-user"
@@ -221,7 +221,11 @@
                     <option value="Kontrak">Kontrak</option>
                     <option value="Musiman">Musiman</option>
                 </select>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <div class="row justify-content-end">
+                    <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
+                        data-bs-dismiss="modal">close</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4">Save</button>
+                </div>
             </form>
         </x-slot>
     </x-modal>
@@ -233,7 +237,6 @@
         <x-slot name="body">
 
             <img id="img-uploader" class="rounded-circle mb-3  shadow-4-strong" alt="image-uploader" />
-
 
             <div class="row mb-3">
                 <label for="input35" class="col-sm-3 col-form-label">Email</label>

@@ -16,8 +16,8 @@ class News extends Model
         'title',
         'description',
         'active',
-        'expire',
-        'image'
+        'image',
+        'admin_id'
     ];
 
 

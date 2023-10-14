@@ -28,7 +28,6 @@ class NewsSeeder extends Seeder
             'title' => 'Polije Membangun sekolah baru',
             'description' => $faker->sentence,
             'active' => true,
-            'expire' => Carbon::now(),
             'image' => 'image',
             'admin_id' => Admin::all()->first()->id
         ]);

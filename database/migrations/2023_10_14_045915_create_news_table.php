@@ -19,7 +19,6 @@ class CreateNewsTable extends Migration
             $table->string('description');
             $table->boolean('active')->default(true);
             $table->string('image');
-            $table->timestamp('expire');
             $table->foreignUuid('admin_id')->references('id')->on('admin')->onUpdate('cascade');
             $table->timestamps();
         });

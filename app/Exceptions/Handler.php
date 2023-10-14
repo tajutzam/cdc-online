@@ -71,6 +71,12 @@ class Handler extends ExceptionHandler
                 return response()->view('errors.404', [], 404);
             }
 
+            if ($e instanceof WebException) {
+                // mengirim error sesuai message web exceptions
+                DB::rollBack();
+                return back()->withErrors($e->getMessage());
+            }
+
             if ($e instanceof BadMethodCallException) {
                 return response()->view('errors.500', ["errors" => $e->getMessage()], 500);
             }
