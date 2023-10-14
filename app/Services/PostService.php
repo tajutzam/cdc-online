@@ -284,7 +284,7 @@ class PostService
 
     public function findAllPostFromAdmin()
     {
-        $data = $this->post->with('user', 'admin')->get()->toArray();
+        $data = $this->post->with('user', 'admin')->orderBy('verivied' , 'asc')->get()->toArray();
         $collection = collect($data);
         return $collection->map(function ($data) {
             return $this->castToResponseFromArray($data);
