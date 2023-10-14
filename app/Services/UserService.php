@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Exceptions\NotFoundException;
+use App\Exceptions\UnauthorizedException;
 use App\Models\Education;
 use App\Models\Followed;
 use App\Models\Follower;
@@ -334,8 +335,14 @@ class UserService
 
     public function extractUserId($token): string
     {
-        $user = $this->findUserByToken($token);
-        return $user['user']['id'];
+
+        $user = $this->userModel->where('token', '=', $token)->first();
+        
+        if (isset($user)) {
+            return $user['id'];
+        } else {
+            throw new UnauthorizedException('ops , your token is not valid please login again');
+        }
     }
 
     private function castToUserResponse($user)
@@ -364,11 +371,10 @@ class UserService
         ];
     }
 
-    private function castToUserResponseFromArray($user)
+    public function castToUserResponseFromArray($user)
     {
 
         $url = url('/') . "/users/" . $user['foto'];
-
         return [
             "id" => $user['id'],
             "fullname" => $user['visible_fullname'] == 1 ? $user['fullname'] : "***",
@@ -769,13 +775,16 @@ class UserService
 
     public function checkUserStatus($token)
     {
+
         $userId = $this->extractUserId($token);
         $user = $this->userModel->where('id', $userId)->first();
 
         if (isset($user)) {
             return $user->account_status;
+        } else {
+            throw new NotFoundException('ops , Nampaknya user yang kamu cari tidak ditemukan');
         }
-        throw new NotFoundException('ops , Nampaknya user yang kamu cari tidak ditemukan');
+
     }
 
 }

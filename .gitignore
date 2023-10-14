@@ -6,6 +6,8 @@
 /vendor
 /public/images
 /public/users
+/public/news
+
 .env
 .env.backup
 .env.production

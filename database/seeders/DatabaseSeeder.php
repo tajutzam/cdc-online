@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             ProvinceSeeder::class,
             RegencySeeder::class,
             AdminSeeder::class,
-            PostSeeder::class
+            PostSeeder::class,
+            NewsSeeder::class
         ]);
 
         // \App\Models\User::factory()->create([

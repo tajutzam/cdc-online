@@ -74,7 +74,7 @@ class Handler extends ExceptionHandler
             if ($e instanceof BadMethodCallException) {
                 return response()->view('errors.500', ["errors" => $e->getMessage()], 500);
             }
-
+            // dd($e);
             if ($e instanceof ForbiddenException) {
                 return response()->json([
                     'status' => false,
@@ -83,6 +83,15 @@ class Handler extends ExceptionHandler
                     'message' => $e->getMessage()
                 ], 403);
             }
+            if ($e instanceof UnauthorizedException) {
+                return response()->json([
+                    'status' => false,
+                    'code' => 401,
+                    'data' => null,
+                    'message' => $e->getMessage()
+                ], 401);
+            }
+
             if ($e instanceof \Illuminate\Validation\ValidationException) {
                 return back()->withErrors($e->validator)->withInput();
             }

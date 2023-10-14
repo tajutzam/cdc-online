@@ -25,5 +25,6 @@
     <link rel="stylesheet" href="{{ asset('/') }}assets/css/dark-theme.css" />
     <link rel="stylesheet" href="{{ asset('/') }}assets/css/semi-dark.css" />
     <link rel="stylesheet" href="{{ asset('/') }}assets/css/header-colors.css" />
+    <script src="{{ asset('/') }}assets/index.js"></script>
     <title>Syndron - Bootstrap 5 Admin Dashboard Template</title>
 </head>

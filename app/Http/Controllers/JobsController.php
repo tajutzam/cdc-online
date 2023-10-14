@@ -23,7 +23,7 @@ class JobsController extends Controller
     {
         $this->jobsService = new JobsService();
         $this->userService = new UserService();
-        $this->middleware([TokenMiddleware::class , VeriviedMiddleware::class]);
+        $this->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
     }
 
 
@@ -37,6 +37,7 @@ class JobsController extends Controller
 
     public function showJobsUserLogin(Request $request)
     {
+
         $token = $request->bearerToken();
         $userId = $this->userService->extractUserId($token);
         return $this->jobsService->showJobsUserLogin($userId);
@@ -53,6 +54,7 @@ class JobsController extends Controller
 
     public function findJobsUserLoginById(Request $request, $id)
     {
+
         $userId = $this->userService->extractUserId($request->bearerToken());
         return $this->jobsService->findByIdJobsUserLogin($userId, $id);
     }

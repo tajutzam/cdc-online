@@ -48,8 +48,6 @@
                 </tr>
             </thead>
             <tbody>
-
-
                 @foreach ($data as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
@@ -57,11 +55,11 @@
                         </td>
                         <td>{{ $item['company'] }}</td>
                         <td>{{ $item['description'] }}</td>
-                        <td><img src="{{ $item['image'] }}" alt="foto poster"></td>
+                        <td><img style="height: 100px; width: 100px" src="{{$item['image']}}" alt="foto poster"></td>
                         <td>{{ $item['position'] }}</td>
                         <td class="text-center">
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#detail-user" id="{{ $item['id'] }}"
-                                class="mx-auto" data-user="{{ json_encode($item['user']) }}"
+                            <a href="#" class="user-info" data-bs-toggle="modal" data-bs-target="#detail-user"
+                                data-id="{{ $item['id'] }}" class="mx-auto" data-user="{{ json_encode($item['user']) }}"
                                 data-admin="{{ json_encode($item['admin']) }}" onclick="detailUploader(id)"><i
                                     class="fa-solid fa-circle-info"></i></a>
                         </td>
@@ -123,59 +121,58 @@
             });
         }
 
-        // function detailUploader(id) {
-        //     $(document).ready(function() {
-        //         let user = null;
-        //         let admin = null;
-        //         var selector = '#' + id;
-        //         console.log(selector);
-        //         $(selector).on('click', function(e) {
-        //             e.preventDefault(); // Untuk mencegah navigasi ke URL "#" yang tidak diperlukan
-        //             // Ambil data ID dari atribut "data-id"
-        //             user = $(this).data('user');
-        //             admin = $(this).data('admin');
-        //             console.log(true);
+        $(document).ready(function() {
+            var emailInput = $('#email-user');
+            var gender = $('#gender-user');
+            var address = $('#address-user');
+            var fullname = $('#fullname-user');
+            var nim = $('#nim-user');
+            var img = $('#img-uploader');
+            var lvl = $('#level-uploader');
 
-        //         });
-        //         // $('#detail-user').on('show.bs.modal', function() {
-        //         //     var modal = $(this);
-        //         //     if (user != null) {
-        //         //         modal.find('#email-user').val(user.email);
-        //         //         modal.find('#fullname-user').val(user.fullname);
-        //         //         modal.find('#gender-user').val(user.gender);
-        //         //         modal.find('#address-user').val(user.address);
-        //         //         modal.find('#nim-user').val(user.nim);
-        //         //     } else {
-        //         //         modal.find('#email-user').val(admin.email);
-        //         //         modal.find('#fullname-user').val(admin.fullname);
-        //         //         modal.find('#gender-user').val(admin.gender);
-        //         //         modal.find('#address-user').val(admin.address);
-        //         //         modal.find('#nim-user').val(admin.nim);
-        //         //     }
-        //         // });
-        //     });
-        // }
-        function detailUploader(id) {
-            // This function doesn't need to be wrapped in $(document).ready since it doesn't perform DOM manipulation on page load.
-            let user = null;
-            let admin = null;
+            // when click the info user run this function
+            $('.user-info').click(function() {
+                var newHeight = 100; // Replace with your desired height
 
-            // Define the click event binding for the specified 'id'
-            var selector = '#' + id;
-            console.log(selector);
+                let user = $(this).data('user');
+                let admin = $(this).data('admin');
 
-            $(document).on('click', selector, function(e) {
-                e.preventDefault(); // To prevent navigation to an unnecessary URL
+                img.css({
+                    width: newHeight + 'px',
+                    height: newHeight + 'px'
+                });
 
-                // Retrieve data from 'data-user' and 'data-admin' attributes of the clicked element
-                user = $(this).data('user');
-                admin = $(this).data('admin');
-                console.log(true);
+                if (user != null) {
+                    var urlUser = "{{ url('/user/images/') }}" + user.foto;
+                    img.attr('src', urlUser);
 
-                // Now you can access 'user' and 'admin' data as needed here.
-                // If you want to update the modal content, you can do that here as well.
+                    lvl.text("-USER");
+                    emailInput.val(user.email);
+                    gender.val(user.gender);
+                    address.val(user.alamat);
+                    nim.val(user.nim);
+                    fullname.val(user.fullname);
+                } else {
+                    img.attr('src', "{{ asset('/') }}" + "assets/images/admin.png");
+                    lvl.text("-ADMIN");
+                    emailInput.val(admin.email);
+                    fullname.val(admin.name);
+                    nim.val(admin.npwp);
+                    address.val(admin.alamat);
+                }
             });
-        }
+
+            // run when the modal is closed
+            $('#detail-user').on('hidden.bs.modal', function() {
+                // This event is triggered when the modal is hidden or closed
+                // Clear the input values before the modal is closed
+                emailInput.val('');
+                gender.val('');
+                address.val('');
+                nim.val('');
+                fullname.val('');
+            });
+        });
     </script>
     <x-modal id="my-modal" footer="footer" title="title" body="body">
         <x-slot name="title">Tambah Lowongan</x-slot>
@@ -206,7 +203,8 @@
                     <input name="image" class="form-control  form-control-sm" type="file" id="formFile" required>
                 </div>
                 <div class="form-check-danger form-check form-switch">
-                    <input name="can_comment" class="form-check-input" type="checkbox" id="flexSwitchCheckCheckedDanger">
+                    <input name="can_comment" class="form-check-input" type="checkbox"
+                        id="flexSwitchCheckCheckedDanger">
                     <label class="form-check-label" for="flexSwitchCheckCheckedDanger">Comment</label>
                 </div>
                 <div class="form-floating mb-3">
@@ -230,9 +228,13 @@
 
 
     <x-modal id="detail-user" footer="footer" title="title" body="body">
-        <x-slot name="title">Detail Pengunggah</x-slot>
+        <x-slot name="title">Detail Pengunggah <span id="level-uploader"></span></x-slot>
         <x-slot name="id">detail-user</x-slot>
         <x-slot name="body">
+
+            <img id="img-uploader" class="rounded-circle mb-3  shadow-4-strong" alt="image-uploader" />
+
+
             <div class="row mb-3">
                 <label for="input35" class="col-sm-3 col-form-label">Email</label>
                 <div class="col-sm-9">

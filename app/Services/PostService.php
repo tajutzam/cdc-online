@@ -22,7 +22,7 @@ class PostService
 {
 
 
-    private Post $post;
+    private Post $post; 
 
 
 
@@ -64,7 +64,7 @@ class PostService
     public function addPostJobAdmin($image, $adminId, $request, $isCanComment)
     {
         DB::beginTransaction();
-        $folder = "admin/post";
+        $folder = "users/post";
         $fileName = time() . '.' . $image->extension();
         $urlResource = $image->move($folder, $fileName);
         if (!isset($urlResource)) {

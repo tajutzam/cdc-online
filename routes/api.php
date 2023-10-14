@@ -52,7 +52,7 @@ Route::post("/user/profile/image", [UserController::class, "updateFotoProfile"])
 // education
 Route::post("/user/education/add", [EducationController::class, "addNewEducationUser"])->middleware([VeriviedMiddleware::class]);
 ;
-Route::get("/user/education", [EducationController::class, "showEducationUserLogin"])->middleware([VeriviedMiddleware::class]);
+Route::get("/user/education", [EducationController::class, "showEducationUserLogin"])->withoutMiddleware([VeriviedMiddleware::class]);
 ;
 Route::put("/user/education/{idEducation}", [EducationController::class, "updateEducationUserLogin"])->middleware([VeriviedMiddleware::class]);
 ;
@@ -61,16 +61,15 @@ Route::delete("/user/education", [EducationController::class, "deleteEducationBy
 Route::get("/user/education/{id}", [EducationController::class, "findEducationByIdAndUserId"])->middleware([VeriviedMiddleware::class]);
 ;
 //jobs
-Route::post("/user/jobs", [JobsController::class, "addNewJobsUser"])->middleware([VeriviedMiddleware::class]);
+Route::post("/user/jobs", [JobsController::class, "addNewJobsUser"]);
 ;
 
-Route::get("/user/jobs/{id}", [JobsController::class, "findJobsUserLoginById"])->middleware([VeriviedMiddleware::class]);
+Route::get("/user/jobs/{id}", [JobsController::class, "findJobsUserLoginById"]);
 ;
-Route::get("/user/jobs", [JobsController::class, "showJobsUserLogin"])->middleware([VeriviedMiddleware::class]);
+Route::get("/user/jobs", [JobsController::class, "showJobsUserLogin"])->withoutMiddleware(VeriviedMiddleware::class);
+Route::put("/user/jobs", [JobsController::class, "updateJobsUserLogin"]);
 ;
-Route::put("/user/jobs", [JobsController::class, "updateJobsUserLogin"])->middleware([VeriviedMiddleware::class]);
-;
-Route::delete('/user/jobs', [JobsController::class, "removeJobsUserLoginById"])->middleware([VeriviedMiddleware::class]);
+Route::delete('/user/jobs', [JobsController::class, "removeJobsUserLoginById"]);
 ;
 
 // auth

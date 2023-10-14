@@ -34,17 +34,11 @@
             <ul>
                 <li> <a href="{{ route('post') }}"><i class='bx bx-radio-circle'></i>Post</a>
                 </li>
-                <li> <a href="app-chat-box.html"><i class='bx bx-radio-circle'></i>Berita</a>
+                <li> <a href="{{ route('berita') }}"><i class='bx bx-radio-circle'></i>Berita</a>
                 </li>
-                <li> <a href="app-file-manager.html"><i class='bx bx-radio-circle'></i>User</a>
+                <li> <a href="{{ route('user') }}"><i class='bx bx-radio-circle'></i>User</a>
                 </li>
-                <li> <a href="app-contact-list.html"><i class='bx bx-radio-circle'></i>Legalisir</a>
-                </li>
-                <li> <a href="app-to-do.html"><i class='bx bx-radio-circle'></i>Todo List</a>
-                </li>
-                <li> <a href="app-invoice.html"><i class='bx bx-radio-circle'></i>Invoice</a>
-                </li>
-                <li> <a href="app-fullcalender.html"><i class='bx bx-radio-circle'></i>Calendar</a>
+                <li> <a href="{{ route('legalisir') }}"><i class='bx bx-radio-circle'></i>Legalisir</a>
                 </li>
             </ul>
         </li>
@@ -55,7 +49,7 @@
             <div class="menu-title">Admin Profile</div>
         </a>
         <div class="menu-label">Auth</div>
-       <a href="user-profile.html">
+        <a href="user-profile.html">
             <div class="parent-icon"><i class="bx bx-log-out-circle"></i>
             </div>
             <div class="menu-title">Admin Profile</div>
