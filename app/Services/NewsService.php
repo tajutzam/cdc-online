@@ -4,8 +4,14 @@
 
 namespace App\Services;
 
+use App\Exceptions\WebException;
 use App\Models\News;
+use Cloudinary\Api\Exception\BadRequest;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+
 
 class NewsService
 {
@@ -18,17 +24,101 @@ class NewsService
     }
 
 
-    public function findAll()
+    public function findAll($page = 0)
     {
-        $data = $this->news->all()->toArray();
-        $result = $this->castToPojo($data);
-        return $result;
+
+        $data = $this->news->paginate(2, ['*'], 'page', $page); // Change 10 to the number of items you want per page
+        $result = $this->castToPojo($data->items());
+
+        return [
+            'data' => $result,
+            'pagination' => [
+                'current_page' => $data->currentPage(),
+                'last_page' => $data->lastPage(),
+                'per_page' => $data->perPage(),
+                'total' => $data->total(),
+            ],
+        ];
     }
 
     public function findAllActive()
     {
 
     }
+
+    public function addNews($request, $image)
+    {
+        $adminId = Auth::guard('admin')->user()->id;
+
+        DB::beginTransaction();
+        $folder = "news";
+        $fileName = time() . '.' . $image->extension();
+        $urlResource = $image->move($folder, $fileName);
+        if (!isset($urlResource)) {
+            throw new WebException('ops , gagal membuat berita terjadi kesalahan');
+        }
+        $created = $this->news->create([
+            'admin_id' => $adminId,
+            'image' => $fileName,
+            'title' => $request['title'],
+            'description' => $request['description'],
+            'active' => true,
+        ]);
+        if (isset($created)) {
+            DB::commit();
+            return redirect()->back()->with('success', 'berhasil membuat berita');
+        }
+
+        throw new WebException('ops , gagal membuat berita terjadi kesalahan');
+    }
+
+    public function update($request, $image, $id)
+    {
+        $news = $this->news->where('id', $id)->first();
+        if (!isset($news)) {
+            throw new WebException('ops , berita tidak ditemukan');
+        }
+        $imageName = $news->image;
+        $imagePath = public_path("news/" . $imageName); // Get the full path to the image
+        if (isset($image)) {
+            if (File::exists($imagePath)) {
+                File::delete($imagePath); // Delete the image file
+            }
+            $folder = "news";
+            $fileName = time() . '.' . $image->extension();
+            $imageName = $fileName;
+            $urlResource = $image->move($folder, $fileName);
+        }
+
+        DB::beginTransaction();
+        $updated = $news->update([
+            'image' => $imageName,
+            'title' => $request['title'],
+            'description' => $request['description'],
+            'active' => $request['active']
+        ]);
+        if ($updated) {
+            Db::commit();
+            return back()->with('success', 'Berhasil memperbarui berita');
+        }
+        throw new WebException('ops , gagal memperbarui berita terjadi kesalahan');
+    }
+
+    public function delete($id)
+    {
+        $news = $this->news->where('id', $id)->first();
+        DB::beginTransaction();
+        if (isset($news)) {
+            $deleted = $news->delete();
+            if ($deleted) {
+                DB::commit();
+                return back()->with('success', 'berhasil menghapus berita');
+            }
+            throw new WebException('Gagal menghapus berita , terjadi kesalahan');
+        }
+        throw new WebException('Gagal menghapus berita , berita tidak ditemukan');
+    }
+
 
 
     private function castToPojo($newsArray)

@@ -1,11 +1,11 @@
 <div class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
-        <div>
+        <div class="mx-auto">
             <img src="{{ asset('/') }}assets/images/logoblack.png" class="logo-icon" alt="logo icon">
         </div>
-        <div>
+        {{-- <div>
             <h4 class="logo-text">Admin</h4>
-        </div>
+        </div> --}}
         <div class="toggle-icon ms-auto"><i class='bx bx-arrow-back'></i>
         </div>
     </div>
@@ -19,9 +19,9 @@
                 <div class="menu-title">Admin</div>
             </a>
             <ul>
-                <li> <a href="index.html"><i class='bx bx-radio-circle'></i>Notifications</a>
+                <li> <a href="{{route('notifications')}}"><i class='bx bx-radio-circle'></i>Notifications</a>
                 </li>
-                <li> <a href="index2.html"><i class='bx bx-radio-circle'></i>Prodi</a>
+                <li> <a href="{{route('prodi')}}"><i class='bx bx-radio-circle'></i>Prodi</a>
                 </li>
             </ul>
         </li>
@@ -42,18 +42,6 @@
                 </li>
             </ul>
         </li>
-        <div class="menu-label">Profile</div>
-        <a href="user-profile.html">
-            <div class="parent-icon"><i class="bx bx-user-circle"></i>
-            </div>
-            <div class="menu-title">Admin Profile</div>
-        </a>
-        <div class="menu-label">Auth</div>
-        <a href="user-profile.html">
-            <div class="parent-icon"><i class="bx bx-log-out-circle"></i>
-            </div>
-            <div class="menu-title">Admin Profile</div>
-        </a>
 
     </ul>
 

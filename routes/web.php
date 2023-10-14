@@ -37,6 +37,9 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     });
     Route::prefix('berita')->group(function () {
         Route::get('', [NewsController::class, 'index'])->name('berita');
+        Route::post('', [NewsController::class, 'store'])->name('berita-post');
+        Route::put('', [NewsController::class, 'update'])->name('berita-update');
+        Route::delete('' , [NewsController::class , 'delete'])->name('berita-delete');
     });
     Route::prefix('user')->group(function () {
         Route::get('', [UserController::class, 'index'])->name('user');
