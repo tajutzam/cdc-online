@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\VeriviedMiddleware;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel as KernelContract;
@@ -56,11 +57,13 @@ class Kernel implements KernelContract
      */
     protected $middlewareGroups = [
         'web' => [
-            // ... other middleware
+                // ... other middleware
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Illuminate\Session\Middleware\StartSession::class,
         ],
         'api' => [
+        ],
 
-        ]
     ];
     /**
      * The application's route middleware.
@@ -69,6 +72,7 @@ class Kernel implements KernelContract
      */
     protected $routeMiddleware = [
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'verified' => VeriviedMiddleware::class
     ];
 
     /**

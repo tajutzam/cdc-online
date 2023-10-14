@@ -44,7 +44,9 @@ class User extends Authenticatable
         'about',
         'email_verivied',
         'expire_email',
-        'account_status'
+        'account_status',
+        'kode_prodi',
+        'nim'
     ];
 
     /**
@@ -83,6 +85,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Followed::class, 'folowed_id');
 
+    }
+
+    public function post()
+    {
+        return $this->hasMany(Post::class, 'user_id');
     }
 
 }

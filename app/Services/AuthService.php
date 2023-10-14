@@ -3,13 +3,18 @@
 
 namespace App\Services;
 
+use App\Exceptions\NotFoundException;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\Education;
+use App\Models\QuisionerProdi;
 use App\Models\User;
 
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -23,9 +28,11 @@ class AuthService
 
     private EmailService $emailService;
 
+
     private UserService $userService;
 
 
+    private QuisionerProdi $prodi;
 
     public function __construct()
     {
@@ -33,6 +40,7 @@ class AuthService
         $this->emailService = new EmailService();
         $this->user = new User();
         $this->userService = new UserService();
+        $this->prodi = new QuisionerProdi();
     }
 
     public function login($emailOrNikRequest, $password)
@@ -119,9 +127,16 @@ class AuthService
         return $token;
     }
 
+  
+
     public function registerUser(array $request)
     {
 
+        DB::beginTransaction();
+        $prodi = $this->prodi->where('id', $request['kode_prodi'])->first();
+        if (!isset($prodi)) {
+            throw new NotFoundException('ops, prodi tidak ditemukan');
+        }
         try {
             //code...
             $expired = Carbon::now()->addHour();
@@ -133,21 +148,25 @@ class AuthService
                 "password" => Hash::make($request['password']),
                 'level' => 'user',
                 "alamat" => $request['alamat'],
-                'expire_email' => $expired
+                'expire_email' => $expired,
+                'nim' => $request['nim'],
+                'kode_prodi' => $request['kode_prodi']
             ]);
             $isCreated = $this->education->create([
                 'user_id' => $user->id,
-                'perguruan' => 'Politeknik Negeri Jember'
+                'perguruan' => 'Politeknik Negeri Jember',
+                'prodi' => $request['kode_prodi']
             ]);
             if (isset($isCreated)) {
+                DB::commit();
                 $link = url('/') . '/api/user/verivication/email?id=' . "$user->id";
                 // user berhasil registrasi , kirim email
                 $this->emailService->sendEmailVerifikasi($user->email, $link, $expired->format('F j - H:i'));
             }
             return true;
         } catch (\Throwable $th) {
-            //throw $th;
-            return false;
+            Db::rollBack();
+            throw new Exception($th->getMessage()); //throw $th;
         }
     }
 

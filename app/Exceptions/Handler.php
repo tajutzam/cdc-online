@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use BadMethodCallException;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -68,6 +70,31 @@ class Handler extends ExceptionHandler
                 // Menampilkan halaman 404
                 return response()->view('errors.404', [], 404);
             }
+
+            if ($e instanceof BadMethodCallException) {
+                return response()->view('errors.500', ["errors" => $e->getMessage()], 500);
+            }
+            // dd($e);
+            if ($e instanceof ForbiddenException) {
+                return response()->json([
+                    'status' => false,
+                    'code' => 403,
+                    'data' => null,
+                    'message' => $e->getMessage()
+                ], 403);
+            }
+            if ($e instanceof UnauthorizedException) {
+                return response()->json([
+                    'status' => false,
+                    'code' => 401,
+                    'data' => null,
+                    'message' => $e->getMessage()
+                ], 401);
+            }
+
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                return back()->withErrors($e->validator)->withInput();
+            }
             DB::rollBack();
             return response()->json([
                 'status' => false,
@@ -75,7 +102,7 @@ class Handler extends ExceptionHandler
                 'data' => null,
                 'message' => $e->getMessage()
             ], 500);
-        });
+        }, );
 
     }
 

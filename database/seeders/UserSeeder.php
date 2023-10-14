@@ -29,7 +29,11 @@ class UserSeeder extends Seeder
             "alamat" => 'jawa timur , banyuwangi',
             'gender' => 'male',
             'about' => "saya adalah orang yang memiliki tekat tinggi",
-            'email_verivied' => 1
+            'email_verivied' => 1,
+            'account_status' => 0,
+            'kode_prodi' => 79402,
+            'nim' => 'e41212337'
+
         ]);
         User::create([
             "email" => "second@gmail.com",
@@ -43,7 +47,10 @@ class UserSeeder extends Seeder
             "alamat" => 'jawa timur , banyuwangi',
             'gender' => 'male',
             'about' => "second abour",
-            'email_verivied' => 1
+            'email_verivied' => 1,
+            'kode_prodi' => 79402,
+            'nim' => 'e41212336'
+
         ]);
         User::create([
             "email" => "thrid@gmail.com",
@@ -57,7 +64,11 @@ class UserSeeder extends Seeder
             "alamat" => 'thrid',
             'gender' => 'female',
             'about' => "thrid  about",
-            'email_verivied' => 1
+            'email_verivied' => 1,
+            'kode_prodi' => 79402,
+            'nim' => 'e41212335'
         ]);
+
+        
     }
 }

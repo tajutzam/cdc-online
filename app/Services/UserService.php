@@ -3,10 +3,13 @@
 
 namespace App\Services;
 
+use App\Exceptions\NotFoundException;
+use App\Exceptions\UnauthorizedException;
 use App\Models\Education;
 use App\Models\Followed;
 use App\Models\Follower;
 use App\Models\User;
+use Cloudinary\Api\Exception\NotFound;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
@@ -77,12 +80,7 @@ class UserService
         $data = $this->userModel->with('jobs', 'educations', 'followers', 'followed')->where('id', $id)->first();
 
         if (!isset($data)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'User tidak ditemukan',
-                'code' => 404,
-                'data' => null
-            ], 404);
+            throw new NotFoundException('ops , user tidak ditemukan');
         }
 
         $data = $data->toArray();
@@ -142,7 +140,7 @@ class UserService
     }
 
 
-    public function findAllUser($pageNumber, $angkatan, $prodi) // need pagination 
+    public function findAllUser($pageNumber, $angkatan, $prodi, $id) // need pagination 
     {
         $perPage = 10; // Jumlah item per halaman, sesuaikan dengan kebutuhan Anda
 
@@ -165,7 +163,7 @@ class UserService
             ->pluck('user_id')
             ->toArray();
 
-        $queryData = $this->userModel->with('jobs', 'educations', 'followers')
+        $queryData = $this->userModel->with('jobs', 'educations', 'followers')->where('id', '<>', $id)
             ->whereIn('id', $education);
         $paginate = $queryData->paginate($perPage, ['*'], 'page', $pageNumber);
         $data = $paginate->items();
@@ -337,8 +335,14 @@ class UserService
 
     public function extractUserId($token): string
     {
-        $user = $this->findUserByToken($token);
-        return $user['user']['id'];
+
+        $user = $this->userModel->where('token', '=', $token)->first();
+        
+        if (isset($user)) {
+            return $user['id'];
+        } else {
+            throw new UnauthorizedException('ops , your token is not valid please login again');
+        }
     }
 
     private function castToUserResponse($user)
@@ -367,11 +371,10 @@ class UserService
         ];
     }
 
-    private function castToUserResponseFromArray($user)
+    public function castToUserResponseFromArray($user)
     {
 
         $url = url('/') . "/users/" . $user['foto'];
-
         return [
             "id" => $user['id'],
             "fullname" => $user['visible_fullname'] == 1 ? $user['fullname'] : "***",
@@ -768,5 +771,20 @@ class UserService
         }
     }
 
+
+
+    public function checkUserStatus($token)
+    {
+
+        $userId = $this->extractUserId($token);
+        $user = $this->userModel->where('id', $userId)->first();
+
+        if (isset($user)) {
+            return $user->account_status;
+        } else {
+            throw new NotFoundException('ops , Nampaknya user yang kamu cari tidak ditemukan');
+        }
+
+    }
 
 }

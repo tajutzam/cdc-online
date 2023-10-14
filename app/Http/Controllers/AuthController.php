@@ -5,20 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use App\Services\AdminService;
 use App\Services\AuthService;
 use Carbon\Carbon;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator as FacadesValidator;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
 
     private AuthService $authService;
+    private AdminService $adminService;
 
     public function __construct()
     {
         $this->authService = new AuthService();
+        $this->adminService = new AdminService();
     }
 
     public function login(LoginRequest $request)
@@ -26,6 +31,27 @@ class AuthController extends Controller
         $data = $request->validate($request->rules(), $request->messages());
 
         return $this->authService->login($request->input('emailOrNik'), $request->input('password'));
+    }
+
+    public function loginAdmin(Request $request)
+    {
+
+        $rules = [
+            'email' => 'required|email',
+            'password' => 'required|max:250',
+        ];
+
+        $customMessages = [
+            'required' => ':attribute Dibutuhkan.',
+        ];
+
+
+        $data = $this->validate($request, $rules, $customMessages);
+        $isLogin = $this->adminService->login($data['email'], $data['password']);
+        if ($isLogin) {
+            return redirect('/admin/dashboard');
+        }
+        return redirect()->back()->withErrors('Gagal Logi , harap check email atau password anda');
     }
 
     public function registerUser(RegisterRequest $request)
@@ -62,7 +88,7 @@ class AuthController extends Controller
     public function updateEmailVerified(Request $request)
     {
         $id = $request->get('id');
-        return $this->authService->updateVeriviedEmail($id, true);
+        return $this->authService->updateVeriviedEmail($id);
     }
 
 }
