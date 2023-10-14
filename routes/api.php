@@ -101,3 +101,8 @@ Route::get("/user/post/detail/{id}", [PostController::class, 'getPostByUserId'])
 Route::put("/user/post/update/{id}", [PostController::class, "updatePost"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 Route::delete("/user/post/delete/{id}", [PostController::class, "deletePost"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 Route::put("/user/post/update/comment/{id}", [PostController::class, 'updateComment'])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
+
+
+
+// admin api
+Route::put("/admin/lowongan/verified", [PostController::class, 'updateVerified'])->withoutMiddleware([TokenMiddleware::class, VeriviedMiddleware::class]);

@@ -57,11 +57,13 @@ class Kernel implements KernelContract
      */
     protected $middlewareGroups = [
         'web' => [
-            // ... other middleware
+                // ... other middleware
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Illuminate\Session\Middleware\StartSession::class,
         ],
         'api' => [
         ],
-        
+
     ];
     /**
      * The application's route middleware.

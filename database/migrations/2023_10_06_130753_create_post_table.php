@@ -15,7 +15,8 @@ class CreatePostTable extends Migration
     {
         Schema::create('post', function (Blueprint $table) {
             $table->uuid('id');
-            $table->foreignUuid('user_id')->references('id')->on('users')->onDelete('cascade')->cascadeOnUpdate();
+            $table->foreignUuid('user_id')->nullable(true)->references('id')->on('users')->onDelete('cascade')->cascadeOnUpdate();
+            $table->foreignUuid('admin_id')->nullable(true)->references('id')->on('admin')->onDelete('cascade')->cascadeOnUpdate();
             $table->string('link_apply')->nullable(false);
             $table->string('description')->nullable(false);
             $table->string('company')->nullable(false);

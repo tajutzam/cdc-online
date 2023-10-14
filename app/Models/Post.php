@@ -22,7 +22,9 @@ class Post extends Model
         'expired',
         'image',
         'can_comment',
-        'verivied'
+        'verivied',
+        'type_jobs',
+        'admin_id'
     ];
 
     public function user()
@@ -30,6 +32,9 @@ class Post extends Model
         return $this->belongsTo(User::class, "user_id");
     }
 
-
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class, "admin_id");
+    }
 
 }

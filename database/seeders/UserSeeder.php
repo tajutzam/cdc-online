@@ -68,5 +68,7 @@ class UserSeeder extends Seeder
             'kode_prodi' => 79402,
             'nim' => 'e41212335'
         ]);
+
+        
     }
 }

@@ -32,7 +32,7 @@ class PostService
 
     }
 
-    public function addPostJob($userId, $image, $request)
+    public function addPostJob($userId, $image, $request, $adminId = null)
     {
         $folder = "users/post";
         $fileName = time() . '.' . $image->extension();
@@ -47,9 +47,10 @@ class PostService
                 'description' => $request['description'],
                 'company' => $request['company'],
                 'position' => $request['position'],
-                'type_job' => $request['type_job'],
+                'type_jobs' => $request['type_job'],
                 'expired' => Carbon::parse($request['expired']),
-                'user_id' => $userId
+                'user_id' => $userId,
+                'admin_id' => $adminId
             ]
         );
         if (isset($isCreated)) {
@@ -59,6 +60,66 @@ class PostService
         }
         throw new BadRequest('Ops , gagal membuat postingan terjadi kesalahan');
     }
+
+    public function addPostJobAdmin($image, $adminId, $request, $isCanComment)
+    {
+        DB::beginTransaction();
+        $folder = "admin/post";
+        $fileName = time() . '.' . $image->extension();
+        $urlResource = $image->move($folder, $fileName);
+        if (!isset($urlResource)) {
+            throw new BadRequest('ops gagal mengirim status , silahkan coba lagi');
+        }
+        $isCreated = $this->post->create(
+            [
+                'image' => $fileName,
+                'link_apply' => $request['link_apply'],
+                'description' => $request['description'],
+                'company' => $request['company'],
+                'position' => $request['position'],
+                'type_jobs' => $request['type_jobs'],
+                'expired' => Carbon::parse($request['expired']),
+                'user_id' => null,
+                'admin_id' => $adminId,
+                'verivied' => true,
+                'can_comment' => $isCanComment
+            ]
+        );
+        if (isset($isCreated)) {
+            DB::commit();
+            return [
+                'status' => true,
+                'message' => 'success membuat lowongan'
+            ];
+        } else {
+            DB::rollBack();
+            return [
+                'status' => false,
+                'message' => 'Gagal membuat lowongan'
+            ];
+        }
+    }
+
+
+    public function updateVerified($data)
+    {
+
+        DB::beginTransaction();
+
+        $updated = $this->post->where('id', $data['id'])->update([
+            'verivied' => $data['verified']
+        ]);
+
+        if ($updated) {
+            DB::commit();
+            return $this->successResponse($updated, 200, 'success update verifikasi');
+        }
+        throw new Exception('ops , gagal mengupdate verifikasi');
+
+    }
+
+
+
 
 
     private function successResponse($data, $code, $message)
@@ -77,7 +138,7 @@ class PostService
     public function getAllPost($page)
     {
         $now = Carbon::now(); // Mendapatkan tanggal saat ini menggunakan Carbon
-        $expiredPosts = $this->post->where('expired', '>', $now)->where('verivied' , true)->paginate(10, ['*'], 'page', $page);
+        $expiredPosts = $this->post->where('expired', '>', $now)->where('verivied', true)->paginate(10, ['*'], 'page', $page);
         $data = [
             'total_page' => $expiredPosts->lastPage(),
             'total_item' => $expiredPosts->total()
@@ -96,7 +157,7 @@ class PostService
             'total_page' => $dataPost->lastPage(),
             'total_item' => $dataPost->total(),
         ];
-        $data['posts']=[];
+        $data['posts'] = [];
         $data['pagination'] = $dataPagination;
         foreach ($dataPost as $datum) {
             $tempPost = $this->castToResponse($datum);
@@ -104,6 +165,7 @@ class PostService
         }
         return $this->successResponse($data, 200, 'success fetch data');
     }
+
 
     public function updatePost($request, $userId, $id)
     {
@@ -195,6 +257,39 @@ class PostService
             'can_comment' => $data->can_comment,
             'verified' => $data->verivied
         ];
+    }
+
+    private function castToResponseFromArray($data)
+    {
+
+        $fotoName = isset($data['image']) == true ? $data['image'] : '';
+        $url = url('/') . "/users/post/" . $fotoName;
+        return [
+            'id' => $data['id'],
+            'user_id' => $data['user_id'],
+            'link_apply' => $data['link_apply'],
+            'image' => $url,
+            'description' => $data['description'],
+            'company' => $data['company'],
+            'position' => $data['position'],
+            'expired' => $data['expired'],
+            'post_at' => $data['post_at'],
+            'can_comment' => $data['can_comment'],
+            'verified' => $data['verivied'],
+            'user' => $data['user'],
+            'admin' => $data['admin']
+        ];
+    }
+
+
+    public function findAllPostFromAdmin()
+    {
+        $data = $this->post->with('user', 'admin')->get()->toArray();
+        $collection = collect($data);
+        return $collection->map(function ($data) {
+            return $this->castToResponseFromArray($data);
+
+        })->toArray();
     }
 
 }

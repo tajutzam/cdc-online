@@ -121,4 +121,10 @@ class PostController extends Controller
         return $this->postService->updateComment($id, $userId, $request->input('option'));
     }
 
+
+    public function updateVerified(Request $request)
+    {
+        return $this->postService->updateVerified($request->all());
+    }
+
 }
