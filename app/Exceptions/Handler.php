@@ -75,6 +75,7 @@ class Handler extends ExceptionHandler
                 DB::rollBack();
                 return back()->withErrors($e->getMessage());
             }
+            dd($e);
 
             if ($e instanceof BadMethodCallException) {
                 return response()->view('errors.500', ["errors" => $e->getMessage()], 500);

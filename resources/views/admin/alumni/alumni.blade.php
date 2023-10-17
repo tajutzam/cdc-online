@@ -61,7 +61,9 @@
             Alumni</button>
     </div>
 
-    <div class="card row align-items-start py-2">
+    @dd($data['alumni']))
+
+    <div class="card row align-items-start py-2 table-responsive">
         <table id="example" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>

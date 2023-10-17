@@ -47,6 +47,7 @@ class User extends Authenticatable
         'account_status',
         'kode_prodi',
         'nim',
+        'state_quisioner',
         'fcm_token'
     ];
 
