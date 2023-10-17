@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
+use App\Helper\ResponseHelper;
 use App\Models\CompanyApplied;
 use App\Models\Competence;
 use App\Models\FurtheStudy;
@@ -461,15 +462,7 @@ class QuisionerService
     }
     private function successResponse($data, $code, $message)
     {
-        return response()->json(
-            [
-                'status' => true,
-                'data' => $data,
-                'message' => $message,
-                'code' => $code
-            ],
-            $code
-        );
+        return ResponseHelper::successResponse($message, $data, $code);
     }
 
 }

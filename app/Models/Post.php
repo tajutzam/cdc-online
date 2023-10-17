@@ -37,4 +37,10 @@ class Post extends Model
         return $this->belongsTo(Admin::class, "admin_id");
     }
 
+
+    public function comments()
+    {
+        return $this->hasMany(Comments::class, 'post_id');
+    }
+
 }

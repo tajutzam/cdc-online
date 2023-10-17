@@ -70,7 +70,6 @@ class Handler extends ExceptionHandler
                 // Menampilkan halaman 404
                 return response()->view('errors.404', [], 404);
             }
-
             if ($e instanceof WebException) {
                 // mengirim error sesuai message web exceptions
                 DB::rollBack();

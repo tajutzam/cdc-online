@@ -4,6 +4,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\NotFoundException;
 use App\Exceptions\WebException;
 use App\Models\News;
 use Cloudinary\Api\Exception\BadRequest;
@@ -44,6 +45,19 @@ class NewsService
     public function findAllActive()
     {
 
+        $data = $this->news->with('admin')->where('active', true)->get()->toArray();
+        return $this->castToPojo($data);
+    }
+
+    function findById($id): array
+    {
+        $data = $this->news->with('admin')->where('active', true)->where('id', $id)->first();
+        if (isset($data)) {
+            $data = $data->toArray();
+            $response = $this->castToSinglePojo($data);
+            return $response;
+        }
+        throw new NotFoundException('ops , berita tidak ditemukan harap masukan id yang benar');
     }
 
     public function addNews($request, $image)
@@ -66,7 +80,11 @@ class NewsService
         ]);
         if (isset($created)) {
             DB::commit();
-            return redirect()->back()->with('success', 'berhasil membuat berita');
+            return [
+                'status' => true,
+                'code' => 201,
+                'message' => 'success membuat berita'
+            ];
         }
 
         throw new WebException('ops , gagal membuat berita terjadi kesalahan');
@@ -99,7 +117,11 @@ class NewsService
         ]);
         if ($updated) {
             Db::commit();
-            return back()->with('success', 'Berhasil memperbarui berita');
+            return [
+                'status' => true,
+                'code' => 201,
+                'message' => 'success memperbarui berita'
+            ];
         }
         throw new WebException('ops , gagal memperbarui berita terjadi kesalahan');
     }
@@ -120,11 +142,10 @@ class NewsService
     }
 
 
-
     private function castToPojo($newsArray)
     {
-
         $newsCollect = collect($newsArray);
+
         return $newsCollect->map(function ($news) {
             $url = url("/") . "/news/" . $news['image'];
             $createdAt = Carbon::parse($news['updated_at']);
@@ -133,8 +154,22 @@ class NewsService
             $interval = str_replace('before', 'ago', $interval);
             $news['image'] = $url;
             $news['interval'] = $interval;
+
             return $news;
         })->toArray();
+    }
+
+    private function castToSinglePojo($news)
+    {
+        $url = url("/") . "/news/" . $news['image'];
+        $createdAt = Carbon::parse($news['updated_at']);
+        $now = Carbon::now();
+        $interval = $createdAt->diffForHumans($now);
+        $interval = str_replace('before', 'ago', $interval);
+        $news['image'] = $url;
+        $news['interval'] = $interval;
+
+        return $news;
     }
 
 }
