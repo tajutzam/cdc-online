@@ -48,7 +48,7 @@ class QuisionerController extends Controller
     public function addQuisionerMain(Request $request)
     {
         $this->validateData($request->all(), [
-            'status' => 'required|in:Bekerja (full time/part time),Belum memungkinkan bekerja,Wiraswasta,Melanjutkan Pendidikan,Tidak kerja tetapi sedang mencari kerja',
+            'status' => 'required|string',
             'is_less_6_months' => 'required|boolean',
             'pre_grad_employment_months' => 'required|integer',
             'monthly_income' => 'required|numeric',
@@ -57,10 +57,8 @@ class QuisionerController extends Controller
             'code_regency' => 'required|string',
             'agency_type' => 'required|string',
             'company_name' => 'required|string',
-            'job_title' => 'required|string|in:Founder,Co-Founder,Staff,Freelance/Kerja Lepas',
-            'work_level' => 'required|in:Lokal/wilayah/wiraswasta tidak berbadan hukum',
-            'Nasional/wiraswasta berbadan hukum',
-            'Multinasional/Internasional',
+            'job_title' => 'required|string|string',
+            'work_level' => 'required|string',
         ]);
         $userId = $this->userService->extractUserId($request->bearerToken());
         return $this->quisionerService->addQuisionerMain($request->all(), $userId);
@@ -69,15 +67,15 @@ class QuisionerController extends Controller
     public function addQuisionerFurtheStudy(Request $request)
     {
         $this->validateData($request->all(), [
-            'study_funding_source' => 'nullable|in:Biaya Sendiri,Bea Siswa',
+            'study_funding_source' => 'nullable|string',
             'univercity_name' => 'nullable|string',
             'study_program' => 'nullable|string',
             // Ganti sesuai dengan aturan validasi yang sesuai
             'study_start_date' => 'nullable|date',
             'education_funding_source' => 'required|string',
             'financial_source' => 'nullable|string',
-            'study_job_relationship' => 'required|in:Sangat Erat,Erat,Cukup Erat,Kurang Erat,Tidak sama sekali',
-            'job_education_level' => 'nullable|in:Setingkat lebih tinggi,Tingkat yang sama,Setingkat lebih rendah,Tidak perlu pendidikan tinggi',
+            'study_job_relationship' => 'required|string',
+            'job_education_level' => 'nullable|string',
         ]);
         $userId = $this->userService->extractUserId($request->bearerToken());
         return $this->quisionerService->addQuisionerFurtheStudy($request->all(), $userId);
@@ -118,13 +116,13 @@ class QuisionerController extends Controller
     {
 
         $this->validateData($request->all(), [
-            'academicStudy' => 'required|in:Sangat Besar,Besar,Cukup Besar,Kurang,Tidak Sama Sekali',
-            'demonstrasi' => 'required|in:Sangat Besar,Besar,Cukup Besar,Kurang,Tidak Sama Sekali',
-            'research_participation' => 'required|in:Sangat Besar,Besar,Cukup Besar,Kurang,Tidak Sama Sekali',
-            'intern' => 'required|in:Sangat Besar,Besar,Cukup Besar,Kurang,Tidak Sama Sekali',
-            'practice' => 'required|in:Sangat Besar,Besar,Cukup Besar,Kurang,Tidak Sama Sekali',
-            'field_work' => 'required|in:Sangat Besar,Besar,Cukup Besar,Kurang,Tidak Sama Sekali',
-            'discucion' => 'required|in:Sangat Besar,Besar,Cukup Besar,Kurang,Tidak Sama Sekali',
+            'academicStudy' => 'required|string',
+            'demonstrasi' => 'required|string',
+            'research_participation' => 'required|string',
+            'intern' => 'required|string',
+            'practice' => 'required|string',
+            'field_work' => 'required|string',
+            'discucion' => 'required|string',
         ]);
 
         $userId = $this->userService->extractUserId($request->bearerToken());
@@ -134,7 +132,7 @@ class QuisionerController extends Controller
     public function addQuisionerJobStreet(Request $request)
     {
         $this->validateData($request->all(), [
-            'job_search_start' => 'required|in:Saya mencari kerja sebelum lulus,Saya mencari kerja sesudah wisuda,Saya tidak mencari kerja',
+            'job_search_start' => 'required|string',
             'before_graduation' => 'required|numeric',
             'after_graduation' => 'required|numeric'
         ]);
@@ -175,7 +173,7 @@ class QuisionerController extends Controller
             'job_applications_before_first_job' => 'required|integer',
             'job_applications_responses' => 'required|integer',
             'interview_invitations' => 'required|integer',
-            'job_search_recently_active' => 'required|in:Tidak,Tidak, tapi saya sedang menunggu hasil lamaran kerja,Ya, saya akan mulai bekerja dalam 2 minggu ke depan,Ya, tapi saya belum pasti akan bekerja dalam 2 minggu ke depan,Lainnya',
+            'job_search_recently_active' => 'required|string',
             'job_search_recently_active_other' => 'required|string',
         ]);
         $userId = $this->userService->extractUserId($request->bearerToken());
@@ -188,19 +186,19 @@ class QuisionerController extends Controller
 
 
         $validations = [
-            'job_suitability_not_related' => ['required', 'in:Tidak sesuai,Pekerjaan saya sekarang sudah sesuai dengan pendidikan saya'],
-            'job_suitability_not_related_2' => ['required', 'in:Pekerjaan saya sudah sesuai,Pekerjaan saya sudah sesuai-Saya belum mendapatkan pekerjaan yang lebih sesuai,Saya belum mendapatkan pekerjaan yang lebih sesuai'],
-            'job_suitability_reason' => ['required', 'in:Pekerjaan saya sudah sesuai,Di pekerjaan ini saya memeroleh prospek karir yang baik'],
-            'job_suitability_reason_2' => ['required', 'in:Pekerjaan saya sudah sesuai,Saya lebih suka bekerja di area pekerjaan yang tidak ada hubungannya dengan pendidikan saya'],
-            'other_reason' => ['required', 'in:Saya dipromosikan ke posisi yang kurang berhubungan dengan pendidikan saya dibanding posisi sebelumnya,Pekerjaan saya sudah sesuai'],
-            'other_reason_2' => ['required', 'in:Pekerjaan saya sudah sesuai,Saya dapat memeroleh pendapatan yang lebih tinggi di pekerjaan ini'],
-            'other_reason_3' => ['required', 'in:Pekerjaan saya sudah sesuai,Pekerjaan saya saat ini lebih aman/terjamin/secure'],
-            'other_reason_4' => ['required', 'in:Pekerjaan saya sudah sesuai,Pekerjaan saya saat ini lebih menarik'],
-            'other_reason_5' => ['required', 'in:Pekerjaan saya sudah sesuai,Pekerjaan saya saat ini lebih memungkinkan saya mengambil pekerjaan tambahan/jadwal yang fleksibel dll'],
-            'other_reason_6' => ['required', 'in:Pekerjaan saya sudah sesuai,Pekerjaan saya saat ini lokasinya lebih dekat dari rumah saya'],
-            'other_reason_7' => ['required', 'in:Pekerjaan saya sudah sesuai,Pekerjaan saya saat ini dapat lebih menjamin kebutuhan keluarga saya'],
-            'other_reason_8' => ['required', 'in:Pekerjaan saya sudah sesuai,Pada awal meniti karir ini saya harus menerima pekerjaan yang tidak berhubungan dengan pendidikan saya'],
-            'other_reason_9' => ['required', 'in:Pekerjaan saya sudah sesuai,Lainnya'],
+            'job_suitability_not_related' => ['required', 'string'],
+            'job_suitability_not_related_2' => ['required', 'string'],
+            'job_suitability_reason' => ['required', 'string'],
+            'job_suitability_reason_2' => ['required', 'string'],
+            'other_reason' => ['required', 'string'],
+            'other_reason_2' => ['required', 'string'],
+            'other_reason_3' => ['required', 'string'],
+            'other_reason_4' => ['required', 'string'],
+            'other_reason_5' => ['required', 'string'],
+            'other_reason_6' => ['required', 'string'],
+            'other_reason_7' => ['required', 'string'],
+            'other_reason_8' => ['required', 'string'],
+            'other_reason_9' => ['required', 'string'],
             'other_reason_10' => ['required', 'string'],
         ];
 

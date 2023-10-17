@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
+use App\Helper\ResponseHelper;
 use App\Models\Post;
 use App\Models\User;
 use Cloudinary\Api\Exception\BadRequest;
@@ -22,7 +23,7 @@ class PostService
 {
 
 
-    private Post $post; 
+    private Post $post;
 
 
 
@@ -56,7 +57,7 @@ class PostService
         if (isset($isCreated)) {
             $url = url('/') . "/users/post/" . $fileName;
             $isCreated['image'] = $url;
-            return $this->successResponse($isCreated, 201, 'Success add new post');
+            return ResponseHelper::successResponse('Berhasil menambahkan postingan', $isCreated, 201);
         }
         throw new BadRequest('Ops , gagal membuat postingan terjadi kesalahan');
     }
@@ -112,7 +113,7 @@ class PostService
 
         if ($updated) {
             DB::commit();
-            return $this->successResponse($updated, 200, 'success update verifikasi');
+            return ResponseHelper::successResponse('Berhasil memperbarui verifikasi', $updated, 200);
         }
         throw new Exception('ops , gagal mengupdate verifikasi');
 
@@ -120,25 +121,10 @@ class PostService
 
 
 
-
-
-    private function successResponse($data, $code, $message)
-    {
-        return response()->json(
-            [
-                'status' => true,
-                'data' => $data,
-                'message' => $message,
-                'code' => $code
-            ],
-            $code
-        );
-    }
-
     public function getAllPost($page)
     {
         $now = Carbon::now(); // Mendapatkan tanggal saat ini menggunakan Carbon
-        $expiredPosts = $this->post->where('expired', '>', $now)->where('verivied', true)->paginate(10, ['*'], 'page', $page);
+        $expiredPosts = $this->post->where('expired', '>', $now)->where('verivied', true)->with('comments')->paginate(10, ['*'], 'page', $page);
         $data = [
             'total_page' => $expiredPosts->lastPage(),
             'total_item' => $expiredPosts->total()
@@ -147,7 +133,8 @@ class PostService
             $tempPost = $this->castToResponse($datum);
             array_push($data, $tempPost);
         }
-        return $this->successResponse($data, 200, 'success fetch data');
+        return ResponseHelper::successResponse('Success fetch data', $data, 200);
+
     }
 
     public function getPostByUserId($id, $page)
@@ -163,7 +150,8 @@ class PostService
             $tempPost = $this->castToResponse($datum);
             array_push($data['posts'], $tempPost);
         }
-        return $this->successResponse($data, 200, 'success fetch data');
+        return ResponseHelper::successResponse('success fetch data', $data, 200);
+
     }
 
 
@@ -185,9 +173,9 @@ class PostService
             );
             if ($isUpdate) {
                 Db::commit();
-                return $this->successResponse($isUpdate, 200, 'success update post lowongan pekerjaan');
+                return ResponseHelper::successResponse('Berhasil memperbarui postingan', $isUpdate, 200);
             }
-            Db::rollback();
+            throw new Exception('ops , gagal memperbarui postingan terjadi kesalahan');
         }
         throw new BadRequestException('Ops , user tidak memiliki postingan tersebut');
     }
@@ -200,7 +188,7 @@ class PostService
             $isDelete = $post->delete();
             if ($isDelete) {
                 Db::commit();
-                return $this->successResponse(true, 200, 'success delete postingan');
+                return ResponseHelper::successResponse('Berhasil memperbarui setelan komentar', true, 200);
             } else {
                 throw new Exception('ops , gagal menghapus postingan terjadi kesalahan');
             }
@@ -218,9 +206,8 @@ class PostService
             ]);
             if ($isUpdate) {
                 DB::commit();
-                return $this->successResponse($isUpdate, 200, 'berhasil memperbarui setelan komentar');
+                return ResponseHelper::successResponse('Berhasil memperbarui setelan komentar', $isUpdate, 200);
             }
-            Db::rollBack();
             throw new Exception('ops , gagal memperbarui setelan komentar');
         }
         throw new NotFoundException('ops , user tidak memiliki postingan tersebut');
@@ -255,7 +242,8 @@ class PostService
             'expired' => $data->expired,
             'post_at' => $data->post_at,
             'can_comment' => $data->can_comment,
-            'verified' => $data->verivied
+            'verified' => $data->verivied,
+            'comments' => $data->comments
         ];
     }
 
@@ -284,7 +272,7 @@ class PostService
 
     public function findAllPostFromAdmin()
     {
-        $data = $this->post->with('user', 'admin')->orderBy('verivied' , 'asc')->get()->toArray();
+        $data = $this->post->with('user', 'admin')->orderBy('verivied', 'asc')->get()->toArray();
         $collection = collect($data);
         return $collection->map(function ($data) {
             return $this->castToResponseFromArray($data);

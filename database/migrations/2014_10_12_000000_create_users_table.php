@@ -42,8 +42,8 @@ return new class extends Migration {
             $table->timestamp('expire_email')->nullable(true);
             $table->string('fcm_token')->nullable(true);
             $table->string('nim')->unique();
-            $table->integer('kode_prodi');
-            $table->foreign('kode_prodi')->references('id')->on('quis_identitas_prodi')->onUpdate('cascade');
+            $table->integer('kode_prodi')->nullable();
+            $table->foreign('kode_prodi')->references('id')->on('quis_identitas_prodi')->onDelete('set null');
             $table->timestamps();
         });
     }

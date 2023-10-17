@@ -19,9 +19,11 @@
                 <div class="menu-title">Admin</div>
             </a>
             <ul>
-                <li> <a href="{{route('notifications')}}"><i class='bx bx-radio-circle'></i>Notifications</a>
+                <li> <a href="{{ route('dashboard') }}"><i class='bx bx-radio-circle'></i>Dashboard</a>
                 </li>
-                <li> <a href="{{route('prodi')}}"><i class='bx bx-radio-circle'></i>Prodi</a>
+                <li> <a href="{{ route('notifications') }}"><i class='bx bx-radio-circle'></i>Notifications</a>
+                </li>
+                <li> <a href="{{ route('prodi') }}"><i class='bx bx-radio-circle'></i>Prodi</a>
                 </li>
             </ul>
         </li>
@@ -36,7 +38,7 @@
                 </li>
                 <li> <a href="{{ route('berita') }}"><i class='bx bx-radio-circle'></i>Berita</a>
                 </li>
-                <li> <a href="{{ route('user') }}"><i class='bx bx-radio-circle'></i>User</a>
+                <li> <a href="{{ route('user') }}"><i class='bx bx-radio-circle'></i>Alumni</a>
                 </li>
                 <li> <a href="{{ route('legalisir') }}"><i class='bx bx-radio-circle'></i>Legalisir</a>
                 </li>

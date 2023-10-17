@@ -46,7 +46,8 @@ class User extends Authenticatable
         'expire_email',
         'account_status',
         'kode_prodi',
-        'nim'
+        'nim',
+        'fcm_token'
     ];
 
     /**
@@ -90,6 +91,12 @@ class User extends Authenticatable
     public function post()
     {
         return $this->hasMany(Post::class, 'user_id');
+    }
+
+
+    public function prodi()
+    {
+        return $this->belongsTo(QuisionerProdi::class, 'kode_prodi');
     }
 
 }
