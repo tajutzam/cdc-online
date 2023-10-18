@@ -210,6 +210,7 @@ class UserService
 
     public function findAll($active)
     {
+
         $query = $this->userModel->with('jobs', 'educations', 'prodi');
         $response = [];
 
@@ -222,6 +223,12 @@ class UserService
 
         $statusCounts = $this->userModel
             ->select('account_status', DB::raw('COUNT(*) as count'))
+            ->when(isset($active), function ($query) use ($active) {
+                $query->where('account_status', $active);
+            })
+            ->whereHas('educations', function ($educationQuery) {
+                $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
+            })
             ->groupBy('account_status')
             ->get();
 
@@ -701,6 +708,20 @@ class UserService
                 ], 400);
             }
         }
+    }
+
+    public function findByName($request, $id)
+    {
+        $searchTerm = $request['key']; // Get the search query from the request
+
+        $users = $this->userModel->where('fullname', 'like', '%' . $searchTerm . '%')->where('id', '<>', $id)->get();
+        $response = collect($users)->map(function ($user) {
+            return $this->castToUserResponseFromArray($user);
+        })->toArray();
+        if (sizeof($response) == 0) {
+            throw new NotFoundException('user dengan nama ' . $searchTerm . ' tidak ditemukan');
+        }
+        return $response;
     }
 
 

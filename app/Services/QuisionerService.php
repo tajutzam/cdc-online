@@ -75,6 +75,13 @@ class QuisionerService
         if ($user->account_status) {
             throw new BadRequestException('kamu tidak bisa mengisi quisioner , akun kamu sudah terverifikasi');
         }
+
+        if (isset($quisionerLevel)) {
+            if ($quisionerLevel->identitas_section) {
+                throw new BadRequestException('kamu tidak bisa mengisi quisioner , kamu sudah mengisi quisioner identitas');
+            }
+        }
+
         if (!isset($prodi)) {
             throw new NotFoundException("ops , nampaknya kode program studi yang kamu pilih tidak ada", 404);
         }
@@ -468,9 +475,98 @@ class QuisionerService
         }
         throw new NotFoundException("Quisioner level not found", 404);
     }
+
+
+    public function findAllQuisionerUser()
+    {
+
+        $relations = [
+            'identity_quisioner',
+            'main_quisioner',
+            'furthe_study_quisioner',
+            'competence',
+            'study_method',
+            'jobStreet',
+            'howToFindJobs',
+            'companyApplied',
+            'jobSuitability',
+            'prodi',
+            'quisioners',
+            'educations'
+        ];
+
+        $users = $this->user->with($relations)
+            ->has('educations') // Filter hanya pengguna yang memiliki pendidikan
+            ->get()->toArray();
+        $data = collect($users)->map(function ($user) {
+            $tahunMasuk = null; // Inisialisasi variabel tahun masuk
+            $tahunLulus = null; // Inisialisasi variabel tahun masuk
+
+            collect($user['educations'])->each(function ($education) use (&$tahunMasuk) {
+                if ($education['perguruan'] === 'Politeknik Negeri Jember') {
+                    $tahunMasuk = $education['tahun_masuk'];
+                    $tahunLulus = $education['tahun_lulus'];
+
+                    // Keluar dari iterasi setelah menemukan yang sesuai, jika perlu
+                    return false;
+                }
+            });
+
+
+            collect($user)->each(function ($user) {
+
+            });
+
+
+
+            $user['tahun_masuk'] = $tahunMasuk;
+            $user['tahun_lulus'] = $tahunLulus;
+            return $this->castToUserResponseFromArray($user);
+        })->toArray();
+        return $data;
+    }
+
     private function successResponse($data, $code, $message)
     {
         return ResponseHelper::successResponse($message, $data, $code);
+    }
+
+
+    public function castToUserResponseFromArray($user)
+    {
+        $url = url('/') . "/users/" . $user['foto'];
+        return [
+            "id" => $user['id'],
+            "fullname" => $user['visible_fullname'] == 1 ? $user['fullname'] : "***",
+            "email" => $user['visible_email'] == 1 ? $user['email'] : "***",
+            "nik" => $user['visible_nik'] == 1 ? $user['nik'] : "***",
+            "no_telp" => $user['visible_no_telp'] == 1 ? $user['no_telp'] : "***",
+            "foto" => $url,
+            'ttl' => $user['ttl'],
+            'alamat' => $user['visible_alamat'] == 1 ? $user['alamat'] : "***",
+            "about" => $user['about'],
+            "gender" => $user['gender'],
+            "level" => $user['level'],
+            'nim' => $user['nim'],
+            "linkedin" => $user['linkedin'],
+            "facebook" => $user['facebook'],
+            "instagram" => $user['instagram'],
+            'twiter' => $user['twiter'],
+            'prodi' => $user['prodi'],
+            'account_status' => $user['account_status'],
+            'quisioner' => $user['quisioners'],
+            'identity_quisioner' => $user['identity_quisioner'],
+            'main_quisioner' => $user['main_quisioner'],
+            'furthe_study_quisioner' => $user['furthe_study_quisioner'],
+            'competence' => $user['competence'],
+            'study_method' => $user['study_method'],
+            'jobStreet' => $user['job_street'],
+            'howToFindJobs' => $user['how_to_find_jobs'],
+            'companyApplied' => $user['company_applied'],
+            'jobSuitability' => $user['job_suitability'],
+            'tahun_masuk' => 2022,
+            'tahun_lulus' => 2024
+        ];
     }
 
 }

@@ -1,4 +1,4 @@
-<header>
+<header class="">
     <div class="topbar d-flex align-items-center">
         <nav class="navbar navbar-expand gap-3">
             <div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
@@ -19,7 +19,7 @@
                         <a class="nav-link" href="avascript:;"><i class='bx bx-search'></i>
                         </a>
                     </li> --}}
-                    <li class="nav-item dark-mode d-none d-sm-flex">
+                    <li class="nav-item dark-mode  d-sm-flex">
                         <a class="nav-link dark-mode-icon" href="javascript:;"><i class='bx bx-moon'></i>
                         </a>
                     </li>
