@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\BadRequestException;
+use App\Helper\ResponseHelper;
 use App\Http\Middleware\TokenMiddleware;
 use App\Http\Middleware\VeriviedMiddleware;
 use App\Http\Requests\UpdateProfileRequest;
@@ -159,6 +161,36 @@ class UserController extends Controller
     {
         return $this->userService->findUserById($id, $request->bearerToken());
 
+    }
+
+    public function sendFcmToken(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            throw new BadRequestException($validator->errors()->first());
+        }
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        return $this->userService->sendFcmToken($request->input('token'), $userId);
+    }
+
+
+    public function findByName(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'key' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            throw new BadRequestException($validator->errors()->first());
+        }
+
+
+        $userId = $this->userService->extractUserId($request->bearerToken());
+
+        $response = $this->userService->findByName($request->all(), $userId);
+        return ResponseHelper::successResponse('success fetch data', $response, 200);
     }
 
 }

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\web;
 use App\Http\Controllers\Controller;
 use App\Services\NewsService;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class NewsController extends Controller
 {
@@ -22,7 +23,33 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $data = $this->newsService->findAll($request->get('page'));
-        return view('admin.berita.berita', ['data' => $data]);
+
+
+        $tempActive = 0;
+        $tempNonActive = 0;
+
+
+        foreach ($data['data'] as $value) {
+            # code...
+            if ($value['active'] == true) {
+                $tempActive += 1;
+            } else {
+                $tempNonActive += 1;
+            }
+        }
+
+        $total = [
+            'active' => $tempActive,
+            'nonactive' => $tempNonActive
+        ];
+        return view('admin.berita.berita', [
+            'data' => $data,
+            'total' => [
+                'active' => $total['active'],
+                'nonactive' => $total['nonactive'],
+                'total' => sizeof($data['data']),
+            ]
+        ]);
     }
 
     public function store(Request $request)
@@ -31,18 +58,21 @@ class NewsController extends Controller
         $rules = [
             'title' => 'required|max:100',
             'description' => 'required|max:500',
-            'image' => 'required|max:1024|mimes:jpeg,png,jpg',
+            'image' => 'required|max:1024|mimes:jpeg,png,jpg|dimensions:min_width=1920,min_height=1080',
         ];
 
 
         $customMessages = [
             'required' => ':attribute Dibutuhkan.',
+            'dimensions' => ':attribute Harus berukuran 16:9'
         ];
 
         $data = $this->validate($request, $rules, $customMessages);
 
-        return $this->newsService->addNews($data, $data['image']);
+        $response = $this->newsService->addNews($data, $data['image']);
 
+        Alert::success('Success', $response['message']);
+        return back();
 
     }
 
@@ -76,7 +106,9 @@ class NewsController extends Controller
         ];
         $data = $this->validate($request, $rules, $customMessages);
         $data['active'] = $checked;
-        return $this->newsService->update($data, $image, $data['id']);
+        $response = $this->newsService->update($data, $image, $data['id']);
+        Alert::success('Success', $response['message']);
+        return back();
     }
 
     public function delete(Request $request)

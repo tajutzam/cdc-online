@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\JobsController;
+use App\Http\Controllers\NewsController as ApiNewsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\QuisionerController;
 use App\Http\Controllers\StudyProgramPublicController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\web\NewsController;
 use App\Http\Middleware\TokenMiddleware;
 use App\Http\Middleware\VeriviedMiddleware;
 use App\Services\UserService;
@@ -28,6 +31,9 @@ use Illuminate\Support\Facades\Route;
 Route::get("/user", [UserController::class, "getOneUser"]);
 Route::get("/users", [UserController::class, "findAllUser"])->middleware([VeriviedMiddleware::class]);
 Route::get("/user/detail/{id}", [UserController::class, "findUserById"])->middleware([VeriviedMiddleware::class]);
+
+Route::post("/user/search", [UserController::class, 'findByName'])->withoutMiddleware(VeriviedMiddleware::class);
+
 ;
 Route::put("/user/visibility/update", [UserController::class, "updateVisibility"])->middleware([VeriviedMiddleware::class]);
 ;
@@ -101,6 +107,21 @@ Route::put("/user/post/update/{id}", [PostController::class, "updatePost"])->mid
 Route::delete("/user/post/delete/{id}", [PostController::class, "deletePost"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 Route::put("/user/post/update/comment/{id}", [PostController::class, 'updateComment'])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
+
+Route::post('/user/post/search', [PostController::class, 'findByPosition'])->middleware(TokenMiddleware::class);
+
+// NEWS USER
+Route::get('/user/news', [ApiNewsController::class, 'findAllActive']);
+Route::get('/user/news/{id}', [ApiNewsController::class, 'findById']);
+
+
+// notifications
+Route::put('/user/fcmtoken', [UserController::class, 'sendFcmToken'])->withoutMiddleware(VeriviedMiddleware::class);
+
+
+// comment
+Route::post('/user/post/comment', [CommentsController::class, 'addComment']);
+Route::delete('/user/post/comment', [CommentsController::class, 'deleteComment']);
 
 
 // admin api

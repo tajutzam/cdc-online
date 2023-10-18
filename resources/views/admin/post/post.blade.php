@@ -27,11 +27,57 @@
         </div>
 
     </div>
-    {{-- {{ dd($data) }} --}}
-    <button class="btn btn-outline-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#my-modal">Tambah
-        Lowongan</button>
 
-    <div class="table-responsive">
+
+    <div class="row gap-4">
+        <div class="card radius-10 col-lg-3 col-md-4 col-sm-12 ">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <p class="mb-0 text-secondary">Total Lowongan</p>
+                        <h4 class="my-1">{{ $total['total'] }}</h4>
+
+                    </div>
+                    <div class="widgets-icons bg-light-success text-success ms-auto"><i class='bx bxs-badge'></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card radius-10 col-lg-3 col-md-4 col-sm-12">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <p class="mb-0 text-secondary">Total Aktif</p>
+                        <h4 class="my-1">{{ $total['active'] }}</h4>
+
+                    </div>
+                    <div class="widgets-icons bg-light-warning text-warning ms-auto"><i class='bx bxs-badge'></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card radius-10 col-lg-3 col-md-4 col-sm-12">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <p class="mb-0 text-secondary">Total Tidak Aktif</p>
+                        <h4 class="my-1">{{ $total['nonactive'] }}</h4>
+                    </div>
+                    <div class="widgets-icons bg-light-danger text-danger ms-auto"><i class='bx bxs-badge'></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- {{ dd($data) }} --}}
+    <div class="card row align-items-start" style="margin-left:2px; margin-right:2px; margin-bottom: 10px">
+        <button class="btn btn-outline-primary btn-sm mb-3 w-auto m-3" data-bs-toggle="modal"
+            data-bs-target="#my-modal">Tambah
+            Lowongan</button>
+    </div>
+
+    <div class="table-responsive card p-2">
         <table id="example" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
@@ -131,7 +177,7 @@
             var lvl = $('#level-uploader');
 
             // when click the info user run this function
-            $('.user-info').click(function() {
+            $('.user-info').on('click', function() {
                 var newHeight = 100; // Replace with your desired height
 
                 let user = $(this).data('user');

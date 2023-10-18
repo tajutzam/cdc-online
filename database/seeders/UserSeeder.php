@@ -31,9 +31,8 @@ class UserSeeder extends Seeder
             'about' => "saya adalah orang yang memiliki tekat tinggi",
             'email_verivied' => 1,
             'account_status' => 0,
-            'kode_prodi' => 79402,
+            'kode_prodi' => 62303,
             'nim' => 'e41212337'
-
         ]);
         User::create([
             "email" => "second@gmail.com",
@@ -55,7 +54,7 @@ class UserSeeder extends Seeder
         User::create([
             "email" => "thrid@gmail.com",
             "password" => Hash::make("rahasia"),
-            "fullname" => "thrid user",
+            "fullname" => "zam",
             "nik" => "01928182812010",
             "no_telp" => "085607185972",
             "foto" => "foto.png",
@@ -69,6 +68,6 @@ class UserSeeder extends Seeder
             'nim' => 'e41212335'
         ]);
 
-        
+
     }
 }
