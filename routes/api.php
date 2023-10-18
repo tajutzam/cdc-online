@@ -31,6 +31,9 @@ use Illuminate\Support\Facades\Route;
 Route::get("/user", [UserController::class, "getOneUser"]);
 Route::get("/users", [UserController::class, "findAllUser"])->middleware([VeriviedMiddleware::class]);
 Route::get("/user/detail/{id}", [UserController::class, "findUserById"])->middleware([VeriviedMiddleware::class]);
+
+Route::post("/user/search", [UserController::class, 'findByName'])->withoutMiddleware(VeriviedMiddleware::class);
+
 ;
 Route::put("/user/visibility/update", [UserController::class, "updateVisibility"])->middleware([VeriviedMiddleware::class]);
 ;
@@ -104,6 +107,8 @@ Route::put("/user/post/update/{id}", [PostController::class, "updatePost"])->mid
 Route::delete("/user/post/delete/{id}", [PostController::class, "deletePost"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 Route::put("/user/post/update/comment/{id}", [PostController::class, 'updateComment'])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
+
+Route::post('/user/post/search', [PostController::class, 'findByPosition'])->middleware(TokenMiddleware::class);
 
 // NEWS USER
 Route::get('/user/news', [ApiNewsController::class, 'findAllActive']);

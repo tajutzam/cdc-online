@@ -7,6 +7,7 @@ use App\Http\Controllers\web\NewsController;
 use App\Http\Controllers\web\NotificationsController;
 use App\Http\Controllers\web\PostController;
 use App\Http\Controllers\web\ProdiController;
+use App\Http\Controllers\web\QuisionerController;
 use App\Http\Controllers\web\UserController;
 use App\Http\Middleware\AllowUnauthenticated;
 use App\Http\Middleware\IsAdminMiddleware;
@@ -56,6 +57,10 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
         Route::post('', [ProdiController::class, 'addProdi'])->name('prodi-post');
         Route::put('', [ProdiController::class, 'updateProdi'])->name('prodi-put');
         Route::delete('', [ProdiController::class, 'deleteProdi'])->name('prodi-delete');
+    });
+
+    Route::prefix('quisioner')->group(function () {
+        route::get('', [QuisionerController::class, 'index'])->name('quisioner-index');
     });
 });
 

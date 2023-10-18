@@ -121,10 +121,10 @@ class PostService
 
 
 
-    public function getAllPost($page)
+    public function getAllPost($page, $userId)
     {
         $now = Carbon::now(); // Mendapatkan tanggal saat ini menggunakan Carbon
-        $expiredPosts = $this->post->where('expired', '>', $now)->where('verivied', true)->with('comments')->paginate(10, ['*'], 'page', $page);
+        $expiredPosts = $this->post->where('expired', '>', $now)->where('verivied', true)->where('user_id', '<>', $userId)->with('comments')->paginate(10, ['*'], 'page', $page);
         $data = [
             'total_page' => $expiredPosts->lastPage(),
             'total_item' => $expiredPosts->total()
@@ -247,6 +247,32 @@ class PostService
         ];
     }
 
+
+    public function findByPosition($request, $userId)
+    {
+
+        $posts = $this->post
+            ->where(function ($query) use ($userId) {
+                $query->where('user_id', '<>', $userId)
+                    ->orWhereNull('user_id');
+            })
+            ->where('position', 'like', '%' . $request['key'] . '%')
+            ->where('expired', '>', Carbon::now())
+            ->where('verivied', true)
+            ->with('user', 'admin')
+            ->get();
+
+        if (sizeof($posts) == 0) {
+            throw new NotFoundException('ops , postingan dengan posisi ' . $request['key'] . " tidak ditemukan");
+        }
+
+        return collect($posts->toArray())->map(function ($post) {
+            return $this->castToResponseFromArray($post);
+        })->toArray();
+
+    }
+
+
     private function castToResponseFromArray($data)
     {
 
@@ -264,8 +290,8 @@ class PostService
             'post_at' => $data['post_at'],
             'can_comment' => $data['can_comment'],
             'verified' => $data['verivied'],
-            'user' => $data['user'],
-            'admin' => $data['admin']
+            'user' => $data['user'] ?? null,
+            'admin' => $data['admin'] ?? null
         ];
     }
 

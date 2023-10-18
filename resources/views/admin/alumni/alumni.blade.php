@@ -55,13 +55,22 @@
         </div>
     </div>
 
-    <div class="card row align-items-start">
-        <button class="btn btn-outline-primary btn-sm mb-3 w-auto m-3" data-bs-toggle="modal"
-            data-bs-target="#add-news">Tambah
-            Alumni</button>
+    <div class="card">
+        <div class="row p-2 justify-content-between">
+            <div class="col">
+                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#add-news">Tambah
+                    Alumni</button>
+            </div>
+            <div class="col-3">
+                <select class="form-select form-select-sm" id="filter-user" aria-label="Small select example">
+                    <option value="filter">Filter</option>
+                    <option value="1">Terverifikasi</option>
+                    <option value="0">Belum Terferivikasi</option>
+                </select>
+            </div>
+        </div>
     </div>
 
-    @dd($data['alumni']))
 
     <div class="card row align-items-start py-2 table-responsive">
         <table id="example" class="table table-striped table-bordered" style="width:100%">
@@ -218,6 +227,34 @@
     </x-modal>
 
     <script>
+        var filter = document.getElementById('filter-user');
+        console.log(filter);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeParam = urlParams.get("active");
+        console.log(activeParam);
+        if (activeParam === "0" || activeParam === "1") {
+            filter.value = activeParam;
+        }
+
+        filter.addEventListener("change", function(event) {
+            // Mendapatkan nilai yang dipilih
+            const selectedValue = event.target.value;
+
+            // Lakukan sesuatu dengan nilai yang dipilih
+            console.log("Nilai yang dipilih: " + selectedValue);
+            if (selectedValue === "1") {
+                // Jika nilai yang dipilih adalah "1," reload halaman dengan parameter "?active=1"
+                window.location.href = window.location.href.split('?')[0] + '?active=1';
+            } else if (selectedValue == "0") {
+                window.location.href = window.location.href.split('?')[0] + '?active=0';
+            } else {
+                window.location.href = window.location.href.split('?')[0];
+            }
+
+            // Anda bisa melakukan sesuatu berdasarkan nilai yang dipilih di sini
+        });
+
         $(document).ready(function() {
             // declare
 
