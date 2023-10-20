@@ -801,4 +801,26 @@ class UserService
 
     }
 
+    public function updateLongtitudeLatitude($request, $userId)
+    {
+        Db::beginTransaction();
+        $user = $this->userModel->where('id', $userId)->first();
+        if (!isset($user)) {
+            throw new NotFoundException('ops , user tidak ditemukan');
+        }
+        $isUpdateed = $user->update([
+            'latitude' => $request['latitude'],
+            'longtitude' => $request['longtitude']
+        ]);
+        if ($isUpdateed) {
+            DB::commit();
+            return [
+                'status' => true,
+                'code' => 200,
+                'message' => ' success update lotitude'
+            ];
+        }
+        throw new Exception('');
+    }
+
 }

@@ -29,8 +29,27 @@ class UserController extends Controller
 
 
     /**
-     * @OA\PathItem(
-     *   path="/api/user",
+     * @OA\Get(
+     *     path="/api/user",
+     *     operationId="getUser",
+     *     tags={"User"},
+     *     summary="Get user information",
+     *     description="Get information about a user",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer"),
+     *             @OA\Property(property="username", type="string"),
+     *             @OA\Property(property="email", type="string"),
+     *             // Add more properties as needed
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found",
+     *     ),
      * )
      */
     public function getOneUser(Request $request)
