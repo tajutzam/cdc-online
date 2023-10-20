@@ -32,7 +32,8 @@ class PostSeeder extends Seeder
             'position' => 'honor',
             'type_jobs' => 'Paruh Waktu',
             'expired' => Carbon::now()->addWeek(),
-            'user_id' => $user->id
+            'user_id' => $user->id,
+            'verified' => 'waiting'
         ]);
     }
 }

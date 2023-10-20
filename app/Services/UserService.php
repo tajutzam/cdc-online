@@ -409,7 +409,9 @@ class UserService
             "facebook" => $user->facebook,
             "instagram" => $user->instagram,
             'twiter' => $user->twiter,
-            'account_status' => $user->account_status
+            'account_status' => $user->account_status,
+            "latitude" => $user->latitude,
+            "longtitude" => $user->longtitude
         ];
     }
 
@@ -433,8 +435,45 @@ class UserService
             "facebook" => $user['facebook'],
             "instagram" => $user['instagram'],
             'twiter' => $user['twiter'],
-            'account_status' => $user['account_status']
+            'account_status' => $user['account_status'],
+            'latitude' => $user['latitude'],
+            'longtitude' => $user['longtitude']
         ];
+    }
+
+    public function getTopUser()
+    {
+        $data = $this->userModel->with('followers')->get()->toArray();
+
+        $data = collect($data)->sortByDesc(function ($user) {
+            return count($user['followers']);
+        })->values()->take(20)->all();
+
+        $response = collect($data)->map(function ($user) {
+            $tempData = $this->castToUserResponseFromArray($user);
+            $tempData['followers'] = $user['followers'];
+            $tempData['total_followers'] = sizeof($user['followers']);
+            return $tempData;
+        })->toArray();
+        return $response;
+    }
+
+    public function getTopUserBySalary()
+    {
+        $data = $this->userModel->with('jobs')->get()->toArray();
+
+        // Gunakan metode koleksi untuk mengambil nama posisi pekerjaan terakhir dan gaji tertinggi
+        return collect($data)->filter(function ($user) {
+            return count($user['jobs']) > 0; // Filter pengguna yang memiliki setidaknya satu pekerjaan.
+        })->map(function ($user) {
+            $lastJob = collect($user['jobs'])->where('pekerjaan_saatini', 1)->first();
+            return [
+                'fullname' => $user['fullname'],
+                'last_position' => $lastJob ? $lastJob['jabatan'] : null,
+                'highest_salary' => $lastJob ? $lastJob['gaji'] : null,
+                'company' => $lastJob['perusahaan']
+            ];
+        })->sortByDesc('highest_salary')->values()->take(20)->toArray();
     }
 
     private function castToEducations($education)
@@ -724,6 +763,28 @@ class UserService
         return $response;
     }
 
+
+    public function updateLongtitudeLangtitude($request, $userId)
+    {
+        DB::beginTransaction();
+        $userModel = $this->userModel->where('id', $userId)->first();
+        if (!isset($userModel)) {
+            throw new NotFoundException('ops , user not found');
+        }
+        $isUpdated = $userModel->update([
+            'longtitude' => $request['longtitude'],
+            'latitude' => $request['latitude']
+        ]);
+        if ($isUpdated) {
+            DB::commit();
+            return [
+                'status' => true,
+                'message' => 'berhasil memperbarui posisi',
+                'code' => 200
+            ];
+        }
+        throw new Exception('ops , terjadi masalah');
+    }
 
 
     public function checkUserStatus($token)

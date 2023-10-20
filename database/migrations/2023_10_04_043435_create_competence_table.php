@@ -24,20 +24,20 @@ class CreateCompetenceTable extends Migration
     {
         Schema::create('competence', function (Blueprint $table) {
             $table->id();
-            $table->enum('f1761', $this->option);
-            $table->enum('f1762', $this->option);
-            $table->enum('f1763', $this->option);
-            $table->enum('f1764', $this->option);
-            $table->enum('f1765', $this->option);
-            $table->enum('f1766', $this->option);
-            $table->enum('f1767', $this->option);
-            $table->enum('f1768', $this->option);
-            $table->enum('f1769', $this->option);
-            $table->enum('f1770', $this->option);
-            $table->enum('f1771', $this->option);
-            $table->enum('f1772', $this->option);
-            $table->enum('f1773', $this->option);
-            $table->enum('f1774', $this->option);
+            $table->string('f1761');
+            $table->string('f1762');
+            $table->string('f1763');
+            $table->string('f1764');
+            $table->string('f1765');
+            $table->string('f1766');
+            $table->string('f1767');
+            $table->string('f1768');
+            $table->string('f1769');
+            $table->string('f1770');
+            $table->string('f1771');
+            $table->string('f1772');
+            $table->string('f1773');
+            $table->string('f1774');
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });

@@ -45,6 +45,8 @@ return new class extends Migration {
             $table->integer('kode_prodi')->nullable();
             $table->enum('state_quisioner', [0, 6, 12])->default(0);
             $table->foreign('kode_prodi')->references('id')->on('quis_identitas_prodi')->onDelete('set null');
+            $table->string('longtitude')->nullable();
+            $table->string('latitude')->nullable();
             $table->timestamps();
         });
     }

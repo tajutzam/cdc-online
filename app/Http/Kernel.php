@@ -60,8 +60,11 @@ class Kernel implements KernelContract
                 // ... other middleware
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Illuminate\Session\Middleware\StartSession::class,
+            
+
         ],
         'api' => [
+
         ],
 
     ];
