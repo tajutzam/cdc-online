@@ -25,9 +25,11 @@ class PostController extends Controller
 
     public function index()
     {
+
         $data = $this->postService->findAllPostFromAdmin();
         $tempActive = 0;
         $tempNonActive = 0;
+        
 
 
         foreach ($data as $value) {
