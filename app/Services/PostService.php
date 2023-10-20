@@ -22,14 +22,13 @@ class PostService
 {
 
 
-    private Post $post; 
+    private Post $post;
 
 
 
     public function __construct()
     {
         $this->post = new Post();
-
     }
 
     public function addPostJob($userId, $image, $request, $adminId = null)
@@ -115,7 +114,6 @@ class PostService
             return $this->successResponse($updated, 200, 'success update verifikasi');
         }
         throw new Exception('ops , gagal mengupdate verifikasi');
-
     }
 
 
@@ -284,12 +282,10 @@ class PostService
 
     public function findAllPostFromAdmin()
     {
-        $data = $this->post->with('user', 'admin')->orderBy('verivied' , 'asc')->get()->toArray();
+        $data = $this->post->with('user', 'admin')->orderBy('verivied', 'asc')->get()->toArray();
         $collection = collect($data);
         return $collection->map(function ($data) {
             return $this->castToResponseFromArray($data);
-
         })->toArray();
     }
-
 }
