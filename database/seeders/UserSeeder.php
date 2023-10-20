@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             'gender' => 'male',
             'about' => "saya adalah orang yang memiliki tekat tinggi",
             'email_verivied' => 1,
-            'account_status' => 0,
+            'account_status' => 1,
             'kode_prodi' => 62303,
             'nim' => 'e41212337'
         ]);
@@ -67,7 +67,6 @@ class UserSeeder extends Seeder
             'kode_prodi' => 79402,
             'nim' => 'e41212335'
         ]);
-
 
     }
 }

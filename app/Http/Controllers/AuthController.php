@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\BadRequestException;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Services\AdminService;
 use App\Services\AuthService;
 use Carbon\Carbon;
-use Dotenv\Validator;
+use Illuminate\Support\Facades\Validator;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator as FacadesValidator;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -85,10 +86,31 @@ class AuthController extends Controller
         }
     }
 
+
+    public function generateTokenApiPolije()
+    {
+        return $this->authService->generateToken();
+    }
+
     public function updateEmailVerified(Request $request)
     {
         $id = $request->get('id');
         return $this->authService->updateVeriviedEmail($id);
+    }
+
+
+    public function verifikasi(Request $request)
+    {
+
+        // $validator = Validator::make(, [
+        //     'nim' => 'required'
+        // ]);
+
+        // if ($validator->fails()) {
+        //     throw new BadRequestException($validator->errors()->first());
+        // }
+
+        return $this->authService->verifikasiNim($request->get('nim'));
     }
 
 }

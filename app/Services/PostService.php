@@ -124,7 +124,7 @@ class PostService
     public function getAllPost($page, $userId)
     {
         $now = Carbon::now(); // Mendapatkan tanggal saat ini menggunakan Carbon
-        $expiredPosts = $this->post->where('expired', '>', $now)->where('verivied', true)->where('user_id', '<>', $userId)->with('comments')->paginate(10, ['*'], 'page', $page);
+        $expiredPosts = $this->post->where('expired', '>', $now)->where('verified', 'verified')->where('user_id', '<>', $userId)->with('comments')->paginate(10, ['*'], 'page', $page);
         $data = [
             'total_page' => $expiredPosts->lastPage(),
             'total_item' => $expiredPosts->total()
@@ -242,7 +242,7 @@ class PostService
             'expired' => $data->expired,
             'post_at' => $data->post_at,
             'can_comment' => $data->can_comment,
-            'verified' => $data->verivied,
+            'verified' => $data->verified,
             'comments' => $data->comments
         ];
     }
@@ -258,7 +258,7 @@ class PostService
             })
             ->where('position', 'like', '%' . $request['key'] . '%')
             ->where('expired', '>', Carbon::now())
-            ->where('verivied', true)
+            ->where('verified', 'verified')
             ->with('user', 'admin')
             ->get();
 
