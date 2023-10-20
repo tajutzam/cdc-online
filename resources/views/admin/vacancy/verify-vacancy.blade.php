@@ -82,13 +82,13 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Link Apply</th>
-                    <th>Nama Perusahaan</th>
+                    <th>Pengunggah</th>
+                    <th>Perusahaan</th>
+                    <th>Posisi</th>
                     <th>Deskripsi</th>
                     <th>Poster</th>
-                    <th>Posisi</th>
-                    <th>Pengunggah</th>
-                    <th>Status</th>
+                    <th>Tautan</th>
+                    <th>Izin</th>
                     <th>Kadaluwarsa</th>
                     <th>Diunggah</th>
                 </tr>
@@ -97,17 +97,18 @@
                 @foreach ($data as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td><a href="{{ $item['link_apply'] }}" class="text-decoration-none  font-italic">link_apply</a>
-                        </td>
-                        <td>{{ $item['company'] }}</td>
-                        <td>{{ $item['description'] }}</td>
-                        <td><img style="height: 100px; width: 100px" src="{{ $item['image'] }}" alt="foto poster"></td>
-                        <td>{{ $item['position'] }}</td>
-                        <td class="text-center">
+                        <td class="text-start" style="text-align: start">
+                            {{ $item['user']['fullname'] }}
                             <a href="#" class="user-info" data-bs-toggle="modal" data-bs-target="#detail-user"
                                 data-id="{{ $item['id'] }}" class="mx-auto" data-user="{{ json_encode($item['user']) }}"
                                 data-admin="{{ json_encode($item['admin']) }}" onclick="detailUploader(id)"><i
                                     class="fa-solid fa-circle-info"></i></a>
+                        </td>
+                        <td>{{ $item['company'] }}</td>
+                        <td>{{ $item['position'] }}</td>
+                        <td>{{ $item['description'] }}</td>
+                        <td><img style="height: 100px; width: 100px" src="{{ $item['image'] }}" alt="foto poster"></td>
+                        <td><a href="{{ $item['link_apply'] }}" class="text-decoration-none  font-italic">link_apply</a>
                         </td>
                         <td>
                             <form action="" method="post" action="" id="">
@@ -123,20 +124,7 @@
                     </tr>
                 @endforeach
             </tbody>
-            <tfoot>
-                <tr>
-                    <th>No</th>
-                    <th>Link Apply</th>
-                    <th>Nama Perusahaan</th>
-                    <th>Deskripsi</th>
-                    <th>Poster</th>
-                    <th>Posisi</th>
-                    <th>Pengunggah</th>
-                    <th>Status</th>
-                    <th>Kadaluwarsa</th>
-                    <th>Diunggah</th>
-                </tr>
-            </tfoot>
+
         </table>
     </div>
 
@@ -224,23 +212,23 @@
         <x-slot name="title">Tambah Lowongan</x-slot>
         <x-slot name="id">my-modal</x-slot>
         <x-slot name="body">
-            <form method="POST" action="{{ route('post-store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('vacancy-store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Company</label>
+                    <label for="exampleInputEmail1" class="form-label">Perusahaan</label>
                     <input type="text" class="form-control" name="company" id="exampleInputEmail1"
                         aria-describedby="emailHelp">
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Position</label>
+                    <label for="exampleInputPassword1" class="form-label">Posisi</label>
                     <input type="text" class="form-control" name="position" id="exampleInputPassword1">
                 </div>
                 <div class="mb-3">
-                    <label for="link" class="form-label">Link Apply</label>
+                    <label for="link" class="form-label">Tautan Lamaran</label>
                     <input type="text" class="form-control" name="link_apply" id="link">
                 </div>
                 <div class="mb-3">
-                    <label for="link" class="form-label">Expired</label>
+                    <label for="link" class="form-label">Masa Berlaku</label>
                     <input type="datetime-local" name="expired" class="form-control" id="link">
                 </div>
 
@@ -251,13 +239,13 @@
                 <div class="form-check-danger form-check form-switch">
                     <input name="can_comment" class="form-check-input" type="checkbox"
                         id="flexSwitchCheckCheckedDanger">
-                    <label class="form-check-label" for="flexSwitchCheckCheckedDanger">Comment</label>
+                    <label class="form-check-label" for="flexSwitchCheckCheckedDanger">Komentar</label>
                 </div>
                 <div class="form-floating mb-3">
                     <textarea required name="description" class="form-control" placeholder="Leave a description" id="floatingTextarea"></textarea>
-                    <label for="floatingTextarea">Description</label>
+                    <label for="floatingTextarea">Deskripsi</label>
                 </div>
-                <label class="form-label"></label>
+                <label class="form-label">Jenis Pekerjaan</label>
                 <select name="type_jobs" class="form-select mb-3" aria-label="Multiple select example">
                     <option selected>Pilih</option>
                     <option value="Purnawaktu">Purnawaktu</option>
@@ -267,21 +255,21 @@
                     <option value="Kontrak">Kontrak</option>
                     <option value="Musiman">Musiman</option>
                 </select>
-                <div class="row justify-content-end">
-                    <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
-                        data-bs-dismiss="modal">close</button>
-                    <button class="col-3 btn btn-outline-primary btn-sm mx-4">Save</button>
+                <div class="row justify-content-between">
+                    <button class="col-3 btn btn-outline-danger btn-sm mx-4" type="reset"
+                        data-bs-dismiss="modal">Tutup</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
                 </div>
             </form>
         </x-slot>
     </x-modal>
-
-
     <x-modal id="detail-user" footer="footer" title="title" body="body">
         <x-slot name="title">Detail Pengunggah <span id="level-uploader"></span></x-slot>
-        <x-slot name="id">detail-user</x-slot>
-        <x-slot name="body">
 
+
+
+        <x-slot name="body">
+            <div></div>
             <img id="img-uploader" class="rounded-circle mb-3  shadow-4-strong" alt="image-uploader" />
 
             <div class="row mb-3">
@@ -291,7 +279,7 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="input36" class="col-sm-3 col-form-label">Fullname</label>
+                <label for="input36" class="col-sm-3 col-form-label">Nama Lengkap</label>
                 <div class="col-sm-9">
                     <input readonly type="text" class="form-control" id="fullname-user" placeholder="Phone No">
                 </div>

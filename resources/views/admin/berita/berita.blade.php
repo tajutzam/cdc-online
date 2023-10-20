@@ -21,7 +21,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div>
-                        <p class="mb-0 text-secondary">Total Lowongan</p>
+                        <p class="mb-0 text-secondary">Total Berita</p>
                         <h4 class="my-1">{{ $total['total'] }}</h4>
 
                     </div>
@@ -34,7 +34,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div>
-                        <p class="mb-0 text-secondary">Total Aktif</p>
+                        <p class="mb-0 text-secondary">Berita Aktif</p>
                         <h4 class="my-1">{{ $total['active'] }}</h4>
                     </div>
                     <div class="widgets-icons bg-light-warning text-warning ms-auto"><i class='bx bxs-paper-plane'></i>
@@ -46,7 +46,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div>
-                        <p class="mb-0 text-secondary">Total Tidak Aktif</p>
+                        <p class="mb-0 text-secondary">Berita Tidak Aktif</p>
                         <h4 class="my-1">{{ $total['nonactive'] }}</h4>
                     </div>
                     <div class="widgets-icons bg-light-danger text-danger ms-auto"><i class='bx bxs-paper-plane'></i>
@@ -89,12 +89,12 @@
                                 <div class="card-body">
                                     <h5 class="card-title text-truncate" style="max-height: 400px;">{{ $item['title'] }}
                                     </h5>
-                                    <p class="card-text text-truncate" style="max-height: 400px;">{{ $item['description'] }}
-                                    </p>
-                                    <p class="card-text"><small class="text-muted">Last updated
+                                    <p class="card-text text-truncate" style="max-height: 400px;">
+                                        {{ strip_tags($item['description']) }}</p>
+                                    <p class="card-text"><small class="text-muted">Terakhir diperbarui
                                             {{ $item['interval'] }}</small>
                                     </p>
-                                    <div class="row-cols-12">
+                                    <div class="row-cols-12" style="align-items: flex-start">
                                         <button class="btn delete-news-btn" data-bs-target="#delete-news"
                                             data-id="{{ $item['id'] }}" data-bs-toggle="modal"><i
                                                 class="fa-solid fa-trash" style="color: #f94f06;"></i></button>
@@ -135,20 +135,23 @@
         </ul>
     </nav>
 
-
-    <x-modal id="add-news" footer="footer" title="title" body="body">
+    <x-modal-large id="add-news" footer="footer" title="title" body="body">
         <x-slot name="title">Tambah Berita</x-slot>
         <x-slot name="id">add-news</x-slot>
         <x-slot name="body">
             <form action="{{ route('berita-post') }}" method="post" enctype="multipart/form-data">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control form-control-sm" required id="floatingTextarea"
-                        name="title"></input>
+                        name="title">
                     <label for="floatingTextarea">Judul</label>
                 </div>
+
                 <div class="form-floating mb-3">
-                    <textarea type="text" class="form-control form-control-sm" required id="floatingTextarea" name="description"></textarea>
-                    <label for="floatingTextarea">Description / Content</label>
+                    {{-- <textarea type="text" class="form-control form-control-sm" required id="" name=""></textarea> --}}
+                    {{-- <input id="floatingTextarea" type="hidden" name="description" value="" /> --}}
+                    <trix-editor input="description" class="trix-content"></trix-editor>
+                    <input type="text" id="description" name="description" hidden>
+                    {{-- <input type="submit" name="submit" value="Submit" /> --}}
                 </div>
                 <div class="mb-3">
                     <input class="form-control form-control-sm" name="image" required id="formFileSm" type="file"
@@ -156,12 +159,12 @@
                 </div>
                 <div class="row justify-content-end">
                     <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
-                        data-bs-dismiss="modal">close</button>
-                    <button class="col-3 btn btn-outline-primary btn-sm mx-4">Save</button>
+                        data-bs-dismiss="modal">Tutup</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
                 </div>
             </form>
         </x-slot>
-    </x-modal>
+    </x-modal-large>
 
     <x-modal id="delete-news" footer="footer" title="title" body="body">
         <x-slot name="title">Hapus Berita</x-slot>
@@ -181,7 +184,7 @@
         </x-slot>
     </x-modal>
 
-    <x-modal id="update-news" footer="footer" title="title" body="body">
+    <x-modal-large id="update-news" footer="footer" title="title" body="body">
         <x-slot name="title">Update Berita</x-slot>
         <x-slot name="id">update-news</x-slot>
         <x-slot name="body">
@@ -195,8 +198,11 @@
                 </div>
                 <input type="hidden" name="id" id="news-id">
                 <div class="form-floating mb-3">
-                    <textarea type="text" class="form-control form-control-sm" required id="description-update" name="description"></textarea>
-                    <label for="floatingTextarea">Description / Content</label>
+                    <trix-editor id="trix-update-description" input="description-update"
+                        class="trix-content"></trix-editor>
+                    <textarea type="text" class="form-control form-control-sm" required id="description-update" name="description"
+                        hidden></textarea>
+
                 </div>
                 <div class="mb-3">
                     <input class="form-control form-control-sm" name="image-update" id="image" type="file"
@@ -206,18 +212,18 @@
                 <label for="" class="form-label">Aktif</label>
                 <div class="row justify-content-end">
                     <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
-                        data-bs-dismiss="modal">close</button>
-                    <button class="col-3 btn btn-outline-primary btn-sm mx-4" type="submit">Save</button>
+                        data-bs-dismiss="modal">Tutup</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4" type="submit">Simpan</button>
                 </div>
             </form>
         </x-slot>
-    </x-modal>
+    </x-modal-large>
 
     <script>
         $(document).ready(function() {
             // declare
             var title = $('#title-update');
-            var description = $('#description-update');
+            var description = $('#trix-update-description');
             var active = $('#active');
             var img_news = $('#img-news');
             var imgInput = $('#image');

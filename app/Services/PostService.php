@@ -82,7 +82,7 @@ class PostService
                 'expired' => Carbon::parse($request['expired']),
                 'user_id' => null,
                 'admin_id' => $adminId,
-                'verivied' => true,
+                'verified' => 'verified',
                 'can_comment' => $isCanComment
             ]
         );
@@ -108,7 +108,7 @@ class PostService
         DB::beginTransaction();
 
         $updated = $this->post->where('id', $data['id'])->update([
-            'verivied' => $data['verified']
+            'verified' => $data['verified']
         ]);
 
         if ($updated) {
@@ -289,7 +289,7 @@ class PostService
             'expired' => $data['expired'],
             'post_at' => $data['post_at'],
             'can_comment' => $data['can_comment'],
-            'verified' => $data['verivied'],
+            'verified' => $data['verified'],
             'user' => $data['user'] ?? null,
             'admin' => $data['admin'] ?? null
         ];
@@ -298,7 +298,7 @@ class PostService
 
     public function findAllPostFromAdmin()
     {
-        $data = $this->post->with('user', 'admin')->orderBy('verivied', 'asc')->get()->toArray();
+        $data = $this->post->with('user', 'admin')->orderBy('verified', 'asc')->get()->toArray();
         $collection = collect($data);
         return $collection->map(function ($data) {
             return $this->castToResponseFromArray($data);

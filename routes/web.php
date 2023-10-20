@@ -11,6 +11,7 @@ use App\Http\Controllers\web\QuisionerController;
 use App\Http\Controllers\web\UserController;
 use App\Http\Middleware\AllowUnauthenticated;
 use App\Http\Middleware\IsAdminMiddleware;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,10 +32,18 @@ Route::get('/', function () {
 Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () {
     Route::get('login', [AdminController::class, 'login'])->withoutMiddleware(IsAdminMiddleware::class)->middleware(AllowUnauthenticated::class);
     Route::post('login', [AuthController::class, 'loginAdmin'])->name('admin-login')->middleware(AllowUnauthenticated::class)->withoutMiddleware(IsAdminMiddleware::class);
+    Route::get('/manage-admin', [AdminController::class, 'manageAdmin'])->name('manage-admin');
+    Route::get('/settings-admin', [AdminController::class, 'settingsAdmin'])->name('settings-admin');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::prefix('lowongan')->group(function () {
-        Route::get('/', [PostController::class, 'index'])->name('post');
-        Route::post('/store', [PostController::class, 'store'])->name('post-store');
+
+    Route::get('/trix', 'TrixController@index');
+    Route::post('/upload', 'TrixController@upload');
+    Route::post('/store', 'TrixController@store');
+
+    Route::prefix('vacancy')->group(function () {
+        Route::get('/', [PostController::class, 'index'])->name('vacancy');
+        Route::post('/store', [PostController::class, 'store'])->name('vacancy-store');
+        Route::get('/history', [PostController::class, 'history'])->name('history');
     });
     Route::prefix('berita')->group(function () {
         Route::get('', [NewsController::class, 'index'])->name('berita');
@@ -61,6 +70,9 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
 
     Route::prefix('quisioner')->group(function () {
         route::get('', [QuisionerController::class, 'index'])->name('quisioner-index');
+        Route::get("/detail/{id}", function ($id) {
+            return view('admin.quisioner.detail');
+        });
     });
 });
 
