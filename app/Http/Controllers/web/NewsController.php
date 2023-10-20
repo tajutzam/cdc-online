@@ -58,7 +58,7 @@ class NewsController extends Controller
         $rules = [
             'title' => 'required|max:100',
             'description' => 'required|max:500',
-            'image' => 'required|max:1024|mimes:jpeg,png,jpg|dimensions:min_width=1920,min_height=1080',
+            'image' => 'required|max:1024|mimes:jpeg,png,jpg',
         ];
 
 
@@ -73,7 +73,6 @@ class NewsController extends Controller
 
         Alert::success('Success', $response['message']);
         return back();
-
     }
 
     public function update(Request $request)
@@ -89,14 +88,14 @@ class NewsController extends Controller
         if (isset($image)) {
             $rules = [
                 'title' => 'required|max:100',
-                'description' => 'required|max:500',
+                'description' => 'required|max:10000',
                 'image-update' => 'required|max:1024|mimes:jpeg,png,jpg',
                 'id' => 'required'
             ];
         } else {
             $rules = [
                 'title' => 'required|max:100',
-                'description' => 'required|max:500',
+                'description' => 'required|max:10000',
                 'id' => 'required'
 
             ];
@@ -122,6 +121,4 @@ class NewsController extends Controller
         $data = $this->validate($request, $rules, $customMessages);
         return $this->newsService->delete($data['id']);
     }
-
-
 }

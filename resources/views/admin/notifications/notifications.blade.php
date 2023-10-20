@@ -2,11 +2,25 @@
 
 
 @section('content')
-    <notif-quisioner>
-        <div class="card p-3">
-            Notifikasi Quisioner
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+
+        <div class="">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="{{ route('notifications') }}">Notifikasi</a>
+                    <li class="breadcrumb-item active" aria-current="page">Kuesioner</li>
+                </ol>
+            </nav>
         </div>
+    </div>
+    <notif-quisioner>
+        {{-- <div class="card p-3">
+            Notifikasi Kuesioner
+        </div> --}}
         <div class="table-responsive">
+
             <table id="example" class="table table-striped table-bordered text-center" style="width:100%">
                 <thead>
                     <tr>
@@ -16,9 +30,9 @@
                         <th>Nama Alumni</th>
                         <th>Foto Alumni</th>
                         <th>Status Akun</th>
-                        <th>Kemajuan Quisioner</th>
-                        <th>Tingkat Quisioner</th>
-                        <th>Detail Quisioner</th>
+                        <th>Kemajuan Kuesioner</th>
+                        <th>Tingkat Kuesioner</th>
+                        <th>Detail Kuesioner</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -76,7 +90,7 @@
         </div>
     </notif-quisioner>
 
-    <notif-berita>
+    {{-- <notif-berita>
         <div class="card p-3">
             Notifikasi Berita
         </div>
@@ -85,5 +99,5 @@
         <div class="card p-3">
             Notifikasi Verifikasi Account
         </div>
-    </notif-verifikasi>
+    </notif-verifikasi> --}}
 @endsection

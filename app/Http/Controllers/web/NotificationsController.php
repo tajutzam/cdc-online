@@ -26,7 +26,4 @@ class NotificationsController extends Controller
 
         return view('admin.notifications.notifications', ['data' => $data]);
     }
-    
-
-
 }

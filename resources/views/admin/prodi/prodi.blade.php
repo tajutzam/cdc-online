@@ -20,7 +20,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div>
-                        <p class="mb-0 text-secondary">Total Prodi</p>
+                        <p class="mb-0 text-secondary">Total</p>
                         <h4 class="my-1">{{ sizeof($data) }}</h4>
 
                     </div>
@@ -38,7 +38,7 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Program Study</li>
+                    <li class="breadcrumb-item active" aria-current="page">Program Studi</li>
                 </ol>
             </nav>
         </div>
@@ -47,7 +47,7 @@
     <div class="card row align-items-start">
         <button class="btn btn-outline-primary btn-sm mb-3 w-auto m-3" data-bs-toggle="modal"
             data-bs-target="#add-news">Tambah
-            Prodi</button>
+            Program Studi</button>
     </div>
 
     <div class="card row align-items-start py-2">
@@ -55,10 +55,11 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Kode Prodi</th>
-                    <th>Nama Prodi</th>
-                    <th>Action</th>
+                    <th>Kode</th>
+                    <th>Nama</th>
+                    <th style="text-align: center" rowspan="2">Aksi</th>
                 </tr>
+
             </thead>
             <tbody>
                 @foreach ($data as $item)
@@ -71,7 +72,7 @@
                             <p>{{ $item['nama_prodi'] }}</p>
                         </td>
                         <td>
-                            <div class="row">
+                            <div class="row" style="align-content: center;">
                                 <div class="col-6">
                                     <a href="" data-bs-target="#delete-prodi" data-bs-toggle="modal"
                                         class="delete-prodi-btn" data-yes ="yes" data-id="{{ $item['id'] }}"
@@ -79,8 +80,8 @@
                                             style="color: #ff0f27;"></i></a>
                                 </div>
                                 <div class="col-6">
-                                    <a href=""  class="update-prodi-btn"
-                                        data-bs-target="#update-prodi" data-bs-toggle="modal" data-kode={{ $item['id'] }}
+                                    <a href="" class="update-prodi-btn" data-bs-target="#update-prodi"
+                                        data-bs-toggle="modal" data-kode={{ $item['id'] }}
                                         data-nama={{ $item['nama_prodi'] }}><i class="fa-solid fa-pen-to-square"
                                             style="color: #005eff;"></i></a>
                                 </div>
@@ -92,8 +93,8 @@
             <tfoot>
                 <tr>
                     <th>No</th>
-                    <th>Kode Prodi</th>
-                    <th>Nama Prodi</th>
+                    <th>Kode</th>
+                    <th>Nama</th>
                     <th>Action</th>
                 </tr>
             </tfoot>
@@ -101,30 +102,30 @@
     </div>
 
     <x-modal id="add-news" footer="footer" title="title" body="body">
-        <x-slot name="title">Tambah Program Study</x-slot>
+        <x-slot name="title">Tambah Program Studi</x-slot>
         <x-slot name="id">add-news</x-slot>
         <x-slot name="body">
             <form action="{{ route('prodi-post') }}" method="post" enctype="multipart/form-data">
                 <div class="form-floating mb-3">
                     <input type="number" class="form-control form-control-sm" required id="floatingTextarea"
                         name="id"></input>
-                    <label for="floatingTextarea">Kode Prodi</label>
+                    <label for="floatingTextarea">Kode</label>
                 </div>
                 <div class="form-floating mb-3">
                     <textarea type="text" class="form-control form-control-sm" required id="floatingTextarea" name="nama_prodi"></textarea>
-                    <label for="floatingTextarea">Nama Program Study</label>
+                    <label for="floatingTextarea">Nama</label>
                 </div>
                 <div class="row justify-content-end">
                     <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
-                        data-bs-dismiss="modal">close</button>
-                    <button class="col-3 btn btn-outline-primary btn-sm mx-4">Save</button>
+                        data-bs-dismiss="modal">Tutup</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
                 </div>
             </form>
         </x-slot>
     </x-modal>
 
     <x-modal id="update-prodi" footer="footer" title="title" body="body">
-        <x-slot name="title">Update Program Study</x-slot>
+        <x-slot name="title">Perbarui Program Studi</x-slot>
         <x-slot name="id">update-prodi</x-slot>
         <x-slot name="body">
             <form action="{{ route('prodi-put') }}" method="post" enctype="multipart/form-data">
@@ -133,17 +134,17 @@
                 <div class="form-floating mb-3">
                     <input type="text" readonly class="form-control form-control-sm" required id="id_update"
                         name="id_update"></input>
-                    <label for="floatingTextarea">Kode Prodi</label>
+                    <label for="floatingTextarea">Kode</label>
                 </div>
                 <div class="form-floating mb-3">
                     <textarea type="text" class="form-control form-control-sm" required id="nama_program_update"
                         name="nama_prodi_update"></textarea>
-                    <label for="floatingTextarea">Nama Program Study</label>
+                    <label for="floatingTextarea">Nama</label>
                 </div>
                 <div class="row justify-content-end">
                     <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
-                        data-bs-dismiss="modal">close</button>
-                    <button class="col-3 btn btn-outline-primary btn-sm mx-4">Save</button>
+                        data-bs-dismiss="modal">Tutup</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
                 </div>
             </form>
         </x-slot>
@@ -153,7 +154,8 @@
         <x-slot name="title">Hapus Berita</x-slot>
         <x-slot name="id">delete-prodi</x-slot>
         <x-slot name="body">
-            <h5 class="mb-3">Apakah anda yakin ingin menghapus data ini ? </h5>
+            <div class="mb-3" style="text-align: center;  font-size: 16px; ">Apakah anda yakin ingin menghapus Data ini
+                ? </div>
             <form action="{{ route('prodi-delete') }}" method="POST">
                 <input type="text" hidden id="prodi-delete-id" name="id_delete">
                 @method('delete')
@@ -168,7 +170,7 @@
     </x-modal>
 
     <x-modal id="update-news" footer="footer" title="title" body="body">
-        <x-slot name="title">Update Berita</x-slot>
+        <x-slot name="title">Perbarui Berita</x-slot>
         <x-slot name="id">update-news</x-slot>
         <x-slot name="body">
             <form action="{{ route('berita-update') }}" method="POST" enctype="multipart/form-data">
@@ -182,7 +184,7 @@
                 <input type="hidden" name="id" id="news-id">
                 <div class="form-floating mb-3">
                     <textarea type="text" class="form-control form-control-sm" required id="description-update" name="description"></textarea>
-                    <label for="floatingTextarea">Description / Content</label>
+                    <label for="floatingTextarea">Deskripsi</label>
                 </div>
                 <div class="mb-3">
                     <input class="form-control form-control-sm" name="image-update" id="image" type="file"
@@ -192,8 +194,8 @@
                 <label for="" class="form-label">Aktif</label>
                 <div class="row justify-content-end">
                     <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
-                        data-bs-dismiss="modal">close</button>
-                    <button class="col-3 btn btn-outline-primary btn-sm mx-4" type="submit">Save</button>
+                        data-bs-dismiss="modal">Tutup</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4" type="submit">Simpan</button>
                 </div>
             </form>
         </x-slot>
@@ -203,7 +205,7 @@
         $(document).ready(function() {
             // declare
 
-            $('.update-prodi-btn').on( 'click' ,  function() {
+            $('.update-prodi-btn').on('click', function() {
                 console.log('ya');
                 let id = $(this).data('kode');
 

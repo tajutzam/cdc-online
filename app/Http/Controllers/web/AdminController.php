@@ -12,7 +12,6 @@ class AdminController extends Controller
 
     public function __construct()
     {
-
     }
 
     //
@@ -21,10 +20,17 @@ class AdminController extends Controller
         return view('admin.dashboard');
     }
 
+    public function settingsAdmin()
+    {
+        return view('admin.settings-admin');
+    }
+
     public function login()
     {
         return view('admin.auth.login');
     }
-
-
+    public function manageAdmin()
+    {
+        return view('admin.manage-admin');
+    }
 }
