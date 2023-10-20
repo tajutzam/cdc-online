@@ -24,9 +24,9 @@ class CreatePostTable extends Migration
             $table->timestamp('expired')->nullable(false);
             $table->timestamp('post_at')->default(\Illuminate\Support\Carbon::now());
             $table->string('image')->nullable(false);
-            $table->enum('type_jobs', ['Purnawaktu', 'Paruh Waktu', 'Wiraswasta', 'Pekerja Lepas', 'Kontrak', 'Musiman']);
+            $table->string('type_jobs', );
             $table->boolean('can_comment')->default(true);
-            $table->boolean('verivied')->default(false);
+            $table->enum('verified', ['waiting', 'verified', 'rejected'])->default('waiting');
             $table->timestamps();
         });
     }

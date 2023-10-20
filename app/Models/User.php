@@ -49,7 +49,9 @@ class User extends Authenticatable
         'kode_prodi',
         'nim',
         'state_quisioner',
-        'fcm_token'
+        'fcm_token',
+        'longtitude',
+        'latitude'
     ];
 
     /**

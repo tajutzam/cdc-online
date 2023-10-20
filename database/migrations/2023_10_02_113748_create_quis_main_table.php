@@ -24,8 +24,8 @@ class CreateQuisMainTable extends Migration
             $table->integer('f506')->nullable(false);
             $table->string('f1101')->nullable(false);
             $table->string('f5b')->nullable(false);
-            $table->enum('f5c', ['Founder', 'Co-Founder', 'Staff', 'Freelance/Kerja Lepas'])->nullable(false);
-            $table->enum('f5d', ['Lokal/wilayah/wiraswasta tidak berbadan hukum', 'Nasional/wiraswasta berbadan hukum', 'Multinasional/Internasional']);
+            $table->string('f5c')->nullable(false);
+            $table->string('f5d');
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });

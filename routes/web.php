@@ -64,6 +64,8 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     });
 });
 
+
+
 Route::get('/info', function () {
     echo phpinfo();
 });

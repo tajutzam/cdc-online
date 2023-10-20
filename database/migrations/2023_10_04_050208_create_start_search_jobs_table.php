@@ -15,7 +15,7 @@ class CreateStartSearchJobsTable extends Migration
     {
         Schema::create('start_search_jobs', function (Blueprint $table) {
             $table->id();
-            $table->enum('f301', ['Saya mencari kerja sebelum lulus', 'Saya mencari kerja sesudah wisuda', 'Saya tidak mencari kerja']);
+            $table->string('f301');
             $table->integer('f302');
             $table->integer('f303');
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
