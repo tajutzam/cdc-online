@@ -43,7 +43,7 @@ class PostController extends Controller
             'active' => $tempActive,
             'nonactive' => $tempNonActive
         ];
-        return view('admin.post.post', [
+        return view('admin.vacancy.verify-vacancy', [
             'data' => $data,
             'total' => [
                 'active' => $total['active'],
@@ -52,7 +52,10 @@ class PostController extends Controller
             ]
         ]);
     }
-
+    public function history()
+    {
+        return view('admin.vacancy.history-vacancy');
+    }
     public function store(Request $request)
     {
         $rules = [

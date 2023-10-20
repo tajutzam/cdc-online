@@ -81,7 +81,6 @@ class PostController extends Controller
                 'data' => $filter
             ]
         );
-
     }
 
 
@@ -146,5 +145,4 @@ class PostController extends Controller
         $response = $this->postService->findByPosition($request->all(), $userId);
         return ResponseHelper::successResponse('success fetch data', $response, 200);
     }
-
 }
