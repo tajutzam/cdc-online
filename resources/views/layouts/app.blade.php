@@ -36,6 +36,7 @@
 	<!--end switcher-->
 	<!-- Bootstrap JS -->
 	@include('layouts.footer')
+	@include('sweetalert::alert')
 </body>
 
 

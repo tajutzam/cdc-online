@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Facade;
 use Intervention\Image\ImageServiceProvider;
+use L5Swagger\L5SwaggerServiceProvider;
 
 return [
 
@@ -196,7 +197,9 @@ return [
             // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        Vyuldashev\LaravelOpenApi\OpenApiServiceProvider::class,
+        L5Swagger\L5SwaggerServiceProvider::class,
     ],
 
     /*
@@ -252,6 +255,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        '   Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+
     ],
 
 ];

@@ -10,13 +10,17 @@
     "require": {
         "php": ">=7.2.0",
         "cloudinary-labs/cloudinary-laravel": "^2.0",
+        "darkaonline/l5-swagger": "^8.5",
         "fruitcake/laravel-cors": "^3.0",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.8",
         "intervention/image": "^2.7",
+        "kreait/laravel-firebase": "^4.2",
         "laravel/framework": "^8.0",
         "laravel/sanctum": "^2.10",
         "laravel/tinker": "^2.5",
-        "spatie/image-optimizer": "^1.7"
+        "realrashid/sweet-alert": "^7.1",
+        "spatie/image-optimizer": "^1.7",
+        "vyuldashev/laravel-openapi": "^1.11"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

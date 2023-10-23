@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\BadRequestException;
+use App\Helper\ResponseHelper;
 use App\Http\Middleware\TokenMiddleware;
 use App\Http\Middleware\VeriviedMiddleware;
 use App\Http\Requests\UpdateProfileRequest;
@@ -11,6 +13,8 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+
+use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 class UserController extends Controller
 {
@@ -23,6 +27,12 @@ class UserController extends Controller
         $this->userService = new UserService();
     }
 
+
+    /**
+     * @OA\PathItem(
+     *   path="/api/user",
+     * )
+     */
     public function getOneUser(Request $request)
     {
         $token = $request->header('Authorization');
@@ -158,6 +168,66 @@ class UserController extends Controller
     public function findUserById(Request $request, $id)
     {
         return $this->userService->findUserById($id, $request->bearerToken());
+
+    }
+
+    public function sendFcmToken(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            throw new BadRequestException($validator->errors()->first());
+        }
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        return $this->userService->sendFcmToken($request->input('token'), $userId);
+    }
+
+
+    public function findByName(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'key' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            throw new BadRequestException($validator->errors()->first());
+        }
+
+
+        $userId = $this->userService->extractUserId($request->bearerToken());
+
+        $response = $this->userService->findByName($request->all(), $userId);
+        return ResponseHelper::successResponse('success fetch data', $response, 200);
+    }
+
+    public function getTopUser()
+    {
+        $response = $this->userService->getTopUser();
+        return ResponseHelper::successResponse('success fetch data', $response, 200);
+    }
+
+
+    public function getTopSalary()
+    {
+        $response = $this->userService->getTopUserBySalary();
+        return ResponseHelper::successResponse('success fetch data', $response, 200);
+    }
+
+
+
+    public function setPosition(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'latitude' => 'required|numeric',
+            'longtitude' => 'required|numeric'
+        ]);
+        if ($validator->fails()) {
+            throw new BadRequestException($validator->errors()->first());
+        }
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        $response = $this->userService->updateLongtitudeLangtitude($request->all(), $userId);
+        return ResponseHelper::successResponse('success update latitude', $response, 200);
 
     }
 

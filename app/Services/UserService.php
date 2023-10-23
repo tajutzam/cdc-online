@@ -3,13 +3,17 @@
 
 namespace App\Services;
 
+use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\UnauthorizedException;
+use App\Helper\ResponseHelper;
 use App\Models\Education;
 use App\Models\Followed;
 use App\Models\Follower;
 use App\Models\User;
+use Cloudinary\Api\Exception\BadRequest;
 use Cloudinary\Api\Exception\NotFound;
+use Exception;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
@@ -131,12 +135,7 @@ class UserService
         ];
         $responsePojo = $tempUser;
 
-        return response()->json([
-            'status' => true,
-            'message' => 'success fetch data',
-            'code' => 200,
-            'data' => $responsePojo
-        ], 200);
+        return ResponseHelper::successResponse('success fetch data', $responsePojo, 200);
     }
 
 
@@ -208,10 +207,55 @@ class UserService
     }
 
 
+
+    public function findAll($active)
+    {
+
+        $query = $this->userModel->with('jobs', 'educations', 'prodi');
+        $response = [];
+
+        $response['alumni'] = $query->when(isset($active), function ($query) use ($active) {
+            $query->where('account_status', $active);
+        })->whereHas('educations', function ($educationQuery) {
+            $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
+        })->get()->toArray();
+
+
+        $statusCounts = $this->userModel
+            ->select('account_status', DB::raw('COUNT(*) as count'))
+            ->when(isset($active), function ($query) use ($active) {
+                $query->where('account_status', $active);
+            })
+            ->whereHas('educations', function ($educationQuery) {
+                $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
+            })
+            ->groupBy('account_status')
+            ->get();
+
+        $active = 0;
+        $nonActive = 0;
+        foreach ($statusCounts as $statusCount) {
+            if ($statusCount->account_status == 1) {
+                $active = $statusCount->count;
+            } else {
+                $nonActive = $statusCount->count;
+            }
+        }
+
+        $response['count'] = [
+            'active' => $active,
+            'nonactive' => $nonActive
+        ];
+
+        return $response;
+    }
+
+
     public function updateVisible($request, $token)
     {
 
         $key = [];
+        Db::beginTransaction();
 
         foreach ($request['type'] as $value) {
             # code...
@@ -254,23 +298,15 @@ class UserService
             }
         }
         // dd($finalKey);
-        try {
-            //code...
-            $updated = $this->userModel->where('token', $token)->update($finalKey);
-            return response()->json([
-                "status" => true,
-                "code" => 200,
-                "message" => "berhasil memperbarui visibility ",
-                "data" => $updated
-            ]);
-        } catch (\Throwable $th) {
-            //throw $th;
-            return response()->json([
-                'status' => false,
-                'code' => 500,
-                'message' => $th->getMessage()
-            ], 500);
+
+        //code...
+        $updated = $this->userModel->where('token', $token)->update($finalKey);
+        if ($updated) {
+            Db::commit();
+            return ResponseHelper::successResponse('Berhsail memperbarui visibility', $updated, 200);
         }
+        throw new Exception('ops , gagal memperbarui visibility terjadi kesalahan');
+
     }
 
 
@@ -286,14 +322,9 @@ class UserService
             $tempUser = $this->castToUserResponse($user);
             array_push($data, $tempUser);
         }
-        return response()->json([
-            'status' => true,
-            'messages' => 'success fetch data',
-            'data' => [
-                'total_followers' => sizeof($data),
-                'followers' => $data
-            ],
-            'code' => 200
+        return ResponseHelper::successResponse('success fetch data', [
+            'total_followers' => sizeof($data),
+            'followers' => $data
         ], 200);
     }
 
@@ -320,24 +351,35 @@ class UserService
             $tempUser = $this->castToUserResponse($user);
             array_push($response['followers'], $tempUser);
         }
-        return response()->json([
-            'status' => true,
-            'messages' => 'success fetch data',
-            'data' => [
-                'total_followers' => sizeof($response['followers']),
-                'user' => $response
-            ],
-            'code' => 200
+        return ResponseHelper::successResponse('success fetch data', [
+            'total_followers' => sizeof($response['followers']),
+            'user' => $response
         ], 200);
     }
 
+    public function sendFcmToken($token, $id)
+    {
+        Db::beginTransaction();
+        $user = $this->userModel->where('id', $id)->first();
+        if (isset($user)) {
+            $updated = $user->update([
+                'fcm_token' => $token
+            ]);
+            if ($updated) {
+                Db::commit();
+                return ResponseHelper::successResponse('berhasil mengirim token', $updated, 200);
+            }
+            throw new Exception('ops , gagal mengirim fcm token , terjadi kesalahan');
+        }
+        throw new UnauthorizedException('ops , akun tidak ditemukan silahkan login terlebih dahulu');
+    }
 
 
     public function extractUserId($token): string
     {
 
         $user = $this->userModel->where('token', '=', $token)->first();
-        
+
         if (isset($user)) {
             return $user['id'];
         } else {
@@ -367,7 +409,9 @@ class UserService
             "facebook" => $user->facebook,
             "instagram" => $user->instagram,
             'twiter' => $user->twiter,
-            'account_status' => $user->account_status
+            'account_status' => $user->account_status,
+            "latitude" => $user->latitude,
+            "longtitude" => $user->longtitude
         ];
     }
 
@@ -391,8 +435,45 @@ class UserService
             "facebook" => $user['facebook'],
             "instagram" => $user['instagram'],
             'twiter' => $user['twiter'],
-            'account_status' => $user['account_status']
+            'account_status' => $user['account_status'],
+            'latitude' => $user['latitude'],
+            'longtitude' => $user['longtitude']
         ];
+    }
+
+    public function getTopUser()
+    {
+        $data = $this->userModel->with('followers')->get()->toArray();
+
+        $data = collect($data)->sortByDesc(function ($user) {
+            return count($user['followers']);
+        })->values()->take(20)->all();
+
+        $response = collect($data)->map(function ($user) {
+            $tempData = $this->castToUserResponseFromArray($user);
+            $tempData['followers'] = $user['followers'];
+            $tempData['total_followers'] = sizeof($user['followers']);
+            return $tempData;
+        })->toArray();
+        return $response;
+    }
+
+    public function getTopUserBySalary()
+    {
+        $data = $this->userModel->with('jobs')->get()->toArray();
+
+        // Gunakan metode koleksi untuk mengambil nama posisi pekerjaan terakhir dan gaji tertinggi
+        return collect($data)->filter(function ($user) {
+            return count($user['jobs']) > 0; // Filter pengguna yang memiliki setidaknya satu pekerjaan.
+        })->map(function ($user) {
+            $lastJob = collect($user['jobs'])->where('pekerjaan_saatini', 1)->first();
+            return [
+                'fullname' => $user['fullname'],
+                'last_position' => $lastJob ? $lastJob['jabatan'] : null,
+                'highest_salary' => $lastJob ? $lastJob['gaji'] : null,
+                'company' => $lastJob['perusahaan']
+            ];
+        })->sortByDesc('highest_salary')->values()->take(20)->toArray();
     }
 
     private function castToEducations($education)
@@ -435,17 +516,13 @@ class UserService
     public function followUser($idUserLogin, $userId)
     {
         $userFollower = $this->userModel->where('id', $userId)->first();
+        DB::beginTransaction();
         if (isset($userFollower)) {
             try {
                 $isFolowed = $this->followed->where('user_id', $userId)->where('folowed_id', $idUserLogin)->first();
                 if (isset($isFolowed)) {
                     // jika user sudah memfolow
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Ops , kamu sudah mengikuti user tersebut',
-                        'code' => 400,
-                        'data' => 0
-                    ], 400);
+                    throw new BadRequest('ops kamu sudah mengikuti user tersebut');
                 } else {
                     try {
                         //code...
@@ -459,58 +536,30 @@ class UserService
                                 "folowers_id" => $idUserLogin
                             ]);
                             if (isset($isCreatedFolowers)) {
-                                return response()->json([
-                                    'status' => true,
-                                    'message' => 'berhasil mengikuti user',
-                                    'data' => $isCreated,
-                                    'code' => 201
-                                ], 201);
+                                DB::commit();
+                                return ResponseHelper::successResponse('berhasil mengikuti user', $isCreatedFolowers, 201);
                             } else {
-                                DB::rollBack();
-                                return response()->json([
-                                    'status' => true,
-                                    'message' => 'gagal mengikuti user',
-                                    'data' => $isCreated,
-                                    'code' => 500
-                                ], 500);
+                                throw new Exception();
                             }
                         }
                     } catch (\Throwable $th) {
-                        DB::rollback();
-                        //throw $th;
-                        return response()->json([
-                            'status' => false,
-                            'message' => 'Gagal mengikuti user ' . $th->getMessage(),
-                            'code' => 500,
-                            'data' => 0
-                        ], 500);
+                        throw new Exception($th->getMessage());
                     }
                 }
             } catch (\Throwable $th) {
-                DB::rollback();
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal mengikuti user ' . $th->getMessage(),
-                    'code' => 500,
-                    'data' => 0
-                ], 500);
+                throw new Exception($th->getMessage());
             }
         } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Gagal mengikuti user , user tidak ditemukan',
-                'code' => 404,
-                'data' => null
-            ], 404);
+            throw new NotFoundException('gagal mengikuti user , user tidak ditemukan');
         }
     }
 
     public function unfollowUser($idUserLogin, $userId): JsonResponse
     {
+        DB::beginTransaction();
         $tempFolowed = $this->followed->where('user_id', $userId)->where('folowed_id', $idUserLogin)->first();
         if (isset($tempFolowed)) {
             try {
-                //code...
                 $isDelete = $tempFolowed->delete();
                 if ($isDelete) {
                     $checkUserFolower = $this->follower->where('user_id', $userId)->where('folowers_id', $idUserLogin)->first();
@@ -518,55 +567,23 @@ class UserService
                         // remove user 
                         $isUnfollow = $checkUserFolower->delete();
                         if ($isUnfollow) {
-                            return response()->json([
-                                'status' => true,
-                                'message' => 'berhasil unfollow user',
-                                'code' => 200,
-                                'data' => $isDelete
-                            ], 200);
+                            Db::commit();
+                            return ResponseHelper::successResponse('Success unfollow', $isUnfollow, 200);
                         } else {
-                            return response()->json([
-                                'status' => false,
-                                'message' => 'Gagal berhenti mengikuti , user sudah berhenti mengikuti',
-                                'code' => 400,
-                                'data' => null
-                            ], 400);
+                            throw new BadRequestException('Gagal berhenti mengikuti , user sudah berhenti mengikuti');
                         }
                     } else {
-                        return response()->json([
-                            'status' => false,
-                            'message' => 'Gagal berhenti mengikuti , user sudah berhenti mengikuti',
-                            'code' => 400,
-                            'data' => null
-                        ], 400);
+                        throw new BadRequestException('Gagal berhenti mengikuti , user sudah berhenti mengikuti');
                     }
                 } else {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Gagal unfollow user',
-                        'code' => 400,
-                        'data' => $isDelete
-                    ], 200);
+                    throw new BadRequestException('Gagal berhenti mengikuti , user sudah berhenti mengikuti');
                 }
             } catch (\Throwable $th) {
                 //throw $th;
-                return response()->json(
-                    [
-                        'status' => false,
-                        'message' => 'Gagal unfollow user ' . $th->getMessage(),
-                        'code' => 500,
-                        'data' => null
-                    ],
-                    500
-                );
+                throw new Exception($th->getMessage());
             }
         } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Gagal unfollow user , user tidak ditemukan',
-                'data' => null,
-                'code' => 404
-            ], 404);
+            throw new NotFoundException('Gagal unfollow user , user tidak ditemukan');
         }
     }
 
@@ -586,27 +603,17 @@ class UserService
                 $tempUser = $this->castToUserResponse($user);
                 array_push($response['followed'], $tempUser);
             }
-            return response()->json([
-                'status' => true,
-                'messages' => 'success fetch data',
-                'data' => [
-                    'total_followers' => sizeof($response['followed']),
-                    'user' => $response
-                ],
-                'code' => 200
+            return ResponseHelper::successResponse('success fetch data', [
+                'total_followers' => sizeof($response['followed']),
+                'user' => $response
             ], 200);
         }
-        return response()->json([
-            'status' => false,
-            'message' => 'User not found',
-            'code' => 404,
-            'data' => null
-        ], 404);
-
+        throw new NotFoundException('user not found');
     }
 
     public function updateUserLogin($request, $userId)
     {
+        DB::beginTransaction();
         try {
             //code...
             $isUpdate = $this->userModel->where('id', $userId)->update([
@@ -625,28 +632,14 @@ class UserService
 
             ]);
             if ($isUpdate) {
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Success memperbarui profile',
-                    'data' => $isUpdate,
-                    'code' => 200
-                ], 200);
+                DB::commit();
+                return ResponseHelper::successResponse('success memberbarui profile', $isUpdate, 200);
             } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal memperbarui profile',
-                    'data' => $isUpdate,
-                    'code' => 400
-                ], 400);
+                throw new Exception('ops , gagal memperbarui user');
             }
         } catch (\Throwable $th) {
             //throw $th;
-            return response()->json([
-                'status' => false,
-                'message' => 'Gagal memperbarui profile ' . $th->getMessage(),
-                'data' => null,
-                'code' => 500
-            ], 500);
+            throw new Exception('ops , gagal memperbarui user ' . $th->getMessage());
         }
     }
 
@@ -668,27 +661,12 @@ class UserService
             ]);
             if ($isUpdated) {
                 $url = url('/') . "/" . $urlResource;
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Berhasil memperbarui foto profile',
-                    'code' => 200,
-                    'data' => $url
-                ], 200);
+                return ResponseHelper::successResponse('success update foto profile', $url, 200);
             } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal mengupdate foto profile',
-                    'code' => 500,
-                    'data' => nullOrEmptyString()
-                ], 500);
+                throw new Exception('gagal memperbarui foto profile , terjadi kesalahan');
             }
         } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Gagal mengupdate foto profile',
-                'code' => 500,
-                'data' => nullOrEmptyString()
-            ], 500);
+            throw new NotFoundException('user not found');
         }
     }
 
@@ -771,6 +749,42 @@ class UserService
         }
     }
 
+    public function findByName($request, $id)
+    {
+        $searchTerm = $request['key']; // Get the search query from the request
+
+        $users = $this->userModel->where('fullname', 'like', '%' . $searchTerm . '%')->where('id', '<>', $id)->get();
+        $response = collect($users)->map(function ($user) {
+            return $this->castToUserResponseFromArray($user);
+        })->toArray();
+        if (sizeof($response) == 0) {
+            throw new NotFoundException('user dengan nama ' . $searchTerm . ' tidak ditemukan');
+        }
+        return $response;
+    }
+
+
+    public function updateLongtitudeLangtitude($request, $userId)
+    {
+        DB::beginTransaction();
+        $userModel = $this->userModel->where('id', $userId)->first();
+        if (!isset($userModel)) {
+            throw new NotFoundException('ops , user not found');
+        }
+        $isUpdated = $userModel->update([
+            'longtitude' => $request['longtitude'],
+            'latitude' => $request['latitude']
+        ]);
+        if ($isUpdated) {
+            DB::commit();
+            return [
+                'status' => true,
+                'message' => 'berhasil memperbarui posisi',
+                'code' => 200
+            ];
+        }
+        throw new Exception('ops , terjadi masalah');
+    }
 
 
     public function checkUserStatus($token)

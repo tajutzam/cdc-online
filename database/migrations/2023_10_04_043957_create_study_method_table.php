@@ -25,13 +25,13 @@ class CreateStudyMethodTable extends Migration
     {
         Schema::create('study_method', function (Blueprint $table) {
             $table->id();
-            $table->enum('f21', $this->option);
-            $table->enum('f22', $this->option);
-            $table->enum('f23', $this->option);
-            $table->enum('f24', $this->option);
-            $table->enum('f25', $this->option);
-            $table->enum('f26', $this->option);
-            $table->enum('f27', $this->option);
+            $table->string('f21');
+            $table->string('f22');
+            $table->string('f23');
+            $table->string('f24');
+            $table->string('f25');
+            $table->string('f26');
+            $table->string('f27');
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
 
             $table->timestamps();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\BadRequestException;
+use App\Helper\ResponseHelper;
 use App\Services\PostService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -43,7 +44,9 @@ class PostController extends Controller
 
     public function getAllPost(Request $request)
     {
-        return $this->postService->getAllPost($request->get('page'));
+
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        return $this->postService->getAllPost($request->get('page'), $userId);
     }
 
     public function getPostUserLogin(Request $request)
@@ -78,7 +81,6 @@ class PostController extends Controller
                 'data' => $filter
             ]
         );
-
     }
 
 
@@ -127,4 +129,20 @@ class PostController extends Controller
         return $this->postService->updateVerified($request->all());
     }
 
+
+    public function findByPosition(Request $request)
+    {
+
+
+        $validator = Validator::make($request->all(), [
+            'key' => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            throw new BadRequestException($validator->errors()->first());
+        }
+
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        $response = $this->postService->findByPosition($request->all(), $userId);
+        return ResponseHelper::successResponse('success fetch data', $response, 200);
+    }
 }

@@ -8,6 +8,7 @@ use App\Services\PostService;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PostController extends Controller
 {
@@ -21,13 +22,42 @@ class PostController extends Controller
         $this->postService = new PostService();
     }
 
-    
+
     public function index()
     {
-        $data = $this->postService->findAllPostFromAdmin();
-        return view('admin.post.post', ['data' => $data]);
-    }
 
+        $data = $this->postService->findAllPostFromAdmin();
+        $tempActive = 0;
+        $tempNonActive = 0;
+        
+
+
+        foreach ($data as $value) {
+            # code...
+            if ($value['verified'] == true) {
+                $tempActive += 1;
+            } else {
+                $tempNonActive += 1;
+            }
+        }
+
+        $total = [
+            'active' => $tempActive,
+            'nonactive' => $tempNonActive
+        ];
+        return view('admin.vacancy.verify-vacancy', [
+            'data' => $data,
+            'total' => [
+                'active' => $total['active'],
+                'nonactive' => $total['nonactive'],
+                'total' => sizeof($data)
+            ]
+        ]);
+    }
+    public function history()
+    {
+        return view('admin.vacancy.history-vacancy');
+    }
     public function store(Request $request)
     {
         $rules = [
@@ -56,7 +86,8 @@ class PostController extends Controller
         $adminId = $this->checkLogin();
         $data = $this->postService->addPostJobAdmin($request->file('image'), $adminId, $request->all(), $isCanComment);
         if ($data['status']) {
-            return back()->with('success', $data['message']);
+            Alert::success('Success', $data['message']);
+            return back();
         }
         return back()->withErrors($data['message']);
     }

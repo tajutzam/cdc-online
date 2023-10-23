@@ -1,16 +1,22 @@
 <?php
 
-use App\Http\Controllers\web\AdminController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\web\LegalisirController;
-use App\Http\Controllers\web\NewsController;
-use App\Http\Controllers\web\NotificationsController;
-use App\Http\Controllers\web\PostController;
-use App\Http\Controllers\web\ProdiController;
-use App\Http\Controllers\web\UserController;
-use App\Http\Middleware\AllowUnauthenticated;
-use App\Http\Middleware\IsAdminMiddleware;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Middleware\IsAdminMiddleware;
+use App\Http\Controllers\web\NewsController;
+use App\Http\Controllers\web\PostController;
+use App\Http\Controllers\web\UserController;
+use App\Http\Controllers\web\AdminController;
+use App\Http\Controllers\web\ProdiController;
+use App\Http\Middleware\AllowUnauthenticated;
+use App\Http\Controllers\web\AktivasiController;
+use App\Http\Controllers\web\LegalisirController;
+use App\Http\Controllers\web\QuisionerController;
+use App\Http\Controllers\web\UserProdiController;
+use App\Http\Controllers\web\AdminProdiController;
+use App\Http\Controllers\web\NotificationsController;
+use App\Http\Controllers\web\ProdiQuesionerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,14 +32,36 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::prefix('prodi')->group(
+    function () {
+        Route::get('/dashboard', [\App\Http\Controllers\web\AdminProdiController::class, 'dashboard'])->name('dashboard-prodi');
+        Route::get('/settings-admin', [AdminProdiController::class, 'settingsAdmin'])->name('settings-admin-prodi');
+        Route::prefix('quesioner')->group(function () {
+            route::get('', [ProdiQuesionerController::class, 'index'])->name('quesioner-index');
+            Route::get("/detail/{id}", function ($id) {
+                return view('prodi.quesioner.detail');
+            });
+        });
+        Route::prefix('user')->group(function () {
+            Route::get('', [UserProdiController::class, 'index'])->name('user-prodi');
+        });
+    }
+);
 Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () {
     Route::get('login', [AdminController::class, 'login'])->withoutMiddleware(IsAdminMiddleware::class)->middleware(AllowUnauthenticated::class);
     Route::post('login', [AuthController::class, 'loginAdmin'])->name('admin-login')->middleware(AllowUnauthenticated::class)->withoutMiddleware(IsAdminMiddleware::class);
+    Route::get('/manage-admin', [AdminController::class, 'manageAdmin'])->name('manage-admin');
+    Route::get('/settings-admin', [AdminController::class, 'settingsAdmin'])->name('settings-admin');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::prefix('lowongan')->group(function () {
-        Route::get('/', [PostController::class, 'index'])->name('post');
-        Route::post('/store', [PostController::class, 'store'])->name('post-store');
+
+    Route::get('/trix', 'TrixController@index');
+    Route::post('/upload', 'TrixController@upload');
+    Route::post('/store', 'TrixController@store');
+
+    Route::prefix('vacancy')->group(function () {
+        Route::get('/', [PostController::class, 'index'])->name('vacancy');
+        Route::post('/store', [PostController::class, 'store'])->name('vacancy-store');
+        Route::get('/history', [PostController::class, 'history'])->name('history');
     });
     Route::prefix('berita')->group(function () {
         Route::get('', [NewsController::class, 'index'])->name('berita');
@@ -47,14 +75,28 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::prefix('legalisir')->group(function () {
         Route::get('', [LegalisirController::class, 'index'])->name('legalisir');
     });
-
+    Route::prefix('aktivasi')->group(function () {
+        Route::get('', [AktivasiController::class, 'index'])->name('aktivasi-alumni');
+    });
     Route::prefix('notifications')->group(function () {
         Route::get('', [NotificationsController::class, 'index'])->name('notifications');
     });
     Route::prefix('prodi')->group(function () {
         Route::get('', [ProdiController::class, 'index'])->name('prodi');
+        Route::post('', [ProdiController::class, 'addProdi'])->name('prodi-post');
+        Route::put('', [ProdiController::class, 'updateProdi'])->name('prodi-put');
+        Route::delete('', [ProdiController::class, 'deleteProdi'])->name('prodi-delete');
+    });
+
+    Route::prefix('quisioner')->group(function () {
+        route::get('', [QuisionerController::class, 'index'])->name('quisioner-index');
+        Route::get("/detail/{id}", function ($id) {
+            return view('admin.quisioner.detail');
+        });
     });
 });
+
+
 
 Route::get('/info', function () {
     echo phpinfo();

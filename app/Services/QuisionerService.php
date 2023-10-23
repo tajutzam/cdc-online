@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
+use App\Helper\ResponseHelper;
 use App\Models\CompanyApplied;
 use App\Models\Competence;
 use App\Models\FurtheStudy;
@@ -17,6 +18,7 @@ use App\Models\QuisionerProdi;
 use App\Models\StartSearchJob;
 use App\Models\StudyMethod;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -64,16 +66,31 @@ class QuisionerService
     public function addQuisionerIdentity($request, $userId)
     {
         Db::beginTransaction();
+        $now = Carbon::now();
 
-        //code...
-        $identityQuisioner = $this->identity->where('user_id', $userId)->first();
+        $user = $this->user->find($userId);
+        $quisionerLevel = $this->quisionerLevel->where('user_id', $userId)->orderBy('created_at', 'desc')->first();
         $prodi = $this->quisionerProdi->where('id', $request['kode_prodi'])->first();
+
+        if ($user->account_status) {
+            throw new BadRequestException('kamu tidak bisa mengisi quisioner , akun kamu sudah terverifikasi');
+        }
+
+        if (isset($quisionerLevel)) {
+            if ($quisionerLevel->identitas_section) {
+                throw new BadRequestException('kamu tidak bisa mengisi quisioner , kamu sudah mengisi quisioner identitas');
+            }
+        }
+
         if (!isset($prodi)) {
             throw new NotFoundException("ops , nampaknya kode program studi yang kamu pilih tidak ada", 404);
         }
-
-        if (isset($identityQuisioner)) {
-            throw new BadRequestException("Ops , kamu sudah mengisi quisioner identitas", 400);
+        if (isset($quisionerLevel)) { // jika user pernah mengisi quisioner
+            $expiredTime = $quisionerLevel->created_at->addMonths(6);
+            if ($now->lt($quisionerLevel->created_at)) {
+                $interfal = $now->diff($expiredTime);
+                throw new BadRequestException('silahkan mengisi quisioner ' . $interfal->m . ' Bulan ' . $interfal->d . " Hari lagi");
+            }
         }
         $isCreated = $this->identity->create([
             'kdptimsmh' => '005019',
@@ -115,11 +132,11 @@ class QuisionerService
         DB::beginTransaction();
         //code...
         $quisionerLevel = $this->findQuisionerLevelByUserId($userId);
+
         if (isset($quisionerLevel)) {
             $isSetIdentity = $quisionerLevel->identitas_section;
             if ($isSetIdentity) {
-                $isAlreadySet = $this->mainSection->where('user_id', $userId)->first();
-                if ($isAlreadySet) {
+                if ($quisionerLevel->main_section) {
                     throw new BadRequestException('Ops , nampaknya kamu sudah mengisi kuisioner utama', 400);
                 }
                 $isCreated = $this->mainSection->create([
@@ -241,7 +258,6 @@ class QuisionerService
             throw new NotFoundException('gagal mengisi quisioner , user tidak ditemukan', 404);
         }
         throw new Exception('Ops , gagal ,mengisi kuisioner terjadi kesalahan', 500);
-
     }
 
 
@@ -438,7 +454,7 @@ class QuisionerService
     }
     public function showUpdateQuisioner($userId)
     {
-        $quisionerLevel = $this->quisionerLevel->where('user_id', $userId)->first();
+        $quisionerLevel = $this->quisionerLevel->where('user_id', $userId)->orderBy('created_at', 'desc')->first();
         if (isset($quisionerLevel)) {
             return $this->successResponse($quisionerLevel, 200, 'Success fetch data');
         }
@@ -453,23 +469,104 @@ class QuisionerService
 
     private function findQuisionerLevelByUserId($userId)
     {
-        $quisioner = $this->quisionerLevel->where('user_id', $userId)->first();
+        $quisioner = $this->quisionerLevel->where('user_id', $userId)->orderBy('created_at', 'desc')->first();
         if (isset($quisioner)) {
             return $quisioner;
         }
         throw new NotFoundException("Quisioner level not found", 404);
     }
+
+
+    public function findAllQuisionerUser()
+    {
+
+        $relations = [
+            'identity_quisioner',
+            'main_quisioner',
+            'furthe_study_quisioner',
+            'competence',
+            'study_method',
+            'jobStreet',
+            'howToFindJobs',
+            'companyApplied',
+            'jobSuitability',
+            'prodi',
+            'quisioners',
+            'educations'
+        ];
+
+        $users = $this->user->with($relations)
+            ->has('educations') // Filter hanya pengguna yang memiliki pendidikan
+            ->get()->toArray();
+        $data = collect($users)->map(function ($user) {
+            $tahunMasuk = null; // Inisialisasi variabel tahun masuk
+            $tahunLulus = null; // Inisialisasi variabel tahun masuk
+
+            collect($user['educations'])->each(function ($education) use (&$tahunMasuk) {
+                if ($education['perguruan'] === 'Politeknik Negeri Jember') {
+                    $tahunMasuk = $education['tahun_masuk'];
+                    $tahunLulus = $education['tahun_lulus'];
+
+                    // Keluar dari iterasi setelah menemukan yang sesuai, jika perlu
+                    return false;
+                }
+            });
+
+
+            collect($user)->each(function ($user) {
+
+            });
+
+
+
+            $user['tahun_masuk'] = $tahunMasuk;
+            $user['tahun_lulus'] = $tahunLulus;
+            return $this->castToUserResponseFromArray($user);
+        })->toArray();
+        return $data;
+    }
+
     private function successResponse($data, $code, $message)
     {
-        return response()->json(
-            [
-                'status' => true,
-                'data' => $data,
-                'message' => $message,
-                'code' => $code
-            ],
-            $code
-        );
+        return ResponseHelper::successResponse($message, $data, $code);
+    }
+
+
+    public function castToUserResponseFromArray($user)
+    {
+        $url = url('/') . "/users/" . $user['foto'];
+        return [
+            "id" => $user['id'],
+            "fullname" => $user['visible_fullname'] == 1 ? $user['fullname'] : "***",
+            "email" => $user['visible_email'] == 1 ? $user['email'] : "***",
+            "nik" => $user['visible_nik'] == 1 ? $user['nik'] : "***",
+            "no_telp" => $user['visible_no_telp'] == 1 ? $user['no_telp'] : "***",
+            "foto" => $url,
+            'ttl' => $user['ttl'],
+            'alamat' => $user['visible_alamat'] == 1 ? $user['alamat'] : "***",
+            "about" => $user['about'],
+            "gender" => $user['gender'],
+            "level" => $user['level'],
+            'nim' => $user['nim'],
+            "linkedin" => $user['linkedin'],
+            "facebook" => $user['facebook'],
+            "instagram" => $user['instagram'],
+            'twiter' => $user['twiter'],
+            'prodi' => $user['prodi'],
+            'account_status' => $user['account_status'],
+            'quisioner' => $user['quisioners'],
+            'identity_quisioner' => $user['identity_quisioner'],
+            'main_quisioner' => $user['main_quisioner'],
+            'furthe_study_quisioner' => $user['furthe_study_quisioner'],
+            'competence' => $user['competence'],
+            'study_method' => $user['study_method'],
+            'jobStreet' => $user['job_street'],
+            'howToFindJobs' => $user['how_to_find_jobs'],
+            'companyApplied' => $user['company_applied'],
+            'jobSuitability' => $user['job_suitability'],
+            'tahun_masuk' => 2022,
+            'tahun_lulus' => 2024
+        ];
     }
 
 }

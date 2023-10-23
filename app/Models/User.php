@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -46,7 +47,11 @@ class User extends Authenticatable
         'expire_email',
         'account_status',
         'kode_prodi',
-        'nim'
+        'nim',
+        'state_quisioner',
+        'fcm_token',
+        'longtitude',
+        'latitude'
     ];
 
     /**
@@ -91,5 +96,67 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class, 'user_id');
     }
+
+
+    public function prodi()
+    {
+        return $this->belongsTo(QuisionerProdi::class, 'kode_prodi');
+    }
+
+
+    public function quisioners()
+    {
+        return $this->hasMany(QuisionerLevel::class, "user_id");
+    }
+
+    public function identity_quisioner()
+    {
+        return $this->hasMany(Identity::class, 'user_id');
+    }
+
+    public function main_quisioner()
+    {
+        return $this->hasMany(MainSection::class, "user_id");
+    }
+
+    public function furthe_study_quisioner()
+    {
+        return $this->hasMany(FurtheStudy::class, "user_id");
+    }
+
+
+
+    public function competence()
+    {
+        return $this->hasMany(Competence::class, "user_id");
+    }
+
+    public function study_method()
+    {
+        return $this->hasMany(StudyMethod::class, "user_id");
+    }
+
+    public function jobStreet()
+    {
+        return $this->hasMany(StartSearchJob::class, "user_id");
+    }
+
+    public function howToFindJobs()
+    {
+        return $this->hasMany(HowFindJob::class, "user_id");
+    }
+
+    public function companyApplied()
+    {
+        return $this->hasMany(CompanyApplied::class, "user_id");
+    }
+
+    public function jobSuitability()
+    {
+        return $this->hasMany(JobSuitability::class, "user_id");
+    }
+
+
+
 
 }

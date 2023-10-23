@@ -15,6 +15,47 @@
         </div>
     @endif
 
+
+    <div class="row gap-4">
+        <div class="card radius-10 col-lg-3 col-md-4 col-sm-12 ">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <p class="mb-0 text-secondary">Total Berita</p>
+                        <h4 class="my-1">{{ $total['total'] }}</h4>
+
+                    </div>
+                    <div class="widgets-icons bg-light-success text-success ms-auto"><i class='bx bxs-paper-plane'></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card radius-10 col-lg-3 col-md-4 col-sm-12">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <p class="mb-0 text-secondary">Berita Aktif</p>
+                        <h4 class="my-1">{{ $total['active'] }}</h4>
+                    </div>
+                    <div class="widgets-icons bg-light-warning text-warning ms-auto"><i class='bx bxs-paper-plane'></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card radius-10 col-lg-3 col-md-4 col-sm-12">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <p class="mb-0 text-secondary">Berita Tidak Aktif</p>
+                        <h4 class="my-1">{{ $total['nonactive'] }}</h4>
+                    </div>
+                    <div class="widgets-icons bg-light-danger text-danger ms-auto"><i class='bx bxs-paper-plane'></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
 
         <div class="">
@@ -27,39 +68,48 @@
             </nav>
         </div>
     </div>
-    <button class="btn btn-outline-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#add-news">Tambah
-        Berita</button>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3">
-        @foreach ($data['data'] as $item)
-            <div class="col">
-                <div class="card">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="{{ $item['image'] }}" alt="foto berita" class="card-img"
-                                style="width: 100%; height: 100%;">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title text-truncate" style="max-height: 400px;">{{ $item['title'] }}</h5>
-                                <p class="card-text text-truncate" style="max-height: 400px;">{{ $item['description'] }}</p>
-                                <p class="card-text"><small class="text-muted">Last updated {{ $item['interval'] }}</small>
-                                </p>
-                                <div class="row-cols-12">
-                                    <button class="btn delete-news-btn" data-bs-target="#delete-news"
-                                        data-id="{{ $item['id'] }}" data-bs-toggle="modal"><i class="fa-solid fa-trash"
-                                            style="color: #f94f06;"></i></button>
-                                    <button class="btn update-news-btn" data-bs-toggle="modal"
-                                        data-news="{{ json_encode($item) }}" data-bs-target="#update-news"><i
-                                            class="fa-regular fa-pen-to-square" style="color: #005eff;"></i></button>
+    <div class="card row align-items-start">
+        <button class="btn btn-outline-primary btn-sm mb-3 w-auto m-3" data-bs-toggle="modal"
+            data-bs-target="#add-news">Tambah
+            Berita</button>
+    </div>
+
+    <div class="card row align-items-start">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3 w-auto my-2">
+            @foreach ($data['data'] as $item)
+                <div class="col">
+                    <div class="card">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="{{ $item['image'] }}" alt="foto berita" class="card-img"
+                                    style="width: 100%; height: 100%;">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title text-truncate" style="max-height: 400px;">{{ $item['title'] }}
+                                    </h5>
+                                    <p class="card-text text-truncate" style="max-height: 400px;">
+                                        {{ strip_tags($item['description']) }}</p>
+                                    <p class="card-text"><small class="text-muted">Terakhir diperbarui
+                                            {{ $item['interval'] }}</small>
+                                    </p>
+                                    <div class="row-cols-12" style="align-items: flex-start">
+                                        <button class="btn delete-news-btn" data-bs-target="#delete-news"
+                                            data-id="{{ $item['id'] }}" data-bs-toggle="modal"><i
+                                                class="fa-solid fa-trash" style="color: #f94f06;"></i></button>
+                                        <button class="btn update-news-btn" data-bs-toggle="modal"
+                                            data-news="{{ json_encode($item) }}" data-bs-target="#update-news"><i
+                                                class="fa-regular fa-pen-to-square" style="color: #005eff;"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
-        @endforeach
+                </div>
+            @endforeach
+        </div>
     </div>
 
     <nav aria-label="...">
@@ -85,20 +135,23 @@
         </ul>
     </nav>
 
-
-    <x-modal id="add-news" footer="footer" title="title" body="body">
+    <x-modal-large id="add-news" footer="footer" title="title" body="body">
         <x-slot name="title">Tambah Berita</x-slot>
         <x-slot name="id">add-news</x-slot>
         <x-slot name="body">
             <form action="{{ route('berita-post') }}" method="post" enctype="multipart/form-data">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control form-control-sm" required id="floatingTextarea"
-                        name="title"></input>
+                        name="title">
                     <label for="floatingTextarea">Judul</label>
                 </div>
+
                 <div class="form-floating mb-3">
-                    <textarea type="text" class="form-control form-control-sm" required id="floatingTextarea" name="description"></textarea>
-                    <label for="floatingTextarea">Description / Content</label>
+                    {{-- <textarea type="text" class="form-control form-control-sm" required id="" name=""></textarea> --}}
+                    {{-- <input id="floatingTextarea" type="hidden" name="description" value="" /> --}}
+                    <trix-editor input="description" class="trix-content"></trix-editor>
+                    <input type="text" id="description" name="description" hidden>
+                    {{-- <input type="submit" name="submit" value="Submit" /> --}}
                 </div>
                 <div class="mb-3">
                     <input class="form-control form-control-sm" name="image" required id="formFileSm" type="file"
@@ -106,19 +159,19 @@
                 </div>
                 <div class="row justify-content-end">
                     <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
-                        data-bs-dismiss="modal">close</button>
-                    <button class="col-3 btn btn-outline-primary btn-sm mx-4">Save</button>
+                        data-bs-dismiss="modal">Tutup</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
                 </div>
             </form>
         </x-slot>
-    </x-modal>
+    </x-modal-large>
 
     <x-modal id="delete-news" footer="footer" title="title" body="body">
         <x-slot name="title">Hapus Berita</x-slot>
         <x-slot name="id">delete-news</x-slot>
         <x-slot name="body">
             <h5 class="mb-3">Apakah anda yakin ingin menghapus data ini ? </h5>
-            <form action="{{ route('berita-delete') }}" method="POST" >
+            <form action="{{ route('berita-delete') }}" method="POST">
                 <input type="text" hidden id="news-delete-id" name="id">
                 @method('delete')
                 @csrf
@@ -131,7 +184,7 @@
         </x-slot>
     </x-modal>
 
-    <x-modal id="update-news" footer="footer" title="title" body="body">
+    <x-modal-large id="update-news" footer="footer" title="title" body="body">
         <x-slot name="title">Update Berita</x-slot>
         <x-slot name="id">update-news</x-slot>
         <x-slot name="body">
@@ -145,8 +198,11 @@
                 </div>
                 <input type="hidden" name="id" id="news-id">
                 <div class="form-floating mb-3">
-                    <textarea type="text" class="form-control form-control-sm" required id="description-update" name="description"></textarea>
-                    <label for="floatingTextarea">Description / Content</label>
+                    <trix-editor id="trix-update-description" input="description-update"
+                        class="trix-content"></trix-editor>
+                    <textarea type="text" class="form-control form-control-sm" required id="description-update" name="description"
+                        hidden></textarea>
+
                 </div>
                 <div class="mb-3">
                     <input class="form-control form-control-sm" name="image-update" id="image" type="file"
@@ -156,24 +212,24 @@
                 <label for="" class="form-label">Aktif</label>
                 <div class="row justify-content-end">
                     <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
-                        data-bs-dismiss="modal">close</button>
-                    <button class="col-3 btn btn-outline-primary btn-sm mx-4" type="submit">Save</button>
+                        data-bs-dismiss="modal">Tutup</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4" type="submit">Simpan</button>
                 </div>
             </form>
         </x-slot>
-    </x-modal>
+    </x-modal-large>
 
     <script>
         $(document).ready(function() {
             // declare
             var title = $('#title-update');
-            var description = $('#description-update');
+            var description = $('#trix-update-description');
             var active = $('#active');
             var img_news = $('#img-news');
             var imgInput = $('#image');
             var news_id = $('#news-id');
             var news_delete_id = $('#news-delete-id');
-            $('.update-news-btn').click(function() {
+            $('.update-news-btn').on('click', function() {
                 let news = $(this).data('news');
                 active.prop('checked', news.active);
                 title.val(news.title);
@@ -182,7 +238,7 @@
                 description.val(news.description);
             });
 
-            $('.delete-news-btn').click(function() {
+            $('.delete-news-btn').on('click', function() {
                 let id = $(this).data('id');
                 news_delete_id.val(id);
             });

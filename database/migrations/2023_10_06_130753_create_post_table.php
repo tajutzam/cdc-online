@@ -14,7 +14,7 @@ class CreatePostTable extends Migration
     public function up()
     {
         Schema::create('post', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->nullable(true)->references('id')->on('users')->onDelete('cascade')->cascadeOnUpdate();
             $table->foreignUuid('admin_id')->nullable(true)->references('id')->on('admin')->onDelete('cascade')->cascadeOnUpdate();
             $table->string('link_apply')->nullable(false);
@@ -24,9 +24,9 @@ class CreatePostTable extends Migration
             $table->timestamp('expired')->nullable(false);
             $table->timestamp('post_at')->default(\Illuminate\Support\Carbon::now());
             $table->string('image')->nullable(false);
-            $table->enum('type_jobs', ['Purnawaktu', 'Paruh Waktu', 'Wiraswasta', 'Pekerja Lepas', 'Kontrak', 'Musiman']);
+            $table->string('type_jobs', );
             $table->boolean('can_comment')->default(true);
-            $table->boolean('verivied')->default(false);
+            $table->enum('verified', ['waiting', 'verified', 'rejected'])->default('waiting');
             $table->timestamps();
         });
     }

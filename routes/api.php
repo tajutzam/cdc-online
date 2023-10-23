@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\JobsController;
+use App\Http\Controllers\NewsController as ApiNewsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\QuisionerController;
 use App\Http\Controllers\StudyProgramPublicController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\web\NewsController;
 use App\Http\Middleware\TokenMiddleware;
 use App\Http\Middleware\VeriviedMiddleware;
 use App\Services\UserService;
@@ -28,49 +31,52 @@ use Illuminate\Support\Facades\Route;
 Route::get("/user", [UserController::class, "getOneUser"]);
 Route::get("/users", [UserController::class, "findAllUser"])->middleware([VeriviedMiddleware::class]);
 Route::get("/user/detail/{id}", [UserController::class, "findUserById"])->middleware([VeriviedMiddleware::class]);
-;
+
+Route::post("/user/search", [UserController::class, 'findByName'])->withoutMiddleware(VeriviedMiddleware::class);
+
+
 Route::put("/user/visibility/update", [UserController::class, "updateVisibility"])->middleware([VeriviedMiddleware::class]);
-;
+
 Route::put("/user/profile", [UserController::class, "updateProfileUserLogin"])->middleware([VeriviedMiddleware::class]);
-;
+
 Route::get("/user/followers", [UserController::class, "findAllFollowers"])->middleware([VeriviedMiddleware::class]);
-;
+
 Route::get("/user/followers/{id}", [UserController::class, "findAllFolowersJoin"])->middleware([VeriviedMiddleware::class]);
-;
+
 Route::post("/user/followers", [UserController::class, "followUser"])->middleware([VeriviedMiddleware::class]);
-;
+
 Route::delete("/user/followers", [UserController::class, "unfollowUser"])->middleware([VeriviedMiddleware::class]);
-;
+
 Route::get("/user/followed", [UserController::class, "showUserFolowed"])->middleware([VeriviedMiddleware::class]);
-;
+
 Route::get("/user/followed/{id}", [UserController::class, 'showUserFolowedById'])->middleware([VeriviedMiddleware::class]);
-;
+
 Route::put("/user/profile/email", [UserController::class, "updateEmailUserLogin"])->middleware([VeriviedMiddleware::class]);
-;
+
 Route::post("/user/profile/image", [UserController::class, "updateFotoProfile"])->middleware([VeriviedMiddleware::class]);
-;
+
 // education
 Route::post("/user/education/add", [EducationController::class, "addNewEducationUser"])->middleware([VeriviedMiddleware::class]);
-;
+
 Route::get("/user/education", [EducationController::class, "showEducationUserLogin"])->withoutMiddleware([VeriviedMiddleware::class]);
-;
+
 Route::put("/user/education/{idEducation}", [EducationController::class, "updateEducationUserLogin"])->middleware([VeriviedMiddleware::class]);
-;
+
 Route::delete("/user/education", [EducationController::class, "deleteEducationById"])->middleware([VeriviedMiddleware::class]);
-;
+
 Route::get("/user/education/{id}", [EducationController::class, "findEducationByIdAndUserId"])->middleware([VeriviedMiddleware::class]);
-;
+
 //jobs
 Route::post("/user/jobs", [JobsController::class, "addNewJobsUser"]);
-;
+
 
 Route::get("/user/jobs/{id}", [JobsController::class, "findJobsUserLoginById"]);
-;
+
 Route::get("/user/jobs", [JobsController::class, "showJobsUserLogin"])->withoutMiddleware(VeriviedMiddleware::class);
 Route::put("/user/jobs", [JobsController::class, "updateJobsUserLogin"]);
-;
+
 Route::delete('/user/jobs', [JobsController::class, "removeJobsUserLoginById"]);
-;
+
 
 // auth
 Route::post("/auth/login", [AuthController::class, "login"])->withoutMiddleware(VeriviedMiddleware::class);
@@ -102,6 +108,36 @@ Route::delete("/user/post/delete/{id}", [PostController::class, "deletePost"])->
 Route::put("/user/post/update/comment/{id}", [PostController::class, 'updateComment'])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
 
+Route::post('/user/post/search', [PostController::class, 'findByPosition'])->middleware(TokenMiddleware::class);
+
+// NEWS USER
+Route::get('/user/news', [ApiNewsController::class, 'findAllActive']);
+Route::get('/user/news/{id}', [ApiNewsController::class, 'findById']);
+
+
+// notifications
+Route::put('/user/fcmtoken', [UserController::class, 'sendFcmToken'])->withoutMiddleware(VeriviedMiddleware::class);
+Route::put("/user/position" , [UserController::class , "setPosition"]);
+
+Route::get("/user/ranking/followers", [UserController::class, "getTopUser"]);
+Route::get("/user/ranking/salary", [UserController::class, "getTopSalary"]);
+
+
+// comment
+Route::post('/user/post/comment', [CommentsController::class, 'addComment']);
+Route::delete('/user/post/comment', [CommentsController::class, 'deleteComment']);
+
 
 // admin api
 Route::put("/admin/lowongan/verified", [PostController::class, 'updateVerified'])->withoutMiddleware([TokenMiddleware::class, VeriviedMiddleware::class]);
+
+Route::get("/auth/generate/token", [AuthController::class, "generateTokenApiPolije"]);
+
+Route::get("/auth/verifikasi" , [AuthController::class , "verifikasi"]);
+
+
+
+// documentations
+Route::get('/api/documentation', function () {
+    return view('vendor.l5-swagger.index');
+});
