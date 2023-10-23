@@ -34,26 +34,7 @@ class AuthController extends Controller
         return $this->authService->login($request->input('emailOrNik'), $request->input('password'));
     }
 
-    public function loginAdmin(Request $request)
-    {
-
-        $rules = [
-            'email' => 'required|email',
-            'password' => 'required|max:250',
-        ];
-
-        $customMessages = [
-            'required' => ':attribute Dibutuhkan.',
-        ];
-
-
-        $data = $this->validate($request, $rules, $customMessages);
-        $isLogin = $this->adminService->login($data['email'], $data['password']);
-        if ($isLogin) {
-            return redirect('/admin/dashboard');
-        }
-        return redirect()->back()->withErrors('Gagal Logi , harap check email atau password anda');
-    }
+    
 
     public function registerUser(RegisterRequest $request)
     {

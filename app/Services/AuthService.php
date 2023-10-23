@@ -198,18 +198,11 @@ class AuthService
     public function verifikasiNim($nim)
     {
 
-        $response = $this->generateToken();
-        $token = $response->access_token;
-
-        $headers = array(
-            'Authorization: Bearer ' . $token,
-        );
-        $response = Http::withHeaders(
-            $headers
-        )->get('http://api.polije.ac.id/resources/akademik/mahasiswa/wisuda', [
-                    'nim' => $nim
-                ]);
-        return $response;
+        $header = [
+            'Authorization' => 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzNyIsImp0aSI6IjA1OTYxNjYzNjkxOGNkZTc0YWEwYmUwMzVjNmZkYzIyY2I3NDdlNTM3ZjU4OGE1NjA0YzViMGRlZTMwOGExNWM2ODI1YjNjN2YyZDhlMGVhIiwiaWF0IjoxNjk4MDI4ODM4LjgxODM4MiwibmJmIjoxNjk4MDI4ODM4LjgxODM4NywiZXhwIjoxNjk4MTE1MjM4LjgxMjIwNywic3ViIjoiIiwic2NvcGVzIjpbXX0.c0e3MM-M-Z5CgVts0F_GEZhBtzkRdU1W4_mz1CM-6lsoE4Kw47c8yqL8p1TJM2_TWXusTfEF3SxR4o2F60nbMwrUnB6XGyRCqdrxKqSAdgOByNdPvni0NxadRAu-b5Up0XVwN0uaKhV6qAns9LTVV7gVXydQNOAk6uqjQ3Mi4ruQ1UWaiSvWg4PAoOvnRSWG1QTURTZUgo2fJtoCqlDxqkbGk_5xm7Eu9YPcq8wBB0tp6IS0m3Eacqypj4nSF5kf9F9A1esVNzv26rS-SwuAEa_WYw58g1YliITrOr_ODZui4rFYVLscWHDTyNrY5i2pgjpQdzIM5dIKKxWFA_F7K5oRHlsNfoNg8s5nvk6Hrl6KtCBDQoO7WDdMt-4n6VOYUdW5klLyCWMC12YN4xWNY6XUZUVF2HAohWBmaMeuaTo9IqWCMfBksnslZ2rDn12ikTKaZ5Zg9w4w1UNd5J-9DM6ykps639jFAy14ooGW__Y2X-_AvmDoG1zkk6yQaedKot65h_ORRTrbvLXVnfGpWuqc3LSPH6zS7BhdO2gcnqoeLC7Aaz53Y6_5aorQTzEqlpgqUZTzq7iqkzk4n4eHQ0zleUepHZ1DYx2fIQkgIiGOAXcwevuu-bmsybrj8kz8T7Hl2s4pVZBLi06RYA20sx65BGH-zr2LRJ_AJvp3nIY'
+        ];
+        $response = Http::withHeaders($header)->get('http://api.polije.ac.id/resources/akademik/mahasiswa?debug=true&nim=e41211674');
+        echo $response;
     }
 
     public function generateToken()

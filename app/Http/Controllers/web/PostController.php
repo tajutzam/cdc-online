@@ -29,7 +29,7 @@ class PostController extends Controller
         $data = $this->postService->findAllPostFromAdmin();
         $tempActive = 0;
         $tempNonActive = 0;
-        
+
 
 
         foreach ($data as $value) {
@@ -56,6 +56,10 @@ class PostController extends Controller
     }
     public function history()
     {
+
+
+        $data = $this->postService->findHistoryVacancy();
+        dd($data);
         return view('admin.vacancy.history-vacancy');
     }
     public function store(Request $request)
@@ -100,6 +104,9 @@ class PostController extends Controller
         }
         return redirect('admin/login')->withErrors('ops sesi login kamu sudah habis');
     }
+
+
+
 
     private function getDataFromJson($data): array
     {

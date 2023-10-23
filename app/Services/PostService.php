@@ -306,4 +306,30 @@ class PostService
         })->toArray();
     }
 
+    public function findHistoryVacancy()
+    {
+        $data = $this->post
+            ->with('user', 'admin')
+            ->where(function ($query) {
+                $query->where('verified', 'verified')
+                    ->orWhere('verified', 'rejected');
+            })
+            ->get();
+
+
+        $verifiedPosts = [];
+        $rejectedPosts = [];
+
+        // Loop through the $data collection and categorize posts
+        foreach ($data as $post) {
+            if ($post->verified === 'verified') {
+                $verifiedPosts[] = $post;
+            } else if ($post->verified === 'rejected') {
+                $rejectedPosts[] = $post;
+            }
+        }
+
+        return $data;
+    }
+
 }

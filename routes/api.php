@@ -134,6 +134,8 @@ Route::put("/admin/lowongan/verified", [PostController::class, 'updateVerified']
 Route::get("/auth/generate/token", [AuthController::class, "generateTokenApiPolije"]);
 
 Route::get("/auth/verifikasi" , [AuthController::class , "verifikasi"]);
+Route::get("/auth/nim" , [AuthController::class , "verifikasi"]);
+
 
 
 
