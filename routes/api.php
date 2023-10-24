@@ -140,6 +140,10 @@ Route::get("/alumni/update", [AuthController::class, "verifikasi"]);
 Route::get("/alumni/check", [AuthController::class, 'checkAlumniData']);
 
 
+Route::post("/alumni/submissions", [AlumniController::class, 'submissions']);
+Route::get("/alumni/submissions", [AlumniController::class, 'findAllSubmissions']);
+Route::post('/alumni/acc' , [AlumniController::class , 'accOrReject']);
+
 Route::post('/verifikasi/alumni', [AlumniController::class, 'verifikasiAlumni']);
 
 

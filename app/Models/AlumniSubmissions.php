@@ -6,17 +6,12 @@ use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Alumni extends Model
+class AlumniSubmissions extends Model
 {
-    use HasFactory;
+    use HasFactory , Uuids;
 
-
-    protected $table = 'alumni';
-
-    public $incrementing = false;
 
     protected $fillable = [
-        'id',
         'alamat_domisili',
         'angkatan',
         'email',
@@ -29,6 +24,8 @@ class Alumni extends Model
         'tahun_lulus',
         'tanggal_lahir',
         'tempat_lahir',
-        'rowrank',
+        'ijazah',
     ];
+
+    protected $table = 'alumni_submissions';
 }

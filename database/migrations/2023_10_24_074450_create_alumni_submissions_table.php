@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAlumniTable extends Migration
+class CreateAlumniSubmissionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateAlumniTable extends Migration
      */
     public function up()
     {
-        Schema::create('alumni', function (Blueprint $table) {
+        Schema::create('alumni_submissions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('alamat_domisili')->nullable();
             $table->string('angkatan')->nullable();
@@ -27,7 +27,7 @@ class CreateAlumniTable extends Migration
             $table->string('tahun_lulus')->nullable();
             $table->string('tanggal_lahir')->nullable();
             $table->string('tempat_lahir')->nullable();
-            $table->string('rowrank')->nullable(true);
+            $table->string('ijazah');
             $table->timestamps();
         });
     }
@@ -39,6 +39,6 @@ class CreateAlumniTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('alumni');
+        Schema::dropIfExists('alumni_submissions');
     }
 }

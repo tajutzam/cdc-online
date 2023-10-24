@@ -4,15 +4,18 @@
 namespace App\Services;
 
 use App\Mail\EmailVeriviedMail;
+use App\Mail\SubmissionsEmail;
 
 class EmailService
 {
 
     private EmailVeriviedMail $emailVeriviedMail;
+    private SubmissionsEmail $submissionsEmail;
 
     public function __construct()
     {
         $this->emailVeriviedMail = new EmailVeriviedMail();
+        $this->submissionsEmail = new SubmissionsEmail();
     }
 
     public function sendEmailVerifikasi($to, $link, $expired)
@@ -32,5 +35,16 @@ class EmailService
 
     }
 
+
+    public function sendEmailSubmissions($to, $message)
+    {
+        $details = [
+            'title' => 'Pengajuan Alumni',
+            'body' => $message,
+        ];
+        $this->submissionsEmail->details = $details;
+        \Mail::to($to)->send($this->submissionsEmail);
+
+    }
 
 }
