@@ -22,6 +22,8 @@ class QuisionerLevel extends Model
         'how_find_jobs_section',
         'company_applied_section',
         'job_suitability_section',
+        'level',
+        'expired'
     ];
 
     protected $primaryKey = 'id';

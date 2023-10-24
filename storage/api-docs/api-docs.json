@@ -6,6 +6,24 @@
         "version": "1.0"
     },
     "paths": {
-        "/api/user": {}
+
+        "/api/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get user information",
+                "description": "Get information about a user",
+                "operationId": "getUser",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        }
     }
 }

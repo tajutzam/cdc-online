@@ -2,6 +2,7 @@
 
 
 @section('content')
+
     <div class="container">
         <h1 class="text-center mt-3">Kuesioner</h1>
         <form>
@@ -27,4 +28,5 @@
             <button type="submit" class="btn btn-primary">Kirim</button>
         </form>
     </div>
+
 @endsection

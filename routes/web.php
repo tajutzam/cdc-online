@@ -3,13 +3,24 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+
 use App\Http\Middleware\IsAdminMiddleware;
+
+use App\Http\Controllers\web\AuthController as WebAuthController;
+use App\Http\Controllers\web\LegalisirController;
+
 use App\Http\Controllers\web\NewsController;
 use App\Http\Controllers\web\PostController;
+
+use App\Http\Controllers\web\ProdiAdminController;
+use App\Http\Controllers\web\ProdiController;
+use App\Http\Controllers\web\QuisionerController;
+
 use App\Http\Controllers\web\UserController;
 use App\Http\Controllers\web\AdminController;
 use App\Http\Controllers\web\ProdiController;
 use App\Http\Middleware\AllowUnauthenticated;
+
 use App\Http\Controllers\web\AktivasiController;
 use App\Http\Controllers\web\LegalisirController;
 use App\Http\Controllers\web\QuisionerController;
@@ -18,6 +29,11 @@ use App\Http\Controllers\web\AdminProdiController;
 use App\Http\Controllers\web\NotificationsController;
 use App\Http\Controllers\web\ReferenceUserController;
 use App\Http\Controllers\web\ProdiQuesionerController;
+
+use App\Http\Middleware\IsAdminMiddleware;
+use App\Http\Middleware\IsProdiAdministratorMiddleware;
+use App\Models\User;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,11 +62,15 @@ Route::prefix('prodi')->group(
         Route::prefix('user')->group(function () {
             Route::get('', [UserProdiController::class, 'index'])->name('user-prodi');
         });
+       Route::get('', [ProdiAdminController::class, 'index']);
+    Route::get('login', [ProdiAdminController::class, 'login'])->withoutMiddleware(IsProdiAdministratorMiddleware::class);
     }
 );
 Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () {
     Route::get('login', [AdminController::class, 'login'])->withoutMiddleware(IsAdminMiddleware::class)->middleware(AllowUnauthenticated::class);
-    Route::post('login', [AuthController::class, 'loginAdmin'])->name('admin-login')->middleware(AllowUnauthenticated::class)->withoutMiddleware(IsAdminMiddleware::class);
+
+    Route::post('login', [WebAuthController::class, 'loginAdmin'])->name('admin-login')->middleware(AllowUnauthenticated::class)->withoutMiddleware(IsAdminMiddleware::class);
+
     Route::get('/manage-admin', [AdminController::class, 'manageAdmin'])->name('manage-admin');
     Route::get('/settings-admin', [AdminController::class, 'settingsAdmin'])->name('settings-admin');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');

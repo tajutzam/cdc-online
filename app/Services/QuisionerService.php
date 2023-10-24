@@ -67,6 +67,7 @@ class QuisionerService
     {
         Db::beginTransaction();
         $now = Carbon::now();
+        $level = '0';
 
         $user = $this->user->find($userId);
         $quisionerLevel = $this->quisionerLevel->where('user_id', $userId)->orderBy('created_at', 'desc')->first();
@@ -76,22 +77,28 @@ class QuisionerService
             throw new BadRequestException('kamu tidak bisa mengisi quisioner , akun kamu sudah terverifikasi');
         }
 
-        if (isset($quisionerLevel)) {
-            if ($quisionerLevel->identitas_section) {
-                throw new BadRequestException('kamu tidak bisa mengisi quisioner , kamu sudah mengisi quisioner identitas');
-            }
-        }
-
         if (!isset($prodi)) {
             throw new NotFoundException("ops , nampaknya kode program studi yang kamu pilih tidak ada", 404);
         }
         if (isset($quisionerLevel)) { // jika user pernah mengisi quisioner
-            $expiredTime = $quisionerLevel->created_at->addMonths(6);
-            if ($now->lt($quisionerLevel->created_at)) {
-                $interfal = $now->diff($expiredTime);
+            if ($now->isBefore($quisionerLevel->expired)) {
+                $interfal = $now->diff($quisionerLevel->expired);
                 throw new BadRequestException('silahkan mengisi quisioner ' . $interfal->m . ' Bulan ' . $interfal->d . " Hari lagi");
             }
         }
+
+        $quisionerCount = $this->quisionerLevel->where('user_id', $userId)->count();
+
+        if ($quisionerCount == 0) {
+            $level = '0';
+        } else if ($quisionerCount == 1) {
+            $level = '6';
+        } else if ($quisionerCount == 2) {
+            $level = '12';
+        } else {
+            throw new BadRequestException('ops , kamu sudah mengisi sebanyak 12 bulan ');
+        }
+
         $isCreated = $this->identity->create([
             'kdptimsmh' => '005019',
             'kdpstmsmh' => $request['kode_prodi'],
@@ -109,8 +116,11 @@ class QuisionerService
 
             $quisionerIsCreated = $this->quisionerLevel->create([
                 'identitas_section' => true,
-                'user_id' => $userId
+                'user_id' => $userId,
+                'level' => $level,
+                'expired' => Carbon::now()->addMonths(6)
             ]);
+
             if (isset($quisionerIsCreated)) {
                 Db::commit();
                 $data = $this->quisionerLevel->find($quisionerIsCreated->id);
@@ -511,20 +521,14 @@ class QuisionerService
                     return false;
                 }
             });
-
-
-            collect($user)->each(function ($user) {
-
-            });
-
-
-
+            
             $user['tahun_masuk'] = $tahunMasuk;
             $user['tahun_lulus'] = $tahunLulus;
             return $this->castToUserResponseFromArray($user);
         })->toArray();
         return $data;
     }
+
 
     private function successResponse($data, $code, $message)
     {

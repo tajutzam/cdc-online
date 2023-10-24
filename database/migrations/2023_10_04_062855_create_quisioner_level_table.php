@@ -28,6 +28,8 @@ class CreateQuisionerLevelTable extends Migration
             $table->boolean('how_find_jobs_section')->default(false);
             $table->boolean('company_applied_section')->default(false);
             $table->boolean('job_suitability_section')->default(false);
+            $table->enum('level', ['0', '6', '12']);
+            $table->timestamp('expired');
             // star
             $table->timestamps();
         });
