@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Support\Facades\Route;
+
+
 use App\Http\Controllers\AuthController;
 
 use App\Http\Middleware\IsAdminMiddleware;
@@ -18,19 +18,18 @@ use App\Http\Controllers\web\QuisionerController;
 
 use App\Http\Controllers\web\UserController;
 use App\Http\Controllers\web\AdminController;
-use App\Http\Controllers\web\ProdiController;
+
 use App\Http\Middleware\AllowUnauthenticated;
 
 use App\Http\Controllers\web\AktivasiController;
-use App\Http\Controllers\web\LegalisirController;
-use App\Http\Controllers\web\QuisionerController;
+
 use App\Http\Controllers\web\UserProdiController;
 use App\Http\Controllers\web\AdminProdiController;
 use App\Http\Controllers\web\NotificationsController;
 use App\Http\Controllers\web\ReferenceUserController;
 use App\Http\Controllers\web\ProdiQuesionerController;
 
-use App\Http\Middleware\IsAdminMiddleware;
+
 use App\Http\Middleware\IsProdiAdministratorMiddleware;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;

@@ -38,29 +38,31 @@ class PostController extends Controller
             } else {
 
 
-        foreach ($data as $value) {
-            # code...
-            $now = Carbon::now();
-            if ($value['verified'] == 'verified') {
-                $tempActive += 1;
-            } else if ($now->isAfter($value['expired'])) {
-                $tempNonActive += 1;
+                foreach ($data as $value) {
+                    # code...
+                    $now = Carbon::now();
+                    if ($value['verified'] == 'verified') {
+                        $tempActive += 1;
+                    } else if ($now->isAfter($value['expired'])) {
+                        $tempNonActive += 1;
+                    }
+                }
+
+                $total = [
+                    'active' => $tempActive,
+                    'nonactive' => $tempNonActive
+                ];
+
+                return view('admin.vacancy.verify-vacancy', [
+                    'data' => $data,
+                    'total' => [
+                        'active' => $total['active'],
+                        'nonactive' => $total['nonactive'],
+                        'total' => sizeof($data)
+                    ]
+                ]);
             }
         }
-
-        $total = [
-            'active' => $tempActive,
-            'nonactive' => $tempNonActive
-        ];
-
-        return view('admin.vacancy.verify-vacancy', [
-            'data' => $data,
-            'total' => [
-                'active' => $total['active'],
-                'nonactive' => $total['nonactive'],
-                'total' => sizeof($data)
-            ]
-        ]);
     }
     public function history()
     {
