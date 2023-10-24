@@ -16,7 +16,7 @@ class CreateNewsTable extends Migration
         Schema::create('news', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('title')->nullable(false);
-            $table->string('description', 10000);
+            $table->text('description');
             $table->boolean('active')->default(true);
             $table->string('image');
             $table->foreignUuid('admin_id')->references('id')->on('admin')->onUpdate('cascade');

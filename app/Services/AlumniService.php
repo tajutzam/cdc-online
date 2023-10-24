@@ -114,6 +114,32 @@ class AlumniService
         }
     }
 
+
+    public function createAlumni($request)
+    {
+        $created = $this->alumni->create([
+            'id' => Str::uuid()->toString(),
+            'alamat_domisili' => $request['alamat_domisili'],
+            'angkatan' => $request['angkatan'],
+            'email' => $request['email'],
+            'jenis_kelamin' => $request['jenis_kelamin'],
+            'jurusan' => $request['jurusan'],
+            'nama_lengkap' => $request['nama_lengkap'],
+            'nim' => $request['nim'],
+            'no_telp' => $request['no_telp'],
+            'program_studi' => $request['program_studi'],
+            'tahun_lulus' => $request['tahun_lulus'],
+            'tanggal_lahir' => $request['tanggal_lahir'],
+            'tempat_lahir' => $request['tempat_lahir'],
+            'rowrank' => "9",
+        ]);
+        if ($created) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function findAllAlumni()
     {
         return $this->alumni->all();

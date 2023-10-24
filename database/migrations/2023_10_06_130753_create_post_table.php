@@ -18,7 +18,7 @@ class CreatePostTable extends Migration
             $table->foreignUuid('user_id')->nullable(true)->references('id')->on('users')->onDelete('cascade')->cascadeOnUpdate();
             $table->foreignUuid('admin_id')->nullable(true)->references('id')->on('admin')->onDelete('cascade')->cascadeOnUpdate();
             $table->string('link_apply')->nullable(false);
-            $table->string('description')->nullable(false);
+            $table->text('description')->nullable(false);
             $table->string('company')->nullable(false);
             $table->string('position')->nullable(false);
             $table->timestamp('expired')->nullable(false);
