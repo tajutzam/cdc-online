@@ -3,9 +3,13 @@
 
 namespace App\Services;
 
+use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
+use App\Exceptions\WebException;
+use App\Helper\ResponseHelper;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\Alumni;
 use App\Models\Education;
 use App\Models\QuisionerProdi;
 use App\Models\User;
@@ -19,7 +23,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-
+use Throwable;
 
 class AuthService
 {
@@ -195,56 +199,19 @@ class AuthService
     }
 
 
-    public function verifikasiNim($nim)
+    public function verifikasiEmail($email)
     {
-
-        $response = $this->generateToken();
-        $token = $response->access_token;
-
-        $headers = array(
-            'Authorization: Bearer ' . $token,
-        );
-        $response = Http::withHeaders(
-            $headers
-        )->get('http://api.polije.ac.id/resources/akademik/mahasiswa/wisuda', [
-                    'nim' => $nim
-                ]);
-        return $response;
-    }
-
-    public function generateToken()
-    {
-
-        $grant_type = env('TOKEN_API_GRANT_TYPE');
-        $client_id = env('TOKEN_API_CLIENT_ID');
-        $client_secreet = env('TOKEN_API_CLIENT_SCREET');
-
-        if (!isset($grant_type) || !isset($client_id) || !isset($client_secreet)) {
-            throw new Exception('ops , your env not included the token');
+        $user = $this->user->where('email', $email)->first();
+        if (isset($user)) {
+            throw new BadRequestException('ops , email mu sudah digunakan user lain');
         }
-
-        $curl = curl_init();
-
-        curl_setopt_array(
-            $curl,
-            array(
-                CURLOPT_URL => 'http://api.polije.ac.id/oauth/token',
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-                CURLOPT_POSTFIELDS => array('grant_type' => $grant_type, 'client_id' => $client_id, 'client_secret' => $client_secreet),
-            )
-        );
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-
-        return json_decode($response);
+        return [
+            'status' => true,
+            'message' => 'success verifikasi email , silahkan registrasi',
+            'code' => 200,
+            'data' => true
+        ];
     }
+
 
 }

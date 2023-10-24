@@ -5,6 +5,7 @@ namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
 use App\Services\PostService;
+use Carbon\Carbon;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,14 +30,13 @@ class PostController extends Controller
         $data = $this->postService->findAllPostFromAdmin();
         $tempActive = 0;
         $tempNonActive = 0;
-        
-
 
         foreach ($data as $value) {
             # code...
-            if ($value['verified'] == true) {
+            $now = Carbon::now();
+            if ($value['verified'] == 'verified') {
                 $tempActive += 1;
-            } else {
+            } else if ($now->isAfter($value['expired'])) {
                 $tempNonActive += 1;
             }
         }
@@ -45,6 +45,7 @@ class PostController extends Controller
             'active' => $tempActive,
             'nonactive' => $tempNonActive
         ];
+
         return view('admin.vacancy.verify-vacancy', [
             'data' => $data,
             'total' => [
@@ -56,7 +57,8 @@ class PostController extends Controller
     }
     public function history()
     {
-        return view('admin.vacancy.history-vacancy');
+        $data = $this->postService->findHistoryVacancy();
+        return view('admin.vacancy.history-vacancy', ['data' => $data]);
     }
     public function store(Request $request)
     {
@@ -70,11 +72,9 @@ class PostController extends Controller
             'type_jobs' => 'required|in:Purnawaktu,Paruh Waktu,Wiraswasta,Pekerja Lepas,Kontrak,Musiman'
         ];
 
-
         $customMessages = [
             'required' => ':attribute Dibutuhkan.',
         ];
-
 
 
         $data = $this->validate($request, $rules, $customMessages);
@@ -100,6 +100,9 @@ class PostController extends Controller
         }
         return redirect('admin/login')->withErrors('ops sesi login kamu sudah habis');
     }
+
+
+
 
     private function getDataFromJson($data): array
     {

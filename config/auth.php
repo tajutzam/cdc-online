@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Admin;
+use App\Models\ProdiAdministrator;
 
 return [
 
@@ -49,6 +50,10 @@ return [
             'provider' => 'admin',
             // Custom provider
         ],
+        'prodi' => [
+            'driver' => 'session',
+            'provider' => 'prodi'
+        ]
     ],
 
     /*
@@ -77,6 +82,10 @@ return [
         'admin' => [
             'driver' => 'eloquent',
             'model' => Admin::class,
+        ],
+        'prodi' => [
+            'driver' => 'eloquent',
+            'model' => ProdiAdministrator::class,
         ],
     ],
 
