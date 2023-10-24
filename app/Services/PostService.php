@@ -124,7 +124,15 @@ class PostService
     public function getAllPost($page, $userId)
     {
         $now = Carbon::now(); // Mendapatkan tanggal saat ini menggunakan Carbon
-        $expiredPosts = $this->post->where('expired', '>', $now)->where('verified', 'verified')->where('user_id', '<>', $userId)->with('comments')->paginate(10, ['*'], 'page', $page);
+
+        $expiredPosts = $this->post
+            ->where('expired', '>', $now)
+            ->where('verified', 'verified')
+            ->where('user_id', '<>', $userId)
+            ->orWhereNotNull('admin_id') // Menambahkan kondisi admin_id tidak null
+            ->with('comments', 'user', 'admin')
+            ->paginate(10, ['*'], 'page', $page);
+
         $data = [
             'total_page' => $expiredPosts->lastPage(),
             'total_item' => $expiredPosts->total()
@@ -231,6 +239,12 @@ class PostService
 
         $fotoName = isset($data->image) == true ? $data->image : '';
         $url = url('/') . "/users/post/" . $fotoName;
+        $uploader = null;
+        if (isset($data->user)) {
+            $uploader = $this->castToUserResponse($data->user);
+        } else {
+            $uploader = $data->admin;
+        }
         return [
             'id' => $data->id,
             'user_id' => $data->user_id,
@@ -243,7 +257,9 @@ class PostService
             'post_at' => $data->post_at,
             'can_comment' => $data->can_comment,
             'verified' => $data->verified,
-            'comments' => $data->comments
+            'comments' => $data->comments,
+            'type_jobs' => $data->type_jobs,
+            'uploader' => $uploader
         ];
     }
 
@@ -330,6 +346,36 @@ class PostService
         }
 
         return $data;
+    }
+
+
+
+    private function castToUserResponse($user)
+    {
+
+        $fotoName = isset($user->foto) == true ? $user->foto : '';
+
+        $url = url('/') . "/users/" . $fotoName;
+        return [
+            "id" => $user->id,
+            "fullname" => $user->visible_fullname == 1 ? $user->fullname : "***",
+            "email" => $user->visible_email == 1 ? $user->email : "***",
+            "nik" => $user->visible_nik == 1 ? $user->nik : "***",
+            "no_telp" => $user->visible_no_telp == 1 ? $user->no_telp : "***",
+            "foto" => $url,
+            'ttl' => $user->ttl,
+            'alamat' => $user->visible_alamat == 1 ? $user->alamat : "***",
+            "about" => $user->about,
+            "gender" => $user->gender,
+            "level" => $user->level,
+            "linkedin" => $user->linkedin,
+            "facebook" => $user->facebook,
+            "instagram" => $user->instagram,
+            'twiter' => $user->twiter,
+            'account_status' => $user->account_status,
+            "latitude" => $user->latitude,
+            "longtitude" => $user->longtitude
+        ];
     }
 
 }

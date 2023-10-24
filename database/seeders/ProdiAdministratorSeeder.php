@@ -17,7 +17,6 @@ class ProdiAdministratorSeeder extends Seeder
     {
         //
 
-
         ProdiAdministrator::create(
             [
                 'email' => 'tif@gmail.com',
@@ -28,8 +27,5 @@ class ProdiAdministratorSeeder extends Seeder
                 'prodi_id' => 55301
             ]
         );
-
-        
-
     }
 }

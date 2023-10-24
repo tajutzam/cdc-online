@@ -3,9 +3,13 @@
 
 namespace App\Services;
 
+use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
+use App\Exceptions\WebException;
+use App\Helper\ResponseHelper;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\Alumni;
 use App\Models\Education;
 use App\Models\QuisionerProdi;
 use App\Models\User;
@@ -19,7 +23,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-
+use Throwable;
 
 class AuthService
 {
@@ -195,49 +199,19 @@ class AuthService
     }
 
 
-    public function verifikasiNim($nim)
+    public function verifikasiEmail($email)
     {
-
-        $header = [
-            'Authorization' => 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzNyIsImp0aSI6IjA1OTYxNjYzNjkxOGNkZTc0YWEwYmUwMzVjNmZkYzIyY2I3NDdlNTM3ZjU4OGE1NjA0YzViMGRlZTMwOGExNWM2ODI1YjNjN2YyZDhlMGVhIiwiaWF0IjoxNjk4MDI4ODM4LjgxODM4MiwibmJmIjoxNjk4MDI4ODM4LjgxODM4NywiZXhwIjoxNjk4MTE1MjM4LjgxMjIwNywic3ViIjoiIiwic2NvcGVzIjpbXX0.c0e3MM-M-Z5CgVts0F_GEZhBtzkRdU1W4_mz1CM-6lsoE4Kw47c8yqL8p1TJM2_TWXusTfEF3SxR4o2F60nbMwrUnB6XGyRCqdrxKqSAdgOByNdPvni0NxadRAu-b5Up0XVwN0uaKhV6qAns9LTVV7gVXydQNOAk6uqjQ3Mi4ruQ1UWaiSvWg4PAoOvnRSWG1QTURTZUgo2fJtoCqlDxqkbGk_5xm7Eu9YPcq8wBB0tp6IS0m3Eacqypj4nSF5kf9F9A1esVNzv26rS-SwuAEa_WYw58g1YliITrOr_ODZui4rFYVLscWHDTyNrY5i2pgjpQdzIM5dIKKxWFA_F7K5oRHlsNfoNg8s5nvk6Hrl6KtCBDQoO7WDdMt-4n6VOYUdW5klLyCWMC12YN4xWNY6XUZUVF2HAohWBmaMeuaTo9IqWCMfBksnslZ2rDn12ikTKaZ5Zg9w4w1UNd5J-9DM6ykps639jFAy14ooGW__Y2X-_AvmDoG1zkk6yQaedKot65h_ORRTrbvLXVnfGpWuqc3LSPH6zS7BhdO2gcnqoeLC7Aaz53Y6_5aorQTzEqlpgqUZTzq7iqkzk4n4eHQ0zleUepHZ1DYx2fIQkgIiGOAXcwevuu-bmsybrj8kz8T7Hl2s4pVZBLi06RYA20sx65BGH-zr2LRJ_AJvp3nIY'
-        ];
-        $response = Http::withHeaders($header)->get('http://api.polije.ac.id/resources/akademik/mahasiswa?debug=true&nim=e41211674');
-        echo $response;
-    }
-
-    public function generateToken()
-    {
-
-        $grant_type = env('TOKEN_API_GRANT_TYPE');
-        $client_id = env('TOKEN_API_CLIENT_ID');
-        $client_secreet = env('TOKEN_API_CLIENT_SCREET');
-
-        if (!isset($grant_type) || !isset($client_id) || !isset($client_secreet)) {
-            throw new Exception('ops , your env not included the token');
+        $user = $this->user->where('email', $email)->first();
+        if (isset($user)) {
+            throw new BadRequestException('ops , email mu sudah digunakan user lain');
         }
-
-        $curl = curl_init();
-
-        curl_setopt_array(
-            $curl,
-            array(
-                CURLOPT_URL => 'http://api.polije.ac.id/oauth/token',
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-                CURLOPT_POSTFIELDS => array('grant_type' => $grant_type, 'client_id' => $client_id, 'client_secret' => $client_secreet),
-            )
-        );
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-
-        return json_decode($response);
+        return [
+            'status' => true,
+            'message' => 'success verifikasi email , silahkan registrasi',
+            'code' => 200,
+            'data' => true
+        ];
     }
+
 
 }

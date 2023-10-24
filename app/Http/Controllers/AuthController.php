@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\BadRequestException;
+use App\Helper\ResponseHelper;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Services\AdminService;
+use App\Services\AlumniService;
 use App\Services\AuthService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -34,7 +36,7 @@ class AuthController extends Controller
         return $this->authService->login($request->input('emailOrNik'), $request->input('password'));
     }
 
-    
+
 
     public function registerUser(RegisterRequest $request)
     {
@@ -79,6 +81,17 @@ class AuthController extends Controller
         return $this->authService->updateVeriviedEmail($id);
     }
 
+    public function verifikasiEmail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ]);
+        if ($validator->fails()) {
+            throw new BadRequestException($validator->errors()->first());
+        }
+        $response = $this->authService->verifikasiEmail($request->all());
+        return ResponseHelper::successResponse($response['message'], $response['data'], $response['code']);
+    }
 
     public function verifikasi(Request $request)
     {
@@ -91,7 +104,14 @@ class AuthController extends Controller
         //     throw new BadRequestException($validator->errors()->first());
         // }
 
-        return $this->authService->verifikasiNim($request->get('nim'));
+        $service = new AlumniService();
+        return $service->updateDataAlumni();
+    }
+
+    public function checkAlumniData()
+    {
+        $service = new AlumniService();
+        return $service->findAllAlumni();
     }
 
 }

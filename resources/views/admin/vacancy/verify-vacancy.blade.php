@@ -94,11 +94,16 @@
                 </tr>
             </thead>
             <tbody>
+
                 @foreach ($data as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td class="text-start" style="text-align: start">
-                            {{ $item['user']['fullname'] }}
+                            @if ($item['admin'] != null)
+                                {{ $item['admin']['name'] }}
+                            @else
+                                {{ $item['user']['fullname'] }}
+                            @endif
                             <a href="#" class="user-info" data-bs-toggle="modal" data-bs-target="#detail-user"
                                 data-id="{{ $item['id'] }}" class="mx-auto" data-user="{{ json_encode($item['user']) }}"
                                 data-admin="{{ json_encode($item['admin']) }}" onclick="detailUploader(id)"><i

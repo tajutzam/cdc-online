@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\EducationController;
@@ -117,7 +118,7 @@ Route::get('/user/news/{id}', [ApiNewsController::class, 'findById']);
 
 // notifications
 Route::put('/user/fcmtoken', [UserController::class, 'sendFcmToken'])->withoutMiddleware(VeriviedMiddleware::class);
-Route::put("/user/position" , [UserController::class , "setPosition"]);
+Route::put("/user/position", [UserController::class, "setPosition"]);
 
 Route::get("/user/ranking/followers", [UserController::class, "getTopUser"]);
 Route::get("/user/ranking/salary", [UserController::class, "getTopSalary"]);
@@ -132,11 +133,14 @@ Route::delete('/user/post/comment', [CommentsController::class, 'deleteComment']
 Route::put("/admin/lowongan/verified", [PostController::class, 'updateVerified'])->withoutMiddleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
 Route::get("/auth/generate/token", [AuthController::class, "generateTokenApiPolije"]);
+Route::post('/auth/verifikasi/email', [AuthController::class, 'verifikasiEmail']);
 
-Route::get("/auth/verifikasi" , [AuthController::class , "verifikasi"]);
-Route::get("/auth/nim" , [AuthController::class , "verifikasi"]);
+Route::get("/auth/verifikasi", [AuthController::class, "verifikasi"]);
+Route::get("/alumni/update", [AuthController::class, "verifikasi"]);
+Route::get("/alumni/check", [AuthController::class, 'checkAlumniData']);
 
 
+Route::post('/verifikasi/alumni', [AlumniController::class, 'verifikasiAlumni']);
 
 
 // documentations

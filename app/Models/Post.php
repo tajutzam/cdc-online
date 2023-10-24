@@ -22,7 +22,7 @@ class Post extends Model
         'expired',
         'image',
         'can_comment',
-        'verivied',
+        'verified',
         'type_jobs',
         'admin_id'
     ];

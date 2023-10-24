@@ -105,8 +105,6 @@
                     <x-modal id="detail-user" footer="footer" title="title" body="body">
                         <x-slot name="title">Detail Pengunggah <span id="level-uploader"></span></x-slot>
 
-
-
                         <x-slot name="body">
                             <div></div>
                             <img id="img-uploader" class="rounded-circle mb-3  shadow-4-strong" alt="image-uploader" />
