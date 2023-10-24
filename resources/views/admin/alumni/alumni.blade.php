@@ -61,11 +61,11 @@
     </div>
 
     <div class="card">
-        <div class="row p-2 justify-content-between">
-            <div class="col">
+        <div class="row p-2 justify-content-end">
+            {{-- <div class="col">
                 <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#add-news">Tambah
                     Alumni</button>
-            </div>
+            </div> --}}
             <div class="col-3">
                 <select class="form-select form-select-sm" id="filter-user" aria-label="Small select example">
                     <option value="filter">Filter</option>
@@ -147,15 +147,15 @@
         </table>
     </div>
 
-    <x-modal id="add-news" footer="footer" title="title" body="body">
-        <x-slot name="title">Tambah Program Study</x-slot>
+    {{-- <x-modal id="add-news" footer="footer" title="title" body="body">
+        <x-slot name="title">Tambah Alumni</x-slot>
         <x-slot name="id">add-news</x-slot>
         <x-slot name="body">
             <form action="{{ route('prodi-post') }}" method="post" enctype="multipart/form-data">
                 <div class="form-floating mb-3">
                     <input type="number" class="form-control form-control-sm" required id="floatingTextarea"
                         name="id"></input>
-                    <label for="floatingTextarea">Kode Prodi</label>
+                    <label for="floatingTextarea">NIM</label>
                 </div>
                 <div class="form-floating mb-3">
                     <textarea type="text" class="form-control form-control-sm" required id="floatingTextarea" name="nama_prodi"></textarea>
@@ -168,7 +168,7 @@
                 </div>
             </form>
         </x-slot>
-    </x-modal>
+    </x-modal> --}}
 
     <x-modal id="update-prodi" footer="footer" title="title" body="body">
         <x-slot name="title">Update Program Study</x-slot>

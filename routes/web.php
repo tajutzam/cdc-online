@@ -16,6 +16,7 @@ use App\Http\Controllers\web\QuisionerController;
 use App\Http\Controllers\web\UserProdiController;
 use App\Http\Controllers\web\AdminProdiController;
 use App\Http\Controllers\web\NotificationsController;
+use App\Http\Controllers\web\ReferenceUserController;
 use App\Http\Controllers\web\ProdiQuesionerController;
 
 /*
@@ -72,6 +73,13 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::prefix('user')->group(function () {
         Route::get('', [UserController::class, 'index'])->name('user');
     });
+
+    Route::prefix('reference-user')->group(function () {
+        Route::get('', function () {
+            return view('admin.alumni.reference-alumni');
+        })->name('reference-alumni');
+    });
+
     Route::prefix('legalisir')->group(function () {
         Route::get('', [LegalisirController::class, 'index'])->name('legalisir');
     });

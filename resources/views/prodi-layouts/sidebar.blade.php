@@ -1,11 +1,13 @@
 <div class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
-        <div class="mx-auto">
-            <img src="{{ asset('/') }}assets/images/logoblack.png" class="logo-icon" alt="logo icon">
+        <div class="auto" style="margin: 0%">
+            <img src="{{ asset('/') }}assets/images/logo-icon.png" class="logo-icon" alt="logo icon" style="width: 20px">
         </div>
-        {{-- <div>
-            <h4 class="logo-text">Admin</h4>
-        </div> --}}
+        <div>
+
+            <img src="{{ asset('/') }}assets/images/side-logo.png" class="logo-text" style="width: 80px">
+            {{-- <h6 class="logo-text" style="color: black; text-align: start">Careear Development Center</h6> --}}
+        </div>
         <div class="toggle-icon ms-auto"><i class='bx bx-arrow-back'></i>
         </div>
     </div>
