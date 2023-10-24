@@ -29,6 +29,9 @@ class UserController extends Controller
 
 
     /**
+
+     * @OA\PathItem(
+     *   path="/api/user",
      * @OA\Get(
      *     path="/api/user",
      *     operationId="getUser",

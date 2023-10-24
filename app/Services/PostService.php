@@ -30,7 +30,6 @@ class PostService
     public function __construct()
     {
         $this->post = new Post();
-
     }
 
     public function addPostJob($userId, $image, $request, $adminId = null)
@@ -116,7 +115,6 @@ class PostService
             return ResponseHelper::successResponse('Berhasil memperbarui verifikasi', $updated, 200);
         }
         throw new Exception('ops , gagal mengupdate verifikasi');
-
     }
 
 
@@ -125,6 +123,7 @@ class PostService
     {
         $now = Carbon::now(); // Mendapatkan tanggal saat ini menggunakan Carbon
 
+
         $expiredPosts = $this->post
             ->where('expired', '>', $now)
             ->where('verified', 'verified')
@@ -132,6 +131,7 @@ class PostService
             ->orWhereNotNull('admin_id') // Menambahkan kondisi admin_id tidak null
             ->with('comments', 'user', 'admin')
             ->paginate(10, ['*'], 'page', $page);
+
 
         $data = [
             'total_page' => $expiredPosts->lastPage(),
@@ -159,7 +159,6 @@ class PostService
             array_push($data['posts'], $tempPost);
         }
         return ResponseHelper::successResponse('success fetch data', $data, 200);
-
     }
 
 
@@ -285,7 +284,6 @@ class PostService
         return collect($posts->toArray())->map(function ($post) {
             return $this->castToResponseFromArray($post);
         })->toArray();
-
     }
 
 
@@ -318,9 +316,9 @@ class PostService
         $collection = collect($data);
         return $collection->map(function ($data) {
             return $this->castToResponseFromArray($data);
-
         })->toArray();
     }
+
 
     public function findHistoryVacancy()
     {
@@ -379,3 +377,4 @@ class PostService
     }
 
 }
+

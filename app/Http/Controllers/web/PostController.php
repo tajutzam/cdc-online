@@ -33,6 +33,13 @@ class PostController extends Controller
 
         foreach ($data as $value) {
             # code...
+            if ($value['verified'] == true) {
+                $tempActive += 1;
+            } else {
+
+
+        foreach ($data as $value) {
+            # code...
             $now = Carbon::now();
             if ($value['verified'] == 'verified') {
                 $tempActive += 1;
@@ -57,6 +64,8 @@ class PostController extends Controller
     }
     public function history()
     {
+
+
         $data = $this->postService->findHistoryVacancy();
         return view('admin.vacancy.history-vacancy', ['data' => $data]);
     }

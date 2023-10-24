@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\BadRequestException;
+
 use App\Helper\ResponseHelper;
+
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
@@ -81,6 +83,7 @@ class AuthController extends Controller
         return $this->authService->updateVeriviedEmail($id);
     }
 
+
     public function verifikasiEmail(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -93,6 +96,7 @@ class AuthController extends Controller
         return ResponseHelper::successResponse($response['message'], $response['data'], $response['code']);
     }
 
+
     public function verifikasi(Request $request)
     {
 
@@ -103,6 +107,7 @@ class AuthController extends Controller
         // if ($validator->fails()) {
         //     throw new BadRequestException($validator->errors()->first());
         // }
+
 
         $service = new AlumniService();
         return $service->updateDataAlumni();

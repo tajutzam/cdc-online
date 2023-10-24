@@ -1,11 +1,13 @@
 <div class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
-        <div class="mx-auto">
-            <img src="{{ asset('/') }}assets/images/logoblack.png" class="logo-icon" alt="logo icon">
+        <div class="auto" style="margin: 0%">
+            <img src="{{ asset('/') }}assets/images/logo-icon.png" class="logo-icon" alt="logo icon" style="width: 20px">
         </div>
-        {{-- <div>
-            <h4 class="logo-text">Admin</h4>
-        </div> --}}
+        <div>
+
+            <img src="{{ asset('/') }}assets/images/side-logo.png" class="logo-text" style="width: 80px">
+            {{-- <h6 class="logo-text" style="color: black; text-align: start">Careear Development Center</h6> --}}
+        </div>
         <div class="toggle-icon ms-auto"><i class='bx bx-arrow-back'></i>
         </div>
     </div>
@@ -89,6 +91,13 @@
                 <div class="menu-title">Data</div>
             </a>
             <ul>
+                <li style="margin-inline-start: 10%"> <a href="{{ route('reference-alumni') }}"><i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-people" viewBox="0 0 16 16">
+                                <path
+                                    d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+                            </svg></i>Referensi Alumni</a>
+                </li>
                 <li style="margin-inline-start: 10%"> <a href="{{ route('user') }}"><i> <svg
                                 xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-person-video2" viewBox="0 0 16 16">
@@ -96,6 +105,13 @@
                                 <path
                                     d="M2 1a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2ZM1 3a1 1 0 0 1 1-1h2v2H1V3Zm4 10V2h9a1 1 0 0 1 1 1v9c0 .285-.12.543-.31.725C14.15 11.494 12.822 10 10 10c-3.037 0-4.345 1.73-4.798 3H5Zm-4-2h3v2H2a1 1 0 0 1-1-1v-1Zm3-1H1V8h3v2Zm0-3H1V5h3v2Z" />
                             </svg></i>Alumni</a>
+                </li>
+                <li style="margin-inline-start: 10%"> <a href="{{ route('quisioner-index') }}"><i><svg
+                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-columns-gap" viewBox="0 0 16 16">
+                                <path
+                                    d="M6 1v3H1V1h5zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12v3h-5v-3h5zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8v7H1V8h5zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6v7h-5V1h5zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z" />
+                            </svg></i>Kuesioner</a>
                 </li>
                 <li style="margin-inline-start: 10%"> <a href="{{ route('manage-admin') }}"> <i><svg
                                 xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -146,7 +162,28 @@
                 </li>
             </ul>
         </li>
-
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
+                            <path
+                                d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                            <path
+                                d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z" />
+                        </svg> </i>
+                </div>
+                <div class="menu-title">Aktivasi</div>
+            </a>
+            <ul>
+                <li style="margin: 10%"> <a href="{{ route('aktivasi-alumni') }}"><i><svg
+                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-people-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                            </svg></i>Pengajuan Alumni</a>
+                </li>
+            </ul>
+        </li>
     </ul>
 
     <!--end navigation-->

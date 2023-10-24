@@ -88,22 +88,18 @@
                     <th>Deskripsi</th>
                     <th>Poster</th>
                     <th>Tautan</th>
-                    <th>Izin</th>
+
                     <th>Kadaluwarsa</th>
                     <th>Diunggah</th>
+                    <th>Perizinan</th>
                 </tr>
             </thead>
             <tbody>
-
                 @foreach ($data as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td class="text-start" style="text-align: start">
-                            @if ($item['admin'] != null)
-                                {{ $item['admin']['name'] }}
-                            @else
-                                {{ $item['user']['fullname'] }}
-                            @endif
+                            {{ $item['user']['fullname'] }}
                             <a href="#" class="user-info" data-bs-toggle="modal" data-bs-target="#detail-user"
                                 data-id="{{ $item['id'] }}" class="mx-auto" data-user="{{ json_encode($item['user']) }}"
                                 data-admin="{{ json_encode($item['admin']) }}" onclick="detailUploader(id)"><i
@@ -115,7 +111,7 @@
                         <td><img style="height: 100px; width: 100px" src="{{ $item['image'] }}" alt="foto poster"></td>
                         <td><a href="{{ $item['link_apply'] }}" class="text-decoration-none  font-italic">link_apply</a>
                         </td>
-                        <td>
+                        {{-- <td>
                             <form action="" method="post" action="" id="">
                                 <div class="form-check-primary form-check form-switch">
                                     <input name="can_comment" class="form-check-input" type="checkbox"
@@ -123,9 +119,15 @@
                                         id="{{ $item['id'] }}">
                                 </div>
                             </form>
-                        </td>
+                        </td> --}}
                         <td>{{ date('Y-F-d H:i', strtotime($item['expired'])) }}</td>
                         <td>{{ date('Y-F-d H:i', strtotime($item['post_at'])) }}</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <button type="button" class="btn btn-success">Setuju</button>
+                                <button type="button" class="btn btn-danger">Tolak</button>
+                            </div>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

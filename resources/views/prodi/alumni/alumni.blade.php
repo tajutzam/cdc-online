@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-
+@extends('prodi-layouts.app')
 @section('content')
     @if ($errors->any())
         <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
@@ -61,11 +59,11 @@
     </div>
 
     <div class="card">
-        <div class="row p-2 justify-content-end">
-            {{-- <div class="col">
+        <div class="row p-2 justify-content-between">
+            <div class="col">
                 <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#add-news">Tambah
                     Alumni</button>
-            </div> --}}
+            </div>
             <div class="col-3">
                 <select class="form-select form-select-sm" id="filter-user" aria-label="Small select example">
                     <option value="filter">Filter</option>
@@ -85,7 +83,7 @@
                     <th>NIM</th>
                     <th>NIK</th>
                     <th>Nama</th>
-                    <th>Program Studi</th>
+
                     <th>Email</th>
                     <th>Foto</th>
                     <th>Tahun Lulus</th>
@@ -102,7 +100,6 @@
                         <td>{{ $loop->iteration }}</td>
                         @if ($item['prodi'] != null)
                             <td>{{ $item['prodi']['id'] }}</td>
-                            <td>{{ $item['prodi']['nama_prodi'] }}</td>
                         @else
                             <td>-</td>
                             <td>-</td>
@@ -147,19 +144,19 @@
         </table>
     </div>
 
-    {{-- <x-modal id="add-news" footer="footer" title="title" body="body">
-        <x-slot name="title">Tambah Alumni</x-slot>
+    <x-modal id="add-news" footer="footer" title="title" body="body">
+        <x-slot name="title">Tambah Program Study</x-slot>
         <x-slot name="id">add-news</x-slot>
         <x-slot name="body">
             <form action="{{ route('prodi-post') }}" method="post" enctype="multipart/form-data">
                 <div class="form-floating mb-3">
                     <input type="number" class="form-control form-control-sm" required id="floatingTextarea"
                         name="id"></input>
-                    <label for="floatingTextarea">NIM</label>
+                    <label for="floatingTextarea">Kode Prodi</label>
                 </div>
                 <div class="form-floating mb-3">
                     <textarea type="text" class="form-control form-control-sm" required id="floatingTextarea" name="nama_prodi"></textarea>
-                    <label for="floatingTextarea">Nama Program Study</label>
+                    <label for="floatingTextarea">Nama Program Studi</label>
                 </div>
                 <div class="row justify-content-end">
                     <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
@@ -168,7 +165,7 @@
                 </div>
             </form>
         </x-slot>
-    </x-modal> --}}
+    </x-modal>
 
     <x-modal id="update-prodi" footer="footer" title="title" body="body">
         <x-slot name="title">Update Program Study</x-slot>

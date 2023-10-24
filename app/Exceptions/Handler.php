@@ -76,8 +76,6 @@ class Handler extends ExceptionHandler
                 return back()->withErrors($e->getMessage());
             }
 
-            
-
             if ($e instanceof BadMethodCallException) {
                 return response()->view('errors.500', ["errors" => $e->getMessage()], 500);
             }

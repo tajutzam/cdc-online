@@ -25,24 +25,25 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nim</th>
-                        <th>Nama Prodi</th>
-                        <th>Nama Alumni</th>
-                        <th>Foto Alumni</th>
-                        <th>Status Akun</th>
-                        <th>Kemajuan Kuesioner</th>
-                        <th>Tingkat Kuesioner</th>
-                        <th>Detail Kuesioner</th>
-                        <th>Aksi</th>
+                        <th>NIM</th>
+                        <th>Nama</th>
+                        <th>Program Studi</th>
+                        <th>Foto</th>
+                        <th>Status</th>
+                        <th>Kemajuan</th>
+                        <th>Tingkat</th>
+                        {{-- <th>Detail Kuesioner</th> --}}
+                        <th>Notifikasi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($data as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item['nim'] }}</td>
-                            <td>{{ $item['prodi']['nama_prodi'] ?? '-' }}</td>
-                            <td>{{ $item['fullname'] }}</td>
+                            <td style="text-align: start">{{ $item['nim'] }}</td style="text-align: start">
+                            <td style="text-align: start">{{ $item['fullname'] }}</td style="text-align: start">
+                            <td style="text-align: start" style="text-align: start">
+                                {{ $item['prodi']['nama_prodi'] ?? '-' }}</td>
                             <td><img style="height: 100px" src="{{ $item['foto'] }}" alt="foto alumni"></td>
                             <td>
                                 @if ($item['account_status'])
@@ -61,31 +62,18 @@
                             <td>
                                 <p class="text-facebook">{{ $item['status_quisioner'] }}</p>
                             </td>
-                            <td><button type="button" class="btn btn-warning btn-sm">Detail</button>
-                            </td>
+                            {{-- <td><button type="button" class="btn btn-warning btn-sm">Detail</button>
+                            </td> --}}
                             <td>
-                                <a href="#">
+                                <a href="">
                                     <i class="fa-solid fa-paper-plane" style="color: #005eff;"></i><span
-                                        class="text-decoration-none"> Kirim notif</span>
+                                        class="text-decoration-none"> </span>
                                 </a>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <th>No</th>
-                        <th>Nim</th>
-                        <th>Nama Prodi</th>
-                        <th>Nama Alumni</th>
-                        <th>Foto Alumni</th>
-                        <th>Status Akun</th>
-                        <th>Kemajuan Quisioner</th>
-                        <th>Tingkatan Quisioner</th>
-                        <th>Detail Quisioner</th>
-                        <th>Aksi</th>
-                    </tr>
-                </tfoot>
+
             </table>
         </div>
     </notif-quisioner>
