@@ -39,7 +39,7 @@
                 <div class="col-sm-12">
                     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
                         <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb mb-0 p-0">
+                            <ol class="breadcrumb mb-0 p-0" style="background-color: white">
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('dashboard') }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -66,27 +66,27 @@
                                     Tahun
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="">2022</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="">2023</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="">2024</a></li>
+                                    <?php
+                                    $currentYear = date('Y');
+                                    for ($i = 0; $i < 5; $i++) {
+                                        $year = $currentYear - $i;
+                                        echo '<li><a class="dropdown-item" href="#" data-year="' . $year . '">' . $year . '</a></li>';
+                                        if ($i < 4) {
+                                            echo '<li><hr class="dropdown-divider"></li>';
+                                        }
+                                    }
+                                    ?>
                                 </ul>
                             </div>
-
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example"
                                 style="padding: 1%">
-                                <button type="button" class="btn btn-danger">
+                                <button type="button" class="btn btn-danger" id="bulan-0">
                                     <a href="?bulan=0" style="color: white">0 Bulan</a>
                                 </button>
-                                <button type="button" class="btn btn-warning">
+                                <button type="button" class="btn btn-warning" id="bulan-6">
                                     <a href="?bulan=6" style="color: white">6 Bulan</a>
                                 </button>
-                                <button type="button" class="btn btn-success">
+                                <button type="button" class="btn btn-success" id="bulan-12">
                                     <a href="?bulan=12" style="color: white">12 Bulan</a>
                                 </button>
                             </div>
@@ -128,8 +128,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="example"
-                                    class="table table-striped table-bordered table-hover table-condensed"
+                                <table id="example" class="table table-striped table-bordered table-hover table-condensed"
                                     style="width:100%">
                                     <thead>
                                         <tr>
@@ -198,4 +197,47 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            $(document).ready(function() {
+                // Tangani klik pada tombol bulan
+                $('#bulan-0, #bulan-6, #bulan-12').on('click', function(e) {
+                    e.preventDefault(); // Mencegah tindakan default tautan
+
+                    // Dapatkan nilai bulan dari atribut id tombol
+                    var bulan = $(this).attr('id').split('-')[1];
+
+                    // Dapatkan nilai tahun dari parameter tahun jika ada, atau gunakan tahun default
+                    var tahun = getParameterByName('tahun') || 'tahun-default';
+
+                    // Redirect ke URL dengan parameter tahun dan bulan
+                    if (tahun !== 'tahun-default') {
+                        window.location.href = '?tahun=' + tahun + '&bulan=' + bulan;
+                    } else {
+                        window.location.href = '?bulan=' + bulan;
+                    }
+                });
+
+                $('.dropdown-item').on('click', function(e) {
+                    e.preventDefault(); // Mencegah tindakan default tautan
+
+                    // Dapatkan nilai tahun dari atribut data-year
+                    var year = $(this).data('year');
+
+                    // Redirect ke URL dengan parameter tahun
+                    window.location.href = '?tahun=' + year;
+                });
+
+                // Fungsi untuk mendapatkan nilai parameter dari URL
+                function getParameterByName(name, url) {
+                    if (!url) url = window.location.href;
+                    name = name.replace(/[\[\]]/g, "\\$&");
+                    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                        results = regex.exec(url);
+                    if (!results) return null;
+                    if (!results[2]) return '';
+                    return decodeURIComponent(results[2].replace(/\+/g, " "));
+                }
+            });
+        </script>
     @endsection

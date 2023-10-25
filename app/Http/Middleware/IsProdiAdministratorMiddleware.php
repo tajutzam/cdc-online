@@ -21,6 +21,6 @@ class IsProdiAdministratorMiddleware
         if (Auth::guard('prodi')->check()) {
             return $next($request);
         }
-        return redirect('prodi/login')->withErrors('');
+        return redirect('prodi/login')->withErrors('Ops , Silahkan Login Terlebih dahulu');
     }
 }

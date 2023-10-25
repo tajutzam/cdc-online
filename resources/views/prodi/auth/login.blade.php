@@ -2,31 +2,57 @@
 
 
 @section('content')
-    login
-
-
-    <script>
-        var myHeaders = new Headers();
-        myHeaders.append("debug", "true");
-        myHeaders.append("Authorization",
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzNyIsImp0aSI6IjA1OTYxNjYzNjkxOGNkZTc0YWEwYmUwMzVjNmZkYzIyY2I3NDdlNTM3ZjU4OGE1NjA0YzViMGRlZTMwOGExNWM2ODI1YjNjN2YyZDhlMGVhIiwiaWF0IjoxNjk4MDI4ODM4LjgxODM4MiwibmJmIjoxNjk4MDI4ODM4LjgxODM4NywiZXhwIjoxNjk4MTE1MjM4LjgxMjIwNywic3ViIjoiIiwic2NvcGVzIjpbXX0.c0e3MM-M-Z5CgVts0F_GEZhBtzkRdU1W4_mz1CM-6lsoE4Kw47c8yqL8p1TJM2_TWXusTfEF3SxR4o2F60nbMwrUnB6XGyRCqdrxKqSAdgOByNdPvni0NxadRAu-b5Up0XVwN0uaKhV6qAns9LTVV7gVXydQNOAk6uqjQ3Mi4ruQ1UWaiSvWg4PAoOvnRSWG1QTURTZUgo2fJtoCqlDxqkbGk_5xm7Eu9YPcq8wBB0tp6IS0m3Eacqypj4nSF5kf9F9A1esVNzv26rS-SwuAEa_WYw58g1YliITrOr_ODZui4rFYVLscWHDTyNrY5i2pgjpQdzIM5dIKKxWFA_F7K5oRHlsNfoNg8s5nvk6Hrl6KtCBDQoO7WDdMt-4n6VOYUdW5klLyCWMC12YN4xWNY6XUZUVF2HAohWBmaMeuaTo9IqWCMfBksnslZ2rDn12ikTKaZ5Zg9w4w1UNd5J-9DM6ykps639jFAy14ooGW__Y2X-_AvmDoG1zkk6yQaedKot65h_ORRTrbvLXVnfGpWuqc3LSPH6zS7BhdO2gcnqoeLC7Aaz53Y6_5aorQTzEqlpgqUZTzq7iqkzk4n4eHQ0zleUepHZ1DYx2fIQkgIiGOAXcwevuu-bmsybrj8kz8T7Hl2s4pVZBLi06RYA20sx65BGH-zr2LRJ_AJvp3nIY"
-        );
-        myHeaders.append("Cookie",
-            "XSRF-TOKEN=eyJpdiI6InRxTG9hYTJzVXQ4OU53Zm10aDVmaWc9PSIsInZhbHVlIjoiM3lYOVJnSE9KUmxCQml6a0hNVVcxSWtuSDZwQjUwYjVudER2THJVZnVMaXlCaTliRkpPVHEwWWcwTm85eXA4eG1qRTFYTWwvMkdsUFlJcU9nMlFBa2Q1QUZsNWtJSm9sekVpb0RyL3dhNWlSa1R6TGZmZEoyUEhDQ3NiSENTaUciLCJtYWMiOiJiZDc3ODY0OTY4Mjg2N2VmZTVmNDM3ZWQwMzlmMWVmYjdmYzFjZmY0ZmUxNjk3ZDZiZjcyYWYxN2UzNjAxOGYzIn0%3D; laravelapipolije_session=eyJpdiI6Ii9YRkZsQi80bFg3cjNoYmlWRHd5NEE9PSIsInZhbHVlIjoiM25mSmdmTTlZVEtLQURaYUpVYVBtWjRJWnhRYU5FSDBEcVRHenhyTmJvT0FiUS9XbUZHUW5yQ2w5MitTMC9XNUxzeld2L0Q1SURTeGZ4N3lvMFBxZC83ejQ2QmhXUVJHekJnMGx5V2dIbENoRnlZQlRJdEU3SGxrNVpXUVk5UnoiLCJtYWMiOiI1MTk1ZDUzNTMzNzk5Nzk2ZmM4YTA3Mzg1M2YxNDI2M2MwMWRkMDkzM2Y1MDYyYTg0MzkwMzJiOWY3MTlmZTNiIn0%3D"
-        );
-
-        var urlencoded = new URLSearchParams();
-
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders,
-            body: urlencoded,
-            redirect: 'follow'
-        };
-
-        fetch("http://api.polije.ac.id/resources/akademik/mahasiswa?nim=e41211674", requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
-    </script>
+    <div class="container pt-5">
+        <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
+            <div class="col mx-auto my-auto">
+                <div class="card">
+                    <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+                                <div class="text-white">{{ $errors->first() }}</div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+                        <div class="p-4">
+                            <div class="mb-3 text-center">
+                                <img src="{{ asset('/') }}assets/images/logoblack.png" width="60" alt="" />
+                            </div>
+                            <div class="text-center mb-4">
+                                <h5 class="">Prodi Login Page</h5>
+                                <p class="mb-0">Please log in to your account</p>
+                            </div>
+                            <div class="form-body">
+                                <form class="row g-3" method="POST" action="{{ route('prodi-login') }}">
+                                    @csrf
+                                    <div class="col-12">
+                                        <label for="inputEmailAddress" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="inputEmailAddress"
+                                            placeholder="tif@example.com" name="email">
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="inputChoosePassword" class="form-label">Password</label>
+                                        <div class="input-group" id="show_hide_password">
+                                            <input type="password" class="form-control border-end-0" name="password"
+                                                id="inputChoosePassword" value="12345678" placeholder="Enter Password"> <a
+                                                href="javascript:;" class="input-group-text bg-transparent"><i
+                                                    class='bx bx-hide'></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 text-end"> <a href="auth-basic-forgot-password.html">Forgot
+                                            Password ?</a>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary">Sign in</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end row-->
+    </div>
 @endsection

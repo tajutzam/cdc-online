@@ -5,8 +5,9 @@ namespace App\Models;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class ProdiAdministrator extends Model
+class ProdiAdministrator extends Authenticatable    
 {
     use HasFactory, Uuids;
 

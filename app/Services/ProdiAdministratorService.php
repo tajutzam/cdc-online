@@ -21,7 +21,7 @@ class ProdiAdministratorService
     {
         $isLogin = Auth::guard('prodi')->attempt(['email' => $email, 'password' => $password]);
         if ($isLogin) {
-            return redirect('prodi')->with('success', 'berhasil login');
+            return redirect('prodi/dashboard')->with('success', 'berhasil login');
         }
         throw new WebException('ops , harap check email atau password anda');
     }

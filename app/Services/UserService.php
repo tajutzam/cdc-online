@@ -17,6 +17,7 @@ use Exception;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -250,6 +251,51 @@ class UserService
         return $response;
     }
 
+    public function findAllByProdi($active, $kodeProdi)
+    {
+        $query = $this->userModel->with('jobs', 'educations', 'prodi');
+        $response = [];
+        $response['alumni'] = $query->when(isset($active), function ($query) use ($active) {
+            $query->where('account_status', $active);
+        })->whereHas('educations', function ($educationQuery) {
+            $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
+        })->whereHas('prodi', function ($prodiQuery) use ($kodeProdi) {
+            $prodiQuery->where('id', $kodeProdi); // Gunakan nilai $kodeProdi dari parameter
+        })->get()->map(function ($user) {
+            return $this->castToUserResponseFromArrayWithJoin($user);
+        })->toArray();
+
+
+        $statusCounts = $this->userModel
+            ->select('account_status', DB::raw('COUNT(*) as count'))
+            ->when(isset($active), function ($query) use ($active) {
+                $query->where('account_status', $active);
+            })
+            ->whereHas('educations', function ($educationQuery) {
+                $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
+            })->whereHas('prodi', function ($prodiQuery) use ($kodeProdi) {
+            $prodiQuery->where('id', $kodeProdi); // Gunakan nilai $kodeProdi dari parameter
+        })
+            ->groupBy('account_status')
+            ->get();
+
+        $active = 0;
+        $nonActive = 0;
+        foreach ($statusCounts as $statusCount) {
+            if ($statusCount->account_status == 1) {
+                $active = $statusCount->count;
+            } else {
+                $nonActive = $statusCount->count;
+            }
+        }
+
+        $response['count'] = [
+            'active' => $active,
+            'nonactive' => $nonActive
+        ];
+
+        return $response;
+    }
 
     public function updateVisible($request, $token)
     {
@@ -411,7 +457,8 @@ class UserService
             'twiter' => $user->twiter,
             'account_status' => $user->account_status,
             "latitude" => $user->latitude,
-            "longtitude" => $user->longtitude
+            "longtitude" => $user->longtitude,
+            'state_quisioner' => $user->state_quisioner
         ];
     }
 
@@ -437,7 +484,37 @@ class UserService
             'twiter' => $user['twiter'],
             'account_status' => $user['account_status'],
             'latitude' => $user['latitude'],
-            'longtitude' => $user['longtitude']
+            'longtitude' => $user['longtitude'],
+            'state_quisioner' => $user['state_quisioner']
+        ];
+    }
+
+    public function castToUserResponseFromArrayWithJoin($user)
+    {
+
+        $url = url('/') . "/users/" . $user['foto'];
+        return [
+            "id" => $user['id'],
+            "fullname" => $user['visible_fullname'] == 1 ? $user['fullname'] : "***",
+            "email" => $user['visible_email'] == 1 ? $user['email'] : "***",
+            "nik" => $user['visible_nik'] == 1 ? $user['nik'] : "***",
+            "no_telp" => $user['visible_no_telp'] == 1 ? $user['no_telp'] : "***",
+            "foto" => $url,
+            'ttl' => $user['ttl'],
+            'alamat' => $user['visible_alamat'] == 1 ? $user['alamat'] : "***",
+            "about" => $user['about'],
+            "gender" => $user['gender'],
+            "level" => $user['level'],
+            "linkedin" => $user['linkedin'],
+            "facebook" => $user['facebook'],
+            "instagram" => $user['instagram'],
+            'twiter' => $user['twiter'],
+            'account_status' => $user['account_status'],
+            'latitude' => $user['latitude'],
+            'longtitude' => $user['longtitude'],
+            'state_quisioner' => $user['state_quisioner'],
+            'educations' => $user['educations']->toArray(),
+            'prodi' => $user['prodi']->toArray()
         ];
     }
 

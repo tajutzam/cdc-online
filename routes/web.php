@@ -47,9 +47,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::prefix('prodi')->group(
+Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group(
     function () {
-        Route::get('/dashboard', [\App\Http\Controllers\web\AdminProdiController::class, 'dashboard'])->name('dashboard-prodi');
+        Route::get('/dashboard', [AdminProdiController::class, 'dashboard'])->name('dashboard-prodi');
         Route::get('/settings-admin', [AdminProdiController::class, 'settingsAdmin'])->name('settings-admin-prodi');
         Route::prefix('quesioner')->group(function () {
             route::get('', [ProdiQuesionerController::class, 'index'])->name('quesioner-index');
@@ -62,6 +62,7 @@ Route::prefix('prodi')->group(
         });
         Route::get('', [ProdiAdminController::class, 'index']);
         Route::get('login', [ProdiAdminController::class, 'login'])->withoutMiddleware(IsProdiAdministratorMiddleware::class);
+        Route::post("login" , [WebAuthController::class , 'loginProdi'])->withoutMiddleware(IsProdiAdministratorMiddleware::class)->name('prodi-login');
     }
 );
 Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () {
