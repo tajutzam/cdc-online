@@ -58,8 +58,11 @@
                 <div class="card" style="padding: 0%;">
                     <div class="row p-2 justify-content-between">
                         <div class="col">
-                            <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
-                                data-bs-target="">Perbarui</button>
+                            <form action="{{ route('reference-alumni-update') }}" method="post">
+                                @method('put')
+                                <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="" type="submit">Perbarui</button>
+                            </form>
                         </div>
                         <div class="col-3">
                             <select class="form-select form-select-sm" id="filter-user" aria-label="Small select example">

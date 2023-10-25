@@ -60,8 +60,8 @@ Route::prefix('prodi')->group(
         Route::prefix('user')->group(function () {
             Route::get('', [UserProdiController::class, 'index'])->name('user-prodi');
         });
-       Route::get('', [ProdiAdminController::class, 'index']);
-    Route::get('login', [ProdiAdminController::class, 'login'])->withoutMiddleware(IsProdiAdministratorMiddleware::class);
+        Route::get('', [ProdiAdminController::class, 'index']);
+        Route::get('login', [ProdiAdminController::class, 'login'])->withoutMiddleware(IsProdiAdministratorMiddleware::class);
     }
 );
 Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () {
@@ -80,7 +80,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::prefix('vacancy')->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('vacancy');
         Route::post('/store', [PostController::class, 'store'])->name('vacancy-store');
-        Route::put('/{id}' , [PostController::class , 'verifyOrReject'])->name('vacancy-verify');
+        Route::put('/{id}', [PostController::class, 'verifyOrReject'])->name('vacancy-verify');
         Route::get('/history', [PostController::class, 'history'])->name('history');
     });
     Route::prefix('berita')->group(function () {
@@ -94,7 +94,8 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     });
 
     Route::prefix('reference-user')->group(function () {
-        Route::get('', [AlumniController::class , 'findAllReferenceAlumni'])->name('reference-alumni');
+        Route::get('', [AlumniController::class, 'findAllReferenceAlumni'])->name('reference-alumni');
+        Route::put('', [AktivasiController::class, 'updateDataReference'])->name('reference-alumni-update');
     });
 
     Route::prefix('legalisir')->group(function () {
@@ -102,7 +103,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     });
     Route::prefix('aktivasi')->group(function () {
         Route::get('', [AktivasiController::class, 'index'])->name('aktivasi-alumni');
-        Route::put('/{id}' , [AktivasiController::class , 'accOrReject'])->name('acc-reject');
+        Route::put('/{id}', [AktivasiController::class, 'accOrReject'])->name('acc-reject');
     });
     Route::prefix('notifications')->group(function () {
         Route::get('', [NotificationsController::class, 'index'])->name('notifications');
