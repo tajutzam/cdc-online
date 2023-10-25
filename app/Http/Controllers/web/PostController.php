@@ -27,47 +27,36 @@ class PostController extends Controller
     public function index()
     {
 
-        $data = $this->postService->findAllPostFromAdmin();
+        $data = $this->postService->findVerivyVacancy();
         $tempActive = 0;
         $tempNonActive = 0;
 
         foreach ($data as $value) {
             # code...
-            if ($value['verified'] == true) {
+            $now = Carbon::now();
+            if ($value['verified'] == 'verified') {
                 $tempActive += 1;
-            } else {
-
-
-                foreach ($data as $value) {
-                    # code...
-                    $now = Carbon::now();
-                    if ($value['verified'] == 'verified') {
-                        $tempActive += 1;
-                    } else if ($now->isAfter($value['expired'])) {
-                        $tempNonActive += 1;
-                    }
-                }
-
-                $total = [
-                    'active' => $tempActive,
-                    'nonactive' => $tempNonActive
-                ];
-
-                return view('admin.vacancy.verify-vacancy', [
-                    'data' => $data,
-                    'total' => [
-                        'active' => $total['active'],
-                        'nonactive' => $total['nonactive'],
-                        'total' => sizeof($data)
-                    ]
-                ]);
+            } else if ($now->isAfter($value['expired'])) {
+                $tempNonActive += 1;
             }
         }
+
+        $total = [
+            'active' => $tempActive,
+            'nonactive' => $tempNonActive
+        ];
+        return view('admin.vacancy.verify-vacancy', [
+            'data' => $data,
+            'total' => [
+                'active' => $total['active'],
+                'nonactive' => $total['nonactive'],
+                'total' => sizeof($data)
+            ]
+        ]);
+
     }
     public function history()
     {
-
-
         $data = $this->postService->findHistoryVacancy();
         return view('admin.vacancy.history-vacancy', ['data' => $data]);
     }
@@ -113,6 +102,16 @@ class PostController extends Controller
     }
 
 
+    public function verifyOrReject(Request $request, $id)
+    {
+        $data = [
+            'verified' => $request->input('verified'),
+            'id' => $id
+        ];
+        $response = $this->postService->updateVerified($data);
+        Alert::success('Success', 'Berhasil Memperbarui');
+        return back();
+    }
 
 
     private function getDataFromJson($data): array

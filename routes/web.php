@@ -1,7 +1,6 @@
 <?php
 
-
-
+use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Middleware\IsAdminMiddleware;
@@ -81,6 +80,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::prefix('vacancy')->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('vacancy');
         Route::post('/store', [PostController::class, 'store'])->name('vacancy-store');
+        Route::put('/{id}' , [PostController::class , 'verifyOrReject'])->name('vacancy-verify');
         Route::get('/history', [PostController::class, 'history'])->name('history');
     });
     Route::prefix('berita')->group(function () {
@@ -94,9 +94,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     });
 
     Route::prefix('reference-user')->group(function () {
-        Route::get('', function () {
-            return view('admin.alumni.reference-alumni');
-        })->name('reference-alumni');
+        Route::get('', [AlumniController::class , 'findAllReferenceAlumni'])->name('reference-alumni');
     });
 
     Route::prefix('legalisir')->group(function () {
@@ -104,6 +102,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     });
     Route::prefix('aktivasi')->group(function () {
         Route::get('', [AktivasiController::class, 'index'])->name('aktivasi-alumni');
+        Route::put('/{id}' , [AktivasiController::class , 'accOrReject'])->name('acc-reject');
     });
     Route::prefix('notifications')->group(function () {
         Route::get('', [NotificationsController::class, 'index'])->name('notifications');

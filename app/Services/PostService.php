@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
+use App\Exceptions\WebException;
 use App\Helper\ResponseHelper;
 use App\Models\Post;
 use App\Models\User;
@@ -114,7 +115,7 @@ class PostService
             DB::commit();
             return ResponseHelper::successResponse('Berhasil memperbarui verifikasi', $updated, 200);
         }
-        throw new Exception('ops , gagal mengupdate verifikasi');
+        throw new WebException('ops , gagal mengupdate verifikasi');
     }
 
 
@@ -310,9 +311,12 @@ class PostService
     }
 
 
-    public function findAllPostFromAdmin()
+    public function findVerivyVacancy()
     {
-        $data = $this->post->with('user', 'admin')->orderBy('verified', 'asc')->get()->toArray();
+        $data = $this->post->where(
+            'verified',
+            'waiting'
+        )->with('user', 'admin')->orderBy('verified', 'asc')->get()->toArray();
         $collection = collect($data);
         return $collection->map(function ($data) {
             return $this->castToResponseFromArray($data);

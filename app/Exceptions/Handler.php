@@ -66,7 +66,7 @@ class Handler extends ExceptionHandler
                     'message' => $e->getMessage()
                 ], 404);
             }
-            dd($e);
+
             if ($e instanceof NotFoundHttpException) {
                 // Menampilkan halaman 404
                 return response()->view('errors.404', [], 404);

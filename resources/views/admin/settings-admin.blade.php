@@ -44,7 +44,7 @@
                                     <h6 class="mb-0">Nama</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    <input type="text" class="form-control" value="Nama Anda" />
+                                    <input type="text" class="form-control" value="{{Auth::guard('admin')->user()->name}}" />
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -52,7 +52,7 @@
                                     <h6 class="mb-0">Email</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    <input type="text" class="form-control" value="admin@gmail.com" />
+                                    <input type="text" class="form-control" value="{{Auth::guard('admin')->user()->email}}" />
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -60,7 +60,7 @@
                                     <h6 class="mb-0">NPWP</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    <input type="text" class="form-control" value="816-9029" />
+                                    <input type="text" class="form-control" value="{{Auth::guard('admin')->user()->npwp}}" />
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -68,7 +68,7 @@
                                     <h6 class="mb-0">Alamat</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    <input type="text" class="form-control" value="Jember, Sumbersari " />
+                                    <input type="text" class="form-control" value="{{Auth::guard('admin')->user()->alamat}}" />
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -76,7 +76,7 @@
                                     <h6 class="mb-0">Password</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    <input type="text" class="form-control" value="admin12345" />
+                                    <input type="text" class="form-control" value="******" />
                                 </div>
                             </div>
                             <div class="row">

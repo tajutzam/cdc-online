@@ -99,7 +99,11 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td class="text-start" style="text-align: start">
-                            {{ $item['user']['fullname'] }}
+                            @if ($item['admin'] == null)
+                                {{ $item['user']['fullname'] }}
+                            @else
+                                {{ $item['admin']['name'] }}
+                            @endif
                             <a href="#" class="user-info" data-bs-toggle="modal" data-bs-target="#detail-user"
                                 data-id="{{ $item['id'] }}" class="mx-auto" data-user="{{ json_encode($item['user']) }}"
                                 data-admin="{{ json_encode($item['admin']) }}" onclick="detailUploader(id)"><i
@@ -124,14 +128,21 @@
                         <td>{{ date('Y-F-d H:i', strtotime($item['post_at'])) }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                <button type="button" class="btn btn-success">Setuju</button>
-                                <button type="button" class="btn btn-danger">Tolak</button>
+                                <form action="{{ route('vacancy-verify', ['id' => $item['id']]) }}" method="post">
+                                    @method('put')
+                                    <input type="text" value="verified" hidden name="verified">
+                                    <button type="submit" class="btn btn-success">Setuju</button>
+                                </form>
+                                <form action="{{ route('vacancy-verify', ['id' => $item['id']]) }}" method="post">
+                                    @method('put')
+                                    <input type="text" value="rejected" name="verified" hidden>
+                                    <button type="submit" class="btn btn-danger">Tolak</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
-
         </table>
     </div>
 

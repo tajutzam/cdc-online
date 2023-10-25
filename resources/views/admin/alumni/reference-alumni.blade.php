@@ -8,8 +8,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-
-
         <div class="row gap-4">
             <div class="card radius-10 col-lg-3 col-md-4 col-sm-12 ">
                 <div class="card-body">
@@ -80,30 +78,27 @@
                             <tr>
                                 <th>No</th>
                                 <th>NIM</th>
-                                <th>NIK</th>
                                 <th>Nama</th>
                                 <th>Program Studi</th>
                                 <th>Email</th>
-                                <th>Foto</th>
                                 <th>Tahun Lulus</th>
                                 <th>Tahun Masuk</th>
-
                             </tr>
                         </thead>
                         <tbody>
                             {{-- @foreach ($data['alumni'] as $item) --}}
-                            <tr>
-                                <td>No</td>
-                                <td>NIM</td>
-                                <td>NIK</td>
-                                <td>Nama</td>
-                                <td>Program Studi</td>
-                                <td>Email</td>
-                                <td>Foto</td>
-                                <td>Tahun Lulus</td>
-                                <td>Tahun Masuk</td>
+                            @foreach ($data as $item)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item['nim'] }}</td>
+                                    <td>{{ $item['nama_lengkap'] }}</td>
+                                    <td>{{ $item['program_studi'] }}</td>
+                                    <td>{{ $item['email'] }}</td>
+                                    <td>{{ $item['tahun_lulus'] }}</td>
+                                    <td>{{ $item['angkatan'] }}</td>
 
-                            </tr>
+                                </tr>
+                            @endforeach
                             {{-- @endforeach --}}
                         </tbody>
                     </table>

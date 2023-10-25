@@ -8,13 +8,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-    {{-- @if (session('success'))
-        <div class="alert alert-success border-0 bg-success alert-dismissible fade show">
-            <div class="text-white">{{ session('success') }}</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif --}}
-
     <div class="row gap-4">
         <div class="card radius-10 col-lg-3 col-md-4 col-sm-12 ">
             <div class="card-body">

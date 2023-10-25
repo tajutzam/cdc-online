@@ -22,6 +22,14 @@ class AlumniController extends Controller
         $this->alumniSubmissionsService = new AlumniSubmissionsService();
     }
 
+    public function findAllReferenceAlumni()
+    {
+
+        $data = $this->alumniService->findAllAlumni();
+
+        return view('admin.alumni.reference-alumni', ['data' => $data]);
+    }
+
     public function verifikasiAlumni(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -67,7 +75,7 @@ class AlumniController extends Controller
     public function findAllSubmissions()
     {
         $data = $this->alumniSubmissionsService->showSubmissions();
-        return $data;
+        return view('');
     }
 
     public function accOrReject(Request $request)
