@@ -19,10 +19,10 @@
                         <a class="nav-link" href="avascript:;"><i class='bx bx-search'></i>
                         </a>
                     </li> --}}
-                    <li class="nav-item dark-mode  d-sm-flex">
+                    {{-- <li class="nav-item dark-mode  d-sm-flex">
                         <a class="nav-link dark-mode-icon" href="javascript:;"><i class='bx bx-moon'></i>
                         </a>
-                    </li>
+                    </li> --}}
 
                     <li class="nav-item dropdown dropdown-app">
                         {{-- <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown"

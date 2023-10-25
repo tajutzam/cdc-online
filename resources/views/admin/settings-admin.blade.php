@@ -5,7 +5,7 @@
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="ps-3">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
+                <ol class="breadcrumb mb-0 p-0"style="background-color: white">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">Pengaturan Akun</li>
@@ -44,7 +44,8 @@
                                     <h6 class="mb-0">Nama</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    <input type="text" class="form-control" value="{{Auth::guard('admin')->user()->name}}" />
+                                    <input type="text" class="form-control"
+                                        value="{{ Auth::guard('admin')->user()->name }}" />
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -52,7 +53,8 @@
                                     <h6 class="mb-0">Email</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    <input type="text" class="form-control" value="{{Auth::guard('admin')->user()->email}}" />
+                                    <input type="text" class="form-control"
+                                        value="{{ Auth::guard('admin')->user()->email }}" />
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -60,7 +62,8 @@
                                     <h6 class="mb-0">NPWP</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    <input type="text" class="form-control" value="{{Auth::guard('admin')->user()->npwp}}" />
+                                    <input type="text" class="form-control"
+                                        value="{{ Auth::guard('admin')->user()->npwp }}" />
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -68,7 +71,8 @@
                                     <h6 class="mb-0">Alamat</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    <input type="text" class="form-control" value="{{Auth::guard('admin')->user()->alamat}}" />
+                                    <input type="text" class="form-control"
+                                        value="{{ Auth::guard('admin')->user()->alamat }}" />
                                 </div>
                             </div>
                             <div class="row mb-3">

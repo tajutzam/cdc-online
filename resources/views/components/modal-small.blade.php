@@ -1,5 +1,5 @@
 <div class="modal fade " id="{{ $id }}" tabindex="-1" aria-hidden="true">
-    aria-hidden="true">
+
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header bg-primary">

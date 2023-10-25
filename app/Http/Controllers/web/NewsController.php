@@ -71,7 +71,7 @@ class NewsController extends Controller
 
         $response = $this->newsService->addNews($data, $data['image']);
 
-        Alert::success('Success', $response['message']);
+        Alert::success('Sukses', $response['message']);
         return back();
     }
 

@@ -3,7 +3,7 @@
 @section('content')
 
     <body>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="card ">
@@ -39,7 +39,7 @@
                 <div class="col-sm-12">
                     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
                         <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb mb-0 p-0">
+                            <ol class="breadcrumb mb-0 p-0" style="background-color: white;">
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('dashboard') }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -53,9 +53,9 @@
                             </ol>
                         </nav>
                     </div>
-
                 </div>
             </div>
+
             <div class="card">
                 <div class="card-body">
                     <div class="row">

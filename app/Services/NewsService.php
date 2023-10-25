@@ -28,7 +28,7 @@ class NewsService
     public function findAll($page = 0)
     {
 
-        $data = $this->news->paginate(2, ['*'], 'page', $page); // Change 10 to the number of items you want per page
+        $data = $this->news->paginate(10, ['*'], 'page', $page); // Change 10 to the number of items you want per page
         $result = $this->castToPojo($data->items());
 
         return [
@@ -57,7 +57,7 @@ class NewsService
             $response = $this->castToSinglePojo($data);
             return $response;
         }
-        throw new NotFoundException('ops , berita tidak ditemukan harap masukan id yang benar');
+        throw new NotFoundException('Ops, Berita tidak ditemukan harap masukan ID yang benar');
     }
 
     public function addNews($request, $image)
@@ -69,7 +69,7 @@ class NewsService
         $fileName = time() . '.' . $image->extension();
         $urlResource = $image->move($folder, $fileName);
         if (!isset($urlResource)) {
-            throw new WebException('ops , gagal membuat berita terjadi kesalahan');
+            throw new WebException('Ops, Gagal membuat Berita terjadi kesalahan');
         }
         $created = $this->news->create([
             'admin_id' => $adminId,
@@ -83,18 +83,18 @@ class NewsService
             return [
                 'status' => true,
                 'code' => 201,
-                'message' => 'success membuat berita'
+                'message' => 'Sukses membuat Berita'
             ];
         }
 
-        throw new WebException('ops , gagal membuat berita terjadi kesalahan');
+        throw new WebException('Ops, Gagal membuat Berita terjadi kesalahan');
     }
 
     public function update($request, $image, $id)
     {
         $news = $this->news->where('id', $id)->first();
         if (!isset($news)) {
-            throw new WebException('ops , berita tidak ditemukan');
+            throw new WebException('Ops, Berita tidak ditemukan');
         }
         $imageName = $news->image;
         $imagePath = public_path("news/" . $imageName); // Get the full path to the image
@@ -120,10 +120,10 @@ class NewsService
             return [
                 'status' => true,
                 'code' => 201,
-                'message' => 'success memperbarui berita'
+                'message' => 'Sukse memperbarui Berita'
             ];
         }
-        throw new WebException('ops , gagal memperbarui berita terjadi kesalahan');
+        throw new WebException('Ops, Gagal memperbarui Berita terjadi kesalahan');
     }
 
     public function delete($id)
@@ -134,11 +134,11 @@ class NewsService
             $deleted = $news->delete();
             if ($deleted) {
                 DB::commit();
-                return back()->with('success', 'berhasil menghapus berita');
+                return back()->with('Sukses', 'Berhasil menghapus Berita');
             }
-            throw new WebException('Gagal menghapus berita , terjadi kesalahan');
+            throw new WebException('Gagal menghapus Berita, terjadi kesalahan');
         }
-        throw new WebException('Gagal menghapus berita , berita tidak ditemukan');
+        throw new WebException('Gagal menghapus Berita, Berita tidak ditemukan');
     }
 
 
@@ -171,5 +171,4 @@ class NewsService
 
         return $news;
     }
-
 }
