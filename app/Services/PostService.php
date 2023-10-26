@@ -129,9 +129,16 @@ class PostService
             ->where('expired', '>', $now)
             ->where('verified', 'verified')
             ->where('user_id', '<>', $userId)
-            ->orWhereNotNull('admin_id') // Menambahkan kondisi admin_id tidak null
-            ->with('comments', 'user', 'admin')
+            ->orWhereNotNull('admin_id')
+            ->with([
+                'comments' => function ($query) {
+                    $query->with('user');
+                },
+                'user',
+                'admin'
+            ])
             ->paginate(10, ['*'], 'page', $page);
+
 
 
         $data = [
@@ -140,6 +147,11 @@ class PostService
         ];
         foreach ($expiredPosts as $datum) {
             $tempPost = $this->castToResponse($datum);
+            foreach ($datum['comments'] as $key => $value) {
+                # code...
+                $tempComments = $this->castToUserResponse($value['user']);
+                $tempPost['comments'][$key]['user'] = $tempComments;
+            }
             array_push($data, $tempPost);
         }
         return ResponseHelper::successResponse('Success fetch data', $data, 200);
