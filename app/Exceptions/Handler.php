@@ -57,6 +57,7 @@ class Handler extends ExceptionHandler
                     'message' => $e->getMessage()
                 ], 400);
             }
+
             if ($e instanceof NotFoundException) {
                 DB::rollBack();
                 return response()->json([
@@ -69,7 +70,8 @@ class Handler extends ExceptionHandler
 
             if ($e instanceof NotFoundHttpException) {
                 // Menampilkan halaman 404
-                return response()->view('errors.404', [], 404);
+
+                return response()->view('errors.404', ['message' => $e->getMessage()], 404);
             }
             if ($e instanceof WebException) {
                 // mengirim error sesuai message web exceptions
@@ -108,9 +110,6 @@ class Handler extends ExceptionHandler
                 'data' => null,
                 'message' => $e->getMessage()
             ], 500);
-        }, );
-
+        },);
     }
-
-
 }

@@ -5,48 +5,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halaman Tidak Ditemukan</title>
-    <style>
-        /* CSS untuk mengatur tampilan halaman 404 */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            /* Mengatur kontainer di tengah horizontal */
-            align-items: center;
-            /* Mengatur kontainer di tengah vertikal */
-            height: 100vh;
-            /* Mengisi seluruh tinggi viewport */
-            margin: 0;
-        }
 
-        .container {
-            text-align: center;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .error-code {
-            font-size: 36px;
-            font-weight: bold;
-            color: #e74c3c;
-            /* Warna merah */
-        }
-
-        .error-message {
-            font-size: 24px;
-            color: #333;
-        }
-        
-    </style>
 </head>
+@include('layouts.auth')
 
-<body>
-    <div class="container">
-        <div class="error-code">404</div>
-        <div class="error-message">Halaman Tidak Ditemukan</div>
+<body style="background-color: #0771BD">
+    <div class="error-404 d-flex align-items-center justify-content-center">
+        <div class="container">
+            <div class="card py-5 rounded-5">
+                <div class="row g-0">
+                    <div class="col col-xl-5">
+                        <div class="card-body p-4">
+                            <h1 class="display-1"><span class="text-primary" style="font-weight: bold">4</span><span
+                                    class="text-danger" style="font-weight: bold">0</span><span class="text-success"
+                                    style="font-weight: bold">4</span></h1>
+                            <h2 class="font-weight-bold display-4">Lost in Space</h2>
+                            <p>You have reached the edge of the universe.
+                                <br>The page you requested could not be found.
+                                <br>Dont'worry and return to the previous page.
+                            </p>
+
+
+                            <div class="mt-5"> <a href="{{ route('/', ['id' => 1]) }}"
+                                    class="btn btn-lg px-md-5 rounded-5"
+                                    style="background: linear-gradient(to right, #0771BD, #2EA3F8); color: white; ">Go
+                                    Home</a>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--end row-->
+            </div>
+        </div>
     </div>
 </body>
 

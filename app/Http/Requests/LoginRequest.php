@@ -43,7 +43,6 @@ class LoginRequest extends FormRequest
             'code' => 400
 
         ], 400));
-
     }
 
     public function messages()
@@ -51,15 +50,10 @@ class LoginRequest extends FormRequest
 
         return [
 
-            'emailOrNik.required' => 'Email atau nik tidak boleh kosong',
+            'emailOrNik.required' => 'Email atau NIK tidak boleh kosong',
 
             'password.required' => 'Password tidak boleh kosong'
 
         ];
-
     }
-
-
-
-
 }

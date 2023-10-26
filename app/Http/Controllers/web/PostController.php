@@ -53,7 +53,6 @@ class PostController extends Controller
                 'total' => sizeof($data)
             ]
         ]);
-
     }
     public function history()
     {
@@ -86,7 +85,7 @@ class PostController extends Controller
         $adminId = $this->checkLogin();
         $data = $this->postService->addPostJobAdmin($request->file('image'), $adminId, $request->all(), $isCanComment);
         if ($data['status']) {
-            Alert::success('Success', $data['message']);
+            Alert::success('Sukses', $data['message']);
             return back();
         }
         return back()->withErrors($data['message']);
@@ -98,7 +97,7 @@ class PostController extends Controller
         if (Auth::guard('admin')->check()) {
             return Auth::guard('admin')->user()->id;
         }
-        return redirect('admin/login')->withErrors('ops sesi login kamu sudah habis');
+        return redirect('admin/login')->withErrors('Ops sesi Anda sudah habis');
     }
 
 

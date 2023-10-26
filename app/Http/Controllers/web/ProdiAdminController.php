@@ -17,4 +17,6 @@ class ProdiAdminController extends Controller
     {
         return view('prodi.auth.login');
     }
+
+
 }

@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Exceptions\BadRequestException;
 use App\Exceptions\WebException;
 use App\Models\Alumni;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -28,35 +29,52 @@ class AlumniService
 
     public function updateDataAlumni()
     {
-        $responseToken = $this->generateToken();
-        $header = [
-            'Authorization' => 'Bearer ' . $responseToken->access_token,
-            'Accept' => 'application/json',
-            'User-Agent' => '/Postman/i'
-        ];
-        $response = Http::withHeaders($header)->get('http://api.polije.ac.id/resources/akademik/mahasiswa/wisuda', [
-            'debug' => true,
-        ]);
-        if ($response->successful()) {
-            $data = $response->json();
-            Alumni::truncate();
-            DB::beginTransaction();
-            try {
+        $nowDate = Carbon::now();
+        $nowYears = $nowDate->year;
+
+        $interval = $nowYears - 3; // get 3 tahun terakhir
+        $success = false;
+        Alumni::truncate(); // delete data before update
+        while ($interval != $nowYears) {
+            $responseToken = $this->generateToken();
+            $header = [
+                'Authorization' => 'Bearer ' . $responseToken->access_token,
+                'Accept' => 'application/json',
+                'User-Agent' => '/Postman/i'
+            ];
+            $response = Http::withHeaders($header)->timeout(200)->get('http://api.polije.ac.id/resources/akademik/mahasiswa/wisuda', [
+                'debug' => true,
+                'tahun_lulus' => $interval
+            ]);
+            if ($response->successful()) {
                 $data = $response->json();
-                foreach ($data as $key => $value) {
-                    # code...
-                    $data[$key]['id'] = Str::uuid()->toString();
+                DB::beginTransaction();
+                try {
+                    $data = $response->json();
+                    foreach ($data as $key => $value) {
+                        # code...
+                        $data[$key]['id'] = Str::uuid()->toString();
+                    }
+                    $created = Alumni::insert($data);
+                    if ($created) {
+                        DB::commit();
+                        $interval++;
+                        $success = true;
+                    }
+                } catch (Throwable $e) {
+                    dd($e->getMessage());
+                    $success = false;
+                    throw new WebException($e->getMessage());
                 }
-                $created = Alumni::insert($data);
-                if ($created) {
-                    DB::commit();
-                    return redirect()->back()->with('success', 'berhasil memperbarui data alumni referensi');
-                }
-            } catch (Throwable $e) {
-                throw new WebException($e->getMessage());
+            } else {
+                throw new WebException('ngen');
             }
         }
-        throw new WebException('');
+        if ($success) {
+            return true;
+        } else {
+            throw new WebException('gagal mengupdate data alumni');
+        }
     }
 
 

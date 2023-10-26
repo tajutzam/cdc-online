@@ -18,7 +18,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div>
-                        <p class="mb-0 text-secondary">Total Alumni Yang Mengisi Quisioner</p>
+                        <p class="mb-0 text-secondary">Total Alumni Terverifikasi
                         <h4 class="my-1">{{ $data['count']['active'] }}</h4>
                     </div>
                     <div class="widgets-icons bg-light-success text-success ms-auto"><i class='bx bxs-user-badge'></i>
@@ -30,7 +30,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div>
-                        <p class="mb-0 text-secondary">Total Alumni Yang Belum Mengisi Quisioner</p>
+                        <p class="mb-0 text-secondary">Total Alumni Belum Terverifikasi</p>
                         <h4 class="my-1">{{ $data['count']['nonactive'] }}</h4>
                     </div>
                     <div class="widgets-icons bg-light-danger text-danger ms-auto"><i class='bx bxs-user-account'></i>
@@ -61,8 +61,6 @@
     <div class="card">
         <div class="row p-2 justify-content-between">
             <div class="col">
-                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#add-news">Tambah
-                    Alumni</button>
             </div>
             <div class="col-3">
                 <select class="form-select form-select-sm" id="filter-user" aria-label="Small select example">
@@ -83,7 +81,6 @@
                     <th>NIM</th>
                     <th>NIK</th>
                     <th>Nama</th>
-
                     <th>Email</th>
                     <th>Foto</th>
                     <th>Tahun Lulus</th>
@@ -104,14 +101,15 @@
                             <td>-</td>
                             <td>-</td>
                         @endif
+                        <td>{{ $item['nik'] }}</td>
+                        <td>{{ $item['fullname'] }}</td>
                         <td>{{ $item['email'] }}</td>
-                        <td>{{ $item['foto'] }}</td>
-                        <td>{{ $item['email'] }}</td>
-                        <td>{{ $item['foto'] }}</td>
-                        <td>2025</td>
-                        <td>2021</td>
-                        <td>{{ $item['account_status'] }}</td>
-                        <td>{{ $item['latitude'] }}</td>
+                        <td><img class="" style="height: 80px" src="{{ $item['foto'] }}" alt=""
+                                srcset=""></td>
+                        <td>{{ $item['educations'][0]['tahun_lulus'] }}</td>
+                        <td>{{ $item['educations'][0]['tahun_masuk'] }}</td>
+                        <td>{{ $item['state_quisioner'] }} Bulan</td>
+                        <td>{{ $item['latitude'] - $item['longtitude'] }}</td>
                         <td class="">
                             <div class="row" style="align-content: center;">
                                 <div class="col-6">

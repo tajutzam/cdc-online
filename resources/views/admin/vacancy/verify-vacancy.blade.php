@@ -26,7 +26,7 @@
                                 <p class="mb-0 text-secondary">Total Tidak Aktif</p>
                                 <h4 class="my-1">{{ $total['nonactive'] }}</h4>
                             </div>
-                            <div class="widgets-icons bg-light-success text-danger ms-auto"><i class='bx bxs-badge'></i>
+                            <div class="widgets-icons bg-light-danger text-danger ms-auto"><i class='bx bxs-badge'></i>
                             </div>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                                 <p class="mb-0 text-secondary">Total Aktif</p>
                                 <h4 class="my-1">{{ $total['active'] }}</h4>
                             </div>
-                            <div class="widgets-icons bg-light-success text-warning ms-auto"><i class='bx bxs-badge'></i>
+                            <div class="widgets-icons bg-light-warning text-warning ms-auto"><i class='bx bxs-badge'></i>
                             </div>
                         </div>
                     </div>
@@ -130,25 +130,19 @@
                             <td><a href="{{ $item['link_apply'] }}"
                                     class="text-decoration-none  font-italic">link_apply</a>
                             </td>
-                            {{-- <td>
-                            <form action="" method="post" action="" id="">
-                                <div class="form-check-primary form-check form-switch">
-                                    <input name="can_comment" class="form-check-input" type="checkbox"
-                                        onclick="updateStatusPost(id)" @if ($item['verified']) checked @endif
-                                        id="{{ $item['id'] }}">
-                                </div>
-                            </form>
-                        </td> --}}
+
                             <td>{{ date('Y-F-d H:i', strtotime($item['expired'])) }}</td>
                             <td>{{ date('Y-F-d H:i', strtotime($item['post_at'])) }}</td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                    <form action="{{ route('vacancy-verify', ['id' => $item['id']]) }}" method="post">
+                                    <form action="{{ route('vacancy-verify', ['id' => $item['id']]) }}" method="post"
+                                        class="p-2">
                                         @method('put')
                                         <input type="text" value="verified" hidden name="verified">
                                         <button type="submit" class="btn btn-success">Setuju</button>
                                     </form>
-                                    <form action="{{ route('vacancy-verify', ['id' => $item['id']]) }}" method="post">
+                                    <form action="{{ route('vacancy-verify', ['id' => $item['id']]) }}" method="post"
+                                        class="p-2">
                                         @method('put')
                                         <input type="text" value="rejected" name="verified" hidden>
                                         <button type="submit" class="btn btn-danger">Tolak</button>
@@ -273,7 +267,7 @@
                     <label for="formFile" class="form-label">Poster</label>
                     <input name="image" class="form-control  form-control-sm" type="file" id="formFile" required>
                 </div>
-                <div class="form-check-danger form-check form-switch">
+                <div class="form-check-danger form-check form-switch ps-5 pb-2">
                     <input name="can_comment" class="form-check-input" type="checkbox"
                         id="flexSwitchCheckCheckedDanger">
                     <label class="form-check-label" for="flexSwitchCheckCheckedDanger">Komentar</label>
@@ -292,7 +286,7 @@
                     <option value="Kontrak">Kontrak</option>
                     <option value="Musiman">Musiman</option>
                 </select>
-                <div class="row justify-content-between">
+                <div class="row justify-content-end">
                     <button class="col-3 btn btn-outline-danger btn-sm mx-4" type="reset"
                         data-bs-dismiss="modal">Tutup</button>
                     <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
@@ -300,11 +294,8 @@
             </form>
         </x-slot>
     </x-modal>
-    <x-modal id="detail-user" footer="footer" title="title" body="body">
+    <x-modal-small id="detail-user" footer="footer" title="title" body="body">
         <x-slot name="title">Detail Pengunggah <span id="level-uploader"></span></x-slot>
-
-
-
         <x-slot name="body">
             <div></div>
             <img id="img-uploader" class="rounded-circle mb-3  shadow-4-strong" alt="image-uploader" />
@@ -340,5 +331,5 @@
                 </div>
             </div>
         </x-slot>
-    </x-modal>
+    </x-modal-small>
 @endsection

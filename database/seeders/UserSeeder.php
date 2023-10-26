@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
             'about' => "saya adalah orang yang memiliki tekat tinggi",
             'email_verivied' => 1,
             'account_status' => 1,
-            'kode_prodi' => 62303,
+            'kode_prodi' => 55301,
             'nim' => 'e41212337'
         ]);
         User::create([
@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
             'gender' => 'male',
             'about' => "second abour",
             'email_verivied' => 1,
-            'kode_prodi' => 79402,
+            'kode_prodi' => 55301,
             'nim' => 'e41212336'
 
         ]);
@@ -64,7 +64,7 @@ class UserSeeder extends Seeder
             'gender' => 'female',
             'about' => "thrid  about",
             'email_verivied' => 1,
-            'kode_prodi' => 79402,
+            'kode_prodi' => 55301,
             'nim' => 'e41212335'
         ]);
 

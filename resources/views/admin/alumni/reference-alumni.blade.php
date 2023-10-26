@@ -65,8 +65,11 @@
                 <div class="row">
                     <div class="row justify-content-start">
                         <div class="col">
-                            <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
-                                data-bs-target="">Perbarui</button>
+                            <form action="{{ route('reference-alumni-update') }}" method="post">
+                                @method('put')
+                                <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="" type="submit">Perbarui</button>
+                            </form>
                         </div>
                     </div>
                 </div>
