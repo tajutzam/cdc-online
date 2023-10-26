@@ -43,7 +43,7 @@ class AuthController extends Controller
         if ($isLogin) {
             return redirect('/admin/dashboard');
         }
-        return redirect()->back()->withErrors('Gagal Logi , harap check email atau password anda');
+        return redirect()->back()->withErrors('Gagal Masuk, Periksa kembali email dan password anda');
     }
 
 
@@ -62,5 +62,4 @@ class AuthController extends Controller
         $data = $this->validate($request, $rules, $customMessages);
         return $this->prodiAdministratorService->login($data['email'], $data['password']);
     }
-
 }

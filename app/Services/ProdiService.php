@@ -40,11 +40,11 @@ class ProdiService
             return [
                 'status' => true,
                 'data' => $created,
-                'message' => 'success membuat prodi'
+                'message' => 'Sukses membuat Program Studi'
             ];
         } else {
             DB::rollBack();
-            throw new WebException('ops gagal membuat prodi');
+            throw new WebException('Ops, Gagal membuat Program Studi');
         }
     }
 
@@ -57,7 +57,7 @@ class ProdiService
         foreach ($checked as $key => $value) {
             # code...
             if ($value == $request['nama_prodi_update']) {
-                throw new WebException('ops nama prodi sudah digunakan');
+                throw new WebException('Ops, Nama Program Studi sudah digunakan');
             }
         }
         $prodi = $this->prodi->where('id', $request['id_update'])->first();
@@ -68,11 +68,11 @@ class ProdiService
             ]);
             return [
                 'status' => true,
-                'message' => 'success memperbarui data',
+                'message' => 'Sukses memperbarui data',
                 'code' => 200
             ];
         }
-        throw new WebException('ops , kode prodi kamu tidak ditemukan');
+        throw new WebException('Ops, Kode Program Studi kamu tidak ditemukan');
     }
 
 
@@ -84,7 +84,7 @@ class ProdiService
             $this->prodi->where('id', $id)->delete();
             return [
                 'status' => 200,
-                'message' => 'berhasil menghapus prodi',
+                'message' => 'Berhasil menghapus Program Studi',
                 'data' => 1
             ];
         } catch (\Throwable $th) {
@@ -92,6 +92,4 @@ class ProdiService
             throw new WebException($th->getMessage());
         }
     }
-
-
 }

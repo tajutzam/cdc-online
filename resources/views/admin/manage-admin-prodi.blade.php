@@ -8,10 +8,10 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div>
-                                <p class="mb-0 text-secondary">Total Admin</p>
+                                <p class="mb-0 text-secondary">Total Admin Program Studi</p>
                                 <h4 class="my-1">10</h4>
                             </div>
-                            <div class="widgets-icons bg-light-success text-success ms-auto"><i class='bx bxs-user-badge'></i>
+                            <div class="widgets-icons bg-light-danger text-danger ms-auto"><i class='bx bxs-user-badge'></i>
                             </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
                                     </svg>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Data Admin</li>
+                            <li class="breadcrumb-item active" aria-current="page">Data Admin Program Studi</li>
                         </ol>
                     </nav>
                 </div>
@@ -44,9 +44,8 @@
                 <div class="row">
                     <div class="row justify-content-start">
                         <div class="col">
-
                             <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#add-admin" type="">Tambah Admin</button>
+                                data-bs-target="#add-admin-prodi" type="">Tambah Admin Program Studi</button>
 
                         </div>
                     </div>
@@ -62,14 +61,11 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama</th>
+                                        <th>Program Studi</th>
                                         <th>Email</th>
                                         <th>Dibuat</th>
                                         <th>Diperbarui</th>
                                         <th>Aksi</th>
-
-
-
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -77,9 +73,8 @@
                                     <tr class="text-start">
                                         {{-- <td>{{ $loop->iteration }}</td> --}}
                                         <td>No</td>
-                                        <td>Nama</td>
+                                        <td>Program Studi</td>
                                         <td>Email</td>
-
                                         <td>Dibuat</td>
                                         <td>Diperbarui</td>
                                         <td>
@@ -102,15 +97,15 @@
         </div>
     </div>
 
-    <x-modal-small id="add-admin" footer="footer" title="title" body="body">
-        <x-slot name="title">Tambah Admin</x-slot>
-        <x-slot name="id">add-admin</x-slot>
+    <x-modal-small id="add-admin-prodi" footer="footer" title="title" body="body">
+        <x-slot name="title">Tambah Admin Program Studi</x-slot>
+        <x-slot name="id">add-admin-prodi</x-slot>
         <x-slot name="body">
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="form-floating mb-3">
                     <input type="number" class="form-control form-control-sm" required id="floatingTextarea"
                         name="id"></input>
-                    <label for="floatingTextarea">Nama</label>
+                    <label for="floatingTextarea">Program Studi</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control form-control-sm" required id="floatingTextarea"

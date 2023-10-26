@@ -20,7 +20,7 @@ class AllowUnauthenticated
 
         $isAdminLogin = Auth::guard('admin')->check();
         if ($isAdminLogin) {
-            return redirect('admin/dashboard')->withErrors('Kamu sudah login');
+            return redirect('admin/dashboard')->withErrors('Anda sudah Masuk');
         }
         return $next($request);
     }

@@ -3,7 +3,7 @@
 @section('content')
 
     <body>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="card ">
@@ -39,7 +39,7 @@
                 <div class="col-sm-12">
                     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
                         <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb mb-0 p-0" style="background-color: white">
+                            <ol class="breadcrumb mb-0 p-0" style="background-color: white;">
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('dashboard') }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -53,9 +53,9 @@
                             </ol>
                         </nav>
                     </div>
-
                 </div>
             </div>
+
             <div class="card">
                 <div class="card-body">
                     <div class="row">
@@ -70,7 +70,7 @@
                                     $currentYear = date('Y');
                                     for ($i = 0; $i < 5; $i++) {
                                         $year = $currentYear - $i;
-                                        echo '<li><a class="dropdown-item" href="#" data-year="' . $year . '">' . $year . '</a></li>';
+                                        echo '<li><a class="dropdown-item tahun" href="#" data-year="' . $year . '">' . $year . '</a></li>';
                                         if ($i < 4) {
                                             echo '<li><hr class="dropdown-divider"></li>';
                                         }
@@ -163,7 +163,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <div class="" dropdown px-3" class="text-center">
+                                                    <div class="dropdown px-3" class="text-center">
                                                         <a class="d-flex align-items-center nav-link  gap-3 dropdown-toggle-nocaret"
                                                             href="#" role="button" data-bs-toggle="dropdown"
                                                             aria-expanded="false">
@@ -178,7 +178,7 @@
                                                         </a>
                                                         <ul class="dropdown-menu dropdown-menu-end">
                                                             <li><a class="dropdown-item d-flex align-items-center"
-                                                                    href="quisioner/detail/{{ $item['id'] }}"><i></i><span>1</span></a>
+                                                                    href="{{ route('detail-quisioner', ['id' => $item['id']]) }}"><i></i><span>1</span></a>
                                                             </li>
                                                             <li>
                                                                 <div class="dropdown-divider mb-0"></div>
@@ -218,7 +218,7 @@
                     }
                 });
 
-                $('.dropdown-item').on('click', function(e) {
+                $('.tahun').on('click', function(e) {
                     e.preventDefault(); // Mencegah tindakan default tautan
 
                     // Dapatkan nilai tahun dari atribut data-year

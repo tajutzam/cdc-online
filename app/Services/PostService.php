@@ -57,9 +57,9 @@ class PostService
         if (isset($isCreated)) {
             $url = url('/') . "/users/post/" . $fileName;
             $isCreated['image'] = $url;
-            return ResponseHelper::successResponse('Berhasil menambahkan postingan', $isCreated, 201);
+            return ResponseHelper::successResponse('Berhasil menambahkan Lowongan', $isCreated, 201);
         }
-        throw new BadRequest('Ops , gagal membuat postingan terjadi kesalahan');
+        throw new BadRequest('Ops, Gagal mengirim lowongan Terjadi Kesalahan');
     }
 
     public function addPostJobAdmin($image, $adminId, $request, $isCanComment)
@@ -69,7 +69,7 @@ class PostService
         $fileName = time() . '.' . $image->extension();
         $urlResource = $image->move($folder, $fileName);
         if (!isset($urlResource)) {
-            throw new BadRequest('ops gagal mengirim status , silahkan coba lagi');
+            throw new BadRequest('Ops, Gagal mengirim status silaahkan coba lagi');
         }
         $isCreated = $this->post->create(
             [
@@ -90,13 +90,13 @@ class PostService
             DB::commit();
             return [
                 'status' => true,
-                'message' => 'success membuat lowongan'
+                'message' => 'Sukses membuat Lowongan'
             ];
         } else {
             DB::rollBack();
             return [
                 'status' => false,
-                'message' => 'Gagal membuat lowongan'
+                'message' => 'Gagal membuat Lowongan'
             ];
         }
     }
@@ -113,9 +113,9 @@ class PostService
 
         if ($updated) {
             DB::commit();
-            return ResponseHelper::successResponse('Berhasil memperbarui verifikasi', $updated, 200);
+            return ResponseHelper::successResponse('Berhasil memperbarui Verifikasi', $updated, 200);
         }
-        throw new WebException('ops , gagal mengupdate verifikasi');
+        throw new WebException('Ops, Gagal memperbarui Verifikasi');
     }
 
 
@@ -154,8 +154,7 @@ class PostService
             }
             array_push($data, $tempPost);
         }
-        return ResponseHelper::successResponse('Success fetch data', $data, 200);
-
+        return ResponseHelper::successResponse('Sukses Fetch Data', $data, 200);
     }
 
     public function getPostByUserId($id, $page)
@@ -193,11 +192,11 @@ class PostService
             );
             if ($isUpdate) {
                 Db::commit();
-                return ResponseHelper::successResponse('Berhasil memperbarui postingan', $isUpdate, 200);
+                return ResponseHelper::successResponse('Berhasil memperbarui Lowongan', $isUpdate, 200);
             }
-            throw new Exception('ops , gagal memperbarui postingan terjadi kesalahan');
+            throw new Exception('Ops, Gagal memperbarui Lowongan. Terjadi Kesalahan');
         }
-        throw new BadRequestException('Ops , user tidak memiliki postingan tersebut');
+        throw new BadRequestException('Ops, Pengguna tidak memiliki Lowongan tersebut');
     }
 
     public function deletePost($id, $userId)
@@ -208,12 +207,12 @@ class PostService
             $isDelete = $post->delete();
             if ($isDelete) {
                 Db::commit();
-                return ResponseHelper::successResponse('Berhasil memperbarui setelan komentar', true, 200);
+                return ResponseHelper::successResponse('Berhasil memperbarui setelan Komentar', true, 200);
             } else {
-                throw new Exception('ops , gagal menghapus postingan terjadi kesalahan');
+                throw new Exception('Ops, Gagal menghapus Lowongan. Terjadi Kesalahan');
             }
         }
-        throw new NotFoundException('Ops , user tidak memiliki postingan tersebut');
+        throw new NotFoundException('Ops, Pengguna tidak memiliki Lowongan Tersebut');
     }
 
     public function updateComment($id, $userId, $option)
@@ -226,11 +225,11 @@ class PostService
             ]);
             if ($isUpdate) {
                 DB::commit();
-                return ResponseHelper::successResponse('Berhasil memperbarui setelan komentar', $isUpdate, 200);
+                return ResponseHelper::successResponse('Berhasil memperbarui setelan Komentar', $isUpdate, 200);
             }
-            throw new Exception('ops , gagal memperbarui setelan komentar');
+            throw new Exception('Ops, Gagal memperbarui setelan komentar');
         }
-        throw new NotFoundException('ops , user tidak memiliki postingan tersebut');
+        throw new NotFoundException('Ops, Pengguna tidak memiliki Lowongan Tersebut');
     }
 
     public function findById($id)
@@ -239,7 +238,7 @@ class PostService
         if (isset($post)) {
             return $post;
         }
-        throw new NotFoundException('Ops , postingan tidak ditemukan');
+        throw new NotFoundException('Ops, Lowongan tidak ditemukan');
     }
 
     public function info()
@@ -291,7 +290,7 @@ class PostService
             ->get();
 
         if (sizeof($posts) == 0) {
-            throw new NotFoundException('ops , postingan dengan posisi ' . $request['key'] . " tidak ditemukan");
+            throw new NotFoundException('Ops, Lowongan dengan posisi ' . $request['key'] . " tidak ditemukan");
         }
 
         return collect($posts->toArray())->map(function ($post) {
@@ -391,6 +390,4 @@ class PostService
             "longtitude" => $user->longtitude
         ];
     }
-
 }
-

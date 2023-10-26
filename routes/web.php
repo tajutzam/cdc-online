@@ -1,37 +1,38 @@
 <?php
 
-use App\Http\Controllers\AlumniController;
+use App\Models\User;
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\AuthController;
 
+use App\Http\Controllers\AlumniController;
 use App\Http\Middleware\IsAdminMiddleware;
-
-use App\Http\Controllers\web\AuthController as WebAuthController;
-use App\Http\Controllers\web\LegalisirController;
 
 use App\Http\Controllers\web\NewsController;
 use App\Http\Controllers\web\PostController;
 
-use App\Http\Controllers\web\ProdiAdminController;
-use App\Http\Controllers\web\ProdiController;
-use App\Http\Controllers\web\QuisionerController;
-
 use App\Http\Controllers\web\UserController;
 use App\Http\Controllers\web\AdminController;
+use App\Http\Controllers\web\ProdiController;
 
 use App\Http\Middleware\AllowUnauthenticated;
-
 use App\Http\Controllers\web\AktivasiController;
+
+use App\Http\Controllers\web\LegalisirController;
+
+use App\Http\Controllers\web\QuisionerController;
 
 use App\Http\Controllers\web\UserProdiController;
 use App\Http\Controllers\web\AdminProdiController;
+use App\Http\Controllers\web\ProdiAdminController;
 use App\Http\Controllers\web\NotificationsController;
 use App\Http\Controllers\web\ReferenceUserController;
+
+
 use App\Http\Controllers\web\ProdiQuesionerController;
-
-
 use App\Http\Middleware\IsProdiAdministratorMiddleware;
-use App\Models\User;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\web\ManageProdiAdminController;
+use App\Http\Controllers\web\AuthController as WebAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +47,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('/');
 Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group(
     function () {
         Route::get('/dashboard', [AdminProdiController::class, 'dashboard'])->name('dashboard-prodi');
@@ -62,7 +63,7 @@ Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group
         });
         Route::get('', [ProdiAdminController::class, 'index']);
         Route::get('login', [ProdiAdminController::class, 'login'])->withoutMiddleware(IsProdiAdministratorMiddleware::class);
-        Route::post("login" , [WebAuthController::class , 'loginProdi'])->withoutMiddleware(IsProdiAdministratorMiddleware::class)->name('prodi-login');
+        Route::post("login", [WebAuthController::class, 'loginProdi'])->withoutMiddleware(IsProdiAdministratorMiddleware::class)->name('prodi-login');
     }
 );
 Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () {
@@ -70,7 +71,10 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
 
     Route::post('login', [WebAuthController::class, 'loginAdmin'])->name('admin-login')->middleware(AllowUnauthenticated::class)->withoutMiddleware(IsAdminMiddleware::class);
 
+    Route::post("logout", [AdminController::class, "logout"])->name('admin-logout');
+
     Route::get('/manage-admin', [AdminController::class, 'manageAdmin'])->name('manage-admin');
+    Route::get('/manage-admin-prodi', [ManageProdiAdminController::class, 'manageAdminProdi'])->name('manage-admin-prodi');
     Route::get('/settings-admin', [AdminController::class, 'settingsAdmin'])->name('settings-admin');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
@@ -117,10 +121,10 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     });
 
     Route::prefix('quisioner')->group(function () {
-        route::get('', [QuisionerController::class, 'index'])->name('quisioner-index');
+        Route::get('', [QuisionerController::class, 'index'])->name('quisioner-index');
         Route::get("/detail/{id}", function ($id) {
             return view('admin.quisioner.detail');
-        });
+        })->name('detail-quisioner');
     });
 });
 

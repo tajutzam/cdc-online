@@ -21,6 +21,6 @@ class IsAdminMiddleware
         if ($isAdminLogin) {
             return $next($request);
         }
-        return redirect('admin/login')->withErrors('ops , nampaknya kamu harus login terlebih dahulu');
+        return redirect('admin/login')->withErrors('Ops, nampaknya anda harus masuk terlebih dahulu');
     }
 }
