@@ -253,4 +253,11 @@ class UserController extends Controller
 
     }
 
+    public function logout(Request $request)
+    {
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        $response = $this->userService->logout($userId);
+        return ResponseHelper::successResponse($response['message'], $response['data'], $response['code']);
+    }
+
 }

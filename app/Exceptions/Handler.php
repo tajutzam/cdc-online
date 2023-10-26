@@ -80,7 +80,7 @@ class Handler extends ExceptionHandler
             }
 
             if ($e instanceof BadMethodCallException) {
-                return response()->view('errors.500', ["errors" => $e->getMessage()], 500);
+                return response()->view('errors.500', ["message" => $e->getMessage()], 500);
             }
             // dd($e);
             if ($e instanceof ForbiddenException) {

@@ -64,6 +64,7 @@ Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group
         Route::get('', [ProdiAdminController::class, 'index']);
         Route::get('login', [ProdiAdminController::class, 'login'])->withoutMiddleware(IsProdiAdministratorMiddleware::class);
         Route::post("login", [WebAuthController::class, 'loginProdi'])->withoutMiddleware(IsProdiAdministratorMiddleware::class)->name('prodi-login');
+        Route::post("logout", [ProdiAdminController::class, "logout"])->name('prodi-logout');
     }
 );
 Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () {
@@ -74,7 +75,11 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::post("logout", [AdminController::class, "logout"])->name('admin-logout');
 
     Route::get('/manage-admin', [AdminController::class, 'manageAdmin'])->name('manage-admin');
+    Route::post("/manage-admin", [AdminController::class, 'register'])->name('manage-admin-post');
+    Route::delete("/manage-admin", [AdminController::class, 'deleteAdmin'])->name('manage-admin-delete');
     Route::get('/manage-admin-prodi', [ManageProdiAdminController::class, 'manageAdminProdi'])->name('manage-admin-prodi');
+    Route::post("/manage-admin-prodi", [ManageProdiAdminController::class, "addNewAdminProdi"])->name('manage-admin-prodi-add');
+    Route::delete("/manage-admin-prodi"  , [ManageProdiAdminController::class , 'delete'])->name('manage-admin-prodi-delete');
     Route::get('/settings-admin', [AdminController::class, 'settingsAdmin'])->name('settings-admin');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 

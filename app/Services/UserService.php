@@ -900,4 +900,23 @@ class UserService
         throw new Exception('');
     }
 
+    public function logout($userId)
+    {
+        $user = $this->userModel->where('id', $userId)->first();
+        if (isset($user)) {
+            $updated = $user->update([
+                'token' => null
+            ]);
+            if ($updated) {
+                return [
+                    'status' => true,
+                    'message' => 'Sukses Logout',
+                    'code' => 200,
+                    'data' => true
+                ];
+            } else {
+                throw new Exception('Ops , terjadi kesalahan saat logout');
+            }
+        }
+    }
 }

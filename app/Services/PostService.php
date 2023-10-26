@@ -337,26 +337,25 @@ class PostService
 
     public function findHistoryVacancy()
     {
-        $data = $this->post
+        $dataActive = $this->post
             ->with('user', 'admin')
             ->where(function ($query) {
                 $query->where('verified', 'verified')
-                    ->orWhere('verified', 'rejected');
+                    ->where('expired', '>', Carbon::now());
             })
             ->get();
 
+        $dataNonActive = $this->post
+            ->with('user', 'admin')
+            ->where(function ($query) {
+                $query->where('verified', 'rejected')
+                    ->orWhere('expired', '<', Carbon::now());
+            })
+            ->get();
 
-        $verifiedPosts = [];
-        $rejectedPosts = [];
-
-        // Loop through the $data collection and categorize posts
-        foreach ($data as $post) {
-            if ($post->verified === 'verified') {
-                $verifiedPosts[] = $post;
-            } else if ($post->verified === 'rejected') {
-                $rejectedPosts[] = $post;
-            }
-        }
+        $data = [];
+        $data['active'] = $dataActive;
+        $data['nonActive'] = $dataNonActive;
 
         return $data;
     }

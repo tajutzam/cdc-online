@@ -7,10 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class ProdiAdministrator extends Authenticatable    
+class ProdiAdministrator extends Authenticatable
 {
     use HasFactory, Uuids;
-
 
     protected $table = 'prodi_administrator';
     protected $fillable = [
@@ -18,7 +17,8 @@ class ProdiAdministrator extends Authenticatable
         'email',
         'nik',
         'address',
-        'password'
+        'password',
+        'prodi_id'
     ];
 
 

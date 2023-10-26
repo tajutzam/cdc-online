@@ -9,7 +9,7 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 <p class="mb-0 text-secondary">Total Lowongan Aktif</p>
-                                <h4 class="my-1">10</h4>
+                                <h4 class="my-1">{{ sizeof($data['active']) }}</h4>
                             </div>
                             <div class="widgets-icons bg-light-success text-success ms-auto"><i class='bx bxs-badge'></i>
                             </div>
@@ -23,7 +23,7 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 <p class="mb-0 text-secondary">Total Lowongan Tidak Aktif</p>
-                                <h4 class="my-1">10</h4>
+                                <h4 class="my-1">{{ sizeof($data['nonActive']) }}</h4>
                             </div>
                             <div class="widgets-icons bg-light-primary text-primary ms-auto"><i class='bx bxs-badge'></i>
                             </div>
@@ -104,19 +104,25 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{-- @foreach ($data as $item) --}}
-                                            <tr class="text-start">
-                                                <td>No</td>
-                                                <td>Pengunggah</td>
-                                                <td>Perusahaan</td>
-                                                <td>Posisi</td>
-                                                <td>Deskripsi</td>
-                                                <td>Poster</td>
-                                                <td>Diunggah</td>
-                                                <td>Kedaluwarsa</td>
-                                                <td>Tautan</td>
-                                            </tr>
-                                            {{-- @endforeach --}}
+                                            @foreach ($data['active'] as $item)
+                                                <tr class="text-start">
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>
+                                                        @if ($item['user'] == null)
+                                                            {{ $item['admin']['name'] }}
+                                                        @else
+                                                            {{ $item['user']['fullname'] }}
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $item['company'] }}</td>
+                                                    <td>{{ $item['position'] }}</td>
+                                                    <td>{{ $item['description'] }}</td>
+                                                    <td>{{ $item['image'] }}</td>
+                                                    <td>{{ $item['post_at'] }}</td>
+                                                    <td>{{ $item['expired'] }}</td>
+                                                    <td><a href="{{ $item['link_apply'] }}">Link_Apply</a></td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
 
                                     </table>
@@ -140,17 +146,25 @@
                                         </thead>
                                         <tbody>
 
-                                            <tr class="text-start">
-                                                <td>No</td>
-                                                <td>Pengunggah</td>
-                                                <td>Perusahaan</td>
-                                                <td>Posisi</td>
-                                                <td>Deskripsi</td>
-                                                <td>Poster</td>
-                                                <td>Diunggah</td>
-                                                <td>Kedaluwarsa</td>
-                                                <td>Tautan</td>
-                                            </tr>
+                                            @foreach ($data['nonActive'] as $item)
+                                                <tr class="text-start">
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>
+                                                        @if ($item['user'] == null)
+                                                            {{ $item['admin']['nama'] }}
+                                                        @else
+                                                            {{ $item['user']['fullname'] }}
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $item['company'] }}</td>
+                                                    <td>{{ $item['position'] }}</td>
+                                                    <td>{{ $item['description'] }}</td>
+                                                    <td>{{ $item['image'] }}</td>
+                                                    <td>{{ $item['post_at'] }}</td>
+                                                    <td>{{ $item['expired'] }}</td>
+                                                    <td><a href="{{ $item['link_apply'] }}">Link_Apply</a></td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
