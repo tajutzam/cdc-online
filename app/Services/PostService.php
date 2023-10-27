@@ -159,14 +159,26 @@ class PostService
 
     public function getPostByUserId($id, $page)
     {
-        $dataPost = $this->post->with('comments')->where('user_id', $id)->paginate(10, ['*'], 'page', $page);
-        $dataPagination = [
-            'total_page' => $dataPost->lastPage(),
-            'total_item' => $dataPost->total(),
+        $expiredPosts = $this->post
+            ->where('user_id', $id)
+            ->with([
+                'comments' => function ($query) {
+                    $query->with('user');
+                },
+                'user',
+            ])
+            ->paginate(10, ['*'], 'page', $page);
+
+
+
+        $data = [
+            'total_page' => $expiredPosts->lastPage(),
+            'total_item' => $expiredPosts->total()
         ];
+
         $data['posts'] = [];
-        $data['pagination'] = $dataPagination;
-        foreach ($dataPost as $datum) {
+
+        foreach ($expiredPosts as $keyIndex =>  $datum) {
             $tempPost = $this->castToResponse($datum);
             foreach ($datum['comments'] as $key => $value) {
                 # code...
@@ -175,7 +187,7 @@ class PostService
             }
             array_push($data['posts'], $tempPost);
         }
-        return ResponseHelper::successResponse('success fetch data', $data, 200);
+        return ResponseHelper::successResponse('Sukses Fetch Data', $data, 200);
     }
 
 
@@ -187,7 +199,7 @@ class PostService
             $isUpdate = $post->update(
                 [
                     'description' => $request['description'],
-                    'link' => $request['link'],
+                    'link_apply' => $request['link'],
                     'type_jobs' => $request['type_jobs'],
                     'company' => $request['company'],
                     'position' => $request['position'],

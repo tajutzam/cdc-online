@@ -24,7 +24,8 @@ class Post extends Model
         'can_comment',
         'verified',
         'type_jobs',
-        'admin_id'
+        'admin_id',
+        'post_at'
     ];
 
     public function user()
