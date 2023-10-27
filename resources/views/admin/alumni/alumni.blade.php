@@ -11,32 +11,42 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
-                <div class="card ">
+                <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Total Alumni Yang Terverifikasi</p>
+                            <div class="">
+
+                                <p class="mb-1 text-secondary">Total Alumni Terverifikasi</p>
                                 <h4 class="my-1">{{ $data['count']['active'] }}</h4>
                             </div>
-                            <div class="widgets-icons bg-light-success text-success ms-auto"><i
-                                    class='bx bxs-user-badge'></i>
+
+                            <div class="ms-auto">
+                                <p class="mb-0 font-13 text-success ">+12 Alumni <i class='bx bxs-user-account font-20'></i>
+                                </p>
+                                <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
                             </div>
                         </div>
+                        <div id="verify-chart-alumni"></div>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
-                <div class="card ">
+                <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Total Alumni Yang Belum Terverifikasi</p>
+                            <div class="">
+
+                                <p class="mb-1 text-secondary">Total Alumni Tidak Terverifikasi</p>
                                 <h4 class="my-1">{{ $data['count']['nonactive'] }}</h4>
                             </div>
-                            <div class="widgets-icons bg-light-danger text-danger ms-auto"><i
-                                    class='bx bxs-user-account'></i>
+
+                            <div class="ms-auto">
+                                <p class="mb-0 font-13 text-danger ">+12 Alumni <i class='bx bxs-user-account font-20'></i>
+                                </p>
+                                <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
                             </div>
                         </div>
+                        <div id="not-verify-chart-alumni"></div>
                     </div>
                 </div>
             </div>
@@ -85,20 +95,26 @@
                                 <thead>
                                     <tr>
                                         <th rowspan="2" style="text-align: center;  vertical-align: middle;">No</th>
-                                        <th rowspan="2" style="text-align: center;  vertical-align: middle;">Foto</th>
+                                        <th rowspan="2" style="text-align: center;  vertical-align: middle;">Foto
+                                        </th>
                                         <th rowspan="2" style="text-align: center;  vertical-align: middle;">NIM</th>
                                         <th rowspan="2" style="text-align: center;  vertical-align: middle;">NIK</th>
-                                        <th rowspan="2" style="text-align: center;  vertical-align: middle;">Nama</th>
+                                        <th rowspan="2" style="text-align: center;  vertical-align: middle;">Nama
+                                        </th>
                                         <th rowspan="2" style="text-align: center;  vertical-align: middle;">Program
                                             Studi</th>
-                                        <th rowspan="2" style="text-align: center;  vertical-align: middle;">Email</th>
-                                        <th rowspan="2" style="text-align: center;  vertical-align: middle;">Tahun Lulus
+                                        <th rowspan="2" style="text-align: center;  vertical-align: middle;">Email
                                         </th>
-                                        <th rowspan="2" style="text-align: center;  vertical-align: middle;">Tahun Masuk
+                                        <th rowspan="2" style="text-align: center;  vertical-align: middle;">Tahun
+                                            Lulus
+                                        </th>
+                                        <th rowspan="2" style="text-align: center;  vertical-align: middle;">Tahun
+                                            Masuk
                                         </th>
                                         <th rowspan="2" style="text-align: center;  vertical-align: middle;">Status
                                             Kuesioner</th>
-                                        <th colspan="2" style="text-align: center;  vertical-align: middle;">Lokasi</th>
+                                        <th colspan="2" style="text-align: center;  vertical-align: middle;">Lokasi
+                                        </th>
                                     <tr>
                                         <th>Latitude</th>
                                         <th>Longtitude</th>
@@ -144,6 +160,156 @@
             </div>
         </div>
     </div>
+    <script>
+        $(function() {
+            var e = {
+                series: [{
+                    name: "Verify Alumni",
+                    data: [332, 540, 160, 240, 160, 671, 355, 671, 414, 555, 257, 901, 613]
+                }],
+                chart: {
+                    type: "area",
+                    height: 100,
+                    toolbar: {
+                        show: !1
+                    },
+                    zoom: {
+                        enabled: !1
+                    },
+                    dropShadow: {
+                        enabled: !1,
+                        top: 3,
+                        left: 14,
+                        blur: 4,
+                        opacity: .12,
+                        color: "#17a00e"
+                    },
+                    sparkline: {
+                        enabled: !0
+                    }
+                },
+                markers: {
+                    size: 0,
+                    colors: ["#17a00e"],
+                    strokeColors: "#fff",
+                    strokeWidth: 2,
+                    hover: {
+                        size: 7
+                    }
+                },
+                dataLabels: {
+                    enabled: !1
+                },
+                stroke: {
+                    show: !0,
+                    width: 2,
+                    curve: "smooth"
+                },
+                colors: ["#17a00e"],
+                xaxis: {
+                    categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
+                        "Dec"
+                    ]
+                },
+                fill: {
+                    opacity: 1
+                },
+                tooltip: {
+                    theme: "dark",
+                    fixed: {
+                        enabled: !1
+                    },
+                    x: {
+                        show: !1
+                    },
+                    y: {
+                        title: {
+                            formatter: function(e) {
+                                return ""
+                            }
+                        }
+                    },
+                    marker: {
+                        show: !1
+                    }
+                }
+            };
+            new ApexCharts(document.querySelector("#verify-chart-alumni"), e).render();
+            var e = {
+                series: [{
+                    name: "Not Verify Alumni",
+                    data: [332, 540, 160, 240, 160, 671, 355, 671, 414, 555, 257, 901, 613]
+                }],
+                chart: {
+                    type: "area",
+                    height: 100,
+                    toolbar: {
+                        show: !1
+                    },
+                    zoom: {
+                        enabled: !1
+                    },
+                    dropShadow: {
+                        enabled: !1,
+                        top: 3,
+                        left: 14,
+                        blur: 4,
+                        opacity: .12,
+                        color: "#f41127"
+                    },
+                    sparkline: {
+                        enabled: !0
+                    }
+                },
+                markers: {
+                    size: 0,
+                    colors: ["#f41127"],
+                    strokeColors: "#fff",
+                    strokeWidth: 2,
+                    hover: {
+                        size: 7
+                    }
+                },
+                dataLabels: {
+                    enabled: !1
+                },
+                stroke: {
+                    show: !0,
+                    width: 2,
+                    curve: "smooth"
+                },
+                colors: ["#f41127"],
+                xaxis: {
+                    categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
+                        "Dec"
+                    ]
+                },
+                fill: {
+                    opacity: 1
+                },
+                tooltip: {
+                    theme: "dark",
+                    fixed: {
+                        enabled: !1
+                    },
+                    x: {
+                        show: !1
+                    },
+                    y: {
+                        title: {
+                            formatter: function(e) {
+                                return ""
+                            }
+                        }
+                    },
+                    marker: {
+                        show: !1
+                    }
+                }
+            };
+            new ApexCharts(document.querySelector("#not-verify-chart-alumni"), e).render();
+        });
+    </script>
     <script>
         var filter = document.getElementById('filter-user');
         console.log(filter);

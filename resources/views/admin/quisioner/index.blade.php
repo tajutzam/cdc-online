@@ -7,16 +7,22 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <div class="card ">
+                    <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div>
                                     <p class="mb-0 text-secondary">Total Alumni Yang Mengisi Quisioner</p>
                                     <h4 class="my-1">{{ $filled }}</h4>
                                 </div>
-                                <div class="widgets-icons bg-light-success text-success ms-auto"><i class='bx bxs-pencil'></i>
+
+                                <div class="ms-auto">
+                                    <p class="mb-0 font-13 text-success ">+12 Alumni Terverifikasi <i
+                                            class='bx bxs-pencil font-20'></i>
+                                    </p>
+                                    <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
                                 </div>
                             </div>
+                            <div id="verify-chart-quesioner"></div>
                         </div>
                     </div>
                 </div>
@@ -28,9 +34,15 @@
                                     <p class="mb-0 text-secondary">Total Alumni Yang Belum Mengisi Quisioner</p>
                                     <h4 class="my-1">{{ $blank }}</h4>
                                 </div>
-                                <div class="widgets-icons bg-light-danger text-danger ms-auto"><i class='bx bxs-pencil'></i>
+
+                                <div class="ms-auto">
+                                    <p class="mb-0 font-13 text-danger ">+12 Alumni Tidak Terverifikasi <i
+                                            class='bx bxs-pencil font-20'></i>
+                                    </p>
+                                    <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
                                 </div>
                             </div>
+                            <div id="not-verify-chart-quesioner"></div>
                         </div>
                     </div>
                 </div>
@@ -64,7 +76,7 @@
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
                                     aria-expanded="false">
-                                    Tahun
+                                    Angkatan
                                 </button>
                                 <ul class="dropdown-menu">
                                     <?php
@@ -79,37 +91,55 @@
                                     ?>
                                 </ul>
                             </div>
-                            <div class="btn-group" role="group" aria-label="Basic mixed styles example"
+
+                            <div id="btn-hover" class="btn-group" role="group" aria-label="Basic mixed styles example"
                                 style="padding: 1%">
-                                <button type="button" class="btn btn-danger" id="bulan-0">
-                                    <a href="?bulan=0" style="color: white">0 Bulan</a>
+                                <!-- Tombol-tombol dengan tautan -->
+                                <button type="button" class="btn btn-outline-danger text-danger" id="bulan-0">
+                                    <a href="?bulan=0" style="text-decoration: none;">0 Bulan</a>
                                 </button>
-                                <button type="button" class="btn btn-warning" id="bulan-6">
-                                    <a href="?bulan=6" style="color: white">6 Bulan</a>
+
+                                <button type="button" class="btn btn-outline-warning text-warning" id="bulan-6">
+                                    <a href="?bulan=6" style="text-decoration: none;">6 Bulan</a>
                                 </button>
-                                <button type="button" class="btn btn-success" id="bulan-12">
-                                    <a href="?bulan=12" style="color: white">12 Bulan</a>
+
+                                <button type="button" class="btn btn-outline-success" id="bulan-12">
+                                    <a href="?bulan=12" style="text-decoration: none;">12 Bulan</a>
                                 </button>
+
+                                <style>
+                                    button a {
+                                        color: inherit;
+                                        /* Warna teks menjadi putih saat tombol di-hover */
+                                    }
+
+                                    /* Aturan CSS untuk mengatur tautan saat tombol di-hover */
+                                    button:hover a {
+                                        color: white;
+                                        /* Warna teks menjadi putih saat tombol di-hover */
+                                    }
+                                </style>
+
                             </div>
                         </div>
                         <div class="col-md-6 text-md-end">
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example"
                                 style="padding: 1%">
-                                <button type="button" class="btn btn-outline-primary">
+                                <button type="button" class="btn btn-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
                                         <path
                                             d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0z" />
                                     </svg> Unduh
                                 </button>
-                                <button type="button" class="btn btn-outline-success">
+                                <button type="button" class="btn btn-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-file-earmark-spreadsheet" viewBox="0 0 16 16">
                                         <path
                                             d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V9H3V2a1 1 0 0 1 1-1h5.5v2zM3 12v-2h2v2H3zm0 1h2v2H4a1 1 0 0 1-1-1v-1zm3 2v-2h3v2H6zm4 0v-2h3v1a1 1 0 0 1-1 1h-2zm3-3h-3v-2h3v2zm-7 0v-2h3v2H6z" />
                                     </svg> Excel
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary">
+                                <button type="button" class="btn btn-secondary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-file-earmark-arrow-up" viewBox="0 0 16 16">
                                         <path
@@ -129,7 +159,8 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="example" class="table table-striped table-bordered table-hover table-condensed"
+                                <table id="example"
+                                    class="table table-striped table-bordered table-hover table-condensed"
                                     style="width:100%">
                                     <thead>
                                         <tr>
@@ -177,13 +208,13 @@
                                                                     aria-expanded="false"></button>
                                                             </div>
                                                         </a>
-                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                        <ul class="dropdown-menu dropdown-menu-end ">
                                                             <li><a class="dropdown-item d-flex align-items-center"
-                                                                    href="{{ route('detail-quisioner', ['id' => $item['id']]) }}"><i></i><span>1</span></a>
+                                                                    href="{{ route('detail-quisioner', ['id' => $item['id']]) }}"><i></i><span>Detail</span></a>
                                                             </li>
-                                                            <li>
+                                                            {{-- <li>
                                                                 <div class="dropdown-divider mb-0"></div>
-                                                            </li>
+                                                            </li> --}}
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -198,7 +229,156 @@
                 </div>
             </div>
         </div>
-
+        <script>
+            $(function() {
+                var e = {
+                    series: [{
+                        name: "Verify Quesioner",
+                        data: [332, 540, 160, 240, 160, 671, 355, 671, 414, 555, 257, 901, 613]
+                    }],
+                    chart: {
+                        type: "area",
+                        height: 100,
+                        toolbar: {
+                            show: !1
+                        },
+                        zoom: {
+                            enabled: !1
+                        },
+                        dropShadow: {
+                            enabled: !1,
+                            top: 3,
+                            left: 14,
+                            blur: 4,
+                            opacity: .12,
+                            color: "#17a00e"
+                        },
+                        sparkline: {
+                            enabled: !0
+                        }
+                    },
+                    markers: {
+                        size: 0,
+                        colors: ["#17a00e"],
+                        strokeColors: "#fff",
+                        strokeWidth: 2,
+                        hover: {
+                            size: 7
+                        }
+                    },
+                    dataLabels: {
+                        enabled: !1
+                    },
+                    stroke: {
+                        show: !0,
+                        width: 2,
+                        curve: "smooth"
+                    },
+                    colors: ["#17a00e"],
+                    xaxis: {
+                        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
+                            "Dec"
+                        ]
+                    },
+                    fill: {
+                        opacity: 1
+                    },
+                    tooltip: {
+                        theme: "dark",
+                        fixed: {
+                            enabled: !1
+                        },
+                        x: {
+                            show: !1
+                        },
+                        y: {
+                            title: {
+                                formatter: function(e) {
+                                    return ""
+                                }
+                            }
+                        },
+                        marker: {
+                            show: !1
+                        }
+                    }
+                };
+                new ApexCharts(document.querySelector("#verify-chart-quesioner"), e).render();
+                var e = {
+                    series: [{
+                        name: "Not Verify Quesioner",
+                        data: [332, 540, 160, 240, 160, 671, 355, 671, 414, 555, 257, 901, 613]
+                    }],
+                    chart: {
+                        type: "area",
+                        height: 100,
+                        toolbar: {
+                            show: !1
+                        },
+                        zoom: {
+                            enabled: !1
+                        },
+                        dropShadow: {
+                            enabled: !1,
+                            top: 3,
+                            left: 14,
+                            blur: 4,
+                            opacity: .12,
+                            color: "#f41127"
+                        },
+                        sparkline: {
+                            enabled: !0
+                        }
+                    },
+                    markers: {
+                        size: 0,
+                        colors: ["#f41127"],
+                        strokeColors: "#fff",
+                        strokeWidth: 2,
+                        hover: {
+                            size: 7
+                        }
+                    },
+                    dataLabels: {
+                        enabled: !1
+                    },
+                    stroke: {
+                        show: !0,
+                        width: 2,
+                        curve: "smooth"
+                    },
+                    colors: ["#f41127"],
+                    xaxis: {
+                        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
+                            "Dec"
+                        ]
+                    },
+                    fill: {
+                        opacity: 1
+                    },
+                    tooltip: {
+                        theme: "dark",
+                        fixed: {
+                            enabled: !1
+                        },
+                        x: {
+                            show: !1
+                        },
+                        y: {
+                            title: {
+                                formatter: function(e) {
+                                    return ""
+                                }
+                            }
+                        },
+                        marker: {
+                            show: !1
+                        }
+                    }
+                };
+                new ApexCharts(document.querySelector("#not-verify-chart-quesioner"), e).render();
+            });
+        </script>
         <script>
             $(document).ready(function() {
                 // Tangani klik pada tombol bulan

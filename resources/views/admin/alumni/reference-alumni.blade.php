@@ -13,14 +13,16 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Total Alumni</p>
-                                <h4 class="my-1">10</h4>
+                            <div class="">
+                                <p class="mb-1 text-secondary">Total Alumni</p>
+                                <h4 class="mb-0">300</h4>
                             </div>
-                            <div class="widgets-icons bg-light-success text-success ms-auto"><i
-                                    class='bx bxs-user-badge'></i>
+                            <div class="ms-auto">
+                                <p class="mb-0 font-13 " style="color: #0dcaf0">+12 Alumni</p>
+                                <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
                             </div>
                         </div>
+                        <div id="alumni-chart"></div>
                     </div>
                 </div>
             </div>
@@ -67,8 +69,8 @@
                         <div class="col">
                             <form action="{{ route('reference-alumni-update') }}" method="post">
                                 @method('put')
-                                <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="" type="submit">Perbarui</button>
+                                <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target=""
+                                    type="submit"> <i class="fas fa-sync-alt"></i>Perbarui</button>
                             </form>
                         </div>
                     </div>
@@ -114,5 +116,82 @@
                 </div>
             </div>
         </div>
+        <script>
+            $(function() {
+                var e = {
+                    series: [{
+                        name: "Total Alumni",
+                        data: [332, 540, 160, 240, 160, 671, 355, 671, 414, 555, 257, 901, 613]
+                    }],
+                    chart: {
+                        type: "area",
+                        height: 100,
+                        toolbar: {
+                            show: !1
+                        },
+                        zoom: {
+                            enabled: !1
+                        },
+                        dropShadow: {
+                            enabled: !1,
+                            top: 3,
+                            left: 14,
+                            blur: 4,
+                            opacity: .12,
+                            color: "#0dcaf0"
+                        },
+                        sparkline: {
+                            enabled: !0
+                        }
+                    },
+                    markers: {
+                        size: 0,
+                        colors: ["#0dcaf0"],
+                        strokeColors: "#fff",
+                        strokeWidth: 2,
+                        hover: {
+                            size: 7
+                        }
+                    },
+                    dataLabels: {
+                        enabled: !1
+                    },
+                    stroke: {
+                        show: !0,
+                        width: 2,
+                        curve: "smooth"
+                    },
+                    colors: ["#0dcaf0"],
+                    xaxis: {
+                        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
+                            "Dec"
+                        ]
+                    },
+                    fill: {
+                        opacity: 1
+                    },
+                    tooltip: {
+                        theme: "dark",
+                        fixed: {
+                            enabled: !1
+                        },
+                        x: {
+                            show: !1
+                        },
+                        y: {
+                            title: {
+                                formatter: function(e) {
+                                    return ""
+                                }
+                            }
+                        },
+                        marker: {
+                            show: !1
+                        }
+                    }
+                };
+                new ApexCharts(document.querySelector("#alumni-chart"), e).render();
+            });
+        </script>
     </div>
 @endsection
