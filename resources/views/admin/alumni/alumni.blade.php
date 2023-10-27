@@ -112,7 +112,7 @@
                                             Masuk
                                         </th>
                                         <th rowspan="2" style="text-align: center;  vertical-align: middle;">Status
-                                            Kuesioner</th>
+                                        </th>
                                         <th colspan="2" style="text-align: center;  vertical-align: middle;">Lokasi
                                         </th>
                                     <tr>
@@ -125,7 +125,8 @@
                                     @foreach ($data['alumni'] as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item['foto'] }}</td>
+                                            <td> <img src={{ $item['foto'] }} class="rounded-circle" width="40"
+                                                    height="40" alt=""></td>
                                             @if ($item['prodi'] != null)
                                                 <td>{{ $item['prodi']['id'] }}</td>
                                                 <td>{{ $item['prodi']['nama_prodi'] }}</td>
@@ -138,7 +139,17 @@
                                             <td>{{ $item['foto'] }}</td>
                                             <td>2025</td>
                                             <td>2021</td>
-                                            <td>{{ $item['account_status'] }}</td>
+                                            @if ($item['account_status'])
+                                                <td>
+                                                    <div class="badge rounded-pill bg-primary w-100">Terverifikasi</div>
+                                                </td>
+                                            @else
+                                                <td>
+                                                    <div class="badge rounded-pill bg-danger w-100">Belum Terverifikasi
+                                                    </div>
+                                                </td>
+                                            @endif
+
                                             @if ($item['latitude'] == null)
                                                 <td style="color: gray">Latitude Tidak Ada</td>
                                             @else
