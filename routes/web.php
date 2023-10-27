@@ -57,7 +57,7 @@ Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group
             route::get('', [ProdiQuesionerController::class, 'index'])->name('quesioner-index');
             Route::get("/detail/{id}", function ($id) {
                 return view('prodi.quesioner.detail');
-            });
+            })->name('detail-quesioner-prodi');
         });
         Route::prefix('user')->group(function () {
             Route::get('', [UserProdiController::class, 'index'])->name('user-prodi');
