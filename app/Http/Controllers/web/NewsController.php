@@ -25,6 +25,12 @@ class NewsController extends Controller
         $data = $this->newsService->findAll($request->get('page'));
 
 
+        $counts_by_day_active = array_values($data['count_by_active']);
+        $counts_by_day_non_active = array_values($data['count_by_day_nonactive']);
+        $counts_by_day_all = array_values($data['count_all']);
+
+
+
         $tempActive = 0;
         $tempNonActive = 0;
 
@@ -42,12 +48,18 @@ class NewsController extends Controller
             'active' => $tempActive,
             'nonactive' => $tempNonActive
         ];
+
         return view('admin.berita.berita', [
             'data' => $data,
             'total' => [
                 'active' => $total['active'],
                 'nonactive' => $total['nonactive'],
                 'total' => sizeof($data['data']),
+            ],
+            'count' => [
+                'active' => $counts_by_day_active,
+                'non_active' => $counts_by_day_non_active,
+                'all' => $counts_by_day_all
             ]
         ]);
     }

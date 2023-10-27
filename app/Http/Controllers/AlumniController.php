@@ -26,8 +26,10 @@ class AlumniController extends Controller
     {
 
         $data = $this->alumniService->findAllAlumni();
-
-        return view('admin.alumni.reference-alumni', ['data' => $data]);
+      
+     
+        $totalAddition = $this->alumniService->getTotalAdditionOneWeek();
+        return view('admin.alumni.reference-alumni', ['data' => $data, 'added_one_week' => $totalAddition]);
     }
 
     public function verifikasiAlumni(Request $request)
@@ -49,11 +51,11 @@ class AlumniController extends Controller
         $validator = Validator::make($request->all(), $rules = [
             'alamat_domisili' => 'required|string',
             'angkatan' => 'required|numeric',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:alumni_submissions,email',
             'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
             'jurusan' => 'required|string',
             'nama_lengkap' => 'required|string',
-            'nim' => 'required|string',
+            'nim' => 'required|string|unique:alumni_submissions,nim',
             'no_telp' => 'required|string',
             'program_studi' => 'required|string',
             'tahun_lulus' => 'required|numeric',

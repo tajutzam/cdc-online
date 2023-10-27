@@ -4,15 +4,15 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-4 ">
+            <div class="col-sm-12 ">
                 <div class="card m-1">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div>
-                                <p class="mb-0 text-secondary">Total Lowongan</p>
-                                <h4 class="my-1">{{ $total['total'] }}</h4>
+                                <p class="mb-0 text-secondary">Total Lowongan Verifikasi</p>
+                                <h4 class="my-1">{{ $total }}</h4>
                                 <p class="mb-0 font-13 text-warning"><i class='bx bxs-up-arrow align-middle'></i>
-                                    25
+                                    {{ $total_of_week }}
                                     Lowongan Baru Minggu ini</p>
                             </div>
                             <div class="widgets-icons bg-light-warning text-warning ms-auto"><i class='bx bxs-badge'></i>
@@ -22,7 +22,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 ">
+            {{-- <div class="col-lg-4 ">
                 <div class="card m-1">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
@@ -54,7 +54,7 @@
                         <div id="vacancy-nonactive"></div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
 
@@ -171,8 +171,9 @@
             var e = {
                 series: [{
                     name: "Vacancy Active",
-                    data: [240, 160, 671, 414, 555, 257, 901, 613, 727, 414, 555, 257]
+                    data: {!! json_encode($count_by_day) !!}
                 }],
+
                 chart: {
                     type: "line",
                     height: 65,
@@ -317,8 +318,9 @@
             e = {
                 series: [{
                     name: "Vacancy Accept",
-                    data: [240, 160, 671, 414, 555, 257, 901, 613, 727, 414, 555, 257]
+                    data: {!! json_encode($count_by_day) !!}
                 }],
+
                 chart: {
                     type: "line",
                     height: 65,
@@ -359,9 +361,7 @@
                 },
                 colors: ["#ffc107"],
                 xaxis: {
-                    categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
-                        "Dec"
-                    ]
+                    categories: ["1" , "2" , "3" , "4" , "5" , "6" , "7"]
                 },
                 fill: {
                     opacity: 1

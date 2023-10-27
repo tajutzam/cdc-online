@@ -28,30 +28,18 @@ class PostController extends Controller
     {
 
         $data = $this->postService->findVerivyVacancy();
-        $tempActive = 0;
-        $tempNonActive = 0;
 
-        foreach ($data as $value) {
-            # code...
-            $now = Carbon::now();
-            if ($value['verified'] == 'verified') {
-                $tempActive += 1;
-            } else if ($now->isAfter($value['expired'])) {
-                $tempNonActive += 1;
-            }
-        }
 
-        $total = [
-            'active' => $tempActive,
-            'nonactive' => $tempNonActive
-        ];
+
+        // Extract the counts and dates from the $countsByDay array
+        $dates = array_keys($data['count_by_day']);
+        $counts_by_day = array_values($data['count_by_day']);
+
         return view('admin.vacancy.verify-vacancy', [
-            'data' => $data,
-            'total' => [
-                'active' => $total['active'],
-                'nonactive' => $total['nonactive'],
-                'total' => sizeof($data)
-            ]
+            'data' => $data['vacancy'],
+            'total_of_week' => $data['total_of_week'],
+            'count_by_day' => $counts_by_day,
+            'total' => sizeOf($data['vacancy'])
         ]);
     }
     public function history()

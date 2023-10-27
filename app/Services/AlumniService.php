@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Exceptions\BadRequestException;
 use App\Exceptions\WebException;
 use App\Models\Alumni;
+use App\Models\AlumniSubmissions;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +21,11 @@ class AlumniService
 
     private Alumni $alumni;
 
+
     public function __construct()
     {
         $this->alumni = new Alumni();
+       
     }
 
 
@@ -162,5 +165,21 @@ class AlumniService
     {
         return $this->alumni->all();
     }
+
+    public function getTotalAdditionOneWeek()
+    {
+        $endDate = Carbon::now(); // Current date and time
+        $startDate = $endDate->copy()->startOfWeek(); // Start of the current week (Monday)
+        $endDate = $endDate->copy()->endOfWeek(); // End of the current week (Saturday)
+
+        // Query to count alumni added within the current week
+        $countNewAlumni = $this->alumni
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->count();
+
+        return $countNewAlumni;
+    }
+
+    
 
 }

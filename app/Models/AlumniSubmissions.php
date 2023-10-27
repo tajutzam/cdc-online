@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AlumniSubmissions extends Model
 {
-    use HasFactory , Uuids;
+    use HasFactory, Uuids;
 
 
     protected $fillable = [
@@ -25,6 +25,8 @@ class AlumniSubmissions extends Model
         'tanggal_lahir',
         'tempat_lahir',
         'ijazah',
+        'created_at',
+        'updated_at'
     ];
 
     protected $table = 'alumni_submissions';

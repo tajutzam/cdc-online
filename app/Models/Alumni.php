@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Alumni extends Model
 {
-    use HasFactory;
+    use HasFactory , Uuids;
 
 
     protected $table = 'alumni';
@@ -16,7 +16,7 @@ class Alumni extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'id',
+ 
         'alamat_domisili',
         'angkatan',
         'email',

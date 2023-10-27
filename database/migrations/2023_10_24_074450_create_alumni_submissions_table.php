@@ -27,7 +27,8 @@ class CreateAlumniSubmissionsTable extends Migration
             $table->string('tahun_lulus')->nullable();
             $table->string('tanggal_lahir')->nullable();
             $table->string('tempat_lahir')->nullable();
-            $table->string('ijazah');
+            $table->string('ijazah')->nullable(true);
+            $table->string("rowrank")->default("0");
             $table->timestamps();
         });
     }

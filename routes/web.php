@@ -80,7 +80,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::delete("/manage-admin", [AdminController::class, 'deleteAdmin'])->name('manage-admin-delete');
     Route::get('/manage-admin-prodi', [ManageProdiAdminController::class, 'manageAdminProdi'])->name('manage-admin-prodi');
     Route::post("/manage-admin-prodi", [ManageProdiAdminController::class, "addNewAdminProdi"])->name('manage-admin-prodi-add');
-    Route::delete("/manage-admin-prodi"  , [ManageProdiAdminController::class , 'delete'])->name('manage-admin-prodi-delete');
+    Route::delete("/manage-admin-prodi", [ManageProdiAdminController::class, 'delete'])->name('manage-admin-prodi-delete');
     Route::get('/settings-admin', [AdminController::class, 'settingsAdmin'])->name('settings-admin');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/grup-whatsapp', [GrupWhatsappController::class, 'grupWhatsapp'])->name('grup');
@@ -132,6 +132,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
         Route::get("/detail/{id}", function ($id) {
             return view('admin.quisioner.detail');
         })->name('detail-quisioner');
+        Route::get("export", [QuisionerController::class, "export"])->name('export');
     });
 });
 

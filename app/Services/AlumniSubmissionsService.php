@@ -4,7 +4,9 @@
 namespace App\Services;
 
 use App\Exceptions\WebException;
+use App\Models\Alumni;
 use App\Models\AlumniSubmissions;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class AlumniSubmissionsService
@@ -158,6 +160,15 @@ class AlumniSubmissionsService
             //throw $th;
             throw new WebException($th->getMessage());
         }
+    }
+
+
+
+    
+
+
+    public function findAllAlumniReference(){
+        return $this->alumniSubmissions->all();
     }
 
 }
