@@ -628,8 +628,10 @@
                         <li>
                             <div class="dropdown-divider mb-0"></div>
                         </li>
-                        <li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                    class="bx bx-log-out-circle"></i><span>Logout</span></a>
+                        <li class="text-center">
+                            <form action="{{ route('prodi-logout', ['id'=>1]) }}" method="post">
+                                <button type="submit" class="btn btn-sm">Logout</button>
+                            </form>
                         </li>
                     </ul>
                 </div>

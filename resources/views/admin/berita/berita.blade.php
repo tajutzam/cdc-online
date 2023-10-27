@@ -156,7 +156,28 @@
             @endforeach
 
         </div>
+        <nav aria-label="...">
+            <ul class="pagination pagination-sm">
+                <li class="page-item {{ $data['pagination']['current_page'] == 1 ? 'disabled' : '' }}">
+                    <a class="page-link"
+                        href="{{ $data['pagination']['current_page'] == 1 ? 'javascript:;' : route('berita', ['page' => $data['pagination']['current_page'] - 1]) }}"
+                        tabindex="-1"
+                        aria-disabled="{{ $data['pagination']['current_page'] == 1 ? 'true' : 'false' }}">Previous</a>
+                </li>
 
+                @for ($page = 1; $page <= $data['pagination']['last_page']; $page++)
+                    <li class="page-item {{ $data['pagination']['current_page'] == $page ? 'active' : '' }}">
+                        <a class="page-link" href="{{ route('berita', ['page' => $page]) }}">{{ $page }}</a>
+                    </li>
+                @endfor
+
+                <li
+                    class="page-item {{ $data['pagination']['current_page'] == $data['pagination']['last_page'] ? 'disabled' : '' }}">
+                    <a class="page-link"
+                        href="{{ $data['pagination']['current_page'] == $data['pagination']['last_page'] ? 'javascript:;' : route('berita', ['page' => $data['pagination']['current_page'] + 1]) }}">Next</a>
+                </li>
+            </ul>
+        </nav>
 
     </div>
 

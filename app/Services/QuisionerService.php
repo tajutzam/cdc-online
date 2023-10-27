@@ -487,9 +487,8 @@ class QuisionerService
     }
 
 
-    public function findAllQuisionerUser()
+    public function findAllQuisionerUser($tahun = 0, $bulan = 0)
     {
-
         $relations = [
             'identity_quisioner',
             'main_quisioner',
@@ -507,27 +506,45 @@ class QuisionerService
 
         $users = $this->user->with($relations)
             ->has('educations') // Filter hanya pengguna yang memiliki pendidikan
-            ->get()->toArray();
-        $data = collect($users)->map(function ($user) {
-            $tahunMasuk = null; // Inisialisasi variabel tahun masuk
-            $tahunLulus = null; // Inisialisasi variabel tahun masuk
+            ->get()
+            ->toArray();
 
-            collect($user['educations'])->each(function ($education) use (&$tahunMasuk) {
-                if ($education['perguruan'] === 'Politeknik Negeri Jember') {
-                    $tahunMasuk = $education['tahun_masuk'];
-                    $tahunLulus = $education['tahun_lulus'];
-
-                    // Keluar dari iterasi setelah menemukan yang sesuai, jika perlu
-                    return false;
-                }
-            });
+            $data = collect($users)->filter(function ($user) use ($tahun, $bulan) {
+                $tahunMasuk = null; // Initialize the tahun_masuk variable
+                $tahunLulus = null; // Initialize the tahun_lulus variable
             
-            $user['tahun_masuk'] = $tahunMasuk;
-            $user['tahun_lulus'] = $tahunLulus;
-            return $this->castToUserResponseFromArray($user);
-        })->toArray();
+                $hasMatchingEducation = false; // Initialize a flag
+                $hasMatchingQuisioner = false; // Initialize a flag for matching quisioner level
+            
+                collect($user['educations'])->each(function ($education) use (&$tahunMasuk, &$tahunLulus, $tahun, &$hasMatchingEducation) {
+                    if ($education['perguruan'] === 'Politeknik Negeri Jember') {
+                        $tahunMasuk = $education['tahun_masuk'];
+                        $tahunLulus = $education['tahun_lulus'];
+                        if ($education['tahun_masuk'] == $tahun) {
+                            $hasMatchingEducation = true;
+                        }
+                    }
+                });
+            
+                if ($bulan == 0) {
+                    $hasMatchingQuisioner = true; // If $bulan is 0, consider quisioner level a match
+                } else {
+                    $userQuisioners = collect($user['quisioners']);
+                    if ($userQuisioners->contains('level', $bulan)) {
+                        $hasMatchingQuisioner = true; // Set the flag to true when quisioner level matches $bulan
+                    }
+                }
+            
+                return ($tahun == 0 || $hasMatchingEducation) && $hasMatchingQuisioner;
+            })->map(function ($user) {
+                // Modify the items here
+                $tempUser = $this->castToUserResponseFromArray($user);
+                return $tempUser;
+            })->toArray();
+            
         return $data;
     }
+
 
 
     private function successResponse($data, $code, $message)
@@ -538,6 +555,7 @@ class QuisionerService
 
     public function castToUserResponseFromArray($user)
     {
+       
         $url = url('/') . "/users/" . $user['foto'];
         return [
             "id" => $user['id'],
@@ -568,8 +586,8 @@ class QuisionerService
             'howToFindJobs' => $user['how_to_find_jobs'],
             'companyApplied' => $user['company_applied'],
             'jobSuitability' => $user['job_suitability'],
-            'tahun_masuk' => 2022,
-            'tahun_lulus' => 2024
+            'tahun_masuk' => $user['educations'][0]['tahun_masuk'],
+            'tahun_lulus' => $user['educations'][0]['tahun_lulus']
         ];
     }
 

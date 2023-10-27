@@ -213,4 +213,18 @@ class AuthService
         ];
     }
 
+
+    public function logoutAdmin()
+    {
+        Auth::guard('admin')->logout();
+        return redirect('/admin/login');
+    }
+
+
+    public function logoutProdi()
+    {
+        Auth::guard('admin')->logout();
+        return redirect('/prodi/login');
+    }
+
 }

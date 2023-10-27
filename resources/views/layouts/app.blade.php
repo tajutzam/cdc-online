@@ -10,7 +10,7 @@
     <div class="wrapper">
         <!--sidebar wrapper -->
         @include('layouts.sidebar')
-        {{-- @include('layouts.switcher') --}}
+        @include('layouts.switcher')
         <!--end sidebar wrapper -->
         <!--start header -->
         @include('layouts.head')

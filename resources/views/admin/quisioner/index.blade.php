@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{-- @dd($data) --}}
 
     <body>
         <div class="container-fluid">
@@ -9,10 +10,9 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <div class="">
-
-                                    <p class="mb-1 text-secondary">Total Alumni Mengisi Kuesioner</p>
-                                    <h4 class="my-1">2</h4>
+                                <div>
+                                    <p class="mb-0 text-secondary">Total Alumni Yang Mengisi Quisioner</p>
+                                    <h4 class="my-1">{{ $filled }}</h4>
                                 </div>
 
                                 <div class="ms-auto">
@@ -30,10 +30,9 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <div class="">
-
-                                    <p class="mb-1 text-secondary">Total Alumni Belum Mengisi Kuesioner</p>
-                                    <h4 class="my-1">2</h4>
+                                <div>
+                                    <p class="mb-0 text-secondary">Total Alumni Yang Belum Mengisi Quisioner</p>
+                                    <h4 class="my-1">{{ $blank }}</h4>
                                 </div>
 
                                 <div class="ms-auto">
@@ -170,8 +169,8 @@
                                             <th>Program Studi</th>
                                             <th>Email</th>
                                             <th>Foto</th>
-                                            <th>Tahun Lulus</th>
                                             <th>Tahun Masuk</th>
+                                            <th>Tahun Lulus</th>
                                             <th>Status</th>
                                             <th style="text-align: center">Detail</th>
                                         </tr>

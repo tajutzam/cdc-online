@@ -129,9 +129,16 @@ class PostService
             ->where('expired', '>', $now)
             ->where('verified', 'verified')
             ->where('user_id', '<>', $userId)
-            ->orWhereNotNull('admin_id') // Menambahkan kondisi admin_id tidak null
-            ->with('comments', 'user', 'admin')
+            ->orWhereNotNull('admin_id')
+            ->with([
+                'comments' => function ($query) {
+                    $query->with('user');
+                },
+                'user',
+                'admin'
+            ])
             ->paginate(10, ['*'], 'page', $page);
+
 
 
         $data = [
@@ -140,6 +147,11 @@ class PostService
         ];
         foreach ($expiredPosts as $datum) {
             $tempPost = $this->castToResponse($datum);
+            foreach ($datum['comments'] as $key => $value) {
+                # code...
+                $tempComments = $this->castToUserResponse($value['user']);
+                $tempPost['comments'][$key]['user'] = $tempComments;
+            }
             array_push($data, $tempPost);
         }
         return ResponseHelper::successResponse('Sukses Fetch Data', $data, 200);
@@ -147,18 +159,35 @@ class PostService
 
     public function getPostByUserId($id, $page)
     {
-        $dataPost = $this->post->where('user_id', $id)->paginate(10, ['*'], 'page', $page);
-        $dataPagination = [
-            'total_page' => $dataPost->lastPage(),
-            'total_item' => $dataPost->total(),
+        $expiredPosts = $this->post
+            ->where('user_id', $id)
+            ->with([
+                'comments' => function ($query) {
+                    $query->with('user');
+                },
+                'user',
+            ])
+            ->paginate(10, ['*'], 'page', $page);
+
+
+
+        $data = [
+            'total_page' => $expiredPosts->lastPage(),
+            'total_item' => $expiredPosts->total()
         ];
+
         $data['posts'] = [];
-        $data['pagination'] = $dataPagination;
-        foreach ($dataPost as $datum) {
+
+        foreach ($expiredPosts as $keyIndex =>  $datum) {
             $tempPost = $this->castToResponse($datum);
+            foreach ($datum['comments'] as $key => $value) {
+                # code...
+                $tempComments = $this->castToUserResponse($value['user']);
+                $tempPost['comments'][$key]['user'] = $tempComments;
+            }
             array_push($data['posts'], $tempPost);
         }
-        return ResponseHelper::successResponse('success fetch data', $data, 200);
+        return ResponseHelper::successResponse('Sukses Fetch Data', $data, 200);
     }
 
 
@@ -170,7 +199,7 @@ class PostService
             $isUpdate = $post->update(
                 [
                     'description' => $request['description'],
-                    'link' => $request['link'],
+                    'link_apply' => $request['link'],
                     'type_jobs' => $request['type_jobs'],
                     'company' => $request['company'],
                     'position' => $request['position'],
@@ -325,26 +354,25 @@ class PostService
 
     public function findHistoryVacancy()
     {
-        $data = $this->post
+        $dataActive = $this->post
             ->with('user', 'admin')
             ->where(function ($query) {
                 $query->where('verified', 'verified')
-                    ->orWhere('verified', 'rejected');
+                    ->where('expired', '>', Carbon::now());
             })
             ->get();
 
+        $dataNonActive = $this->post
+            ->with('user', 'admin')
+            ->where(function ($query) {
+                $query->where('verified', 'rejected')
+                    ->orWhere('expired', '<', Carbon::now());
+            })
+            ->get();
 
-        $verifiedPosts = [];
-        $rejectedPosts = [];
-
-        // Loop through the $data collection and categorize posts
-        foreach ($data as $post) {
-            if ($post->verified === 'verified') {
-                $verifiedPosts[] = $post;
-            } else if ($post->verified === 'rejected') {
-                $rejectedPosts[] = $post;
-            }
-        }
+        $data = [];
+        $data['active'] = $dataActive;
+        $data['nonActive'] = $dataNonActive;
 
         return $data;
     }

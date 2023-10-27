@@ -99,7 +99,7 @@ Route::post("/user/quisioner/howtofindjobs", [QuisionerController::class, 'addQu
 Route::post("/user/quisioner/companyapplied", [QuisionerController::class, 'addQuisionerCompanyApplied']);
 Route::post("/user/quisioner/jobsuitability", [QuisionerController::class, 'addQuisionerjobSuitability']);
 Route::get("/user/quisioner/check", [QuisionerController::class, 'showUpdateQuisionerLevel']);
-
+Route::post("/user/logout", [UserController::class, "logout"]);
 Route::post("/user/post", [PostController::class, 'addPost'])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 Route::get("/user/post", [PostController::class, 'getAllPost'])->middleware([TokenMiddleware::class]);
 Route::get("/user/post/login", [PostController::class, 'getPostUserLogin'])->middleware([TokenMiddleware::class]);
@@ -142,7 +142,7 @@ Route::get("/alumni/check", [AuthController::class, 'checkAlumniData']);
 
 Route::post("/alumni/submissions", [AlumniController::class, 'submissions']);
 Route::get("/alumni/submissions", [AlumniController::class, 'findAllSubmissions']);
-Route::post('/alumni/acc' , [AlumniController::class , 'accOrReject']);
+Route::post('/alumni/acc', [AlumniController::class, 'accOrReject']);
 
 Route::post('/verifikasi/alumni', [AlumniController::class, 'verifikasiAlumni']);
 

@@ -17,4 +17,8 @@ class AdminProdiController extends Controller
     {
         return view('prodi.settings-admin');
     }
+
+    
+
+    
 }

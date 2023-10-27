@@ -442,7 +442,7 @@
                     var urlUser = "{{ url('/user/images/') }}" + user.foto;
                     img.attr('src', urlUser);
 
-                    lvl.text("-USER");
+                    lvl.text("- User");
                     emailInput.val(user.email);
                     gender.val(user.gender);
                     address.val(user.alamat);
@@ -450,7 +450,7 @@
                     fullname.val(user.fullname);
                 } else {
                     img.attr('src', "{{ asset('/') }}" + "assets/images/admin.png");
-                    lvl.text("-ADMIN");
+                    lvl.text("- Admin");
                     emailInput.val(admin.email);
                     fullname.val(admin.name);
                     nim.val(admin.npwp);

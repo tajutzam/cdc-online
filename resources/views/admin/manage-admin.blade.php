@@ -2,6 +2,12 @@
 
 @section('content')
     <div class="container-fluid">
+        @if ($errors->any())
+            <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+                <div class="text-white">{{ $errors->first() }}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="row">
             <div class="col-sm-6">
                 <div class="card">
@@ -69,6 +75,7 @@
                                         <th>No</th>
                                         <th>Nama</th>
                                         <th>Email</th>
+                                        <th>NPWP</th>
                                         <th>Dibuat</th>
                                         <th>Diperbarui</th>
                                         <th>Aksi</th>
@@ -78,27 +85,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($data as $item) --}}
-                                    <tr class="text-start">
-                                        {{-- <td>{{ $loop->iteration }}</td> --}}
-                                        <td>No</td>
-                                        <td>Nama</td>
-                                        <td>Email</td>
-
-                                        <td>Dibuat</td>
-                                        <td>Diperbarui</td>
-                                        <td>
-                                            <div class="row text-center">
-                                                <div class="col-12">
-                                                    <a href="" class="delete-user-btn" data-bs-target="#delete-admin"
-                                                        data-bs-toggle="modal"><i class="fa-solid fa-trash"
-                                                            style="color: #ff0f27;"></i></a>
-                                                </div>
-                                        </td>
-                                    </tr>
-                                    {{-- @endforeach --}}
+                                    @foreach ($data as $item)
+                                        <tr class="text-start">
+                                            {{-- <td>{{ $loop->iteration }}</td> --}}
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item['name'] }}</td>
+                                            <td>{{ $item['email'] }}</td>
+                                            <th>{{ $item['npwp'] }}</th>
+                                            <td>{{ date('Y-m-d H:i', strtotime($item['created_at'])) }}</td>
+                                            <td>{{ date('Y-m-d H:i', strtotime($item['updated_at'])) }}</td>
+                                            <td>
+                                                <div class="row text-center">
+                                                    <div class="col-12">
+                                                        <a href="" class="btn-admin-delete"
+                                                            data-bs-target="#delete-admin" data-id="{{ $item['id'] }}"
+                                                            data-bs-toggle="modal"><i class="fa-solid fa-trash"
+                                                                style="color: #ff0f27;"></i></a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
@@ -111,20 +118,30 @@
         <x-slot name="title">Tambah Admin</x-slot>
         <x-slot name="id">add-admin</x-slot>
         <x-slot name="body">
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="{{ route('manage-admin-post') }}" method="post">
                 <div class="form-floating mb-3">
-                    <input type="number" class="form-control form-control-sm" required id="floatingTextarea"
-                        name="id"></input>
-                    <label for="floatingTextarea">Nama</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control form-control-sm" required id="floatingTextarea"
-                        name="nama_prodi"></input>
+                    <input type="email" class="form-control form-control-sm" required id="floatingTextarea"
+                        name="email"></input>
                     <label for="floatingTextarea">Email</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control form-control-sm" required id="floatingTextarea"
-                        name="nama_prodi"></input>
+                        name="name"></input>
+                    <label for="floatingTextarea">Nama</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control form-control-sm" required id="floatingTextarea"
+                        name="npwp"></input>
+                    <label for="floatingTextarea">Npwp</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control form-control-sm" required id="floatingTextarea"
+                        name="alamat"></input>
+                    <label for="floatingTextarea">Alamat</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control form-control-sm" required id="floatingTextarea"
+                        name="password"></input>
                     <label for="floatingTextarea">Password</label>
                 </div>
                 <div class="row justify-content-end">
@@ -141,9 +158,9 @@
         <x-slot name="body">
             <div class="mb-3" style="text-align: start;  font-size: 16px; ">Apakah anda yakin ingin menghapus Data ini
                 ? </div>
-            <form action="" method="">
-                <input type="text" hidden id="admin-delete-id" name="id_delete">
-                @method('')
+            <form action="{{ route('manage-admin-delete') }}" method="post">
+                <input type="text" hidden id="admin-delete-id" name="id">
+                @method('delete')
                 @csrf
                 <div class="row justify-content-end">
                     <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
@@ -153,4 +170,17 @@
             </form>
         </x-slot>
     </x-modal-small>
+
+
+    <script>
+        $(document).ready(function() {
+            $(".btn-admin-delete").click(function() {
+                var id = $(this).attr('data-id');
+                console.log(id); // Ini akan mencetak nilai id ke konsol
+                var id = $(this).attr('data-id'); // Mengambil ID dari tombol
+                var modal = $("#delete-admin"); // Ganti "delete-admin" dengan ID modal yang sesuai
+                modal.find('#admin-delete-id').val(id); // Menetapkan ID ke input dalam modal
+            });
+        });
+    </script>
 @endsection
