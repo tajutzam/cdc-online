@@ -159,7 +159,7 @@ class PostService
 
     public function getPostByUserId($id, $page)
     {
-        $dataPost = $this->post->where('user_id', $id)->paginate(10, ['*'], 'page', $page);
+        $dataPost = $this->post->with('comments')->where('user_id', $id)->paginate(10, ['*'], 'page', $page);
         $dataPagination = [
             'total_page' => $dataPost->lastPage(),
             'total_item' => $dataPost->total(),
@@ -168,6 +168,11 @@ class PostService
         $data['pagination'] = $dataPagination;
         foreach ($dataPost as $datum) {
             $tempPost = $this->castToResponse($datum);
+            foreach ($datum['comments'] as $key => $value) {
+                # code...
+                $tempComments = $this->castToUserResponse($value['user']);
+                $tempPost['comments'][$key]['user'] = $tempComments;
+            }
             array_push($data['posts'], $tempPost);
         }
         return ResponseHelper::successResponse('success fetch data', $data, 200);
