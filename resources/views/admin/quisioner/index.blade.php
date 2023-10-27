@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{-- @dd($data) --}}
 
     <body>
         <div class="container-fluid">
@@ -11,7 +12,7 @@
                             <div class="d-flex align-items-center">
                                 <div>
                                     <p class="mb-0 text-secondary">Total Alumni Yang Mengisi Quisioner</p>
-                                    <h4 class="my-1">10</h4>
+                                    <h4 class="my-1">{{ $filled }}</h4>
                                 </div>
                                 <div class="widgets-icons bg-light-success text-success ms-auto"><i class='bx bxs-pencil'></i>
                                 </div>
@@ -25,7 +26,7 @@
                             <div class="d-flex align-items-center">
                                 <div>
                                     <p class="mb-0 text-secondary">Total Alumni Yang Belum Mengisi Quisioner</p>
-                                    <h4 class="my-1">20</h4>
+                                    <h4 class="my-1">{{ $blank }}</h4>
                                 </div>
                                 <div class="widgets-icons bg-light-danger text-danger ms-auto"><i class='bx bxs-pencil'></i>
                                 </div>
@@ -137,8 +138,8 @@
                                             <th>Program Studi</th>
                                             <th>Email</th>
                                             <th>Foto</th>
-                                            <th>Tahun Lulus</th>
                                             <th>Tahun Masuk</th>
+                                            <th>Tahun Lulus</th>
                                             <th>Status</th>
                                             <th style="text-align: center">Detail</th>
                                         </tr>

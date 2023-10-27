@@ -18,10 +18,21 @@ class QuisionerController extends Controller
         $this->quisionerService = new QuisionerService();
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->quisionerService->findAllQuisionerUser();
+        
+        $data = $this->quisionerService->findAllQuisionerUser($request->get('tahun') , $request->get('bulan'));
+        $quisionerFilled = 0;
+        $quisionerBlank = 0;
+        foreach ($data as $key => $value) {
+            # code...
+            if ($value['account_status']) {
+                $quisionerFilled++;
+            } else {
+                $quisionerBlank++;
+            }
+        }
 
-        return view('admin.quisioner.index', ['data' => $data]);
+        return view('admin.quisioner.index', ['data' => $data, 'filled' => $quisionerFilled, 'blank' => $quisionerBlank]);
     }
 }
