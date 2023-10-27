@@ -25,10 +25,11 @@ use App\Http\Controllers\web\QuisionerController;
 use App\Http\Controllers\web\UserProdiController;
 use App\Http\Controllers\web\AdminProdiController;
 use App\Http\Controllers\web\ProdiAdminController;
+use App\Http\Controllers\web\GrupWhatsappController;
 use App\Http\Controllers\web\NotificationsController;
+
+
 use App\Http\Controllers\web\ReferenceUserController;
-
-
 use App\Http\Controllers\web\ProdiQuesionerController;
 use App\Http\Middleware\IsProdiAdministratorMiddleware;
 use App\Http\Controllers\web\ManageProdiAdminController;
@@ -75,6 +76,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::get('/manage-admin-prodi', [ManageProdiAdminController::class, 'manageAdminProdi'])->name('manage-admin-prodi');
     Route::get('/settings-admin', [AdminController::class, 'settingsAdmin'])->name('settings-admin');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/grup-whatsapp', [GrupWhatsappController::class, 'grupWhatsapp'])->name('grup');
 
     Route::get('/trix', 'TrixController@index');
     Route::post('/upload', 'TrixController@upload');

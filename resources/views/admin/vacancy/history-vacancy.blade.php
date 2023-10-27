@@ -7,13 +7,28 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Total Lowongan Aktif</p>
-                                <h4 class="my-1">10</h4>
+                            <div class="">
+
+                                <p class="mb-1 text-secondary">Lowongan Aktif</p>
+                                <h4 class="my-1">3</h4>
                             </div>
-                            <div class="widgets-icons bg-light-success text-success ms-auto"><i class='bx bxs-badge'></i>
+
+                            <div class="ms-auto">
+                                <p class="mb-0 font-13 text-success ">+12 Lowongan <svg xmlns="http://www.w3.org/2000/svg"
+                                        width="20" height="20" fill="currentColor" class="bi bi-clipboard-data"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0V9z" />
+                                        <path
+                                            d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                                        <path
+                                            d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                                    </svg>
+                                </p>
+                                <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
                             </div>
                         </div>
+                        <div id="active-chart-vacancy"></div>
                     </div>
                 </div>
             </div>
@@ -21,13 +36,28 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Total Lowongan Tidak Aktif</p>
-                                <h4 class="my-1">10</h4>
+                            <div class="">
+
+                                <p class="mb-1 text-secondary">Lowongan Tidak Aktif</p>
+                                <h4 class="my-1">3</h4>
                             </div>
-                            <div class="widgets-icons bg-light-primary text-primary ms-auto"><i class='bx bxs-badge'></i>
+
+                            <div class="ms-auto">
+                                <p class="mb-0 font-13 text-primary ">+12 Lowongan <svg xmlns="http://www.w3.org/2000/svg"
+                                        width="20" height="20" fill="currentColor" class="bi bi-clipboard-data"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0V9z" />
+                                        <path
+                                            d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                                        <path
+                                            d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                                    </svg>
+                                </p>
+                                <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
                             </div>
                         </div>
+                        <div id="not-active-chart-vacancy"></div>
                     </div>
                 </div>
             </div>
@@ -205,6 +235,156 @@
             <script>
                 $(document).ready(function() {
                     $('#example2').DataTable(); // Ini adalah untuk tabel "Tidak Aktif"
+                });
+            </script>
+            <script>
+                $(function() {
+                    var e = {
+                        series: [{
+                            name: "Active Vacancy",
+                            data: [332, 540, 160, 240, 160, 671, 355, 671, 414, 555, 257, 901, 613]
+                        }],
+                        chart: {
+                            type: "area",
+                            height: 100,
+                            toolbar: {
+                                show: !1
+                            },
+                            zoom: {
+                                enabled: !1
+                            },
+                            dropShadow: {
+                                enabled: !1,
+                                top: 3,
+                                left: 14,
+                                blur: 4,
+                                opacity: .12,
+                                color: "#17a00e"
+                            },
+                            sparkline: {
+                                enabled: !0
+                            }
+                        },
+                        markers: {
+                            size: 0,
+                            colors: ["#17a00e"],
+                            strokeColors: "#fff",
+                            strokeWidth: 2,
+                            hover: {
+                                size: 7
+                            }
+                        },
+                        dataLabels: {
+                            enabled: !1
+                        },
+                        stroke: {
+                            show: !0,
+                            width: 2,
+                            curve: "smooth"
+                        },
+                        colors: ["#17a00e"],
+                        xaxis: {
+                            categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
+                                "Dec"
+                            ]
+                        },
+                        fill: {
+                            opacity: 1
+                        },
+                        tooltip: {
+                            theme: "dark",
+                            fixed: {
+                                enabled: !1
+                            },
+                            x: {
+                                show: !1
+                            },
+                            y: {
+                                title: {
+                                    formatter: function(e) {
+                                        return ""
+                                    }
+                                }
+                            },
+                            marker: {
+                                show: !1
+                            }
+                        }
+                    };
+                    new ApexCharts(document.querySelector("#active-chart-vacancy"), e).render();
+                    var e = {
+                        series: [{
+                            name: "Not Active Vacancy",
+                            data: [332, 540, 160, 240, 160, 671, 355, 671, 414, 555, 257, 901, 613]
+                        }],
+                        chart: {
+                            type: "area",
+                            height: 100,
+                            toolbar: {
+                                show: !1
+                            },
+                            zoom: {
+                                enabled: !1
+                            },
+                            dropShadow: {
+                                enabled: !1,
+                                top: 3,
+                                left: 14,
+                                blur: 4,
+                                opacity: .12,
+                                color: "#0d6efd"
+                            },
+                            sparkline: {
+                                enabled: !0
+                            }
+                        },
+                        markers: {
+                            size: 0,
+                            colors: ["#0d6efd"],
+                            strokeColors: "#fff",
+                            strokeWidth: 2,
+                            hover: {
+                                size: 7
+                            }
+                        },
+                        dataLabels: {
+                            enabled: !1
+                        },
+                        stroke: {
+                            show: !0,
+                            width: 2,
+                            curve: "smooth"
+                        },
+                        colors: ["#0d6efd"],
+                        xaxis: {
+                            categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
+                                "Dec"
+                            ]
+                        },
+                        fill: {
+                            opacity: 1
+                        },
+                        tooltip: {
+                            theme: "dark",
+                            fixed: {
+                                enabled: !1
+                            },
+                            x: {
+                                show: !1
+                            },
+                            y: {
+                                title: {
+                                    formatter: function(e) {
+                                        return ""
+                                    }
+                                }
+                            },
+                            marker: {
+                                show: !1
+                            }
+                        }
+                    };
+                    new ApexCharts(document.querySelector("#not-active-chart-vacancy"), e).render();
                 });
             </script>
         @endsection

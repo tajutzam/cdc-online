@@ -11,7 +11,14 @@
                                 <p class="mb-0 text-secondary">Total Admin Program Studi</p>
                                 <h4 class="my-1">10</h4>
                             </div>
-                            <div class="widgets-icons bg-light-danger text-danger ms-auto"><i class='bx bxs-user-badge'></i>
+                            <div class="widgets-icons bg-light-primary text-primary ms-auto"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                    class="bi bi-person-video3" viewBox="0 0 16 16">
+                                    <path
+                                        d="M14 9.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm-6 5.7c0 .8.8.8.8.8h6.4s.8 0 .8-.8-.8-3.2-4-3.2-4 2.4-4 3.2Z" />
+                                    <path
+                                        d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h5.243c.122-.326.295-.668.526-1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v7.81c.353.23.656.496.91.783.059-.187.09-.386.09-.593V4a2 2 0 0 0-2-2H2Z" />
+                                </svg>
                             </div>
                         </div>
                     </div>
@@ -45,7 +52,8 @@
                     <div class="row justify-content-start">
                         <div class="col">
                             <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#add-admin-prodi" type="">Tambah Admin Program Studi</button>
+                                data-bs-target="#add-admin-prodi" type=""> <i class="fas fa-plus"></i>Tambah Admin
+                                Program Studi</button>
 
                         </div>
                     </div>
