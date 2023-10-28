@@ -171,13 +171,13 @@ class PostService
 
 
 
-        $data = [
+        $pagination = [
             'total_page' => $expiredPosts->lastPage(),
             'total_item' => $expiredPosts->total()
         ];
 
         $data['posts'] = [];
-
+        $data['pagination'] =  $pagination;
         foreach ($expiredPosts as $keyIndex => $datum) {
             $tempPost = $this->castToResponse($datum);
             foreach ($datum['comments'] as $key => $value) {
@@ -187,6 +187,7 @@ class PostService
             }
             array_push($data['posts'], $tempPost);
         }
+        
         return ResponseHelper::successResponse('Sukses Fetch Data', $data, 200);
     }
 
