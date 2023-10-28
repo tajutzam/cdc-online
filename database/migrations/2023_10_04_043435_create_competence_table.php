@@ -23,7 +23,7 @@ class CreateCompetenceTable extends Migration
     public function up()
     {
         Schema::create('competence', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('f1761');
             $table->string('f1762');
             $table->string('f1763');
@@ -38,7 +38,6 @@ class CreateCompetenceTable extends Migration
             $table->string('f1772');
             $table->string('f1773');
             $table->string('f1774');
-            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

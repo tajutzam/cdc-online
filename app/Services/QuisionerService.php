@@ -21,6 +21,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class QuisionerService
 {
@@ -80,6 +81,7 @@ class QuisionerService
         if (!isset($prodi)) {
             throw new NotFoundException("ops , nampaknya kode program studi yang kamu pilih tidak ada", 404);
         }
+
         if (isset($quisionerLevel)) { // jika user pernah mengisi quisioner
             if ($now->isBefore($quisionerLevel->expired)) {
                 $interfal = $now->diff($quisionerLevel->expired);
@@ -115,7 +117,7 @@ class QuisionerService
         if (isset($isCreated)) {
 
             $quisionerIsCreated = $this->quisionerLevel->create([
-                'identitas_section' => true,
+                'identitas_section' => $isCreated['id'],
                 'user_id' => $userId,
                 'level' => $level,
                 'expired' => Carbon::now()->addMonths(6)
@@ -124,8 +126,9 @@ class QuisionerService
             if (isset($quisionerIsCreated)) {
                 Db::commit();
                 $data = $this->quisionerLevel->find($quisionerIsCreated->id);
+                $response = $this->quisionerLevelToResponse($data->toArray());
                 return $this->successResponse([
-                    'quis_terjawab' => $data
+                    'quis_terjawab' => $response
                 ], 201, 'Berhasil mengisi quisioner identitas');
             } else {
                 throw new Exception("Error Processing Request", 500);
@@ -477,6 +480,8 @@ class QuisionerService
     }
 
 
+
+
     private function findQuisionerLevelByUserId($userId)
     {
         $quisioner = $this->quisionerLevel->where('user_id', $userId)->orderBy('created_at', 'desc')->first();
@@ -509,40 +514,100 @@ class QuisionerService
             ->get()
             ->toArray();
 
-            $data = collect($users)->filter(function ($user) use ($tahun, $bulan) {
-                $tahunMasuk = null; // Initialize the tahun_masuk variable
-                $tahunLulus = null; // Initialize the tahun_lulus variable
-            
-                $hasMatchingEducation = false; // Initialize a flag
-                $hasMatchingQuisioner = false; // Initialize a flag for matching quisioner level
-            
-                collect($user['educations'])->each(function ($education) use (&$tahunMasuk, &$tahunLulus, $tahun, &$hasMatchingEducation) {
-                    if ($education['perguruan'] === 'Politeknik Negeri Jember') {
-                        $tahunMasuk = $education['tahun_masuk'];
-                        $tahunLulus = $education['tahun_lulus'];
-                        if ($education['tahun_masuk'] == $tahun) {
-                            $hasMatchingEducation = true;
-                        }
-                    }
-                });
-            
-                if ($bulan == 0) {
-                    $hasMatchingQuisioner = true; // If $bulan is 0, consider quisioner level a match
-                } else {
-                    $userQuisioners = collect($user['quisioners']);
-                    if ($userQuisioners->contains('level', $bulan)) {
-                        $hasMatchingQuisioner = true; // Set the flag to true when quisioner level matches $bulan
+        $data = collect($users)->filter(function ($user) use ($tahun, $bulan) {
+            $tahunMasuk = null; // Initialize the tahun_masuk variable
+            $tahunLulus = null; // Initialize the tahun_lulus variable
+
+            $hasMatchingEducation = false; // Initialize a flag
+            $hasMatchingQuisioner = false; // Initialize a flag for matching quisioner level
+
+            collect($user['educations'])->each(function ($education) use (&$tahunMasuk, &$tahunLulus, $tahun, &$hasMatchingEducation) {
+                if ($education['perguruan'] === 'Politeknik Negeri Jember') {
+                    $tahunMasuk = $education['tahun_masuk'];
+                    $tahunLulus = $education['tahun_lulus'];
+                    if ($education['tahun_masuk'] == $tahun) {
+                        $hasMatchingEducation = true;
                     }
                 }
-            
-                return ($tahun == 0 || $hasMatchingEducation) && $hasMatchingQuisioner;
-            })->map(function ($user) {
-                // Modify the items here
-                $tempUser = $this->castToUserResponseFromArray($user);
-                return $tempUser;
-            })->toArray();
-            
+            });
+
+            if ($bulan == 0) {
+                $hasMatchingQuisioner = true; // If $bulan is 0, consider quisioner level a match
+            } else {
+                $userQuisioners = collect($user['quisioners']);
+                if ($userQuisioners->contains('level', $bulan)) {
+                    $hasMatchingQuisioner = true; // Set the flag to true when quisioner level matches $bulan
+                }
+            }
+
+            return ($tahun == 0 || $hasMatchingEducation) && $hasMatchingQuisioner;
+        })->map(function ($user) {
+            // Modify the items here
+            $tempUser = $this->castToUserResponseFromArray($user);
+            return $tempUser;
+        })->toArray();
+
         return $data;
+    }
+
+    public function exrportToExcel($tahunBulan)
+    {
+
+
+        list($year, $bulan) = explode('-', $tahunBulan);
+
+        $relations = [
+            'identity_quisioner',
+            'main_quisioner',
+            'furthe_study_quisioner',
+            'competence',
+            'study_method',
+            'jobStreet',
+            'howToFindJobs',
+            'companyApplied',
+            'jobSuitability',
+            'prodi',
+            'quisioners',
+            'educations',
+            'quisioner_level'
+        ];
+
+        $users = $this->user->with($relations)
+            ->has('educations') // Filter hanya pengguna yang memiliki pendidikan
+            ->whereHas('identity_quisioner', function ($query) use ($bulan) {
+                $query->where('kdptimsmh', '!=', ''); // Gantilah 'column_name' dengan nama kolom yang sesuai
+    
+            })->whereHas('quisioner_level', function ($query) use ($bulan) {
+            $query->where('level', '=', $bulan);
+        })
+            ->get()
+            ->toArray();
+
+        $data = collect($users)->filter(function ($user) use ($year, $bulan) {
+            $tahunMasuk = null; // Initialize the tahun_masuk variable
+            $tahunLulus = null; // Initialize the tahun_lulus variable
+
+            $hasMatchingEducation = false; // Initialize a flag
+            $hasMatchingQuisioner = false; // Initialize a flag for matching quisioner level
+
+            collect($user['educations'])->each(function ($education) use (&$tahunMasuk, &$tahunLulus, $year, &$hasMatchingEducation) {
+                if ($education['perguruan'] === 'Politeknik Negeri Jember') {
+                    $tahunMasuk = $education['tahun_masuk'];
+                    $tahunLulus = $education['tahun_lulus'];
+                    if ($education['tahun_masuk'] == $year) {
+                        $hasMatchingEducation = true;
+                    }
+                }
+            });
+            return ($hasMatchingEducation);
+        })->map(function ($user) {
+            // Modify the items here
+            $tempUser = $this->castToUserResponseFromArray($user);
+            return $tempUser;
+        })->toArray();
+
+        return $data;
+
     }
 
 
@@ -555,7 +620,7 @@ class QuisionerService
 
     public function castToUserResponseFromArray($user)
     {
-       
+
         $url = url('/') . "/users/" . $user['foto'];
         return [
             "id" => $user['id'],
@@ -589,6 +654,32 @@ class QuisionerService
             'tahun_masuk' => $user['educations'][0]['tahun_masuk'],
             'tahun_lulus' => $user['educations'][0]['tahun_lulus']
         ];
+    }
+
+
+    public function quisionerLevelToResponse($data)
+    {
+        $response = [];
+        $attributesToCheck = [
+            'identitas_section',
+            'main_section',
+            'furthe_study_section',
+            'competent_level_section',
+            'study_method_section',
+            'jobs_street_section',
+            'how_find_jobs_section',
+            'company_applied_section',
+            'job_suitability_section',
+        ];
+
+        foreach ($attributesToCheck as $attribute) {
+            if (!is_null($data[$attribute])) {
+                $response[$attribute] = true;
+            } else {
+                $response[$attribute] = false;
+            }
+        }
+        return $response;
     }
 
 }

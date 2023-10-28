@@ -14,13 +14,13 @@ class CreateCompanyAppliedTable extends Migration
     public function up()
     {
         Schema::create('company_applied', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->integer('f6');
             $table->integer('f7');
             $table->integer('f7a');
             $table->string('f1001');
             $table->string('f1002');
-            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
+           
 
             $table->timestamps();
         });

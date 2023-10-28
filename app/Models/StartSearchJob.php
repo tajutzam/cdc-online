@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class StartSearchJob extends Model
 {
-    use HasFactory;
+    use HasFactory, Uuids;
 
     protected $table = 'start_search_jobs';
 
@@ -15,12 +16,13 @@ class StartSearchJob extends Model
         'f301',
         'f302',
         'f303',
-        'user_id',
     ];
 
     // Relasi ke tabel 'users'
-    public function user()
+
+    public function quisionerLevel()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasOne(QuisionerLevel::class);
     }
+   
 }

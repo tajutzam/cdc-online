@@ -14,7 +14,7 @@ class CreateHowToFindJobsTable extends Migration
     public function up()
     {
         Schema::create('how_to_find_jobs', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->boolean('f401');
             $table->boolean('f402');
             $table->boolean('f403');
@@ -31,7 +31,7 @@ class CreateHowToFindJobsTable extends Migration
             $table->boolean('f414');
             $table->boolean('f415');
             $table->string('f416', 255)->nullable(true);
-            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
+          
 
             $table->timestamps();
         });

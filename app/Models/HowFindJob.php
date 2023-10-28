@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class HowFindJob extends Model
 {
-    use HasFactory;
+    use HasFactory,Uuids;
 
     protected $table = 'how_to_find_jobs';
 
@@ -28,7 +29,6 @@ class HowFindJob extends Model
         'f414',
         'f415',
         'f416',
-        'user_id',
     ];
 
     protected $casts = [
@@ -48,4 +48,9 @@ class HowFindJob extends Model
         'f414' => 'boolean',
         'f415' => 'boolean',
     ];
+
+    public function quisionerLevel()
+    {
+        return $this->hasOne(QuisionerLevel::class);
+    }
 }

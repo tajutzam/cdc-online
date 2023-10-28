@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class JobSuitability extends Model
 {
-    use HasFactory;
+    use HasFactory , Uuids;
 
     protected $table = 'job_suitability';
 
@@ -26,11 +27,12 @@ class JobSuitability extends Model
         'f1612',
         'f1613',
         'f1614',
-        'user_id',
     ];
 
-    public function user()
+    public function quisionerLevel()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasOne(QuisionerLevel::class);
     }
+
+ 
 }

@@ -25,7 +25,6 @@ class CreateQuisIdentitasTable extends Migration
             $table->string('nik');
             $table->string('npwp');
             $table->foreign('kdpstmsmh')->references('id')->on('quis_identitas_prodi')->cascadeOnDelete()->cascadeOnDelete();
-            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

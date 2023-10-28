@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class StudyMethod extends Model
 {
-    use HasFactory;
+    use HasFactory,Uuids;
 
     protected $table = 'study_method';
 
@@ -19,13 +20,14 @@ class StudyMethod extends Model
         'f25',
         'f26',
         'f27',
-        'user_id',
     ];
 
     // Relasi ke tabel 'users'
-    public function user()
+
+    public function quisionerLevel()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasOne(QuisionerLevel::class);
     }
+  
 }
 

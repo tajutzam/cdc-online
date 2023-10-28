@@ -24,7 +24,7 @@ class CreateStudyMethodTable extends Migration
     public function up()
     {
         Schema::create('study_method', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('f21');
             $table->string('f22');
             $table->string('f23');
@@ -32,8 +32,7 @@ class CreateStudyMethodTable extends Migration
             $table->string('f25');
             $table->string('f26');
             $table->string('f27');
-            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
-
+        
             $table->timestamps();
         });
     }

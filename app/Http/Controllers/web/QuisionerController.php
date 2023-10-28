@@ -39,8 +39,8 @@ class QuisionerController extends Controller
     }
 
 
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new QuisionerExport, 'nama_file.xlsx');
+        return Excel::download(new QuisionerExport($request->input('tahun')), "rekap_kuisioner_" . $request->input('tahun') . ".xlsx");
     }
 }

@@ -5,6 +5,12 @@
 
     <body>
         <div class="container-fluid">
+            @if ($errors->any())
+                <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+                    <div class="text-white">{{ $errors->first() }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="row">
                 <div class="col-sm-6">
                     <div class="card">
@@ -122,6 +128,7 @@
 
                             </div>
                         </div>
+
                         <div class="col-md-6 text-md-end">
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example"
                                 style="padding: 1%">
@@ -132,14 +139,18 @@
                                             d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0z" />
                                     </svg> Unduh
                                 </button>
-                                <a href="{{route('export')}}">
-                                    <button type="button" class="btn btn-success">
+                                <!-- Example single danger button -->
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#export" aria-expanded="false">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-file-earmark-spreadsheet" viewBox="0 0 16 16">
                                             <path
                                                 d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V9H3V2a1 1 0 0 1 1-1h5.5v2zM3 12v-2h2v2H3zm0 1h2v2H4a1 1 0 0 1-1-1v-1zm3 2v-2h3v2H6zm4 0v-2h3v1a1 1 0 0 1-1 1h-2zm3-3h-3v-2h3v2zm-7 0v-2h3v2H6z" />
                                         </svg> Excel
-                                    </button></a>
+                                    </button>
+                                </div>
+
                                 <button type="button" class="btn btn-secondary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-file-earmark-arrow-up" viewBox="0 0 16 16">
@@ -230,6 +241,35 @@
                 </div>
             </div>
         </div>
+
+
+        <x-modal-small id="export" footer="footer" title="title" body="body">
+            <x-slot name="title">Export To Excel</x-slot>
+            <x-slot name="id">export</x-slot>
+            <x-slot name="body">
+                <form action="{{ route('export') }}" method="post">
+                    <select class="form-select form-select-sm mb-3" aria-label="Large select example" name="tahun">
+                        @php
+                            $currentYear = date('Y');
+                        @endphp
+                        @for ($i = 0; $i < 5; $i++)
+                            <optgroup label="{{ $currentYear - $i }}">
+                                <option value="{{ $currentYear - $i }}-0">0 Bulan</option>
+                                <option value="{{ $currentYear - $i }}-6">6 Bulan</option>
+                                <option value="{{ $currentYear - $i }}-12">12 Bulan</option>
+                            </optgroup>
+                        @endfor
+                    </select>
+
+                    <div class="row justify-content-end">
+                        <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
+                            data-bs-dismiss="modal">Tutup</button>
+                        <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
+                    </div>
+                </form>
+            </x-slot>
+        </x-modal-small>
+
         <script>
             $(function() {
                 var e = {

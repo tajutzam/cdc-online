@@ -20,15 +20,15 @@ class FurtheStudy extends Model
         'f1202',
         'f14',
         'f15',
-        'user_id',
     ];
 
     protected $casts = [
         'f18d' => 'datetime',
     ];
 
-    public function user()
+    public function quisionerLevel()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasOne(QuisionerLevel::class);
     }
+  
 }

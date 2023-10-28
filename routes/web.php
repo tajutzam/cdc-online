@@ -132,7 +132,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
         Route::get("/detail/{id}", function ($id) {
             return view('admin.quisioner.detail');
         })->name('detail-quisioner');
-        Route::get("export", [QuisionerController::class, "export"])->name('export');
+        Route::post("export", [QuisionerController::class, "export"])->name('export');
     });
 });
 
