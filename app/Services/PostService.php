@@ -145,15 +145,23 @@ class PostService
             'total_page' => $expiredPosts->lastPage(),
             'total_item' => $expiredPosts->total()
         ];
-        foreach ($expiredPosts as $datum) {
+        foreach ($expiredPosts as $index => $datum) {
             $tempPost = $this->castToResponse($datum);
+            $comments = [];
+            // dd($tempPost['comments']);
             foreach ($datum['comments'] as $key => $value) {
                 # code...
                 $tempComments = $this->castToUserResponse($value['user']);
-                $tempPost['comments'][$key]['user'] = $tempComments;
+                $value['user'] = $tempComments;
+                $newValue = $value;
+                // dd($value['user']);
+                array_push($comments, $newValue->getAttributes());
+            }
+            if (sizeof($datum['comments']) > 0) {
+                $tempPost['comments'] = $comments;
             }
             array_push($data, $tempPost);
-        }
+        } 
 
         return ResponseHelper::successResponse('Sukses Fetch Data', $data, 200);
     }
@@ -287,7 +295,7 @@ class PostService
             'post_at' => $data->post_at,
             'can_comment' => $data->can_comment,
             'verified' => $data->verified,
-            'comments' => $data->comments,
+            'comments' => $data->comments->toArray(),
             'type_jobs' => $data->type_jobs,
             'uploader' => $uploader
         ];
@@ -316,20 +324,26 @@ class PostService
 
         $data = [];
 
-        foreach ($expiredPosts as $datum) {
+        foreach ($expiredPosts as $index => $datum) {
             $tempPost = $this->castToResponse($datum);
-            $tempPost['comments'] = [];
-
-            foreach ($datum->comments as $comment) {
-                $tempComment = $this->castToUserResponse($comment->user);
-                $tempPost['comments'][] = $tempComment;
+            $comments = [];
+            // dd($tempPost['comments']);
+            foreach ($datum['comments'] as $key => $value) {
+                # code...
+                $tempComments = $this->castToUserResponse($value['user']);
+                $value['user'] = $tempComments;
+                $newValue = $value;
+                // dd($value['user']);
+                array_push($comments, $newValue->getAttributes());
             }
-
-            $data[] = $tempPost;
-        }
+            if (sizeof($datum['comments']) > 0) {
+                $tempPost['comments'] = $comments;
+            }
+            array_push($data, $tempPost);
+        } 
 
         return ResponseHelper::successResponse('Sukses Fetch Data', $data, 200);
-    
+
 
     }
 
