@@ -142,7 +142,6 @@ class PostController extends Controller
         }
 
         $userId = $this->userService->extractUserId($request->bearerToken());
-        $response = $this->postService->findByPosition($request->all(), $userId);
-        return ResponseHelper::successResponse('success fetch data', $response, 200);
+        return $this->postService->findByPosition($request->all(), $userId);
     }
 }

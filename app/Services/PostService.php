@@ -154,6 +154,7 @@ class PostService
             }
             array_push($data, $tempPost);
         }
+
         return ResponseHelper::successResponse('Sukses Fetch Data', $data, 200);
     }
 
@@ -177,7 +178,7 @@ class PostService
         ];
 
         $data['posts'] = [];
-        $data['pagination'] =  $pagination;
+        $data['pagination'] = $pagination;
         foreach ($expiredPosts as $keyIndex => $datum) {
             $tempPost = $this->castToResponse($datum);
             foreach ($datum['comments'] as $key => $value) {
@@ -187,7 +188,7 @@ class PostService
             }
             array_push($data['posts'], $tempPost);
         }
-        
+
         return ResponseHelper::successResponse('Sukses Fetch Data', $data, 200);
     }
 
@@ -296,24 +297,40 @@ class PostService
     public function findByPosition($request, $userId)
     {
 
-        $posts = $this->post
-            ->where(function ($query) use ($userId) {
-                $query->where('user_id', '<>', $userId)
-                    ->orWhereNull('user_id');
-            })
+        $now = Carbon::now();
+
+        $expiredPosts = $this->post
+            ->where('expired', '>', $now)
+            ->where('verified', '=', 'verified')
+            ->where('user_id', '<>', $userId)
             ->where('position', 'like', '%' . $request['key'] . '%')
-            ->where('expired', '>', Carbon::now())
-            ->where('verified', 'verified')
-            ->with('user', 'admin')
+            ->orWhereNotNull('admin_id')
+            ->with([
+                'comments' => function ($query) {
+                    $query->with('user');
+                },
+                'user',
+                'admin'
+            ])
             ->get();
 
-        if (sizeof($posts) == 0) {
-            throw new NotFoundException('Ops, Lowongan dengan posisi ' . $request['key'] . " tidak ditemukan");
+        $data = [];
+
+        foreach ($expiredPosts as $datum) {
+            $tempPost = $this->castToResponse($datum);
+            $tempPost['comments'] = [];
+
+            foreach ($datum->comments as $comment) {
+                $tempComment = $this->castToUserResponse($comment->user);
+                $tempPost['comments'][] = $tempComment;
+            }
+
+            $data[] = $tempPost;
         }
 
-        return collect($posts->toArray())->map(function ($post) {
-            return $this->castToResponseFromArray($post);
-        })->toArray();
+        return ResponseHelper::successResponse('Sukses Fetch Data', $data, 200);
+    
+
     }
 
 
@@ -379,7 +396,7 @@ class PostService
             // Move to the next day
             $currentDate->addDay();
         }
-        
+
 
         $dataResponse['total_of_week'] = $count;
         $dataResponse['count_by_day'] = $countsByDay;
