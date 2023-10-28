@@ -145,14 +145,14 @@
                                                     <td>{{ $item['company'] }}</td>
                                                     <td>{{ $item['position'] }}</td>
                                                     <td>{{ $item['description'] }}</td>
-                                                    <td>{{ $item['image'] }}</td>
+                                                    <td><img style="height: 80px" src="{{ asset('/users/post/') }}{{ '/' . $item['image'] }}"
+                                                            alt="{{ $item['image'] }}"></td>
                                                     <td>{{ $item['post_at'] }}</td>
                                                     <td>{{ $item['expired'] }}</td>
                                                     <td><a href="{{ $item['link_apply'] }}">Link_Apply</a></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
-
                                     </table>
                                 </div>
                             </div>
@@ -179,7 +179,7 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>
                                                         @if ($item['user'] == null)
-                                                            {{ $item['admin']['nama'] }}
+                                                            {{ $item['admin']['name'] }}
                                                         @else
                                                             {{ $item['user']['fullname'] }}
                                                         @endif
@@ -187,7 +187,8 @@
                                                     <td>{{ $item['company'] }}</td>
                                                     <td>{{ $item['position'] }}</td>
                                                     <td>{{ $item['description'] }}</td>
-                                                    <td>{{ $item['image'] }}</td>
+                                                    <td><img style="height: 80px" src="{{ asset('/users/post/') }}{{ '/' . $item['image'] }}"
+                                                        alt="{{ $item['image'] }}"></td>
                                                     <td>{{ $item['post_at'] }}</td>
                                                     <td>{{ $item['expired'] }}</td>
                                                     <td><a href="{{ $item['link_apply'] }}">Link_Apply</a></td>

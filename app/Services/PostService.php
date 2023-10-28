@@ -161,7 +161,7 @@ class PostService
                 $tempPost['comments'] = $comments;
             }
             array_push($data, $tempPost);
-        } 
+        }
 
         return ResponseHelper::successResponse('Sukses Fetch Data', $data, 200);
     }
@@ -340,7 +340,7 @@ class PostService
                 $tempPost['comments'] = $comments;
             }
             array_push($data, $tempPost);
-        } 
+        }
 
         return ResponseHelper::successResponse('Sukses Fetch Data', $data, 200);
 
@@ -435,11 +435,10 @@ class PostService
 
         $dataNonActive = $this->post
             ->with('user', 'admin')
-            ->where(function ($query) {
-                $query->where('verified', 'rejected')
-                    ->orWhere('expired', '<', Carbon::now());
-            })
+            ->where('verified' , 'rejected')
+            ->orwhere('expired', '<=', Carbon::now())
             ->get();
+
 
         $data = [];
         $data['active'] = $dataActive;
