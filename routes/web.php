@@ -85,9 +85,9 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/grup-whatsapp', [GrupWhatsappController::class, 'grupWhatsapp'])->name('grup');
 
-    Route::get('/trix', 'TrixController@index');
-    Route::post('/upload', 'TrixController@upload');
-    Route::post('/store', 'TrixController@store');
+    // Route::get('/trix', 'TrixController@index');
+    // Route::post('/upload', 'TrixController@upload');
+    // Route::post('/store', 'TrixController@store');
 
     Route::prefix('vacancy')->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('vacancy');
