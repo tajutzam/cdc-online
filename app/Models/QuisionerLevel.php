@@ -62,22 +62,22 @@ class QuisionerLevel extends Model
 
     public function startsearchjobs()
     {
-        return $this->hasMany(StartSearchJob::class, 'jobs_street_section');
+        return $this->belongsTo(StartSearchJob::class, 'jobs_street_section');
     }
 
     public function howtofindjobs()
     {
-        return $this->hasMany(HowFindJob::class, 'how_find_jobs_section');
+        return $this->belongsTo(HowFindJob::class, 'how_find_jobs_section');
     }
 
     public function companyapplied()
     {
-        return $this->hasMany(CompanyApplied::class, 'company_applied_section');
+        return $this->belongsTo(CompanyApplied::class, 'company_applied_section');
     }
 
     public function jobsuitability()
     {
-        return $this->hasMany(JobSuitability::class, 'job_suitability_section');
+        return $this->belongsTo(JobSuitability::class, 'job_suitability_section');
     }
 
     // QuisionerLevel.php (Model)

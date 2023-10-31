@@ -38,7 +38,6 @@ class QuisionerExport implements FromView
             throw new WebException($message);
         }
 
-        dd($userQuisioner);
         return view('exports.quisioner', [
             'data' => $userQuisioner
         ]);

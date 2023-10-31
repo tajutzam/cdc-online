@@ -105,4 +105,9 @@ class AuthController extends Controller
         return $service->findAllAlumni();
     }
 
+    public function sendRecovery()
+    {
+
+    }
+
 }

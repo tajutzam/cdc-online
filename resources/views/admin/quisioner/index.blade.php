@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    {{-- @dd($data) --}}
 
     <body>
         <div class="container-fluid">
@@ -17,16 +16,16 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div>
-                                    <p class="mb-0 text-secondary">Total Alumni Yang Mengisi Quisioner</p>
-                                    <h4 class="my-1">{{ $filled }}</h4>
+                                    <p class="mb-0 text-secondary">Alumni Yang Mengisi Quisioner</p>
+                                    <h4 class="my-1">{{ $data['filled'] }}</h4>
                                 </div>
 
-                                <div class="ms-auto">
+                                {{-- <div class="ms-auto">
                                     <p class="mb-0 font-13 text-success ">+12 Alumni Terverifikasi <i
                                             class='bx bxs-pencil font-20'></i>
                                     </p>
                                     <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
-                                </div>
+                                </div> --}}
                             </div>
                             <div id="verify-chart-quesioner"></div>
                         </div>
@@ -37,16 +36,16 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div>
-                                    <p class="mb-0 text-secondary">Total Alumni Yang Belum Mengisi Quisioner</p>
-                                    <h4 class="my-1">{{ $blank }}</h4>
+                                    <p class="mb-0 text-secondary">Alumni Belum Mengisi Quisioner</p>
+                                    <h4 class="my-1">{{ $data['blank'] }}</h4>
                                 </div>
 
-                                <div class="ms-auto">
+                                {{-- <div class="ms-auto">
                                     <p class="mb-0 font-13 text-danger ">+12 Alumni Tidak Terverifikasi <i
                                             class='bx bxs-pencil font-20'></i>
                                     </p>
                                     <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
-                                </div>
+                                </div> --}}
                             </div>
                             <div id="not-verify-chart-quesioner"></div>
                         </div>
@@ -151,7 +150,8 @@
                                     </button>
                                 </div>
 
-                                <button type="button" class="btn btn-secondary">
+                                <button type="button" class="btn btn-secondary" data-bs-target="#upload-excel"
+                                    data-bs-toggle="modal">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-file-earmark-arrow-up" viewBox="0 0 16 16">
                                         <path
@@ -189,7 +189,7 @@
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($data as $item)
+                                        @foreach ($data['quisioners'] as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item['fullname'] }}</td>
@@ -213,7 +213,7 @@
                                                             aria-expanded="false">
                                                             <div class="btn-group">
                                                                 <button type="button"
-                                                                    class="btn btn-success">2/9</button>
+                                                                    class="btn btn-success">Detail</button>
                                                                 <button type="button"
                                                                     class="btn btn-success dropdown-toggle dropdown-toggle-split"
                                                                     data-toggle="dropdown" aria-haspopup="true"
@@ -221,12 +221,15 @@
                                                             </div>
                                                         </a>
                                                         <ul class="dropdown-menu dropdown-menu-end ">
-                                                            <li><a class="dropdown-item d-flex align-items-center"
-                                                                    href="{{ route('detail-quisioner', ['id' => $item['id']]) }}"><i></i><span>Detail</span></a>
-                                                            </li>
-                                                            {{-- <li>
+                                                            @foreach ($item['quisioner'] as $itemQuisioner)
+                                                                <li><a class="dropdown-item d-flex align-items-center"
+                                                                        href="{{ route('detail-quisioner', ['level' => $itemQuisioner['level'], 'userId' => $item['id']]) }}"><i></i><span>Level
+                                                                            {{ $itemQuisioner['level'] }} </span></a>
+                                                                </li>
+                                                            @endforeach
+                                                            <li>
                                                                 <div class="dropdown-divider mb-0"></div>
-                                                            </li> --}}
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -260,8 +263,29 @@
                             </optgroup>
                         @endfor
                     </select>
-
+                    <select class="form-select" name="format" multiple aria-label="Multiple select example">
+                        <option selected>Pilih Format Export</option>
+                        <option value="xlsx" class="text-body-emphasis">Xlxs</option>
+                        <option value="csv">Csv</option>
+                    </select>
                     <div class="row justify-content-end">
+                        <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
+                            data-bs-dismiss="modal">Tutup</button>
+                        <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
+                    </div>
+                </form>
+            </x-slot>
+        </x-modal-small>
+
+
+
+        <x-modal-small id="upload-excel" footer="footer" title="title" body="body">
+            <x-slot name="title">Import Excel</x-slot>
+            <x-slot name="id">upload-excel</x-slot>
+            <x-slot name="body">
+                <form action="{{ route('import') }}" method="post" enctype="multipart/form-data">
+                    <input type="file" name="excel" id="" accept=".xls, .xlsx" class="mb-3">
+                    <div class="row justify-content-end mt-3">
                         <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
                             data-bs-dismiss="modal">Tutup</button>
                         <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>

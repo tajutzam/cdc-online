@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
+use App\Exceptions\WebException;
 use App\Helper\ResponseHelper;
 use App\Models\CompanyApplied;
 use App\Models\Competence;
@@ -47,6 +48,7 @@ class QuisionerService
     private HowFindJob $howFindJob;
     private CompanyApplied $comapnyAppled;
     private JobSuitability $jobSuitability;
+
     public function __construct()
     {
         $this->identity = new Identity();
@@ -164,11 +166,10 @@ class QuisionerService
                     'f5b' => $request['company_name'],
                     'f5c' => $request['job_title'],
                     'f5d' => $request['work_level'],
-                    'user_id' => $userId
                 ]);
                 if (isset($isCreated)) {
                     $isUpdate = $quisionerLevel->update([
-                        'main_section' => true,
+                        'main_section' => $isCreated->id,
                     ]);
                     if ($isUpdate) {
                         DB::commit();
@@ -192,11 +193,11 @@ class QuisionerService
         //code...
         $quisionerLevel = $this->findQuisionerLevelByUserId($userId);
         if (isset($quisionerLevel)) {
-            if ($quisionerLevel->furthe_study_section) {
+            if (isset($quisionerLevel->furthe_study_section)) {
                 throw new BadRequestException('Ops , nampaknya kamu sudah mengisi quisioner berikut', 400);
             }
-            $isSetMainSection = $this->mainSection->where('user_id', $userId)->first();
-            if (isset($isSetMainSection)) {
+            // check user sudah mengisi quisioner main
+            if (isset($quisionerLevel->main_section)) {
                 $isCreated = $this->furtheStudy->create([
                     'f18a' => $request['study_funding_source'],
                     'f18b' => $request['univercity_name'],
@@ -206,12 +207,11 @@ class QuisionerService
                     'f1202' => $request['financial_source'],
                     'f14' => $request['study_job_relationship'],
                     'f15' => $request['job_education_level'],
-                    'user_id' => $userId,
                 ]);
                 $user = $this->user->find($userId);
                 if (isset($isCreated)) {
                     $isUpdate = $quisionerLevel->update([
-                        'furthe_study_section' => true,
+                        'furthe_study_section' => $isCreated->id,
                     ]);
                     if ($isUpdate) {
                         DB::commit();
@@ -221,8 +221,9 @@ class QuisionerService
                 } else {
                     throw new Exception('Gagal untuk mengisi kuisioner , terjadi keslaahan', 500);
                 }
+            } else {
+                throw new BadRequestException('Ops , kamu harus mengisi quisioner main terlebih dahulu');
             }
-            throw new BadRequestException('Harap isi quisioner sebelumnya terlebih dahulu', 400);
         }
         throw new NotFoundException('qusioner level not found', 404);
 
@@ -235,10 +236,10 @@ class QuisionerService
 
         //code...
         $quisionerLevel = $this->findQuisionerLevelByUserId($userId);
-        if (!$quisionerLevel->furthe_study_section) {
+        if (!isset($quisionerLevel->furthe_study_section)) { // check user belum mengisi quisioner sebelumnya
             throw new BadRequestException('Ops , Nampaknya kamu belum mengisi quisioner sebelumnya', 400);
         }
-        if ($quisionerLevel->competent_level_section) {
+        if (isset($quisionerLevel->competent_level_section)) {
             throw new BadRequestException('Ops , kamu sudah mengisi quisioner berikut', 400);
         }
         $competenceData = [
@@ -256,13 +257,12 @@ class QuisionerService
             'f1772' => $request['kerjasama_saatini'],
             'f1773' => $request['pengembangan_diri_lulus'],
             'f1774' => $request['pengembangan_diri_saatini'],
-            'user_id' => $userId,
             // Ganti dengan ID pengguna yang sesuai
         ];
         $created = $this->competence->create($competenceData);
         if (isset($created)) {
             $isUpdate = $quisionerLevel->update([
-                'competent_level_section' => true
+                'competent_level_section' => $created->id
             ]);
             if ($isUpdate) {
                 DB::commit();
@@ -277,10 +277,10 @@ class QuisionerService
     public function addQuisionerStudyMethod($request, $userId)
     {
         $quisionerLevel = $this->findQuisionerLevelByUserId($userId);
-        if (!$quisionerLevel->competent_level_section) {
+        if (!isset($quisionerLevel->competent_level_section)) {
             throw new BadRequestException('Gagal mengisi kuisioner , kamu belum mengisi quisioner sebelumnya');
         }
-        if ($quisionerLevel->study_method_section) {
+        if (isset($quisionerLevel->study_method_section)) {
             throw new BadRequestException('Ops , nampaknya kamu sudah mengisi kuisioner ini');
         }
         DB::beginTransaction();
@@ -292,12 +292,11 @@ class QuisionerService
             'f25' => $request['practice'],
             'f26' => $request['field_work'],
             'f27' => $request['discucion'],
-            'user_id' => $userId
         ];
         $created = $this->studyMethod->create($studyMethodData);
         if (isset($created)) {
             $isUpdate = $quisionerLevel->update([
-                'study_method_section' => true
+                'study_method_section' => $created->id
             ]);
             if ($isUpdate) {
                 DB::commit();
@@ -312,11 +311,11 @@ class QuisionerService
     {
         $quisionerLevel = $this->findQuisionerLevelByUserId($userId);
 
-        if (!$quisionerLevel->study_method_section) {
+        if (!isset($quisionerLevel->study_method_section)) {
             throw new BadRequestException('Gagal mengisi kuisioner , kamu belum mengisi kuisioner sebelumnya');
         }
 
-        if ($quisionerLevel->jobs_street_section) {
+        if (isset($quisionerLevel->jobs_street_section)) {
             throw new BadRequestException('Ops , nampaknya kamu sudah mengisi kuisioner berikut');
         }
         DB::beginTransaction();
@@ -324,13 +323,11 @@ class QuisionerService
             'f301' => $request['job_search_start'],
             'f302' => $request['before_graduation'],
             'f303' => $request['after_graduation'],
-            'user_id' => $userId
         ];
         $created = $this->startSearchJob->create($jobsStreetData);
-        $user = $this->user->find($userId);
         if (isset($created)) {
             $isUpdate = $quisionerLevel->update([
-                'jobs_street_section' => true
+                'jobs_street_section' => $created->id
             ]);
             if ($isUpdate) {
                 DB::commit();
@@ -346,10 +343,10 @@ class QuisionerService
     public function addQuisionerHowFindJob($request, $userId)
     {
         $quisionerLevel = $this->findQuisionerLevelByUserId($userId);
-        if (!$quisionerLevel->jobs_street_section) {
+        if (!isset($quisionerLevel->jobs_street_section)) {
             throw new BadRequestException('Gagal mengisi kuisioner , kamu belum mengisi kuisioner sebelumnya');
         }
-        if ($quisionerLevel->how_find_jobs_section) {
+        if (isset($quisionerLevel->how_find_jobs_section)) {
             throw new BadRequestException('Ops , nampaknya kamu sudah mengisi kuisioner ini');
         }
 
@@ -371,13 +368,12 @@ class QuisionerService
             'f415' => $request['other'],
             'f416' => $request['other_job_source'],
             'f404' => $request['internet'],
-            'user_id' => $userId
         ];
         $created = $this->howFindJob->create($howFindJobData);
 
         if (isset($created)) {
             $isUpdate = $quisionerLevel->update([
-                'how_find_jobs_section' => true
+                'how_find_jobs_section' => $created->id
             ]);
             if ($isUpdate) {
                 DB::commit();
@@ -392,10 +388,10 @@ class QuisionerService
     public function addQuisionerCompanyApplied($request, $userId)
     {
         $quisionerLevel = $this->findQuisionerLevelByUserId($userId);
-        if (!$quisionerLevel->how_find_jobs_section) {
+        if (!isset($quisionerLevel->how_find_jobs_section)) {
             throw new BadRequestException('Gagal mengisi kuisioner , kamu belum mengisi kuisioner sebelumnya');
         }
-        if ($quisionerLevel->company_applied_section) {
+        if (isset($quisionerLevel->company_applied_section)) {
             throw new BadRequestException('Ops , nampaknya kamu sudah mengisi kuisioner ini');
         }
         DB::beginTransaction();
@@ -405,12 +401,11 @@ class QuisionerService
             'f7a' => $request['interview_invitations'],
             'f1001' => $request['job_search_recently_active'],
             'f1002' => $request['job_search_recently_active_other'],
-            'user_id' => $userId
         ];
         $created = $this->comapnyAppled->create($comapnyAppliedData);
         if (isset($created)) {
             $isUpdate = $quisionerLevel->update([
-                'company_applied_section' => true
+                'company_applied_section' => $created->id
             ]);
             if ($isUpdate) {
                 DB::commit();
@@ -424,10 +419,10 @@ class QuisionerService
     public function addQuisionerjobSuitability($request, $userId)
     {
         $quisionerLevel = $this->findQuisionerLevelByUserId($userId);
-        if (!$quisionerLevel->company_applied_section) {
+        if (!isset($quisionerLevel->company_applied_section)) {
             throw new BadRequestException('Gagal mengisi kuisioner , kamu belum mengisi kuisioner sebelumnya');
         }
-        if ($quisionerLevel->job_suitability_section) {
+        if (isset($quisionerLevel->job_suitability_section)) {
             throw new BadRequestException('Ops , nampaknya kamu sudah mengisi kuisioner ini');
         }
 
@@ -446,7 +441,6 @@ class QuisionerService
             'f1612' => $request['other_reason_8'],
             'f1613' => $request['other_reason_9'],
             'f1614' => $request['other_reason_10'],
-            'user_id' => $userId,
         ];
         $created = $this->jobSuitability->create($jobsSuitabilityData);
         $user = $this->user->find($userId);
@@ -455,7 +449,7 @@ class QuisionerService
                 ['account_status' => true]
             );
             $isUpdate = $quisionerLevel->update([
-                'job_suitability_section' => true
+                'job_suitability_section' => $created->id
             ]);
             if ($isUpdate && $userUpdated) {
                 DB::commit();
@@ -494,27 +488,31 @@ class QuisionerService
 
     public function findAllQuisionerUser($tahun = 0, $bulan = 0)
     {
-        $relations = [
-            'identity_quisioner',
-            'main_quisioner',
-            'furthe_study_quisioner',
-            'competence',
-            'study_method',
-            'jobStreet',
-            'howToFindJobs',
-            'companyApplied',
-            'jobSuitability',
-            'prodi',
-            'quisioners',
-            'educations'
-        ];
 
-        $users = $this->user->with($relations)
+        $users = $this->user->has('quisioner_level')
             ->has('educations') // Filter hanya pengguna yang memiliki pendidikan
+            ->with('quisioner_level', function ($query) {
+                $query->with('identity');
+                $query->with('main');
+                $query->with('furthe_study');
+                $query->with('competence');
+                $query->with('studymethod');
+                $query->with('startsearchjobs');
+                $query->with('howtofindjobs');
+                $query->with('companyapplied');
+                $query->with('jobsuitability');
+            })
+            ->with('educations')
+            ->with('prodi')
             ->get()
             ->toArray();
 
-        $data = collect($users)->filter(function ($user) use ($tahun, $bulan) {
+
+
+        $userFilled = $this->user->has('quisioner_level')->count();
+        $userBlank = $this->user->whereDoesntHave('quisioner_level')->count();
+
+        $data['quisioners'] = collect($users)->filter(function ($user) use ($tahun, $bulan) {
             $tahunMasuk = null; // Initialize the tahun_masuk variable
             $tahunLulus = null; // Initialize the tahun_lulus variable
 
@@ -534,83 +532,262 @@ class QuisionerService
             if ($bulan == 0) {
                 $hasMatchingQuisioner = true; // If $bulan is 0, consider quisioner level a match
             } else {
-                $userQuisioners = collect($user['quisioners']);
+                $userQuisioners = collect($user['quisioner_level']);
                 if ($userQuisioners->contains('level', $bulan)) {
                     $hasMatchingQuisioner = true; // Set the flag to true when quisioner level matches $bulan
                 }
             }
-
             return ($tahun == 0 || $hasMatchingEducation) && $hasMatchingQuisioner;
         })->map(function ($user) {
             // Modify the items here
             $tempUser = $this->castToUserResponseFromArray($user);
             return $tempUser;
         })->toArray();
-
+        $data['filled'] = $userFilled;
+        $data['blank'] = $userBlank;
         return $data;
     }
-
     public function exrportToExcel($tahunBulan)
     {
 
-
         list($year, $bulan) = explode('-', $tahunBulan);
 
-        $relations = [
-            'identity_quisioner',
-            'main_quisioner',
-            'furthe_study_quisioner',
-            'competence',
-            'study_method',
-            'jobStreet',
-            'howToFindJobs',
-            'companyApplied',
-            'jobSuitability',
-            'prodi',
-            'quisioners',
-            'educations',
-            'quisioner_level'
-        ];
-
-        $users = $this->user->with($relations)
-            ->has('educations') // Filter hanya pengguna yang memiliki pendidikan
-            ->whereHas('identity_quisioner', function ($query) use ($bulan) {
-                $query->where('kdptimsmh', '!=', ''); // Gantilah 'column_name' dengan nama kolom yang sesuai
-    
-            })->whereHas('quisioner_level', function ($query) use ($bulan) {
-            $query->where('level', '=', $bulan);
-        })
+        $users = $this->user->has('quisioner_level')
+            ->whereHas('educations', function ($query) use ($year) {
+                $query->where('perguruan', 'Politeknik Negeri Jember');
+                $query->where('tahun_lulus', $year);
+            })
+            ->with('quisioner_level', function ($query) use ($bulan) {
+                $query->with('identity');
+                $query->with('main');
+                $query->with('furthe_study');
+                $query->with('competence');
+                $query->with('studymethod');
+                $query->with('startsearchjobs');
+                $query->with('howtofindjobs');
+                $query->with('companyapplied');
+                $query->with('jobsuitability');
+                $query->where('level', $bulan);
+            })
+            ->with('educations')
+            ->with('prodi')
             ->get()
             ->toArray();
 
-        $data = collect($users)->filter(function ($user) use ($year, $bulan) {
-            $tahunMasuk = null; // Initialize the tahun_masuk variable
-            $tahunLulus = null; // Initialize the tahun_lulus variable
 
-            $hasMatchingEducation = false; // Initialize a flag
-            $hasMatchingQuisioner = false; // Initialize a flag for matching quisioner level
-
-            collect($user['educations'])->each(function ($education) use (&$tahunMasuk, &$tahunLulus, $year, &$hasMatchingEducation) {
-                if ($education['perguruan'] === 'Politeknik Negeri Jember') {
-                    $tahunMasuk = $education['tahun_masuk'];
-                    $tahunLulus = $education['tahun_lulus'];
-                    if ($education['tahun_masuk'] == $year) {
-                        $hasMatchingEducation = true;
-                    }
-                }
-            });
-            return ($hasMatchingEducation);
-        })->map(function ($user) {
+        $data = collect($users)->map(function ($user) {
             // Modify the items here
             $tempUser = $this->castToUserResponseFromArray($user);
             return $tempUser;
         })->toArray();
 
-        return $data;
 
+        return $data;
     }
 
 
+    public function updateFromExcel($keys, $data)
+    {
+        Db::beginTransaction();
+        foreach ($data as $value) {
+            $tempData = $this->quisionerLevel->where('user_id', $value['id user'])->where('level', strval($value['level']))->first();
+            $idIdentitas = $tempData->identitas_section;
+            $idMain = $tempData->main_section;
+            $idFurthe = $tempData->furthe_study_section;
+            $idCompetence = $tempData->competent_level_section;
+            $idStudyMethod = $tempData->study_method_section;
+            $idJobsStreet = $tempData->jobs_street_section;
+            $idHowFindJobs = $tempData->how_find_jobs_section;
+            $idCompanyApplied = $tempData->commpany_applied_section;
+            $idJobSuitability = $tempData->job_suitability_section;
+            try {
+                //code...
+                $this->updateIdentitas($idIdentitas, $value);
+                $this->updateMain($idMain, array_intersect_key($value, array_flip([
+                    'f8',
+                    'f504',
+                    'f502',
+                    'f505',
+                    'f5a1',
+                    'f5a2',
+                    'f506',
+                    'f1101',
+                    'f5b',
+                    'f5c',
+                    'f5d',
+                ])));
+                $this->updateFrutheStudy($idFurthe, array_intersect_key($value, array_flip([
+                    'f18a',
+                    'f18b',
+                    'f18d',
+                    'f1201',
+                    'f1202',
+                    'f14',
+                    'f15',
+                ])));
+                $this->updateCompetence($idCompetence, array_intersect_key($value, array_flip([
+                    'f1761',
+                    'f1762',
+                    'f1763',
+                    'f1764',
+                    'f1765',
+                    'f1766',
+                    'f1767',
+                    'f1768',
+                    'f1769',
+                    'f1770',
+                    'f1771',
+                    'f1772',
+                    'f1773',
+                    'f1774',
+                ])));
+                $this->updateStudyMethod($idStudyMethod, array_intersect_key($value, array_flip([
+                    'f21',
+                    'f22',
+                    'f23',
+                    'f24',
+                    'f25',
+                    'f26',
+                    'f27',
+                ])));
+                $this->updateJobsStreet($idJobsStreet, array_intersect_key($value, array_flip([
+                    'f301',
+                    'f302',
+                    'f303',
+                ])));
+                $this->updateHowFindJob($idHowFindJobs, array_intersect_key($value, array_flip([
+                    'f401',
+                    'f402',
+                    'f403',
+                    'f404',
+                    'f405',
+                    'f406',
+                    'f407',
+                    'f408',
+                    'f409',
+                    'f410',
+                    'f411',
+                    'f412',
+                    'f413',
+                    'f414',
+                    'f415',
+                    'f416',
+                ])));
+
+                $this->updateCompanyApplie($idCompanyApplied, array_intersect_key($value, array_flip([
+                    'f6',
+                    'f7',
+                    'f7a',
+                    'f1001',
+                    'f1002',
+                ])));
+
+                $this->updateJobSuitability($idJobSuitability, array_intersect_key($value, array_flip([
+                    'f1601',
+                    'f1602',
+                    'f1603',
+                    'f1604',
+                    'f1605',
+                    'f1606',
+                    'f1607',
+                    'f1608',
+                    'f1609',
+                    'f1610',
+                    'f1611',
+                    'f1612',
+                    'f1613',
+                    'f1614',
+                ])));
+            } catch (\Throwable $th) {
+                //throw $th;
+                throw new WebException($th->getMessage());
+            }
+        }
+        return true;
+    }
+
+
+    private function updateIdentitas($idIdentitas, $data)
+    {
+        $updated = $this->identity->where('id', $idIdentitas)->update([
+            'kdptimsmh' => $data['kode pt'],
+            'kdpstmsmh' => $data['kode prodi'],
+            'nimhsmsmh' => $data['nim'],
+            'nmmhsmsmh' => $data['nama'],
+            'telpomsmh' => $data['hp'],
+            'tahun_lulus' => $data['tahun lulus'],
+            'npwp' => $data['npwp'],
+        ]);
+        if ($updated) {
+            DB::commit();
+        }
+    }
+
+    private function updateMain($idMain, $data)
+    {
+
+        $updated = $this->mainSection->where('id', $idMain)->update($data);
+        if ($updated) {
+            Db::commit();
+        }
+    }
+
+    private function updateFrutheStudy($idFurthe, $data)
+    {
+        $data['f18d'] = Carbon::parse($data['f18d']);
+        $updated = $this->furtheStudy->where('id', $idFurthe)->update($data);
+        if ($updated) {
+            Db::commit();
+        }
+    }
+
+    private function updateCompetence($idCompetence, $data)
+    {
+        $updated = $this->competence->where('id', $idCompetence)->update($data);
+        if ($updated) {
+            Db::commit();
+        }
+    }
+
+    private function updateStudyMethod($idStudyMethod, $data)
+    {
+        $updated = $this->studyMethod->where('id', $idStudyMethod)->update($data);
+        if ($updated) {
+            Db::commit();
+        }
+    }
+
+    private function updateJobsStreet($idJobsStreet, $data)
+    {
+        $updated = $this->startSearchJob->where('id', $idJobsStreet)->update($data);
+        if ($updated) {
+            Db::commit();
+        }
+    }
+
+    private function updateHowFindJob($idHowFindJob, $data)
+    {
+        $updated = $this->howFindJob->where('id', $idHowFindJob)->update($data);
+        if ($updated) {
+            Db::commit();
+        }
+    }
+
+    private function updateCompanyApplie($idCompanyApplied, $data)
+    {
+        $updated = $this->comapnyAppled->where('id', $idCompanyApplied)->update($data);
+        if ($updated) {
+            Db::commit();
+        }
+    }
+
+    private function updateJobSuitability($idJobSuitability, $data)
+    {
+        $updated = $this->jobSuitability->where('id', $idJobSuitability)->update($data);
+        if ($updated) {
+            Db::commit();
+        }
+    }
 
     private function successResponse($data, $code, $message)
     {
@@ -641,16 +818,7 @@ class QuisionerService
             'twiter' => $user['twiter'],
             'prodi' => $user['prodi'],
             'account_status' => $user['account_status'],
-            'quisioner' => $user['quisioners'],
-            'identity_quisioner' => $user['identity_quisioner'],
-            'main_quisioner' => $user['main_quisioner'],
-            'furthe_study_quisioner' => $user['furthe_study_quisioner'],
-            'competence' => $user['competence'],
-            'study_method' => $user['study_method'],
-            'jobStreet' => $user['job_street'],
-            'howToFindJobs' => $user['how_to_find_jobs'],
-            'companyApplied' => $user['company_applied'],
-            'jobSuitability' => $user['job_suitability'],
+            'quisioner' => $user['quisioner_level'],
             'tahun_masuk' => $user['educations'][0]['tahun_masuk'],
             'tahun_lulus' => $user['educations'][0]['tahun_lulus']
         ];
@@ -681,5 +849,38 @@ class QuisionerService
         }
         return $response;
     }
+
+
+    public function findQuisionerByUser($userId, $level)
+    {
+
+        $user = $this->user->where('id', $userId)->first();
+        if (!isset($user)) {
+            throw new WebException('Ops , user tidak ditemukan');
+        }
+        $users = $this->user->has('quisioner_level')
+            ->has('educations') // Filter hanya pengguna yang memiliki pendidikan
+            ->with('quisioner_level', function ($query) use ($level) {
+                $query->where('level', $level);
+                $query->with('identity');
+                $query->with('main');
+                $query->with('furthe_study');
+                $query->with('competence');
+                $query->with('studymethod');
+                $query->with('startsearchjobs');
+                $query->with('howtofindjobs');
+                $query->with('companyapplied');
+                $query->with('jobsuitability');
+            })
+            ->with('educations')
+            ->with('prodi')
+            ->get()
+            ->toArray();
+        if (sizeof($users) == 0) {
+            throw new WebException('Ops , user belum mengisi quisioner sama sekali');
+        }
+        return $users;
+    }
+
 
 }

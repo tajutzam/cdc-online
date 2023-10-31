@@ -214,6 +214,14 @@ class AuthService
     }
 
 
+
+    public function sendRecovery($email)
+    {
+        $response = $this->verifikasiEmail($email);
+        
+    }
+
+
     public function logoutAdmin()
     {
         Auth::guard('admin')->logout();

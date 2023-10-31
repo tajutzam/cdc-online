@@ -20,8 +20,6 @@ class CreateCompanyAppliedTable extends Migration
             $table->integer('f7a');
             $table->string('f1001');
             $table->string('f1002');
-           
-
             $table->timestamps();
         });
     }

@@ -209,18 +209,20 @@ class UserService
 
 
 
-    public function findAll($active)
+    public function findAll($active = null)
     {
 
         $query = $this->userModel->with('jobs', 'educations', 'prodi');
         $response = [];
 
         $response['alumni'] = $query->when(isset($active), function ($query) use ($active) {
-            $query->where('account_status', $active);
+            if (isset($active)) {
+                $query->where('account_status', $active);
+            }
         })->whereHas('educations', function ($educationQuery) {
             $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
         })->get()->toArray();
-
+    
 
         $statusCounts = $this->userModel
             ->select('account_status', DB::raw('COUNT(*) as count'))
@@ -243,11 +245,34 @@ class UserService
             }
         }
 
+
+        $now = now(); // Tanggal sekarang
+        $today = $now->dayOfWeek; // Mendapatkan hari dalam format 0 (Minggu) hingga 6 (Sabtu)
+
+        // Menghitung tanggal awal (Minggu) dalam seminggu tertentu
+        $startDate = $now->subDays($today)->startOfDay();
+
+        // Menghitung tanggal akhir (Sabtu) dalam seminggu tertentu
+        $endDate = $startDate->copy()->addDays(6)->endOfDay();
+
+        $addedActiveInWeek = $this->userModel
+            ->where('account_status', true) // Hanya data dengan account_status true
+            ->whereBetween('created_at', [$startDate, $endDate]) // Filter data yang dibuat dalam rentang waktu (Minggu hingga Sabtu)
+            ->count(); // Menghitung jumlah data
+
+        $addedNonActiveInWeek = $this->userModel
+            ->where('account_status', false) // Hanya data dengan account_status true
+            ->whereBetween('created_at', [$startDate, $endDate]) // Filter data yang dibuat dalam rentang waktu (Minggu hingga Sabtu)
+            ->count(); // Menghitung jumlah data
+
+
+
         $response['count'] = [
             'active' => $active,
-            'nonactive' => $nonActive
+            'nonactive' => $nonActive,
+            'actviceWeek' => $addedActiveInWeek,
+            'nonActiveWeek' => $addedNonActiveInWeek
         ];
-
         return $response;
     }
 
