@@ -18,17 +18,18 @@ use App\Http\Controllers\web\ProdiController;
 use App\Http\Middleware\AllowUnauthenticated;
 use App\Http\Controllers\web\AktivasiController;
 
+use App\Http\Controllers\web\FeedbackController;
+
 use App\Http\Controllers\web\LegalisirController;
 
 use App\Http\Controllers\web\QuisionerController;
-
 use App\Http\Controllers\web\UserProdiController;
 use App\Http\Controllers\web\AdminProdiController;
 use App\Http\Controllers\web\ProdiAdminController;
 use App\Http\Controllers\web\GrupWhatsappController;
+
+
 use App\Http\Controllers\web\NotificationsController;
-
-
 use App\Http\Controllers\web\ReferenceUserController;
 use App\Http\Controllers\web\ProdiQuesionerController;
 use App\Http\Middleware\IsProdiAdministratorMiddleware;
@@ -47,8 +48,25 @@ use App\Http\Controllers\web\AuthController as WebAuthController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing-page.index');
 })->name('/');
+
+Route::get('/landing-page/blog', function () {
+    return view('landing-page.blog');
+})->name('blog');
+
+Route::get('/landing-page/single-blog', function () {
+    return view('landing-page.blog-single');
+})->name('blog-single');
+
+Route::get('/landing-page/portofolio', function () {
+    return view('landing-page.portofolio-details');
+})->name('portofolio-details');
+
+Route::get('/forgotpassword', function () {
+    return view('admin.auth.forgotpassword');
+})->name('forgotpassword');
+
 Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group(
     function () {
         Route::get('/dashboard', [AdminProdiController::class, 'dashboard'])->name('dashboard-prodi');
@@ -80,10 +98,12 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::delete("/manage-admin", [AdminController::class, 'deleteAdmin'])->name('manage-admin-delete');
     Route::get('/manage-admin-prodi', [ManageProdiAdminController::class, 'manageAdminProdi'])->name('manage-admin-prodi');
     Route::post("/manage-admin-prodi", [ManageProdiAdminController::class, "addNewAdminProdi"])->name('manage-admin-prodi-add');
-    Route::delete("/manage-admin-prodi"  , [ManageProdiAdminController::class , 'delete'])->name('manage-admin-prodi-delete');
+    Route::delete("/manage-admin-prodi", [ManageProdiAdminController::class, 'delete'])->name('manage-admin-prodi-delete');
     Route::get('/settings-admin', [AdminController::class, 'settingsAdmin'])->name('settings-admin');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/grup-whatsapp', [GrupWhatsappController::class, 'grupWhatsapp'])->name('grup');
+    Route::get('/feedback', [FeedbackController::class, 'feedback'])->name('feedback');
+
 
     Route::get('/trix', 'TrixController@index');
     Route::post('/upload', 'TrixController@upload');
@@ -132,6 +152,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
         Route::get("/detail/{id}", function ($id) {
             return view('admin.quisioner.detail');
         })->name('detail-quisioner');
+        Route::get("export", [QuisionerController::class, "export"])->name('export');
     });
 });
 

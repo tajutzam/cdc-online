@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\web;
 
+use App\Exports\QuisionerExport;
 use App\Http\Controllers\Controller;
 use App\Services\QuisionerService;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class QuisionerController extends Controller
 {
@@ -20,8 +22,8 @@ class QuisionerController extends Controller
 
     public function index(Request $request)
     {
-        
-        $data = $this->quisionerService->findAllQuisionerUser($request->get('tahun') , $request->get('bulan'));
+
+        $data = $this->quisionerService->findAllQuisionerUser($request->get('tahun'), $request->get('bulan'));
         $quisionerFilled = 0;
         $quisionerBlank = 0;
         foreach ($data as $key => $value) {
@@ -34,5 +36,11 @@ class QuisionerController extends Controller
         }
 
         return view('admin.quisioner.index', ['data' => $data, 'filled' => $quisionerFilled, 'blank' => $quisionerBlank]);
+    }
+
+
+    public function export()
+    {
+        return Excel::download(new QuisionerExport, 'nama_file.xlsx');
     }
 }

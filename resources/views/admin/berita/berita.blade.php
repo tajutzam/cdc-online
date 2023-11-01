@@ -314,7 +314,7 @@
             var e = {
                 series: [{
                     name: "news Active",
-                    data: [240, 160, 671, 414, 555, 257, 901, 613, 727, 414, 555, 257]
+                    data: {!! json_encode($count['active']) !!}
                 }],
                 chart: {
                     type: "line",
@@ -356,9 +356,7 @@
                 },
                 colors: ["#17a00e"],
                 xaxis: {
-                    categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
-                        "Dec"
-                    ]
+                    categories: ["1", "2", "3", "4", "5", "6", "7"]
                 },
                 fill: {
                     opacity: 1
@@ -387,7 +385,7 @@
             e = {
                 series: [{
                     name: "news Non Active",
-                    data: [240, 160, 671, 414, 555, 257, 901, 613, 727, 414, 555, 257]
+                    data: {!! json_encode($count['non_active']) !!}
                 }],
                 chart: {
                     type: "line",
@@ -429,9 +427,7 @@
                 },
                 colors: ["#f41127"],
                 xaxis: {
-                    categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
-                        "Dec"
-                    ]
+                    categories: ["1", "2", "3", "4", "5", "6", "7"]
                 },
                 fill: {
                     opacity: 1
@@ -460,7 +456,7 @@
             e = {
                 series: [{
                     name: "news Accept",
-                    data: [240, 160, 671, 414, 555, 257, 901, 613, 727, 414, 555, 257]
+                    data: {!! json_encode($count['all']) !!}
                 }],
                 chart: {
                     type: "line",

@@ -15,9 +15,12 @@
                         <div class="d-flex align-items-center">
                             <div class="">
                                 <p class="mb-1 text-secondary">Total Alumni</p>
-                                <h4 class="mb-0">300</h4>
+                                <h4 class="mb-0">{{ sizeof($data) }}</h4>
                             </div>
-
+                            <div class="ms-auto">
+                                <p class="mb-0 font-13 " style="color: #0dcaf0">+{{ $added_one_week }} Alumni</p>
+                                <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
+                            </div>
                         </div>
                         <div id="alumni-chart"></div>
                     </div>

@@ -178,7 +178,7 @@ class PostService
 
         $data['posts'] = [];
 
-        foreach ($expiredPosts as $keyIndex =>  $datum) {
+        foreach ($expiredPosts as $keyIndex => $datum) {
             $tempPost = $this->castToResponse($datum);
             foreach ($datum['comments'] as $key => $value) {
                 # code...
@@ -345,10 +345,49 @@ class PostService
             'verified',
             'waiting'
         )->with('user', 'admin')->orderBy('verified', 'asc')->get()->toArray();
+
+        $endDate = Carbon::now(); // Current date and time
+        $startDate = $endDate->copy()->startOfWeek(); // Start of the current week (Sunday)
+        $endDate = $endDate->copy()->endOfWeek(); // End of the current week (Saturday)
+
+        $count = $this->post
+            ->where('verified', 'waiting')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->count();
+
+
+        // Calculate the start date and end date for the one-week period
+        // Calculate the start date (Sunday) and end date (Saturday) for the one-week period
+
+
+        // Create an array to store the counts for each day
+        $countsByDay = [];
+
+        // Loop through each day within the one-week period
+        $currentDate = $startDate->copy();
+        while ($currentDate <= $endDate) {
+            // Count the job postings for the current day
+            $countTempDay = $this->post
+                ->where('verified', 'waiting')
+                ->whereDate('created_at', $currentDate)
+                ->count();
+
+            // Store the count in the array with the date as the key
+            $countsByDay[$currentDate->toDateString()] = $countTempDay;
+
+            // Move to the next day
+            $currentDate->addDay();
+        }
+        
+
+        $dataResponse['total_of_week'] = $count;
+        $dataResponse['count_by_day'] = $countsByDay;
         $collection = collect($data);
-        return $collection->map(function ($data) {
+        $dataResponse['vacancy'] = $collection->map(function ($data) {
             return $this->castToResponseFromArray($data);
         })->toArray();
+
+        return $dataResponse;
     }
 
 

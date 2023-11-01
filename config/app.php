@@ -200,6 +200,8 @@ return [
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         Vyuldashev\LaravelOpenApi\OpenApiServiceProvider::class,
         L5Swagger\L5SwaggerServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
     ],
 
     /*
@@ -256,6 +258,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Image' => Intervention\Image\Facades\Image::class,
         '   Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
 
     ],
 

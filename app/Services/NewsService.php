@@ -31,8 +31,72 @@ class NewsService
         $data = $this->news->paginate(10, ['*'], 'page', $page); // Change 10 to the number of items you want per page
         $result = $this->castToPojo($data->items());
 
+
+        $endDate = Carbon::now(); // Current date and time
+        $startDate = $endDate->copy()->startOfWeek(); // Start of the current week (Sunday)
+        $endDate = $endDate->copy()->endOfWeek(); // End of the current week (Saturday)
+
+        // Query to count news items within the last week
+        $endDate = Carbon::now(); // Current date and time
+        $startDate = $endDate->copy()->startOfWeek(); // Start of the current week (Sunday)
+        $endDate = $endDate->copy()->endOfWeek(); // End of the current week (Saturday)
+
+        // Create an array to store the counts for each day
+        $countsByDayActive = [];
+        $countsByDayNonActive = [];
+        $countsAll  = [];
+
+
+        // Loop through each day within the last week
+        $currentDate = $startDate->copy();
+        while ($currentDate <= $endDate) {
+            // Query to count active news items for the current day
+            $count = $this->news
+                ->where('active', true)
+                ->whereDate('created_at', $currentDate)
+                ->count();
+
+            // Store the count in the array with the date as the key
+            $countsByDayActive[$currentDate->toDateString()] = $count;
+
+            // Move to the next day
+            $currentDate->addDay();
+        }
+        $currentDate = $startDate->copy();
+        while ($currentDate <= $endDate) {
+            // Query to count active news items for the current day
+            $count = $this->news
+                ->whereDate('created_at', $currentDate)
+                ->count();
+
+            // Store the count in the array with the date as the key
+            $countsAll[$currentDate->toDateString()] = $count;
+
+            // Move to the next day
+            $currentDate->addDay();
+        }
+
+        $currentDate = $startDate->copy();
+
+        while ($currentDate <= $endDate) {
+            // Query to count active news items for the current day
+            $count = $this->news
+                ->where('active', false)
+                ->whereDate('updated_at', $currentDate)
+                ->count();
+
+            // Store the count in the array with the date as the key
+            $countsByDayNonActive[$currentDate->toDateString()] = $count;
+
+            // Move to the next day
+            $currentDate->addDay();
+        }
+       
         return [
             'data' => $result,
+            'count_by_active' => $countsByDayActive,
+            'count_by_day_nonactive' => $countsByDayNonActive,
+            'count_all' => $countsAll,
             'pagination' => [
                 'current_page' => $data->currentPage(),
                 'last_page' => $data->lastPage(),

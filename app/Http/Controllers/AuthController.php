@@ -72,11 +72,6 @@ class AuthController extends Controller
     }
 
 
-    public function generateTokenApiPolije()
-    {
-        return $this->authService->generateToken();
-    }
-
     public function updateEmailVerified(Request $request)
     {
         $id = $request->get('id');
@@ -99,15 +94,6 @@ class AuthController extends Controller
 
     public function verifikasi(Request $request)
     {
-
-        // $validator = Validator::make(, [
-        //     'nim' => 'required'
-        // ]);
-
-        // if ($validator->fails()) {
-        //     throw new BadRequestException($validator->errors()->first());
-        // }
-
 
         $service = new AlumniService();
         return $service->updateDataAlumni();
