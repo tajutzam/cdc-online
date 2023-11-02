@@ -12,7 +12,7 @@
                             <p class="pt-0">
                                 Masukkan Sandi Baru Anda
                             </p>
-                            <form>
+                            <form id="resetPasswordForm">
                                 <div class="mb-3">
                                     <div class="input-group" id="show_hide_password">
                                         <input type="password" class="form-control border-end-0" name="password"
@@ -42,8 +42,8 @@
                 </div>
             </div>
         </div>
-    </div>
 
+    </div>
     <script>
         $(document).ready(function() {
             $("#show_hide_password a").on('click', function(event) {

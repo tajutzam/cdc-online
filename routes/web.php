@@ -67,6 +67,11 @@ Route::get('/forgotpassword', function () {
     return view('admin.auth.forgotpassword');
 })->name('forgotpassword');
 
+Route::get('/succeschange', function () {
+
+    return view('admin.auth.successchange');
+})->name('successchange');
+
 Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group(
     function () {
         Route::get('/dashboard', [AdminProdiController::class, 'dashboard'])->name('dashboard-prodi');
