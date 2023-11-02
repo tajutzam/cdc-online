@@ -171,8 +171,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="example"
-                                    class="table table-striped table-bordered table-hover table-condensed"
+                                <table id="example" class="table table-striped table-bordered table-hover table-condensed"
                                     style="width:100%">
                                     <thead>
                                         <tr>

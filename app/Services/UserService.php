@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\UnauthorizedException;
+use App\Exceptions\WebException;
 use App\Helper\ResponseHelper;
 use App\Models\Education;
 use App\Models\Followed;
@@ -19,6 +20,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserService
@@ -222,7 +224,7 @@ class UserService
         })->whereHas('educations', function ($educationQuery) {
             $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
         })->get()->toArray();
-    
+
 
         $statusCounts = $this->userModel
             ->select('account_status', DB::raw('COUNT(*) as count'))
@@ -925,6 +927,25 @@ class UserService
         throw new Exception('');
     }
 
+    public function updatePassword($email, $password)
+    {
+        $user = $this->userModel->where('email', $email)->first();
+        Db::beginTransaction();
+        if (isset($user)) {
+            $updated = $user->update(
+                [
+                    'password' => Hash::make($password)
+                ]
+            );
+            if ($updated) {
+                Db::commit();
+                return true;
+            }
+            throw new WebException("Ops , gagal memperbarui password terjadi kesalahan");
+        }
+        throw new WebException('Ops , token kamu tidak valid , email tidak ditemukan');
+    }
+
     public function logout($userId)
     {
         $user = $this->userModel->where('id', $userId)->first();
@@ -943,5 +964,9 @@ class UserService
                 throw new Exception('Ops , terjadi kesalahan saat logout');
             }
         }
+    }
+
+    public function findByEmail($email){
+        return $this->userModel->where('email' , $email)->first();
     }
 }

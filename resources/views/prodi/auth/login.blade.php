@@ -26,7 +26,7 @@
                                             alt="" />
                                     </div>
                                     <div class="text-center mb-4">
-                                        <h3 class="" style="font-weight: bold">Masuk Admin</h3>
+                                        <h3 class="" style="font-weight: bold">Masuk Admin Prodi</h3>
                                         <p class="mb-0">Masuk ke akun Anda</p>
                                     </div>
                                     <div class="form-body">
