@@ -64,6 +64,11 @@ Route::get('/landing-page/portofolio', function () {
 Route::get('/forgotpassword/{token}', [WebAuthController::class, "recovery"])->name('forgotpassword');
 Route::put("/forgotpassword/{token}", [WebAuthController::class, 'updatePassword'])->name('forgotpassword-put');
 
+Route::get('/succeschange', function () {
+
+    return view('admin.auth.successchange');
+})->name('successchange');
+
 Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group(
     function () {
         Route::get('/dashboard', [AdminProdiController::class, 'dashboard'])->name('dashboard-prodi');

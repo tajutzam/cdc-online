@@ -907,7 +907,15 @@
 
                                 <div class="col-md-12 text-center">
                                     <div class="loading">Loading</div>
-                                    <div class="error-message"></div>
+                                    <div class="error-message">
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+                                                <div class="text-white">{{ $errors->first() }}</div>
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                        @endif
+                                    </div>
                                     <div class="sent-message">Your message has been sent. Thank you!</div>
 
                                     <button type="submit">Kirim</button>
