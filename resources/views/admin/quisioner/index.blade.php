@@ -1,26 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-    {{-- @dd($data) --}}
 
     <body>
         <div class="container-fluid">
+            @if ($errors->any())
+                <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+                    <div class="text-white">{{ $errors->first() }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="row">
                 <div class="col-sm-6">
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div>
-                                    <p class="mb-0 text-secondary">Total Alumni Yang Mengisi Quisioner</p>
-                                    <h4 class="my-1">{{ $filled }}</h4>
+                                    <p class="mb-0 text-secondary">Alumni Yang Mengisi Quisioner</p>
+                                    <h4 class="my-1">{{ $data['filled'] }}</h4>
                                 </div>
 
-                                <div class="ms-auto">
+                                {{-- <div class="ms-auto">
                                     <p class="mb-0 font-13 text-success ">+12 Alumni Terverifikasi <i
                                             class='bx bxs-pencil font-20'></i>
                                     </p>
                                     <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
-                                </div>
+                                </div> --}}
                             </div>
                             <div id="verify-chart-quesioner"></div>
                         </div>
@@ -31,16 +36,16 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div>
-                                    <p class="mb-0 text-secondary">Total Alumni Yang Belum Mengisi Quisioner</p>
-                                    <h4 class="my-1">{{ $blank }}</h4>
+                                    <p class="mb-0 text-secondary">Alumni Belum Mengisi Quisioner</p>
+                                    <h4 class="my-1">{{ $data['blank'] }}</h4>
                                 </div>
 
-                                <div class="ms-auto">
+                                {{-- <div class="ms-auto">
                                     <p class="mb-0 font-13 text-danger ">+12 Alumni Tidak Terverifikasi <i
                                             class='bx bxs-pencil font-20'></i>
                                     </p>
                                     <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
-                                </div>
+                                </div> --}}
                             </div>
                             <div id="not-verify-chart-quesioner"></div>
                         </div>
@@ -122,6 +127,7 @@
 
                             </div>
                         </div>
+
                         <div class="col-md-6 text-md-end">
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example"
                                 style="padding: 1%">
@@ -132,15 +138,20 @@
                                             d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0z" />
                                     </svg> Unduh
                                 </button>
-                                <a href="{{route('export')}}">
-                                    <button type="button" class="btn btn-success">
+                                <!-- Example single danger button -->
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#export" aria-expanded="false">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-file-earmark-spreadsheet" viewBox="0 0 16 16">
                                             <path
                                                 d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V9H3V2a1 1 0 0 1 1-1h5.5v2zM3 12v-2h2v2H3zm0 1h2v2H4a1 1 0 0 1-1-1v-1zm3 2v-2h3v2H6zm4 0v-2h3v1a1 1 0 0 1-1 1h-2zm3-3h-3v-2h3v2zm-7 0v-2h3v2H6z" />
                                         </svg> Excel
-                                    </button></a>
-                                <button type="button" class="btn btn-secondary">
+                                    </button>
+                                </div>
+
+                                <button type="button" class="btn btn-secondary" data-bs-target="#upload-excel"
+                                    data-bs-toggle="modal">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-file-earmark-arrow-up" viewBox="0 0 16 16">
                                         <path
@@ -160,8 +171,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="example"
-                                    class="table table-striped table-bordered table-hover table-condensed"
+                                <table id="example" class="table table-striped table-bordered table-hover table-condensed"
                                     style="width:100%">
                                     <thead>
                                         <tr>
@@ -178,7 +188,7 @@
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($data as $item)
+                                        @foreach ($data['quisioners'] as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item['fullname'] }}</td>
@@ -202,7 +212,7 @@
                                                             aria-expanded="false">
                                                             <div class="btn-group">
                                                                 <button type="button"
-                                                                    class="btn btn-success">2/9</button>
+                                                                    class="btn btn-success">Detail</button>
                                                                 <button type="button"
                                                                     class="btn btn-success dropdown-toggle dropdown-toggle-split"
                                                                     data-toggle="dropdown" aria-haspopup="true"
@@ -210,12 +220,15 @@
                                                             </div>
                                                         </a>
                                                         <ul class="dropdown-menu dropdown-menu-end ">
-                                                            <li><a class="dropdown-item d-flex align-items-center"
-                                                                    href="{{ route('detail-quisioner', ['id' => $item['id']]) }}"><i></i><span>Detail</span></a>
-                                                            </li>
-                                                            {{-- <li>
+                                                            @foreach ($item['quisioner'] as $itemQuisioner)
+                                                                <li><a class="dropdown-item d-flex align-items-center"
+                                                                        href="{{ route('detail-quisioner', ['level' => $itemQuisioner['level'], 'userId' => $item['id']]) }}"><i></i><span>Level
+                                                                            {{ $itemQuisioner['level'] }} </span></a>
+                                                                </li>
+                                                            @endforeach
+                                                            <li>
                                                                 <div class="dropdown-divider mb-0"></div>
-                                                            </li> --}}
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -230,6 +243,56 @@
                 </div>
             </div>
         </div>
+
+
+        <x-modal-small id="export" footer="footer" title="title" body="body">
+            <x-slot name="title">Export To Excel</x-slot>
+            <x-slot name="id">export</x-slot>
+            <x-slot name="body">
+                <form action="{{ route('export') }}" method="post">
+                    <select class="form-select form-select-sm mb-3" aria-label="Large select example" name="tahun">
+                        @php
+                            $currentYear = date('Y');
+                        @endphp
+                        @for ($i = 0; $i < 5; $i++)
+                            <optgroup label="{{ $currentYear - $i }}">
+                                <option value="{{ $currentYear - $i }}-0">0 Bulan</option>
+                                <option value="{{ $currentYear - $i }}-6">6 Bulan</option>
+                                <option value="{{ $currentYear - $i }}-12">12 Bulan</option>
+                            </optgroup>
+                        @endfor
+                    </select>
+                    <select class="form-select" name="format" multiple aria-label="Multiple select example">
+                        <option selected>Pilih Format Export</option>
+                        <option value="xlsx" class="text-body-emphasis">Xlxs</option>
+                        <option value="csv">Csv</option>
+                    </select>
+                    <div class="row justify-content-end">
+                        <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
+                            data-bs-dismiss="modal">Tutup</button>
+                        <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
+                    </div>
+                </form>
+            </x-slot>
+        </x-modal-small>
+
+
+
+        <x-modal-small id="upload-excel" footer="footer" title="title" body="body">
+            <x-slot name="title">Import Excel</x-slot>
+            <x-slot name="id">upload-excel</x-slot>
+            <x-slot name="body">
+                <form action="{{ route('import') }}" method="post" enctype="multipart/form-data">
+                    <input type="file" name="excel" id="" accept=".xls, .xlsx" class="mb-3">
+                    <div class="row justify-content-end mt-3">
+                        <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
+                            data-bs-dismiss="modal">Tutup</button>
+                        <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
+                    </div>
+                </form>
+            </x-slot>
+        </x-modal-small>
+
         <script>
             $(function() {
                 var e = {

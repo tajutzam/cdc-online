@@ -14,7 +14,7 @@ class CreateFurtheStudyTable extends Migration
     public function up()
     {
         Schema::create('furthe_study', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('f18a')->nullable(true);
             $table->string('f18b')->nullable(true);
             $table->string('f18c')->nullable(true);
@@ -23,8 +23,6 @@ class CreateFurtheStudyTable extends Migration
             $table->string('f1202')->nullable(true);
             $table->string('f14')->nullable(false);
             $table->string('f15', )->nullable(true);
-            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
-
             $table->timestamps();
         });
     }

@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\UnauthorizedException;
+use App\Exceptions\WebException;
 use App\Helper\ResponseHelper;
 use App\Models\Education;
 use App\Models\Followed;
@@ -19,6 +20,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserService
@@ -209,14 +211,16 @@ class UserService
 
 
 
-    public function findAll($active)
+    public function findAll($active = null)
     {
 
         $query = $this->userModel->with('jobs', 'educations', 'prodi');
         $response = [];
 
         $response['alumni'] = $query->when(isset($active), function ($query) use ($active) {
-            $query->where('account_status', $active);
+            if (isset($active)) {
+                $query->where('account_status', $active);
+            }
         })->whereHas('educations', function ($educationQuery) {
             $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
         })->get()->toArray();
@@ -243,11 +247,34 @@ class UserService
             }
         }
 
+
+        $now = now(); // Tanggal sekarang
+        $today = $now->dayOfWeek; // Mendapatkan hari dalam format 0 (Minggu) hingga 6 (Sabtu)
+
+        // Menghitung tanggal awal (Minggu) dalam seminggu tertentu
+        $startDate = $now->subDays($today)->startOfDay();
+
+        // Menghitung tanggal akhir (Sabtu) dalam seminggu tertentu
+        $endDate = $startDate->copy()->addDays(6)->endOfDay();
+
+        $addedActiveInWeek = $this->userModel
+            ->where('account_status', true) // Hanya data dengan account_status true
+            ->whereBetween('created_at', [$startDate, $endDate]) // Filter data yang dibuat dalam rentang waktu (Minggu hingga Sabtu)
+            ->count(); // Menghitung jumlah data
+
+        $addedNonActiveInWeek = $this->userModel
+            ->where('account_status', false) // Hanya data dengan account_status true
+            ->whereBetween('created_at', [$startDate, $endDate]) // Filter data yang dibuat dalam rentang waktu (Minggu hingga Sabtu)
+            ->count(); // Menghitung jumlah data
+
+
+
         $response['count'] = [
             'active' => $active,
-            'nonactive' => $nonActive
+            'nonactive' => $nonActive,
+            'actviceWeek' => $addedActiveInWeek,
+            'nonActiveWeek' => $addedNonActiveInWeek
         ];
-
         return $response;
     }
 
@@ -900,6 +927,25 @@ class UserService
         throw new Exception('');
     }
 
+    public function updatePassword($email, $password)
+    {
+        $user = $this->userModel->where('email', $email)->first();
+        Db::beginTransaction();
+        if (isset($user)) {
+            $updated = $user->update(
+                [
+                    'password' => Hash::make($password)
+                ]
+            );
+            if ($updated) {
+                Db::commit();
+                return true;
+            }
+            throw new WebException("Ops , gagal memperbarui password terjadi kesalahan");
+        }
+        throw new WebException('Ops , token kamu tidak valid , email tidak ditemukan');
+    }
+
     public function logout($userId)
     {
         $user = $this->userModel->where('id', $userId)->first();
@@ -918,5 +964,9 @@ class UserService
                 throw new Exception('Ops , terjadi kesalahan saat logout');
             }
         }
+    }
+
+    public function findByEmail($email){
+        return $this->userModel->where('email' , $email)->first();
     }
 }

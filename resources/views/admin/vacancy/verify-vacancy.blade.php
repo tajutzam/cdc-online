@@ -22,39 +22,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-lg-4 ">
-                <div class="card m-1">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Total Aktif</p>
-                                <h4 class="my-1">{{ $total['nonactive'] }}</h4>
-                                <p class="mb-0 font-13 text-warning pt-4"></p>
-                            </div>
-                            <div class="widgets-icons bg-light-success text-success ms-auto"><i class='bx bxs-badge'></i>
-                            </div>
-                        </div>
-                        <div id="vacancy-active"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 ">
-                <div class="card m-1">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Total Tidak Aktif</p>
-                                <h4 class="my-1">{{ $total['active'] }}</h4>
-                                <p class="mb-0 font-13 text-warning pt-4"></p>
-                            </div>
-                            <div class="widgets-icons bg-light-danger text-danger ms-auto"><i class='bx bxs-badge'></i>
-                            </div>
-                        </div>
-                        <div id="vacancy-nonactive"></div>
-                    </div>
-                </div>
-            </div> --}}
 
         </div>
 
@@ -361,7 +328,7 @@
                 },
                 colors: ["#ffc107"],
                 xaxis: {
-                    categories: ["1" , "2" , "3" , "4" , "5" , "6" , "7"]
+                    categories: ["1", "2", "3", "4", "5", "6", "7"]
                 },
                 fill: {
                     opacity: 1

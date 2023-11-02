@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Services\AdminService;
 use App\Services\AlumniService;
 use App\Services\AuthService;
+use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,12 +24,13 @@ class AuthController extends Controller
 {
 
     private AuthService $authService;
-    private AdminService $adminService;
+    private UserService $userService;
+
 
     public function __construct()
     {
         $this->authService = new AuthService();
-        $this->adminService = new AdminService();
+        $this->userService = new UserService();
     }
 
     public function login(LoginRequest $request)
@@ -103,6 +105,20 @@ class AuthController extends Controller
     {
         $service = new AlumniService();
         return $service->findAllAlumni();
+    }
+
+    public function recovery(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ]);
+        if ($validator->fails()) {
+            throw new BadRequestException($validator->errors()->first());
+        }
+        $response = $this->authService->sendRecovery($request->input('email'));
+        return ResponseHelper::successResponse($response['message'], $response['data'], $response['code']);
+
+        // $this->userService->recovery();
     }
 
 }

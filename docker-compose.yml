@@ -1,51 +1,76 @@
-version: "3.7"
-services:
-  app:
-    build:
-      args:
-        user: sammy
-        uid: 1000
-      context: ./
-      dockerfile: Dockerfile
-    image: cdc
-    container_name: cdc-app-v1
-    restart: unless-stopped
-    working_dir: /var/www/
-    volumes:
-      - ./:/var/www
-      - ./custom-php.ini:/usr/local/etc/php/conf.d/custom-php.ini  # Tambahkan baris ini
-    networks:
-      - cdc  # Change this network name to "cdc"
+# version: "3.7"
+# services:
+#   app:
+#     build:
+#       args:
+#         user: sammy
+#         uid: 1000
+#       context: ./
+#       dockerfile: Dockerfile
+#     image: cdc
+#     container_name: cdc-app-v1
+#     restart: unless-stopped
+#     working_dir: /var/www/
+#     volumes:
+#       - ./:/var/www
+#       - ./custom-php.ini:/usr/local/etc/php/conf.d/custom-php.ini  # Tambahkan baris ini
+#     networks:
+#       - cdc  # Change this network name to "cdc"
 
-  nginx:
-    image: nginx:alpine
-    container_name: cdc-nginx-v1
-    restart: unless-stopped
-    ports:
-      - 8000:80
-    volumes:
-      - ./:/var/www
-      - ./docker-compose/nginx:/etc/nginx/conf.d/
-    networks:
-      - cdc  # Change this network name to "cdc"
+#   nginx:
+#     image: nginx:alpine
+#     container_name: cdc-nginx-v1
+#     restart: unless-stopped
+#     ports:
+#       - 8000:80
+#     volumes:
+#       - ./:/var/www
+#       - ./docker-compose/nginx:/etc/nginx/conf.d/
+#     networks:
+#       - cdc  # Change this network name to "cdc"
 
-  db:
-    image: mysql:8.0
-    container_name: cdc-db-v1
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    volumes:
-      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
-    networks:
-      - cdc
+#   db:
+#     image: mysql:8.0
+#     container_name: cdc-db-v1
+#     restart: unless-stopped
+#     environment:
+#       MYSQL_DATABASE: ${DB_DATABASE}
+#       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+#       MYSQL_PASSWORD: ${DB_PASSWORD}
+#       MYSQL_USER: ${DB_USERNAME}
+#       SERVICE_TAGS: dev
+#       SERVICE_NAME: mysql
+#     volumes:
+#       - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+#     networks:
+#       - cdc
 
+# networks:
+#   cdc:  # Define the "cdc" network here
+#     driver: bridge
+
+version: "3"
 
 networks:
-  cdc:  # Define the "cdc" network here
-    driver: bridge
+    laravel:
+
+services:
+    php:
+        container_name: php_container
+        image: php:8.2.0-fpm
+        ports:
+            - "9000:9000"
+        volumes:
+            - ./:/code
+        networks:
+            - laravel
+    nginx:
+        container_name: nginx_container
+        image: nginx:alpine
+        ports:
+            - "8080:80"
+        volumes:
+            - ./:/code
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - laravel

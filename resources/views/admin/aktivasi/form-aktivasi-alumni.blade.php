@@ -15,33 +15,18 @@
     @endif
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div>
-                                <p class="mb-0 text-secondary">Total Disetujui</p>
+                                <p class="mb-0 text-secondary">Total Menunggu</p>
                                 <h4 class="my-1">10</h4>
                             </div>
-                            <div class="widgets-icons bg-light-success text-success ms-auto"><i
-                                    class='bx bxs-user-account'></i>
+                            <div class="widgets-icons bg-light-black text-black ms-auto"><i class='bx bxs-user-account'></i>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Total Ditolak</p>
-                                <h4 class="my-1">10</h4>
-                            </div>
-                            <div class="widgets-icons bg-light-danger text-danger ms-auto"><i
-                                    class='bx bxs-user-account'></i>
-                            </div>
-                        </div>
+                        <div id="waiting-list"></div>
                     </div>
                 </div>
             </div>
@@ -55,9 +40,10 @@
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i><i><svg
                                                     xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
-                                                    <path d=" M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0
-                                                            1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5
-                                                            0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                                                    <path
+                                                        d=" M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0
+                                                                                        1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5
+                                                                                        0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
                                                     <path
                                                         d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z" />
                                                 </svg></i></i></a>
@@ -129,4 +115,81 @@
             </div>
         </div>
     </div>
+    <script>
+        $(function() {
+            // chart 1
+            var e = {
+                series: [{
+                    name: "Whatsapp",
+                    data: [240, 160, 671, 414, 555, 257, 901]
+                }],
+                chart: {
+                    type: "line",
+                    height: 65,
+                    toolbar: {
+                        show: !1
+                    },
+                    zoom: {
+                        enabled: !1
+                    },
+                    dropShadow: {
+                        enabled: !0,
+                        top: 3,
+                        left: 14,
+                        blur: 4,
+                        opacity: .12,
+                        color: "#000"
+                    },
+                    sparkline: {
+                        enabled: !0
+                    }
+                },
+                markers: {
+                    size: 0,
+                    colors: ["#000"],
+                    strokeColors: "#fff",
+                    strokeWidth: 2,
+                    hover: {
+                        size: 7
+                    }
+                },
+                dataLabels: {
+                    enabled: !1
+                },
+                stroke: {
+                    show: !0,
+                    width: 3,
+                    curve: "smooth"
+                },
+                colors: ["#000"],
+                xaxis: {
+                    categories: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+                },
+                fill: {
+                    opacity: 1
+                },
+                tooltip: {
+                    theme: "dark",
+                    fixed: {
+                        enabled: !1
+                    },
+                    x: {
+                        show: !1
+                    },
+                    y: {
+                        title: {
+                            formatter: function(e) {
+                                return ""
+                            }
+                        }
+                    },
+                    marker: {
+                        show: !1
+                    }
+                }
+            };
+            new ApexCharts(document.querySelector("#waiting-list"), e).render();
+
+        });
+    </script>
 @endsection

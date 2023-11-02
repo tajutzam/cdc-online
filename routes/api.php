@@ -82,6 +82,7 @@ Route::delete('/user/jobs', [JobsController::class, "removeJobsUserLoginById"]);
 // auth
 Route::post("/auth/login", [AuthController::class, "login"])->withoutMiddleware(VeriviedMiddleware::class);
 Route::post("/auth/user/register", [AuthController::class, "registerUser"])->withoutMiddleware(VeriviedMiddleware::class);
+Route::post("/auth/recovery", [AuthController::class, "recovery"]);
 Route::get("/user/verivication/email", [AuthController::class, "updateEmailVerified"])->withoutMiddleware(VeriviedMiddleware::class);
 
 

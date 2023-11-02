@@ -30,7 +30,6 @@ class UserSeeder extends Seeder
             'gender' => 'male',
             'about' => "saya adalah orang yang memiliki tekat tinggi",
             'email_verivied' => 1,
-            'account_status' => 1,
             'kode_prodi' => 55301,
             'nim' => 'e41212337'
         ]);
@@ -52,7 +51,7 @@ class UserSeeder extends Seeder
 
         ]);
         User::create([
-            "email" => "thrid@gmail.com",
+            "email" => "safiraput66@gmail.com",
             "password" => Hash::make("rahasia"),
             "fullname" => "zam",
             "nik" => "01928182812010",

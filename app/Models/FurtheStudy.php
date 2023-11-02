@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class FurtheStudy extends Model
 {
-    use HasFactory;
+    use HasFactory , Uuids;
 
     protected $table = 'furthe_study';
 
@@ -20,15 +21,15 @@ class FurtheStudy extends Model
         'f1202',
         'f14',
         'f15',
-        'user_id',
     ];
 
     protected $casts = [
         'f18d' => 'datetime',
     ];
 
-    public function user()
+    public function quisionerLevel()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasOne(QuisionerLevel::class);
     }
+  
 }

@@ -14,7 +14,7 @@ class CreateJobSuitabilityTable extends Migration
     public function up()
     {
         Schema::create('job_suitability', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('f1601');
             $table->string('f1602', );
             $table->string('f1603', );
@@ -29,7 +29,7 @@ class CreateJobSuitabilityTable extends Migration
             $table->string('f1612', );
             $table->string('f1613', );
             $table->string('f1614');
-            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
+           
             $table->timestamps();
         });
     }

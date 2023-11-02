@@ -38,9 +38,9 @@
                                 <th>Nama</th>
                                 <th>Program Studi</th>
                                 <th>Foto</th>
-                                <th>Status</th>
+                                <th>Status Akun</th>
                                 <th>Kemajuan</th>
-                                <th>Tingkat</th>
+                                <th>Level Quisioner</th>
                                 {{-- <th>Detail Kuesioner</th> --}}
                                 <th>Notifikasi</th>
                             </tr>
@@ -70,7 +70,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <p class="text-facebook">{{ $item['status_quisioner'] }}</p>
+                                        <p class="text-facebook">
+                                            @if (isset($item['quisioner_level'][0]))
+                                                {{ $item['quisioner_level'][0]['level'] }} Bulan
+                                            @else
+                                                0 Bulan
+                                            @endif
+                                        </p>
                                     </td>
                                     {{-- <td><button type="button" class="btn btn-warning btn-sm">Detail</button>
                             </td> --}}

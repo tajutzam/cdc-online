@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class MainSection extends Model
 {
-    use HasFactory;
+    use HasFactory , Uuids;
 
     protected $table = 'quis_main';
 
@@ -23,12 +24,12 @@ class MainSection extends Model
         'f5b',
         'f5c',
         'f5d',
-        'user_id',
     ];
 
     // Definisikan relasi jika diperlukan
-    public function user()
+    public function quisionerLevel()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasOne(QuisionerLevel::class);
     }
+  
 }

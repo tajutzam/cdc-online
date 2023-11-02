@@ -32,7 +32,7 @@ class QuisionerController extends Controller
     public function addQuisionerIdentity(Request $request)
     {
         $this->validateData($request->all(), [
-            "kode_prodi" => 'required',
+        "kode_prodi" => 'required',
             "nim" => "required",
             "nama_lengkap" => "required",
             "no_telp" => "required",

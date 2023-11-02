@@ -15,10 +15,10 @@
                         <div class="d-flex align-items-center">
                             <div class="">
                                 <p class="mb-1 text-secondary">Total Alumni</p>
-                                <h4 class="mb-0">{{sizeof($data)}}</h4>
+                                <h4 class="mb-0">{{ sizeof($data) }}</h4>
                             </div>
                             <div class="ms-auto">
-                                <p class="mb-0 font-13 " style="color: #0dcaf0">+{{$added_one_week}} Alumni</p>
+                                <p class="mb-0 font-13 " style="color: #0dcaf0">+{{ $added_one_week }} Alumni</p>
                                 <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
                             </div>
                         </div>
@@ -26,21 +26,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <p class="mb-0 text-secondary">Total Alumni Yang Belum Mengisi Quisioner</p>
-                                    <h4 class="my-1">10</h4>                        
-                                </div>
-                                <div class="widgets-icons bg-light-danger text-danger ms-auto"><i
-                                        class='bx bxs-user-account'></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
         </div>
         <div class="row">
             <div class="col-sm-12">
@@ -121,7 +106,9 @@
                 var e = {
                     series: [{
                         name: "Total Alumni",
-                        data: [332, 540, 160, 240, 160, 671, 355, 671, 414, 555, 257, 901, 613]
+                        data: ["332 Alumni (Angkatan 2022)", "33 Alumni (Angkatan 2023)",
+                            "22 Alumni (Angkatan 204)"
+                        ]
                     }],
                     chart: {
                         type: "area",
@@ -163,9 +150,7 @@
                     },
                     colors: ["#0dcaf0"],
                     xaxis: {
-                        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
-                            "Dec"
-                        ]
+                        categories: ["2022", "2023", "2024"]
                     },
                     fill: {
                         opacity: 1

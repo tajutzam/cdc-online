@@ -157,6 +157,11 @@ class User extends Authenticatable
     }
 
 
+    public function quisioner_level(){
+        return $this->hasMany(QuisionerLevel::class, "user_id");
+
+    }
+
 
 
 }

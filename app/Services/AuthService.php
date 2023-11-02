@@ -40,6 +40,10 @@ class AuthService
 
     private QuisionerProdi $prodi;
 
+    private PasswordResetService $passwordResetService;
+
+
+
     public function __construct()
     {
         $this->education = new Education();
@@ -47,6 +51,7 @@ class AuthService
         $this->user = new User();
         $this->userService = new UserService();
         $this->prodi = new QuisionerProdi();
+        $this->passwordResetService = new PasswordResetService();
     }
 
     public function login($emailOrNikRequest, $password)
@@ -211,6 +216,25 @@ class AuthService
             'code' => 200,
             'data' => true
         ];
+    }
+
+
+
+    public function sendRecovery($email)
+    {
+        $response = $this->user->where('email', $email)->first();
+        if (isset($response)) {
+            $tokenCreated = $this->passwordResetService->save($email, $response->id);
+            $url = url('/') . "/forgotpassword/" . $tokenCreated->token;
+            $this->emailService->sendEmailRecovery($email, $url, $tokenCreated->expire);
+            return [
+                'status' => true,
+                'message' => 'Berhasil Mengirim Password Reset Url',
+                'data' => true,
+                'code' => 200
+            ];
+        }
+        throw new BadRequestException('Ops , email kamu belum terdaftar');
     }
 
 

@@ -615,15 +615,11 @@
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                class="bx bx-user fs-5"></i><span>Profile</span></a>
-                    </li>
-                    <li>
-                        <div class="dropdown-divider mb-0"></div>
-                    </li>
+
                     <li class="text-center">
                         <form action="{{ route('admin-logout', ['id' => 1]) }}" method="post">
-                            <button href="" type="submit" class="btn btn-sm">Logout</button>
+                            <button href="" type="submit" class="btn btn-sm"> <i
+                                    class="bx bx-arrow-back"></i>Logout</button>
                         </form>
                     </li>
                 </ul>

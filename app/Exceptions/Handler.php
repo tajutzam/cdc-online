@@ -79,11 +79,10 @@ class Handler extends ExceptionHandler
                 return back()->withErrors($e->getMessage());
             }
 
-            
+
             if ($e instanceof BadMethodCallException) {
                 return response()->view('errors.500', ["message" => $e->getMessage()], 500);
             }
-            // dd($e);
             if ($e instanceof ForbiddenException) {
                 return response()->json([
                     'status' => false,
@@ -111,6 +110,6 @@ class Handler extends ExceptionHandler
                 'data' => null,
                 'message' => $e->getMessage()
             ], 500);
-        },);
+        }, );
     }
 }

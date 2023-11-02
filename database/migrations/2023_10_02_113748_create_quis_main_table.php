@@ -14,7 +14,7 @@ class CreateQuisMainTable extends Migration
     public function up()
     {
         Schema::create('quis_main', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->enum('f8', ['Bekerja (full time/part time)', 'Belum memungkinkan bekerja', 'Wiraswasta', 'Melanjutkan Pendidikan', 'Tidak kerja tetapi sedang mencari kerja'])->nullable(false);
             $table->boolean('f504')->nullable(false);
             $table->integer('f502')->nullable(false);
@@ -26,7 +26,6 @@ class CreateQuisMainTable extends Migration
             $table->string('f5b')->nullable(false);
             $table->string('f5c')->nullable(false);
             $table->string('f5d');
-            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

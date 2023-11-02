@@ -24,9 +24,6 @@ class Jobs extends Model
         'pekerjaan_saatini'
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, "user_id");
-    }
+   
 
 }
