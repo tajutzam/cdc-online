@@ -22,9 +22,11 @@
                 <div class="card-body p-0">
                     <div class="row ps-3">
 
-                        <button class="btn btn-success btn-sm mb-3 w-auto m-3"> <i class="fa fa-paper-plane pb-1"
-                                style="color: white"></i><span class="text-decoration-none">Kirim Semua</button>
-
+                        <form action="{{ route('notifications-post') }}" method="post">
+                            <button type="submit" class="btn btn-success btn-sm mb-3 w-auto m-3"> <i
+                                    class="fa fa-paper-plane pb-1" style="color: white"></i><span
+                                    class="text-decoration-none">Kirim Semua</button>
+                        </form>
                     </div>
                 </div>
             </div>

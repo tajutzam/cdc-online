@@ -6,21 +6,18 @@ use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notifications extends Model
+class Whatsapps extends Model
 {
     use HasFactory, Uuids;
 
 
-    protected $table = "notifications";
-
-
-
     protected $fillable = [
-        'user_id' , 
-        ''
+        'url',
+        'image',
+        'name'
     ];
 
 
-
+    protected $table = 'whatsapps';
 
 }

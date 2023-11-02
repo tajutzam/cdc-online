@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
             PostSeeder::class,
             NewsSeeder::class,
             JobsSeeder::class,
-            ProdiAdministratorSeeder::class
+            ProdiAdministratorSeeder::class,
+            WhatsappsSeeder::class
         ]);
 
         // \App\Models\User::factory()->create([

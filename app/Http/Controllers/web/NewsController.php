@@ -133,4 +133,11 @@ class NewsController extends Controller
         $data = $this->validate($request, $rules, $customMessages);
         return $this->newsService->delete($data['id']);
     }
+
+    public function findAllBlog()
+    {
+        $data = $this->newsService->findAllActive();
+        dd($data);
+        return view('landing-page.blog');
+    }
 }

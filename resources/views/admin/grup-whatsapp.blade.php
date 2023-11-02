@@ -2,6 +2,12 @@
 
 @section('content')
     <div class="container-fluid">
+        @if ($errors->any())
+            <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+                <div class="text-white">{{ $errors->first() }}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="row">
             <div class="col-sm-6">
                 <div class="card radius-10">
@@ -9,9 +15,10 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 <p class="mb-0 text-secondary">Jumlah Grup Whatsapp</p>
-                                <h4 class="my-1">28</h4>
-                                <p class="mb-0 font-13 text-success"><i class='bx bxs-up-arrow align-middle'></i> Ditambahkan
-                                    2
+                                <h4 class="my-1">{{ sizeof($data['groups']) }}</h4>
+                                <p class="mb-0 font-13 text-success"><i class='bx bxs-up-arrow align-middle'></i>
+                                    Ditambahkan
+                                    {{ $data['countLastWeek'] }}
                                     Grup Minggu ini</p>
                             </div>
                             <div class="widgets-icons bg-light-success text-success ms-auto"><svg
@@ -55,32 +62,36 @@
             </div>
         </div>
         <div class="row  pe-3 ps-3 justify-content-between gap-lg-5">
-            <div class="card p-0" style="width: 18rem;">
-                <div class="card-body text-center">
-                    <div class="rounded-circle bg-success mx-auto" style="width: 200px; height: 200px;">
+            @foreach ($data['groups'] as $item)
+                <div class="card p-0" style="width: 18rem;">
+                    <div class="card-body text-center">
+                        <img class="rounded-circle bg-success mx-auto" style="width: 200px; height: 200px;"
+                            src="{{ $item['image'] }}">
                         <!-- Isi dari div bulat -->
+                        <h4 class="card-title m-3">{{ $item['name'] }}</h4>
+                        <!-- Tombol Tautan (Link) -->
+                        <div class="pb-2">
+                            <a href="{{ $item['url'] }}" target="_blank" class="btn btn-success">
+                                <i class="fas fa-link"></i> Tautan
+                            </a>
+                        </div>
+
+
+                        <!-- Tombol Hapus -->
+                        <button class="btn btn-danger ml-2 delete-grup-btn" data-id="{{ $item['id'] }}"
+                            data-bs-toggle="modal" data-bs-target="#delete-grup">
+                            <i class="fas fa-trash"></i> Hapus
+                        </button>
+
+                        <!-- Tombol Perbarui -->
+                        <button class="btn btn-primary ml-2 update-grup-btn" data-bs-toggle="modal"
+                            data-bs-target="#update-grup" data-id="{{ $item['id'] }}" data-name="{{ $item['name'] }}"
+                            data-url="{{ $item['url'] }}">
+                            <i class="fas fa-sync-alt"></i> Perbarui
+                        </button>
                     </div>
-                    <h4 class="card-title m-3">Bondowoso</h4>
-
-                    <!-- Tombol Tautan (Link) -->
-                    <div class="pb-2">
-                        <a href="" class="btn btn-success">
-                            <i class="fas fa-link"></i> Tautan
-                        </a>
-                    </div>
-
-
-                    <!-- Tombol Hapus -->
-                    <button class="btn btn-danger ml-2" data-bs-toggle="modal" data-bs-target="#delete-grup">
-                        <i class="fas fa-trash"></i> Hapus
-                    </button>
-
-                    <!-- Tombol Perbarui -->
-                    <button class="btn btn-primary ml-2" data-bs-toggle="modal" data-bs-target="#update-grup">
-                        <i class="fas fa-sync-alt"></i> Perbarui
-                    </button>
                 </div>
-            </div>
+            @endforeach
 
         </div>
     </div>
@@ -167,24 +178,29 @@
         <x-slot name="id">add-grup</x-slot>
         <x-slot name="body">
 
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control form-control-sm" required id="floatingTextarea" name="title">
-                <label for="floatingTextarea">Nama Wilayah</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control form-control-sm" required id="floatingTextarea" name="title">
-                <label for="floatingTextarea">Tautan</label>
-            </div>
-            <div class="mb-3">
-                <p style="color:gray">*Gunakan foto dengan ukuran 1:1</p>
-                <input class="form-control form-control-sm" name="image" required id="formFileSm" type="file"
-                    accept="image/*">
-            </div>
-            <div class="row justify-content-end">
-                <button class="col-3 btn btn-outline-danger btn-sm" type="reset" data-bs-dismiss="modal">Tutup</button>
-                <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
-            </div>
-
+            <form action="{{ route('grup-post') }}" method="post" enctype="multipart/form-data">
+                @method('post')
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control form-control-sm" required id="floatingTextarea"
+                        name="name">
+                    <label for="floatingTextarea">Nama Wilayah</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control form-control-sm" required id="floatingTextarea"
+                        name="url">
+                    <label for="floatingTextarea">Tautan</label>
+                </div>
+                <div class="mb-3">
+                    <p style="color:gray">*Gunakan foto dengan ukuran 1:1</p>
+                    <input class="form-control form-control-sm" name="image" required id="formFileSm" type="file"
+                        accept="image/*">
+                </div>
+                <div class="row justify-content-end">
+                    <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
+                        data-bs-dismiss="modal">Tutup</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4" type="submit">Simpan</button>
+                </div>
+            </form>
         </x-slot>
     </x-modal-small>
 
@@ -192,15 +208,18 @@
         <x-slot name="title">Hapus Grup</x-slot>
         <x-slot name="id">delete-grup</x-slot>
         <x-slot name="body">
-
-            <div class="form-floating mb-3">
-                <h6> Apakah anda yakin menghapus Grup Bondowoso</h6>
-            </div>
-            <div class="row justify-content-end">
-                <button class="col-3 btn btn-outline-danger btn-sm" type="reset" data-bs-dismiss="modal">Tutup</button>
-                <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
-            </div>
-
+            <form action="{{ route('grup-delete') }}" method="post" enctype="multipart/form-data">
+                @method('delete')
+                <div class="form-floating mb-3">
+                    <h6> Apakah anda yakin menghapus Grup Bondowoso</h6>
+                </div>
+                <input type="text" name="id" id="id_delete" hidden>
+                <div class="row justify-content-end">
+                    <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
+                        data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
+                </div>
+            </form>
         </x-slot>
     </x-modal-small>
 
@@ -209,30 +228,70 @@
         <x-slot name="id">update-grup</x-slot>
         <x-slot name="body">
 
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="nama-wilayah" placeholder="Nama Wilayah">
-                <label for="nama-wilayah">Nama Wilayah</label>
-            </div>
+            <form action="{{ route('grup-put') }}" method="post" enctype="multipart/form-data">
+                @method('put')
+                <input type="text" name="id" id="id-update" hidden>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="nama-wilayah-update" placeholder="Nama Wilayah"
+                        name="name">
+                    <label for="nama-wilayah">Nama Wilayah</label>
+                </div>
 
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="tautan" placeholder="Tautan">
-                <label for="tautan">Tautan</label>
-            </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="tautan-update" placeholder="Tautan" name="url">
+                    <label for="tautan">Tautan</label>
+                </div>
 
 
-            <div class="form-floating mb-3">
-                <input type="file" class="form-control" id="gambar" name="gambar">
-                <label for="gambar">Gambar</label>
-            </div>
+                <div class="form-floating mb-3">
+                    <input type="file" class="form-control" id="image-update" name="image" accept="image/*">
+                    <label for="gambar">Gambar</label>
+                </div>
 
-            <div class="mb-3">
-                <img id="gambar-preview" src="" alt="Preview" style="max-width: 100px; display: none;">
-            </div>
+                <div class="mb-3">
+                    <img id="gambar-preview" src="" alt="Preview" style="max-width: 100px; display: none;">
+                </div>
 
-            <div class="row justify-content-end">
-                <button class="col-3 btn btn-outline-danger btn-sm" type="reset" data-bs-dismiss="modal">Tutup</button>
-                <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
-            </div>
+                <div class="row justify-content-end">
+                    <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
+                        data-bs-dismiss="modal">Tutup</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>
+                </div>
+            </form>
         </x-slot>
     </x-modal-small>
+
+
+    <script>
+        $(document).ready(function() {
+            // declare
+
+            $('.delete-grup-btn').on('click', function() {
+                console.log('ya');
+                let id = $(this).data('id');
+                var id_input = $('#id_delete');
+                id_input.val(id);
+
+            });
+
+            $('.update-grup-btn').on('click', function() {
+                console.log('ya');
+                let id = $(this).data('id');
+                let name = $(this).data('name');
+                let tautan = $(this).data('url');
+                var name_input = $('#nama-wilayah-update');
+                var tautan_input = $('#tautan-update');
+                let id_input = $('#id-update');
+                name_input.val(name);
+                tautan_input.val(tautan);
+                id_input.val(id);
+            });
+
+            $('#example').on('click', '.delete-prodi-btn', function() {
+                let id = $(this).data('kode');
+                console.log(id);
+                $('#prodi-delete-id').val(id);
+            });
+        });
+    </script>
 @endsection

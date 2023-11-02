@@ -5,16 +5,26 @@ namespace App\Services;
 
 use App\Models\User;
 use Carbon\Carbon;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\ServiceAccount;
+use Kreait\Firebase\Messaging\CloudMessage;
 
 class NotificationService
 {
 
 
     private User $user;
+    private $messaging;
 
     public function __construct()
     {
         $this->user = new User();
+        $serviceAccountPath = storage_path(env('FIREBASE_CREDENTIALS'));
+
+        $factory = (new Factory)
+            ->withServiceAccount($serviceAccountPath);
+
+        $this->messaging = $factory->createMessaging();
     }
 
 
@@ -64,6 +74,20 @@ class NotificationService
             }
         }
         return $dataUser;
+    }
+
+
+    public function sendNotification()
+    {
+        $message = CloudMessage::new()
+            ->withTarget('token', 'e3HshwjXTR-OGRJmhPw5lY:APA91bENYO0ilbB8OmiP1aXPHWATkKTojhcKHmBayXelOjD7g3F6iNkIzb3fh5DZd7UPch0n_b3hbb5VGzeF3gVmD28JkNfSuMcUqjMJLqR9NgMINUkm0xWsHYw3z40kwW1fgml6YyI-') // Replace with the recipient's FCM token
+            ->withNotification([
+                'title' => 'woi',
+                'body' => 'Notification Body',
+            ])
+            ->withData(['key' => 'value']);
+
+        $this->messaging->send($message);
     }
 
 

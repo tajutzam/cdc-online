@@ -26,4 +26,9 @@ class NotificationsController extends Controller
 
         return view('admin.notifications.notifications', ['data' => $data]);
     }
+
+    public function send(){
+        $this->notificationService->sendNotification();
+        return back();
+    }
 }

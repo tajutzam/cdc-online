@@ -51,9 +51,7 @@ Route::get('/', function () {
     return view('landing-page.index');
 })->name('/');
 
-Route::get('/landing-page/blog', function () {
-    return view('landing-page.blog');
-})->name('blog');
+Route::get('/landing-page/blog', [NewsController::class , 'findAllBlog'])->name('blog');
 
 Route::get('/landing-page/single-blog', function () {
     return view('landing-page.blog-single');
@@ -64,7 +62,7 @@ Route::get('/landing-page/portofolio', function () {
 })->name('portofolio-details');
 
 Route::get('/forgotpassword/{token}', [WebAuthController::class, "recovery"])->name('forgotpassword');
-Route::put("/forgotpassword/{token}" , [WebAuthController::class , 'updatePassword'])->name('forgotpassword-put');
+Route::put("/forgotpassword/{token}", [WebAuthController::class, 'updatePassword'])->name('forgotpassword-put');
 
 Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group(
     function () {
@@ -101,6 +99,10 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::get('/settings-admin', [AdminController::class, 'settingsAdmin'])->name('settings-admin');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/grup-whatsapp', [GrupWhatsappController::class, 'grupWhatsapp'])->name('grup');
+    Route::post('/grup-whatsapp', [GrupWhatsappController::class, 'store'])->name('grup-post');
+    Route::delete('/grup-whatsapp', [GrupWhatsappController::class, 'delete'])->name('grup-delete');
+    Route::put('/grup-whatsapp', [GrupWhatsappController::class, 'update'])->name('grup-put');
+
     Route::get('/feedback', [FeedbackController::class, 'feedback'])->name('feedback');
 
 
@@ -138,6 +140,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     });
     Route::prefix('notifications')->group(function () {
         Route::get('', [NotificationsController::class, 'index'])->name('notifications');
+        Route::post("", [NotificationsController::class, 'send'])->name('notifications-post');
     });
     Route::prefix('prodi')->group(function () {
         Route::get('', [ProdiController::class, 'index'])->name('prodi');
