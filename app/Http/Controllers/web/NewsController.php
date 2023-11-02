@@ -137,7 +137,6 @@ class NewsController extends Controller
     public function findAllBlog()
     {
         $data = $this->newsService->findAllActive();
-        dd($data);
         return view('landing-page.blog');
     }
 }
