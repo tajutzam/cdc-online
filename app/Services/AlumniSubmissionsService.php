@@ -164,11 +164,32 @@ class AlumniSubmissionsService
 
 
 
-    
 
 
-    public function findAllAlumniReference(){
+
+    public function findAllAlumniReference()
+    {
         return $this->alumniSubmissions->all();
+    }
+
+
+
+    public function countPerDayOneWeek()
+    {
+        $data = [];
+        $startDate = now()->startOfWeek(); // Mendapatkan awal minggu (Minggu)
+        $endDate = now()->endOfWeek(); // Mendapatkan akhir minggu (Sabtu)
+
+        while ($startDate <= $endDate) {
+            $count = $this->alumniSubmissions
+                ->whereDate('created_at', $startDate->toDateString())
+                ->count();
+
+            $data[$startDate->format('Y-m-d')] = $count;
+
+            $startDate->addDay();
+        }
+        return $data;
     }
 
 }

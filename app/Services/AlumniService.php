@@ -25,7 +25,7 @@ class AlumniService
     public function __construct()
     {
         $this->alumni = new Alumni();
-       
+
     }
 
 
@@ -166,6 +166,25 @@ class AlumniService
         return $this->alumni->all();
     }
 
+    public function getCountPerDay()
+    {
+
+        $data = [];
+        $startDate = now()->startOfWeek(); // Mendapatkan awal minggu (Minggu)
+        $endDate = now()->endOfWeek(); // Mendapatkan akhir minggu (Sabtu)
+
+        while ($startDate <= $endDate) {
+            $count = $this->alumni
+                ->whereDate('created_at', $startDate->toDateString())
+                ->count();
+
+            $data[$startDate->format('Y-m-d')] = $count;
+
+            $startDate->addDay();
+        }
+        return $data;
+    }
+
     public function getTotalAdditionOneWeek()
     {
         $endDate = Carbon::now(); // Current date and time
@@ -180,6 +199,6 @@ class AlumniService
         return $countNewAlumni;
     }
 
-    
+
 
 }

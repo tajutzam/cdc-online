@@ -1,5 +1,6 @@
 <?php
 
+use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Facade;
 use Intervention\Image\ImageServiceProvider;
 use L5Swagger\L5SwaggerServiceProvider;
@@ -201,6 +202,7 @@ return [
         Vyuldashev\LaravelOpenApi\OpenApiServiceProvider::class,
         L5Swagger\L5SwaggerServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 
@@ -259,6 +261,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         '   Alert' => RealRashid\SweetAlert\Facades\Alert::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
 
     ],

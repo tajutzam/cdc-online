@@ -92,7 +92,6 @@
                     </div>
                 </div>
             @endforeach
-
         </div>
     </div>
     <script>
@@ -101,7 +100,7 @@
             var e = {
                 series: [{
                     name: "Whatsapp",
-                    data: [240, 160, 671, 414, 555, 257, 901]
+                    data: {!! json_encode($data['countPerDay']) !!}
                 }],
                 chart: {
                     type: "line",

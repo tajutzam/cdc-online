@@ -4,12 +4,15 @@ namespace App\Http\Controllers\web;
 
 use App\Exceptions\WebException;
 use App\Exports\QuisionerExport;
+use App\Exports\QuisionerPdfExport;
 use App\Http\Controllers\Controller;
 use App\Imports\QuisionerImport;
 use App\Services\QuisionerService;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
+
+use PDF;
 
 class QuisionerController extends Controller
 {
@@ -27,6 +30,7 @@ class QuisionerController extends Controller
     {
 
         $data = $this->quisionerService->findAllQuisionerUser($request->get('tahun'), $request->get('bulan'));
+
         return view('admin.quisioner.index', ['data' => $data]);
     }
 
@@ -49,6 +53,32 @@ class QuisionerController extends Controller
             throw new WebException($th->getMessage());
         }
 
+    }
+
+
+    public function exportPdf(Request $request)
+    {
+        $rules = [
+            'tahun' => 'required',
+        ];
+        $customMessages = [
+            'required' => ':attribute Dibutuhkan.',
+        ];
+        $data = $this->validate($request, $rules, $customMessages);
+
+        try {
+            //code...
+            $userQuisioner = $this->quisionerService->exrportToExcel($request->input('tahun'));
+            if (sizeof($userQuisioner) === 0) {
+                throw new WebException('Ops , Quisioner Dengan Tahun-Level ' . $request->input('tahun') . " tidak ditemukan");
+            }
+            $pdf = PDF::loadview('exports.quisioner-pdf', ['data' => $userQuisioner])->setPaper('a3', 'landscape');
+            return $pdf->download('rekap_quisioner.pdf');
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw new WebException($th->getMessage());
+        }
     }
 
 

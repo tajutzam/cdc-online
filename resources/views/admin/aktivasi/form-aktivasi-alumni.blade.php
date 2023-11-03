@@ -21,7 +21,7 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 <p class="mb-0 text-secondary">Total Menunggu</p>
-                                <h4 class="my-1">10</h4>
+                                <h4 class="my-1">{{sizeof($data)}}</h4>
                             </div>
                             <div class="widgets-icons bg-light-black text-black ms-auto"><i class='bx bxs-user-account'></i>
                             </div>
@@ -115,13 +115,14 @@
             </div>
         </div>
     </div>
+  
     <script>
         $(function() {
             // chart 1
             var e = {
                 series: [{
                     name: "Whatsapp",
-                    data: [240, 160, 671, 414, 555, 257, 901]
+                    data: {!! json_encode($countPerDay) !!}
                 }],
                 chart: {
                     type: "line",

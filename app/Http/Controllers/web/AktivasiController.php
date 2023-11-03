@@ -26,7 +26,8 @@ class AktivasiController extends Controller
     public function index()
     {
         $data = $this->alumniSubmissionsService->showSubmissions();
-        return view('admin.aktivasi.form-aktivasi-alumni', ['data' => $data]);
+        $countPerDay = array_values($this->alumniSubmissionsService->countPerDayOneWeek());
+        return view('admin.aktivasi.form-aktivasi-alumni', ['data' => $data , 'countPerDay' => $countPerDay]);
     }
 
     public function accOrReject(Request $request, $id)

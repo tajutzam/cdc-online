@@ -46,158 +46,37 @@
 
                     <div class="col-lg-8 entries">
 
-                        <article class="entry">
+                        @foreach ($data as $item)
+                            <article class="entry">
 
-                            <div class="entry-img">
-                                <img src="{{ asset('/') }}assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
-                            </div>
-
-                            <h2 class="entry-title">
-                                <a href="{{ route('blog-single') }}">Dolorum optio tempore voluptas dignissimos cumque fuga
-                                    qui
-                                    quibusdam quia</a>
-                            </h2>
-
-                            <div class="entry-meta">
-                                <ul>
-                                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a
-                                            href="blog-single.html">John Doe</a></li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a
-                                            href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a>
-                                    </li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a
-                                            href="blog-single.html">12 Comments</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="entry-content">
-                                <p>
-                                    Similique neque nam consequuntur ad non maxime aliquam quas. Quibusdam animi
-                                    praesentium. Aliquam et laboriosam eius aut nostrum quidem aliquid dicta.
-                                    Et eveniet enim. Qui velit est ea dolorem doloremque deleniti aperiam unde soluta.
-                                    Est cum et quod quos aut ut et sit sunt. Voluptate porro consequatur assumenda
-                                    perferendis dolore.
-                                </p>
-                                <div class="read-more">
-                                    <a href="blog-single.html">Read More</a>
+                                <div class="entry-img">
+                                    <img src="{{ $item['image'] }}" alt="poster" class="img-fluid">
                                 </div>
-                            </div>
 
-                        </article><!-- End blog entry -->
+                                <h2 class="entry-title">
+                                    <a href="{{ route('blog-single') }}">{{ $item['title'] }}</a>
+                                </h2>
 
-                        <article class="entry">
-
-                            <div class="entry-img">
-                                <img src="{{ asset('/') }}assets/img/blog/blog-2.jpg" alt="" class="img-fluid">
-                            </div>
-
-                            <h2 class="entry-title">
-                                <a href="blog-single.html">Nisi magni odit consequatur autem nulla dolorem</a>
-                            </h2>
-
-                            <div class="entry-meta">
-                                <ul>
-                                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a
-                                            href="blog-single.html">John Doe</a></li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a
-                                            href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a>
-                                    </li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a
-                                            href="blog-single.html">12 Comments</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="entry-content">
-                                <p>
-                                    Incidunt voluptate sit temporibus aperiam. Quia vitae aut sint ullam quis illum
-                                    voluptatum et. Quo libero rerum voluptatem pariatur nam.
-                                    Ad impedit qui officiis est in non aliquid veniam laborum. Id ipsum qui aut. Sit
-                                    aliquam et quia molestias laboriosam. Tempora nam odit omnis eum corrupti qui
-                                    aliquid excepturi molestiae. Facilis et sint quos sed voluptas. Maxime sed tempore
-                                    enim omnis non alias odio quos distinctio.
-                                </p>
-                                <div class="read-more">
-                                    <a href="blog-single.html">Read More</a>
+                                <div class="entry-meta">
+                                    <ul>
+                                        <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a
+                                                href="{{ route('blog-single') }}">{{ $item['admin']['name'] }}</a></li>
+                                        <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a
+                                                href="{{ route('blog-single') }}"><time
+                                                    datetime="2020-01-01">{{ date('D, d-m-Y', strtotime($item['created_at'])) }}
+                                                </time></a>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </div>
+                                <div class="entry-content ">
+                                    <span class="text-truncate">{!! $item['description'] !!}</span>
 
-                        </article><!-- End blog entry -->
-
-                        <article class="entry">
-
-                            <div class="entry-img">
-                                <img src="{{ asset('/') }}assets/img/blog/blog-3.jpg" alt="" class="img-fluid">
-                            </div>
-
-                            <h2 class="entry-title">
-                                <a href="blog-single.html">Possimus soluta ut id suscipit ea ut. In quo quia et soluta
-                                    libero sit sint.</a>
-                            </h2>
-
-                            <div class="entry-meta">
-                                <ul>
-                                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a
-                                            href="blog-single.html">John Doe</a></li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a
-                                            href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a>
-                                    </li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a
-                                            href="blog-single.html">12 Comments</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="entry-content">
-                                <p>
-                                    Aut iste neque ut illum qui perspiciatis similique recusandae non. Fugit autem
-                                    dolorem labore omnis et. Eum temporibus fugiat voluptate enim tenetur sunt omnis.
-                                    Doloremque est saepe laborum aut. Ipsa cupiditate ex harum at recusandae nesciunt.
-                                    Ut dolores velit.
-                                </p>
-                                <div class="read-more">
-                                    <a href="blog-single.html">Read More</a>
+                                    <div class="read-more">
+                                        <a href="{{ route('blog-single') }}">Selengkapnya</a>
+                                    </div>
                                 </div>
-                            </div>
-
-                        </article><!-- End blog entry -->
-
-                        <article class="entry">
-
-                            <div class="entry-img">
-                                <img src="{{ asset('/') }}assets/img/blog/blog-4.jpg" alt="" class="img-fluid">
-                            </div>
-
-                            <h2 class="entry-title">
-                                <a href="blog-single.html">Non rem rerum nam cum quo minus. Dolor distinctio deleniti
-                                    explicabo eius exercitationem.</a>
-                            </h2>
-
-                            <div class="entry-meta">
-                                <ul>
-                                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a
-                                            href="blog-single.html">John Doe</a></li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a
-                                            href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a>
-                                    </li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a
-                                            href="blog-single.html">12 Comments</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="entry-content">
-                                <p>
-                                    Aspernatur rerum perferendis et sint. Voluptates cupiditate voluptas atque quae. Rem
-                                    veritatis rerum enim et autem. Saepe atque cum eligendi eaque iste omnis a qui.
-                                    Quia sed sunt. Ea asperiores expedita et et delectus voluptates rerum. Id saepe ut
-                                    itaque quod qui voluptas nobis porro rerum. Quam quia nesciunt qui aut est non
-                                    omnis. Inventore occaecati et quaerat magni itaque nam voluptas. Voluptatem ducimus
-                                    sint id earum ut nesciunt sed corrupti nemo.
-                                </p>
-                                <div class="read-more">
-                                    <a href="blog-single.html">Read More</a>
-                                </div>
-                            </div>
-
-                        </article><!-- End blog entry -->
+                            </article><!-- End blog entry -->
+                        @endforeach
 
                         <div class="blog-pagination">
                             <ul class="justify-content-center">
@@ -213,62 +92,44 @@
 
                         <div class="sidebar">
 
-                            <h3 class="sidebar-title">Search</h3>
-                            <div class="sidebar-item search-form">
-                                <form action="">
-                                    <input type="text">
-                                    <button type="submit"><i class="bi bi-search"></i></button>
-                                </form>
-                            </div><!-- End sidebar search formn-->
-
-                            <h3 class="sidebar-title">Categories</h3>
-                            <div class="sidebar-item categories">
-                                <ul>
-                                    <li><a href="#">General <span>(25)</span></a></li>
-                                    <li><a href="#">Lifestyle <span>(12)</span></a></li>
-                                    <li><a href="#">Travel <span>(5)</span></a></li>
-                                    <li><a href="#">Design <span>(22)</span></a></li>
-                                    <li><a href="#">Creative <span>(8)</span></a></li>
-                                    <li><a href="#">Educaion <span>(14)</span></a></li>
-                                </ul>
-                            </div><!-- End sidebar categories-->
-
-                            <h3 class="sidebar-title">Recent Posts</h3>
+                            <h3 class="sidebar-title">Berita Terkini</h3>
                             <div class="sidebar-item recent-posts">
                                 <div class="post-item clearfix">
                                     <img src="{{ asset('/') }}assets/img/blog/blog-recent-1.jpg" alt="">
-                                    <h4><a href="blog-single.html">Nihil blanditiis at in nihil autem</a></h4>
+                                    <h4><a href="{{ route('blog-single') }}">Nihil blanditiis at in nihil autem</a></h4>
                                     <time datetime="2020-01-01">Jan 1, 2020</time>
                                 </div>
 
                                 <div class="post-item clearfix">
                                     <img src="{{ asset('/') }}assets/img/blog/blog-recent-2.jpg" alt="">
-                                    <h4><a href="blog-single.html">Quidem autem et impedit</a></h4>
+                                    <h4><a href="{{ route('blog-single') }}">Quidem autem et impedit</a></h4>
                                     <time datetime="2020-01-01">Jan 1, 2020</time>
                                 </div>
 
                                 <div class="post-item clearfix">
                                     <img src="{{ asset('/') }}assets/img/blog/blog-recent-3.jpg" alt="">
-                                    <h4><a href="blog-single.html">Id quia et et ut maxime similique occaecati ut</a>
+                                    <h4><a href="{{ route('blog-single') }}">Id quia et et ut maxime similique occaecati
+                                            ut</a>
                                     </h4>
                                     <time datetime="2020-01-01">Jan 1, 2020</time>
                                 </div>
 
                                 <div class="post-item clearfix">
                                     <img src="{{ asset('/') }}assets/img/blog/blog-recent-4.jpg" alt="">
-                                    <h4><a href="blog-single.html">Laborum corporis quo dara net para</a></h4>
+                                    <h4><a href="{{ route('blog-single') }}">Laborum corporis quo dara net para</a></h4>
                                     <time datetime="2020-01-01">Jan 1, 2020</time>
                                 </div>
 
                                 <div class="post-item clearfix">
                                     <img src="{{ asset('/') }}assets/img/blog/blog-recent-5.jpg" alt="">
-                                    <h4><a href="blog-single.html">Et dolores corrupti quae illo quod dolor</a></h4>
+                                    <h4><a href="{{ route('blog-single') }}">Et dolores corrupti quae illo quod dolor</a>
+                                    </h4>
                                     <time datetime="2020-01-01">Jan 1, 2020</time>
                                 </div>
 
                             </div><!-- End sidebar recent posts-->
 
-                            <h3 class="sidebar-title">Tags</h3>
+                            {{-- <h3 class="sidebar-title">Tags</h3>
                             <div class="sidebar-item tags">
                                 <ul>
                                     <li><a href="#">App</a></li>
@@ -283,7 +144,7 @@
                                     <li><a href="#">Tips</a></li>
                                     <li><a href="#">Marketing</a></li>
                                 </ul>
-                            </div><!-- End sidebar tags-->
+                            </div><!-- End sidebar tags--> --}}
 
                         </div><!-- End sidebar -->
 

@@ -255,7 +255,7 @@
                     var e = {
                         series: [{
                             name: "Active Vacancy",
-                            data: [332, 540, 160, 240, 160, 671, 355, 671, 414, 555, 257, 901, 613]
+                            data: {!! json_encode($data['countPerDayActive']) !!}
                         }],
                         chart: {
                             type: "area",
@@ -328,7 +328,7 @@
                     var e = {
                         series: [{
                             name: "Not Active Vacancy",
-                            data: [332, 540, 160, 240, 160, 671, 355, 671, 414, 555, 257, 901, 613]
+                            data: {!! json_encode($data['countPerDayNonactive']) !!}
                         }],
                         chart: {
                             type: "area",

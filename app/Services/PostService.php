@@ -425,6 +425,7 @@ class PostService
 
     public function findHistoryVacancy()
     {
+        $data = [];
         $dataActive = $this->post
             ->with('user', 'admin')
             ->where(function ($query) {
@@ -435,14 +436,48 @@ class PostService
 
         $dataNonActive = $this->post
             ->with('user', 'admin')
-            ->where('verified' , 'rejected')
+            ->where('verified', 'rejected')
             ->orwhere('expired', '<=', Carbon::now())
             ->get();
 
 
-        $data = [];
+        $data['countPerDayActive'] = [];
+        $startDate = now()->startOfWeek(); // Mendapatkan awal minggu (Minggu)
+        $endDate = now()->endOfWeek(); // Mendapatkan akhir minggu (Sabtu)
+
+        while ($startDate <= $endDate) {
+            $count = $this->post
+                ->whereDate('created_at', $startDate->toDateString())
+                ->where('verified', 'verified')
+                ->count();
+
+            $data['countPerDayActive'][$startDate->format('Y-m-d')] = $count;
+
+            $startDate->addDay();
+        }
+
+        $data['countPerDayNonactive'] = [];
+        $startDate = now()->startOfWeek(); // Mendapatkan awal minggu (Minggu)
+        $endDate = now()->endOfWeek(); // Mendapatkan akhir minggu (Sabtu)
+
+        while ($startDate <= $endDate) {
+            $count = $this->post
+                ->whereDate('created_at', $startDate->toDateString())
+                ->where('verified', '<>', 'verified')
+                ->where('expired', '<', Carbon::now())
+                ->count();
+
+            $data['countPerDayNonactive'][$startDate->format('Y-m-d')] = $count;
+
+            $startDate->addDay();
+        }
+
+
+
         $data['active'] = $dataActive;
         $data['nonActive'] = $dataNonActive;
+        $data['countPerDayActive'] = array_values($data['countPerDayActive']);
+        $data['countPerDayNonactive'] = array_values($data['countPerDayNonactive']);
 
         return $data;
     }

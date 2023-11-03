@@ -157,11 +157,16 @@ class User extends Authenticatable
     }
 
 
-    public function quisioner_level(){
+    public function quisioner_level()
+    {
         return $this->hasMany(QuisionerLevel::class, "user_id");
 
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(Notifications::class, "user_id");
+    }
 
 
 }

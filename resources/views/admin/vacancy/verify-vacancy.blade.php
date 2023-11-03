@@ -406,7 +406,7 @@
                 });
 
                 if (user != null) {
-                    var urlUser = "{{ url('/user/images/') }}" + user.foto;
+                    var urlUser = "{{ url('/users/') }}" +"/"+ user.foto;
                     img.attr('src', urlUser);
 
                     lvl.text("- User");

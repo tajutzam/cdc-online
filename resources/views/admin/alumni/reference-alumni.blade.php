@@ -106,9 +106,7 @@
                 var e = {
                     series: [{
                         name: "Total Alumni",
-                        data: ["332 Alumni (Angkatan 2022)", "33 Alumni (Angkatan 2023)",
-                            "22 Alumni (Angkatan 204)"
-                        ]
+                        data: {!! json_encode($count_per_day) !!}
                     }],
                     chart: {
                         type: "area",

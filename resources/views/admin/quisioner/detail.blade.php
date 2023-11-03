@@ -21,7 +21,8 @@
         </div>
         <div class="row">
             <div class="col-sm-12 pb-2 text-start">
-                <h2> Data Pribadi </h2> <span class="badge text-bg-success"> Level {{ $data['quisioner_level'][0]['level'] }} Bulan</span>
+                <h2> Data Pribadi </h2> <span class="badge text-bg-success"> Level
+                    {{ $data['quisioner_level'][0]['level'] }} Bulan</span>
             </div>
         </div>
         <div class="row">
@@ -40,28 +41,13 @@
                                 </h4>
                             </div>
                             <div class="col-sm-6 text-end">
-                                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                    <!-- Tombol-tombol dengan tautan -->
-                                    <button type="button" class="btn btn-danger  " id="bulan-0">
-                                        <a href="?bulan=0" style="color: white; text-decoration: none">0 Bulan</a>
-                                    </button>
-
-                                    <button type="button" class="btn btn-warning" id="bulan-6">
-                                        <a href="?bulan=6" style="color: white; text-decoration: none">6 Bulan</a>
-                                    </button>
-
-                                    <button type="button" class="btn btn-success" id="bulan-12">
-                                        <a href="?bulan=12" style="color: white; text-decoration: none">12 Bulan</a>
-                                    </button>
-                                </div>
+                                <button class="btn btn-primary btn-sm">Update</button>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">

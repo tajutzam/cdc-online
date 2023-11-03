@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\web;
 
+use App\Exceptions\WebException;
 use App\Http\Controllers\Controller;
 use App\Services\AdminService;
 use App\Services\AuthService;
@@ -101,9 +102,9 @@ class AuthController extends Controller
             $this->passwordResetService->delete($token);
             $user = $this->userService->findByEmail($data['email']);
             $this->emailService->sendEmailSuccessUpdatePassword($user);
+            return redirect('/succeschange');
         } else {
-            Alert::error("Error", "Gagal memperbarui password terjadi kesalahan");
+            throw new WebException('Gagal Memperbarui Password Terjadi Kesalahan');
         }
-        return redirect("/");
     }
 }

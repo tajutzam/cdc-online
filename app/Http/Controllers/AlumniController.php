@@ -26,10 +26,13 @@ class AlumniController extends Controller
     {
 
         $data = $this->alumniService->findAllAlumni();
-      
-     
+
+        $countPerDay = $this->alumniService->getCountPerDay();
+
+        $values = array_values($countPerDay);
+
         $totalAddition = $this->alumniService->getTotalAdditionOneWeek();
-        return view('admin.alumni.reference-alumni', ['data' => $data, 'added_one_week' => $totalAddition]);
+        return view('admin.alumni.reference-alumni', ['data' => $data, 'added_one_week' => $totalAddition, 'count_per_day' => $values]);
     }
 
     public function verifikasiAlumni(Request $request)

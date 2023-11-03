@@ -5,7 +5,7 @@
 <!-- Mirrored from codervent.com/syndron/demo/vertical/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 29 Jul 2023 03:54:59 GMT -->
 @include('layouts.header')
 
-<body>
+<body ">
     <!--wrapper-->
     <div class="wrapper">
         <!--sidebar wrapper -->

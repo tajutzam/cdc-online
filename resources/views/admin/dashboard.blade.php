@@ -73,98 +73,29 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="customers-list p-3 mb-3">
-                        <div class="customers-list-item d-flex align-items-center border-bottom p-2 cursor-pointer">
-                            <div class="">
-                                <img src="assets/images/avatars/avatar-3.png" class="rounded-circle" width="46"
-                                    height="46" alt="" />
+                        @foreach ($topFollowers as $item)
+                            <div class="customers-list-item d-flex align-items-center border-bottom p-2 cursor-pointer">
+                                <div class="">
+                                    <img src="{{ $item['foto'] }}" class="rounded-circle" width="46" height="46"
+                                        alt="" />
+                                </div>
+                                <div class="ms-2">
+                                    <h6 class="mb-1 font-14">{{ $item['fullname'] }}</h6>
+                                    <p class="mb-0 font-13 text-secondary">
+                                        @if (isset($item['job']))
+                                            {{ $item['job'] }} di {{ $item['company'] }}
+                                        @else
+                                            Belum Bekerja
+                                        @endif
+                                    </p>
+                                </div>
+                                <div class="list-inline d-flex customers-contacts ms-auto">
+                                    <h6>{{ $item['total_followers'] }} Pengikut</h6>
+                                </div>
                             </div>
-                            <div class="ms-2">
-                                <h6 class="mb-1 font-14">Emy Jackson</h6>
-                                <p class="mb-0 font-13 text-secondary">Dosen di Politeknik </p>
-                            </div>
-                            <div class="list-inline d-flex customers-contacts ms-auto">
-                                <h6>1000 Pengikut</h6>
-                            </div>
-                        </div>
-                        <div class="customers-list-item d-flex align-items-center border-bottom p-2 cursor-pointer">
-                            <div class="">
-                                <img src="assets/images/avatars/avatar-3.png" class="rounded-circle" width="46"
-                                    height="46" alt="" />
-                            </div>
-                            <div class="ms-2">
-                                <h6 class="mb-1 font-14">Emy Jackson</h6>
-                                <p class="mb-0 font-13 text-secondary">Dosen di Politeknik </p>
-                            </div>
-                            <div class="list-inline d-flex customers-contacts ms-auto">
-                                <h6>1000 Pengikut</h6>
-                            </div>
-                        </div>
-                        <div class="customers-list-item d-flex align-items-center border-bottom p-2 cursor-pointer">
-                            <div class="">
-                                <img src="assets/images/avatars/avatar-3.png" class="rounded-circle" width="46"
-                                    height="46" alt="" />
-                            </div>
-                            <div class="ms-2">
-                                <h6 class="mb-1 font-14">Emy Jackson</h6>
-                                <p class="mb-0 font-13 text-secondary">Dosen di Politeknik </p>
-                            </div>
-                            <div class="list-inline d-flex customers-contacts ms-auto">
-                                <h6>1000 Pengikut</h6>
-                            </div>
-                        </div>
-                        <div class="customers-list-item d-flex align-items-center border-bottom p-2 cursor-pointer">
-                            <div class="">
-                                <img src="assets/images/avatars/avatar-3.png" class="rounded-circle" width="46"
-                                    height="46" alt="" />
-                            </div>
-                            <div class="ms-2">
-                                <h6 class="mb-1 font-14">Emy Jackson</h6>
-                                <p class="mb-0 font-13 text-secondary">Dosen di Politeknik </p>
-                            </div>
-                            <div class="list-inline d-flex customers-contacts ms-auto">
-                                <h6>1000 Pengikut</h6>
-                            </div>
-                        </div>
-                        <div class="customers-list-item d-flex align-items-center border-bottom p-2 cursor-pointer">
-                            <div class="">
-                                <img src="assets/images/avatars/avatar-3.png" class="rounded-circle" width="46"
-                                    height="46" alt="" />
-                            </div>
-                            <div class="ms-2">
-                                <h6 class="mb-1 font-14">Emy Jackson</h6>
-                                <p class="mb-0 font-13 text-secondary">Dosen di Politeknik </p>
-                            </div>
-                            <div class="list-inline d-flex customers-contacts ms-auto">
-                                <h6>1000 Pengikut</h6>
-                            </div>
-                        </div>
-                        <div class="customers-list-item d-flex align-items-center border-bottom p-2 cursor-pointer">
-                            <div class="">
-                                <img src="assets/images/avatars/avatar-3.png" class="rounded-circle" width="46"
-                                    height="46" alt="" />
-                            </div>
-                            <div class="ms-2">
-                                <h6 class="mb-1 font-14">Emy Jackson</h6>
-                                <p class="mb-0 font-13 text-secondary">Dosen di Politeknik </p>
-                            </div>
-                            <div class="list-inline d-flex customers-contacts ms-auto">
-                                <h6>1000 Pengikut</h6>
-                            </div>
-                        </div>
-                        <div class="customers-list-item d-flex align-items-center border-bottom p-2 cursor-pointer">
-                            <div class="">
-                                <img src="assets/images/avatars/avatar-3.png" class="rounded-circle" width="46"
-                                    height="46" alt="" />
-                            </div>
-                            <div class="ms-2">
-                                <h6 class="mb-1 font-14">Emy Jackson</h6>
-                                <p class="mb-0 font-13 text-secondary">Dosen di Politeknik </p>
-                            </div>
-                            <div class="list-inline d-flex customers-contacts ms-auto">
-                                <h6>1000 Pengikut</h6>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -191,44 +122,33 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="">
-                                                    <img src="assets/images/avatars/avatar-1.png" class="rounded-circle"
-                                                        width="46" height="46" alt="" />
+                                    @foreach ($topSalary as $item)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="">
+                                                        <img src="{{ $item['image'] }}" class="rounded-circle"
+                                                            width="46" height="46" alt="" />
+                                                    </div>
+                                                    <div class="ms-2">
+                                                        <h6 class="mb-1 font-14">{{ $item['fullname'] }}</h6>
+                                                        <p class="mb-0 font-13 text-secondary">{{ $item['last_position'] }}
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                                <div class="ms-2">
-                                                    <h6 class="mb-1 font-14">Sumariono</h6>
-                                                    <p class="mb-0 font-13 text-secondary">Manager</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>PT Mayora Tbk.</td>
-                                        <td>50.000.000</td>
-                                        <td>
-                                            <div class="badge rounded-pill bg-success w-100">Terverifikasi</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="">
-                                                    <img src="assets/images/avatars/avatar-1.png" class="rounded-circle"
-                                                        width="46" height="46" alt="" />
-                                                </div>
-                                                <div class="ms-2">
-                                                    <h6 class="mb-1 font-14">Mariyono</h6>
-                                                    <p class="mb-0 font-13 text-secondary">Dokter</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>RS Medika Sejahtera</td>
-                                        <td>20.000.000</td>
-                                        <td>
-                                            <div class="badge rounded-pill bg-danger w-100">Belum Terverifikasi</div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td>{{ $item['company'] }}</td>
+                                            <td>{{ number_format($item['highest_salary'], 0, '.', ',') }}</td>
+                                            <td>
+                                                @if ($item['account_status'])
+                                                    <div class="badge rounded-pill bg-success w-100">Terverifikasi</div>
+                                                @else
+                                                    <div class="badge rounded-pill bg-danger w-100">Belum Terverifikasi
+                                                    </div>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -239,19 +159,18 @@
             </div>
         </div>
     </div>
-
     <script>
         $(function() {
             var options = {
                 series: [{
                     name: '0 Bulan',
-                    data: [31, 40, 68, 31, 92]
+                    data: {!! json_encode($lastFive['zero']) !!}
                 }, {
                     name: '6 Bulan',
-                    data: [11, 82, 45, 80, 34]
+                    data: {!! json_encode($lastFive['six']) !!}
                 }, {
                     name: '12 Bulan',
-                    data: [11, 82, 70, 80, 34]
+                    data: {!! json_encode($lastFive['twelve']) !!}
                 }],
                 chart: {
                     foreColor: '#9ba7b2',
@@ -282,9 +201,7 @@
                 },
                 xaxis: {
                     type: 'year',
-                    categories: ["Angkatan 2019", " Angkatan 2020", "Angkatan 2021", "Angkatan 2022",
-                        "Angkatan 2023"
-                    ]
+                    categories: {!! json_encode($lastFive['categories']) !!}
                 },
                 tooltip: {
                     x: {
@@ -334,16 +251,7 @@
                 series: [{
                     name: "Users",
                     colorByPoint: !0,
-                    data: [{
-                        name: "Manajemen Informatika",
-                        y: 120
-                    }, {
-                        name: "Teknik Informatika",
-                        y: 220
-                    }, {
-                        name: "Teknik Komputer",
-                        y: 150
-                    }]
+                    data: {!! json_encode($totalPerStudyProgram) !!}
                 }],
                 responsive: {
                     rules: [{
@@ -393,7 +301,7 @@
                     },
                 },
                 subtitle: {
-                    text: "Total : 1000 Pengguna"
+                    text: "Total : {{ $total }} Pengguna"
                 },
                 legend: {
                     enabled: !1
@@ -414,179 +322,9 @@
                 series: [{
                     name: "Jumlah Pendaftar",
                     colorByPoint: true,
-                    data: [{
-                            name: "Januari",
-                            y: 3,
-                        },
-                        {
-                            name: "Februari",
-                            y: 40,
-                        },
-                        {
-                            name: "Maret",
-                            y: 25,
-                        },
-                        {
-                            name: "April",
-                            y: 13,
-                        },
-                        {
-                            name: "Mei",
-                            y: 20,
-                        },
-                        {
-                            name: "Juni",
-                            y: 30,
-                        },
-                        {
-                            name: "Juli",
-                            y: 15,
-                        },
-                        {
-                            name: "Agustus",
-                            y: 10,
-                        },
-                        {
-                            name: "September",
-                            y: 18,
-                        },
-                        {
-                            name: "Oktober",
-                            y: 220,
-                            colorByPoint: false,
-
-                        },
-                        {
-                            name: "November",
-                            y: 33,
-                        },
-                        {
-                            name: "Desember",
-                            y: 45,
-                        },
-                    ],
+                    data: {!! json_encode($enrollProgres) !!}
                 }],
-
             })
         });
-    </script>
-    <script>
-        var map;
-
-        function initMap() {
-            var map = new google.maps.Map(document.getElementById('style-map'), {
-                center: {
-                    lat: 40.674,
-                    lng: -73.945
-                },
-                zoom: 12,
-                styles: [{
-                    elementType: 'geometry',
-                    stylers: [{
-                        color: '#242f3e'
-                    }]
-                }, {
-                    elementType: 'labels.text.stroke',
-                    stylers: [{
-                        color: '#242f3e'
-                    }]
-                }, {
-                    elementType: 'labels.text.fill',
-                    stylers: [{
-                        color: '#746855'
-                    }]
-                }, {
-                    featureType: 'administrative.locality',
-                    elementType: 'labels.text.fill',
-                    stylers: [{
-                        color: '#d59563'
-                    }]
-                }, {
-                    featureType: 'poi',
-                    elementType: 'labels.text.fill',
-                    stylers: [{
-                        color: '#d59563'
-                    }]
-                }, {
-                    featureType: 'poi.park',
-                    elementType: 'geometry',
-                    stylers: [{
-                        color: '#263c3f'
-                    }]
-                }, {
-                    featureType: 'poi.park',
-                    elementType: 'labels.text.fill',
-                    stylers: [{
-                        color: '#6b9a76'
-                    }]
-                }, {
-                    featureType: 'road',
-                    elementType: 'geometry',
-                    stylers: [{
-                        color: '#38414e'
-                    }]
-                }, {
-                    featureType: 'road',
-                    elementType: 'geometry.stroke',
-                    stylers: [{
-                        color: '#212a37'
-                    }]
-                }, {
-                    featureType: 'road',
-                    elementType: 'labels.text.fill',
-                    stylers: [{
-                        color: '#9ca5b3'
-                    }]
-                }, {
-                    featureType: 'road.highway',
-                    elementType: 'geometry',
-                    stylers: [{
-                        color: '#746855'
-                    }]
-                }, {
-                    featureType: 'road.highway',
-                    elementType: 'geometry.stroke',
-                    stylers: [{
-                        color: '#1f2835'
-                    }]
-                }, {
-                    featureType: 'road.highway',
-                    elementType: 'labels.text.fill',
-                    stylers: [{
-                        color: '#f3d19c'
-                    }]
-                }, {
-                    featureType: 'transit',
-                    elementType: 'geometry',
-                    stylers: [{
-                        color: '#2f3948'
-                    }]
-                }, {
-                    featureType: 'transit.station',
-                    elementType: 'labels.text.fill',
-                    stylers: [{
-                        color: '#d59563'
-                    }]
-                }, {
-                    featureType: 'water',
-                    elementType: 'geometry',
-                    stylers: [{
-                        color: '#17263c'
-                    }]
-                }, {
-                    featureType: 'water',
-                    elementType: 'labels.text.fill',
-                    stylers: [{
-                        color: '#515c6d'
-                    }]
-                }, {
-                    featureType: 'water',
-                    elementType: 'labels.text.stroke',
-                    stylers: [{
-                        color: '#17263c'
-                    }]
-                }]
-            });
-        }
     </script>
 @endsection

@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
             'gender' => 'male',
             'about' => "second abour",
             'email_verivied' => 1,
-            'kode_prodi' => 55301,
+            'kode_prodi' => 79402,
             'nim' => 'e41212336'
 
         ]);

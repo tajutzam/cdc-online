@@ -29,7 +29,7 @@ class EducationSeeder extends Seeder
                 "strata" => "D4",
                 "jurusan" => "Teknologi Informasi",
                 "prodi" => "Teknik Infomatika",
-                "tahun_masuk" => "2017",
+                "tahun_masuk" => "2020",
                 "tahun_lulus" => "2022",
                 "perguruan" => "Politeknik Negeri Jember"
             ]

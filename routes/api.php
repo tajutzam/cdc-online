@@ -6,6 +6,7 @@ use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\NewsController as ApiNewsController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\QuisionerController;
 use App\Http\Controllers\StudyProgramPublicController;
@@ -110,6 +111,7 @@ Route::put("/user/post/update/{id}", [PostController::class, "updatePost"])->mid
 Route::delete("/user/post/delete/{id}", [PostController::class, "deletePost"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 Route::put("/user/post/update/comment/{id}", [PostController::class, 'updateComment'])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 Route::get("/user/whatsapp", [WhatshappController::class, 'findAll']);
+Route::get("/user/notifications" , [NotificationsController::class , "findAllNotificationsUser"]);
 
 
 Route::post('/user/post/search', [PostController::class, 'findByPosition'])->middleware(TokenMiddleware::class);

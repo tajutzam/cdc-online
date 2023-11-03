@@ -547,16 +547,20 @@ class UserService
 
     public function getTopUser()
     {
-        $data = $this->userModel->with('followers')->get()->toArray();
+        $data = $this->userModel->with('followers', 'jobs')->get()->toArray();
 
         $data = collect($data)->sortByDesc(function ($user) {
             return count($user['followers']);
         })->values()->take(20)->all();
 
         $response = collect($data)->map(function ($user) {
+            $lastJob = collect($user['jobs'])->where('pekerjaan_saatini', 1)->first();
+
             $tempData = $this->castToUserResponseFromArray($user);
             $tempData['followers'] = $user['followers'];
             $tempData['total_followers'] = sizeof($user['followers']);
+            $tempData['job'] = $lastJob ? $lastJob['jabatan'] : null;
+            $tempData['company'] = $lastJob ? $lastJob['perusahaan'] : null;
             return $tempData;
         })->toArray();
         return $response;
@@ -575,7 +579,9 @@ class UserService
                 'fullname' => $user['fullname'],
                 'last_position' => $lastJob ? $lastJob['jabatan'] : null,
                 'highest_salary' => $lastJob ? $lastJob['gaji'] : null,
-                'company' => $lastJob['perusahaan']
+                'company' => $lastJob['perusahaan'],
+                'account_status' => $user['account_status'],
+                'image' => url('/') . '/users/' . $user['foto']
             ];
         })->sortByDesc('highest_salary')->values()->take(20)->toArray();
     }
@@ -966,7 +972,212 @@ class UserService
         }
     }
 
-    public function findByEmail($email){
-        return $this->userModel->where('email' , $email)->first();
+    public function countPerDayActive()
+    {
+        $startDate = now()->startOfWeek(); // Mendapatkan awal minggu (Minggu)
+        $endDate = now()->endOfWeek(); // Mendapatkan akhir minggu (Sabtu)
+
+        $data = [];
+
+        while ($startDate <= $endDate) {
+            $count = $this->userModel
+                ->whereDate('created_at', $startDate->toDateString())
+                ->where('account_status', true)
+                ->with('educations')
+                ->whereHas('educations', function ($educationQuery) {
+                    $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
+                })
+                ->count();
+            $data[$startDate->format('Y-m-d')] = $count;
+
+            $startDate->addDay();
+        }
+        return $data;
     }
+
+    public function countPerDayNonActive()
+    {
+        $startDate = now()->startOfWeek(); // Mendapatkan awal minggu (Minggu)
+        $endDate = now()->endOfWeek(); // Mendapatkan akhir minggu (Sabtu)
+
+        $data = [];
+
+        while ($startDate <= $endDate) {
+            $count = $this->userModel
+                ->whereDate('created_at', $startDate->toDateString())
+                ->where('account_status', false)
+                ->with('educations')
+                ->whereHas('educations', function ($educationQuery) {
+                    $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
+                })
+                ->count();
+            $data[$startDate->format('Y-m-d')] = $count;
+
+            $startDate->addDay();
+        }
+        return $data;
+    }
+
+    public function findByEmail($email)
+    {
+        return $this->userModel->where('email', $email)->first();
+    }
+
+
+    // find user yang sudah bekerja setiap angkatan
+    public function findLastFiveYearsAlumniWhoHaveWorked()
+    {
+        $currentYear = date('Y'); // Tahun saat ini
+        $yearsAgo = $currentYear - 4; // Lima tahun yang lalu
+
+        $users = $this->userModel
+            ->whereHas('educations', function ($query) use ($yearsAgo) {
+                $query->select(DB::raw('MAX(tahun_masuk) as latest_year'))
+                    ->groupBy('user_id')
+                    ->having('latest_year', '>=', $yearsAgo);
+            })
+            ->whereHas('quisioner_level', function ($query) {
+                $query->whereHas('main', function ($mainQuery) {
+                    $mainQuery->orWhere('f8', 'Bekerja (full time/part time)');
+                    $mainQuery->orWhere('f8', 'Wiraswasta');
+                });
+            })
+            ->with([
+                'educations' => function ($query) use ($yearsAgo) {
+                    $query->where('tahun_masuk', '>=', $yearsAgo);
+                },
+                'quisioner_level'
+            ])
+            ->get();
+
+
+        $groupedUsers = $users->groupBy(function ($user) {
+            return $user->educations->first()->tahun_masuk;
+        })->map(function ($users) {
+            $zero = 0;
+            $six = 0;
+            $twelve = 0;
+
+            foreach ($users as $value) {
+                # code...
+                foreach ($value->toArray()['quisioner_level'] as $valueQuisioner) {
+                    # code...
+                    if ($valueQuisioner['level'] == '0') {
+                        $zero++;
+                    } else if ($valueQuisioner['level'] == '6') {
+                        $six++;
+                    } else if ($valueQuisioner['level'] == '12') {
+                        $twelve++;
+                    }
+                }
+            }
+            return [
+                '0' => $zero,
+                '6' => $six,
+                '12' => $twelve
+            ];
+        })->toArray();
+
+        // Tambahkan tahun-tahun yang tidak memiliki data
+        $missingYears = range($currentYear, $yearsAgo);
+        foreach ($missingYears as $year) {
+            if (!isset($groupedUsers[$year])) {
+                $groupedUsers[$year] = [
+                    '0' => 0,
+                    '6' => 0,
+                    '12' => 0
+                ];
+                ; // Tambahkan array kosong
+            }
+        }
+        return $groupedUsers;
+    }
+
+
+
+    public function countUsersPerStudyProgram()
+    {
+        $data = $this->userModel->whereHas('prodi', function ($query) {
+            $query->groupBy('nama_prodi');
+        })
+            ->with('prodi')
+            ->get()
+            ->toArray();
+
+        // Inisialisasi array untuk menyimpan jumlah data per program studi
+        $totalPerStudyProgram = [];
+
+        // Mengelompokkan data berdasarkan program studi
+        foreach ($data as $user) {
+            $namaProdi = $user['prodi']['nama_prodi'];
+
+            // Jika program studi belum ada dalam array, inisialisasi dengan 1
+            if (!isset($jumlahDataPerProdi[$namaProdi])) {
+                $totalPerStudyProgram[$namaProdi] = 1;
+            } else {
+                // Jika program studi sudah ada dalam array, tambahkan 1 ke jumlahnya
+                $totalPerStudyProgram[$namaProdi]++;
+            }
+        }
+        $result = [];
+        foreach ($totalPerStudyProgram as $key => $count) {
+            $temp = [
+                'name' => $key,
+                'y' => $count
+            ];
+            array_push($result, $temp);
+        }
+        // Hasilnya akan berisi jumlah data per program studi
+        return $result;
+    }
+
+    public function applicationEnrollmentProgress()
+    {
+
+        $year = 2023; // Ganti dengan tahun yang sesuai
+        $monthlyCounts = User::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        $months = [
+            1 => 'January',
+            2 => 'February',
+            3 => 'March',
+            4 => 'April',
+            5 => 'May',
+            6 => 'June',
+            7 => 'July',
+            8 => 'August',
+            9 => 'September',
+            10 => 'October',
+            11 => 'November',
+            12 => 'December',
+        ];
+
+        $monthlyData = [];
+        foreach ($monthlyCounts as $count) {
+            $monthName = $months[$count->month];
+            $monthlyData[$monthName] = $count->count;
+        }
+
+        // Tampilkan jumlah pengguna yang mendaftar pada setiap bulan
+        $result = [];
+        foreach ($months as $monthNumber => $monthName) {
+            $count = isset($monthlyData[$monthName]) ? $monthlyData[$monthName] : 0;
+            $temp = [
+                'name' => $monthName,
+                'y' => $count
+            ];
+            array_push($result, $temp);
+        }
+        return $result;
+    }
+
+    public function totalUsers()
+    {
+        return $this->userModel->count();
+    }
+
 }

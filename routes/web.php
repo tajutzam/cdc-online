@@ -51,7 +51,7 @@ Route::get('/', function () {
     return view('landing-page.index');
 })->name('/');
 
-Route::get('/landing-page/blog', [NewsController::class , 'findAllBlog'])->name('blog');
+Route::get('/landing-page/blog', [NewsController::class, 'findAllBlog'])->name('blog');
 
 Route::get('/landing-page/single-blog', function () {
     return view('landing-page.blog-single');
@@ -63,6 +63,10 @@ Route::get('/landing-page/portofolio', function () {
 
 Route::get('/forgotpassword/{token}', [WebAuthController::class, "recovery"])->name('forgotpassword');
 Route::put("/forgotpassword/{token}", [WebAuthController::class, 'updatePassword'])->name('forgotpassword-put');
+
+Route::get('/succeschange', function () {
+    return view('admin.auth.successchange');
+})->name('successchange');
 
 Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group(
     function () {
@@ -89,7 +93,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::post('login', [WebAuthController::class, 'loginAdmin'])->name('admin-login')->middleware(AllowUnauthenticated::class)->withoutMiddleware(IsAdminMiddleware::class);
 
     Route::post("logout", [AdminController::class, "logout"])->name('admin-logout');
-
+    Route::get('', [AdminController::class, 'dashboard']);
     Route::get('/manage-admin', [AdminController::class, 'manageAdmin'])->name('manage-admin');
     Route::post("/manage-admin", [AdminController::class, 'register'])->name('manage-admin-post');
     Route::delete("/manage-admin", [AdminController::class, 'deleteAdmin'])->name('manage-admin-delete');
@@ -154,6 +158,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
         Route::get("/detail/{level}/{userId}", [QuisionerController::class, 'detailQuisioner'])->name('detail-quisioner');
         Route::post("export", [QuisionerController::class, "export"])->name('export');
         Route::post("import", [QuisionerController::class, 'import'])->name('import');
+        Route::post("export-pdf", [QuisionerController::class, "exportPdf"])->name('export-pdf');
     });
 
 });

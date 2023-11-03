@@ -21,7 +21,8 @@
                             </div>
 
                             <div class="ms-auto">
-                                <p class="mb-0 font-13 text-success ">+{{$data['count']['actviceWeek']}} Alumni <i class='bx bxs-user-account font-20'></i>
+                                <p class="mb-0 font-13 text-success ">+{{ $data['count']['actviceWeek'] }} Alumni <i
+                                        class='bx bxs-user-account font-20'></i>
                                 </p>
                                 <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
                             </div>
@@ -41,7 +42,8 @@
                             </div>
 
                             <div class="ms-auto">
-                                <p class="mb-0 font-13 text-danger ">+{{$data['count']['nonActiveWeek']}} Alumni <i class='bx bxs-user-account font-20'></i>
+                                <p class="mb-0 font-13 text-danger ">+{{ $data['count']['nonActiveWeek'] }} Alumni <i
+                                        class='bx bxs-user-account font-20'></i>
                                 </p>
                                 <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
                             </div>
@@ -176,7 +178,7 @@
             var e = {
                 series: [{
                     name: "Verify Alumni",
-                    data: [332, 540, 160, 240, 160, 671, 355, 671, 414, 555, 257, 901, 613]
+                    data: {!! json_encode($active) !!}
                 }],
                 chart: {
                     type: "area",
@@ -249,7 +251,7 @@
             var e = {
                 series: [{
                     name: "Not Verify Alumni",
-                    data: [332, 540, 160, 240, 160, 671, 355, 671, 414, 555, 257, 901, 613]
+                    data: {!! json_encode($nonActive) !!}
                 }],
                 chart: {
                     type: "area",

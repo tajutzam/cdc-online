@@ -1,6 +1,12 @@
 @extends('layouts.app')
 @section('content')
     <div class="container-fluid">
+        @if ($errors->any())
+            <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+                <div class="text-white">{{ $errors->first() }}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="row">
             <div class="mt-4">
                 <div class="col p-0">
@@ -21,8 +27,8 @@
             <div class="card">
                 <div class="card-body p-0">
                     <div class="row ps-3">
-
                         <form action="{{ route('notifications-post') }}" method="post">
+                            <input type="text" name="users" value="{{ json_encode($data) }}" hidden>
                             <button type="submit" class="btn btn-success btn-sm mb-3 w-auto m-3"> <i
                                     class="fa fa-paper-plane pb-1" style="color: white"></i><span
                                     class="text-decoration-none">Kirim Semua</button>

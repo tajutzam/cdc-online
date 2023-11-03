@@ -23,6 +23,7 @@ class GrupWhatsappController extends Controller
     public function grupWhatsapp()
     {
         $data = $this->whatshappsService->findAll();
+        $data['countPerDay'] = array_values($data['countPerDay']);
         return view('admin.grup-whatsapp', ['data' => $data]);
     }
 

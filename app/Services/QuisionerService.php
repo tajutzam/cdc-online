@@ -473,9 +473,6 @@ class QuisionerService
         ], 404);
     }
 
-
-
-
     private function findQuisionerLevelByUserId($userId)
     {
         $quisioner = $this->quisionerLevel->where('user_id', $userId)->orderBy('created_at', 'desc')->first();
@@ -490,6 +487,14 @@ class QuisionerService
     {
 
         $users = $this->user->has('quisioner_level')
+            ->has('quisioner_level.identity')
+            ->has('quisioner_level.main')
+            ->has('quisioner_level.furthe_study')
+            ->has('quisioner_level.studymethod')
+            ->has('quisioner_level.startsearchjobs')
+            ->has('quisioner_level.howtofindjobs')
+            ->has('quisioner_level.companyapplied')
+            ->has('quisioner_level.jobsuitability')
             ->has('educations') // Filter hanya pengguna yang memiliki pendidikan
             ->with('quisioner_level', function ($query) {
                 $query->with('identity');
@@ -501,6 +506,7 @@ class QuisionerService
                 $query->with('howtofindjobs');
                 $query->with('companyapplied');
                 $query->with('jobsuitability');
+
             })
             ->with('educations')
             ->with('prodi')
@@ -509,7 +515,29 @@ class QuisionerService
 
 
 
-        $userFilled = $this->user->has('quisioner_level')->count();
+        $data['countPerDay'] = [];
+        $startDate = now()->startOfWeek(); // Mendapatkan awal minggu (Minggu)
+        $endDate = now()->endOfWeek(); // Mendapatkan akhir minggu (Sabtu)
+
+        while ($startDate <= $endDate) {
+            $count = 0; // Inisialisasi jumlah kuesioner menjadi 0
+            foreach ($users as $user) {
+                $quizzes = $user['quisioner_level']; // Mengambil data kuesioner pengguna
+                foreach ($quizzes as $quiz) {
+                    $quizDate = Carbon::parse($quiz['created_at'])->startOfDay();
+
+                    // Memeriksa apakah tanggal kuesioner berada dalam rentang minggu yang diinginkan
+                    if ($quizDate->format('Y-m-d') == $startDate->format('Y-m-d')) {
+                        $count++;
+                    }
+                }
+            }
+            $data['countPerDay'][$startDate->format('Y-m-d')] = $count;
+            $startDate->addDay();
+        }
+
+
+        $userFilled = $this->user->has('quisioner_level')->has('quisioner_level.identity')->has('quisioner_level.main')->has('quisioner_level.furthe_study')->has('quisioner_level.competence')->has('quisioner_level.studymethod')->has('quisioner_level.startsearchjobs')->has('quisioner_level.howtofindjobs')->has('quisioner_level.companyapplied')->has('quisioner_level.jobsuitability')->count();
         $userBlank = $this->user->whereDoesntHave('quisioner_level')->count();
 
         $data['quisioners'] = collect($users)->filter(function ($user) use ($tahun, $bulan) {
@@ -545,6 +573,7 @@ class QuisionerService
         })->toArray();
         $data['filled'] = $userFilled;
         $data['blank'] = $userBlank;
+        $data['countPerDay'] = array_values($data['countPerDay']); // hapus , key tanggal
         return $data;
     }
     public function exrportToExcel($tahunBulan)
@@ -589,123 +618,127 @@ class QuisionerService
     public function updateFromExcel($keys, $data)
     {
         Db::beginTransaction();
+
         foreach ($data as $value) {
             $tempData = $this->quisionerLevel->where('user_id', $value['id user'])->where('level', strval($value['level']))->first();
-            $idIdentitas = $tempData->identitas_section;
-            $idMain = $tempData->main_section;
-            $idFurthe = $tempData->furthe_study_section;
-            $idCompetence = $tempData->competent_level_section;
-            $idStudyMethod = $tempData->study_method_section;
-            $idJobsStreet = $tempData->jobs_street_section;
-            $idHowFindJobs = $tempData->how_find_jobs_section;
-            $idCompanyApplied = $tempData->commpany_applied_section;
-            $idJobSuitability = $tempData->job_suitability_section;
-            try {
-                //code...
-                $this->updateIdentitas($idIdentitas, $value);
-                $this->updateMain($idMain, array_intersect_key($value, array_flip([
-                    'f8',
-                    'f504',
-                    'f502',
-                    'f505',
-                    'f5a1',
-                    'f5a2',
-                    'f506',
-                    'f1101',
-                    'f5b',
-                    'f5c',
-                    'f5d',
-                ])));
-                $this->updateFrutheStudy($idFurthe, array_intersect_key($value, array_flip([
-                    'f18a',
-                    'f18b',
-                    'f18d',
-                    'f1201',
-                    'f1202',
-                    'f14',
-                    'f15',
-                ])));
-                $this->updateCompetence($idCompetence, array_intersect_key($value, array_flip([
-                    'f1761',
-                    'f1762',
-                    'f1763',
-                    'f1764',
-                    'f1765',
-                    'f1766',
-                    'f1767',
-                    'f1768',
-                    'f1769',
-                    'f1770',
-                    'f1771',
-                    'f1772',
-                    'f1773',
-                    'f1774',
-                ])));
-                $this->updateStudyMethod($idStudyMethod, array_intersect_key($value, array_flip([
-                    'f21',
-                    'f22',
-                    'f23',
-                    'f24',
-                    'f25',
-                    'f26',
-                    'f27',
-                ])));
-                $this->updateJobsStreet($idJobsStreet, array_intersect_key($value, array_flip([
-                    'f301',
-                    'f302',
-                    'f303',
-                ])));
-                $this->updateHowFindJob($idHowFindJobs, array_intersect_key($value, array_flip([
-                    'f401',
-                    'f402',
-                    'f403',
-                    'f404',
-                    'f405',
-                    'f406',
-                    'f407',
-                    'f408',
-                    'f409',
-                    'f410',
-                    'f411',
-                    'f412',
-                    'f413',
-                    'f414',
-                    'f415',
-                    'f416',
-                ])));
+            if (isset($tempData)) {
+                $idIdentitas = $tempData->identitas_section;
+                $idMain = $tempData->main_section;
+                $idFurthe = $tempData->furthe_study_section;
+                $idCompetence = $tempData->competent_level_section;
+                $idStudyMethod = $tempData->study_method_section;
+                $idJobsStreet = $tempData->jobs_street_section;
+                $idHowFindJobs = $tempData->how_find_jobs_section;
+                $idCompanyApplied = $tempData->commpany_applied_section;
+                $idJobSuitability = $tempData->job_suitability_section;
+                try {
+                    //code...
+                    $this->updateIdentitas($idIdentitas, $value);
+                    $this->updateMain($idMain, array_intersect_key($value, array_flip([
+                        'f8',
+                        'f504',
+                        'f502',
+                        'f505',
+                        'f5a1',
+                        'f5a2',
+                        'f506',
+                        'f1101',
+                        'f5b',
+                        'f5c',
+                        'f5d',
+                    ])));
+                    $this->updateFrutheStudy($idFurthe, array_intersect_key($value, array_flip([
+                        'f18a',
+                        'f18b',
+                        'f18d',
+                        'f1201',
+                        'f1202',
+                        'f14',
+                        'f15',
+                    ])));
+                    $this->updateCompetence($idCompetence, array_intersect_key($value, array_flip([
+                        'f1761',
+                        'f1762',
+                        'f1763',
+                        'f1764',
+                        'f1765',
+                        'f1766',
+                        'f1767',
+                        'f1768',
+                        'f1769',
+                        'f1770',
+                        'f1771',
+                        'f1772',
+                        'f1773',
+                        'f1774',
+                    ])));
+                    $this->updateStudyMethod($idStudyMethod, array_intersect_key($value, array_flip([
+                        'f21',
+                        'f22',
+                        'f23',
+                        'f24',
+                        'f25',
+                        'f26',
+                        'f27',
+                    ])));
+                    $this->updateJobsStreet($idJobsStreet, array_intersect_key($value, array_flip([
+                        'f301',
+                        'f302',
+                        'f303',
+                    ])));
+                    $this->updateHowFindJob($idHowFindJobs, array_intersect_key($value, array_flip([
+                        'f401',
+                        'f402',
+                        'f403',
+                        'f404',
+                        'f405',
+                        'f406',
+                        'f407',
+                        'f408',
+                        'f409',
+                        'f410',
+                        'f411',
+                        'f412',
+                        'f413',
+                        'f414',
+                        'f415',
+                        'f416',
+                    ])));
 
-                $this->updateCompanyApplie($idCompanyApplied, array_intersect_key($value, array_flip([
-                    'f6',
-                    'f7',
-                    'f7a',
-                    'f1001',
-                    'f1002',
-                ])));
+                    $this->updateCompanyApplie($idCompanyApplied, array_intersect_key($value, array_flip([
+                        'f6',
+                        'f7',
+                        'f7a',
+                        'f1001',
+                        'f1002',
+                    ])));
 
-                $this->updateJobSuitability($idJobSuitability, array_intersect_key($value, array_flip([
-                    'f1601',
-                    'f1602',
-                    'f1603',
-                    'f1604',
-                    'f1605',
-                    'f1606',
-                    'f1607',
-                    'f1608',
-                    'f1609',
-                    'f1610',
-                    'f1611',
-                    'f1612',
-                    'f1613',
-                    'f1614',
-                ])));
-            } catch (\Throwable $th) {
-                //throw $th;
-                throw new WebException($th->getMessage());
+                    $this->updateJobSuitability($idJobSuitability, array_intersect_key($value, array_flip([
+                        'f1601',
+                        'f1602',
+                        'f1603',
+                        'f1604',
+                        'f1605',
+                        'f1606',
+                        'f1607',
+                        'f1608',
+                        'f1609',
+                        'f1610',
+                        'f1611',
+                        'f1612',
+                        'f1613',
+                        'f1614',
+                    ])));
+                } catch (\Throwable $th) {
+                    //throw $th;
+                    throw new WebException($th->getMessage());
+                }
+            } else {
+                throw new WebException("Ops , Data User Pada Excel Kamu Tidak Ditemukan Silahkan Masukan Excel Yang Valid");
             }
         }
         return true;
     }
-
 
     private function updateIdentitas($idIdentitas, $data)
     {

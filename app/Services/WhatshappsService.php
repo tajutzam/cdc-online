@@ -31,7 +31,21 @@ class WhatshappsService
         $data['countLastWeek'] = $this->whatsapps
             ->whereDate('created_at', '>=', $oneWeekAgo)
             ->count();
+        // Mengambil data WhatsApp dari satu minggu yang lalu hingga saat ini
 
+        $data['countPerDay'] = [];
+        $startDate = now()->startOfWeek(); // Mendapatkan awal minggu (Minggu)
+        $endDate = now()->endOfWeek(); // Mendapatkan akhir minggu (Sabtu)
+
+        while ($startDate <= $endDate) {
+            $count = $this->whatsapps
+                ->whereDate('created_at', $startDate->toDateString())
+                ->count();
+
+            $data['countPerDay'][$startDate->format('Y-m-d')] = $count;
+
+            $startDate->addDay();
+        }
         return $data;
     }
 

@@ -18,9 +18,11 @@ class NewsService
 {
 
     private News $news;
+    private NotificationService $notificationService;
 
     public function __construct()
     {
+        $this->notificationService = new NotificationService();
         $this->news = new News();
     }
 
@@ -44,7 +46,7 @@ class NewsService
         // Create an array to store the counts for each day
         $countsByDayActive = [];
         $countsByDayNonActive = [];
-        $countsAll  = [];
+        $countsAll = [];
 
 
         // Loop through each day within the last week
@@ -91,7 +93,7 @@ class NewsService
             // Move to the next day
             $currentDate->addDay();
         }
-       
+
         return [
             'data' => $result,
             'count_by_active' => $countsByDayActive,
@@ -143,6 +145,7 @@ class NewsService
             'active' => true,
         ]);
         if (isset($created)) {
+            $this->notificationService->sendNotificationsNews($created->title, $created->id);
             DB::commit();
             return [
                 'status' => true,

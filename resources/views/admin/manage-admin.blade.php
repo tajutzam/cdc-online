@@ -15,7 +15,7 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 <p class="mb-0 text-secondary">Total Admin</p>
-                                <h4 class="my-1">10</h4>
+                                <h4 class="my-1">{{sizeof($data)}}</h4>
                             </div>
                             <div class="widgets-icons bg-light-success text-success ms-auto"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
