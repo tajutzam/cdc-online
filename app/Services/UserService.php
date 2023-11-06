@@ -628,6 +628,9 @@ class UserService
         $userFollower = $this->userModel->where('id', $userId)->first();
         DB::beginTransaction();
         if (isset($userFollower)) {
+            if ($idUserLogin == $userId) {
+                throw new BadRequestException("Ops , Kamu tidak bisa mengikuti diri sendiri");
+            }
             try {
                 $isFolowed = $this->followed->where('user_id', $userId)->where('folowed_id', $idUserLogin)->first();
                 if (isset($isFolowed)) {
@@ -1048,6 +1051,79 @@ class UserService
                 },
                 'quisioner_level'
             ])
+            ->get();
+
+
+        $groupedUsers = $users->groupBy(function ($user) {
+            return $user->educations->first()->tahun_masuk;
+        })->map(function ($users) {
+            $zero = 0;
+            $six = 0;
+            $twelve = 0;
+
+            foreach ($users as $value) {
+                # code...
+                foreach ($value->toArray()['quisioner_level'] as $valueQuisioner) {
+                    # code...
+                    if ($valueQuisioner['level'] == '0') {
+                        $zero++;
+                    } else if ($valueQuisioner['level'] == '6') {
+                        $six++;
+                    } else if ($valueQuisioner['level'] == '12') {
+                        $twelve++;
+                    }
+                }
+            }
+            return [
+                '0' => $zero,
+                '6' => $six,
+                '12' => $twelve
+            ];
+        })->toArray();
+
+        // Tambahkan tahun-tahun yang tidak memiliki data
+        $missingYears = range($currentYear, $yearsAgo);
+        foreach ($missingYears as $year) {
+            if (!isset($groupedUsers[$year])) {
+                $groupedUsers[$year] = [
+                    '0' => 0,
+                    '6' => 0,
+                    '12' => 0
+                ];
+                ; // Tambahkan array kosong
+            }
+        }
+        return $groupedUsers;
+    }
+
+
+    public function findLastFiveYearsAlumniWhoHaveWorkedByStudyProgram($idProdi)
+    {
+        $currentYear = date('Y'); // Tahun saat ini
+        $yearsAgo = $currentYear - 4; // Lima tahun yang lalu
+
+        $users = $this->userModel
+            ->whereHas('educations', function ($query) use ($yearsAgo) {
+                $query->select(DB::raw('MAX(tahun_masuk) as latest_year'))
+                    ->groupBy('user_id')
+                    ->having('latest_year', '>=', $yearsAgo);
+            })
+            ->whereHas('quisioner_level', function ($query) {
+                $query->whereHas('main', function ($mainQuery) {
+                    $mainQuery->orWhere('f8', 'Bekerja (full time/part time)');
+                    $mainQuery->orWhere('f8', 'Wiraswasta');
+                });
+            })
+            ->with([
+                'educations' => function ($query) use ($yearsAgo) {
+                    $query->where('tahun_masuk', '>=', $yearsAgo);
+                },
+                'quisioner_level'
+            ])
+            ->where(
+                'kode_prodi',
+                $idProdi
+            )
             ->get();
 
 

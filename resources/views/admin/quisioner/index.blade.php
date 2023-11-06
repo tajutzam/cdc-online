@@ -188,7 +188,6 @@
                                             <th style="text-align: center">Detail</th>
                                         </tr>
                                     </thead>
-
                                     <tbody>
                                         @foreach ($data['quisioners'] as $item)
                                             <tr>
@@ -253,7 +252,8 @@
             <x-slot name="body">
                 <form action="{{ route('export') }}" method="post">
                     <label for="tahun-level-excel">Tahun Level Quisioner</label>
-                    <select class="form-select form-select-sm mb-3" aria-label="Large select example" name="tahun" id="tahun-level-excel">
+                    <select class="form-select form-select-sm mb-3" aria-label="Large select example" name="tahun"
+                        id="tahun-level-excel">
                         @php
                             $currentYear = date('Y');
                         @endphp

@@ -1,6 +1,5 @@
 @extends('prodi-layouts.app')
 
-
 @section('content')
     <div class="container-fluid">
         <div class="row">
@@ -22,7 +21,8 @@
         </div>
         <div class="row">
             <div class="col-sm-12 pb-2 text-start">
-                <h2> Data Pribadi </h2>
+                <h2> Data Pribadi </h2> <span class="badge text-bg-success"> Level
+                    {{ $data['quisioner_level'][0]['level'] }} Bulan</span>
             </div>
         </div>
         <div class="row">
@@ -37,40 +37,21 @@
                                         <path
                                             d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                     </svg>
-                                    Marni bin Marsudi
+                                    {{ $data['fullname'] }}
                                 </h4>
                             </div>
                             <div class="col-sm-6 text-end">
-                                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                    <!-- Tombol-tombol dengan tautan -->
-                                    <button type="button" class="btn btn-danger  " id="bulan-0">
-                                        <a href="?bulan=0" style="color: white; text-decoration: none">0 Bulan</a>
-                                    </button>
-
-                                    <button type="button" class="btn btn-warning" id="bulan-6">
-                                        <a href="?bulan=6" style="color: white; text-decoration: none">6 Bulan</a>
-                                    </button>
-
-                                    <button type="button" class="btn btn-success" id="bulan-12">
-                                        <a href="?bulan=12" style="color: white; text-decoration: none">12 Bulan</a>
-                                    </button>
-
-
-                                </div>
+                                <button class="btn btn-primary btn-sm">Update</button>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-sm-12">
-
                 <div class="card">
                     <div class="col">
-
                         <div class="card-body">
                             <ul class="nav nav-tabs nav-primary" role="tablist">
                                 <li class="nav-item" role="presentation">
@@ -182,18 +163,23 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Kode Pertanyaan</td>
-                                                    <td>Jawaban</td>
-                                                    <td>
-                                                        <div class="col-6 ">
-                                                            <a href="" class="update-detail-btn"
-                                                                data-bs-target="#update-detail" data-bs-toggle="modal"><i
-                                                                    class="fa-solid fa-pen-to-square"
-                                                                    style="color: #005eff;"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @if (isset($data['quisioner_level'][0]['identity']))
+                                                    @foreach ($data['quisioner_level'][0]['identity'] as $key => $item)
+                                                        <tr>
+                                                            <td>{{ $key }}</td>
+                                                            <td>{{ $item }}</td>
+                                                            <td>
+                                                                <div class="col-6 ">
+                                                                    <a href="" class="update-detail-btn"
+                                                                        data-bs-target="#update-detail"
+                                                                        data-bs-toggle="modal"><i
+                                                                            class="fa-solid fa-pen-to-square"
+                                                                            style="color: #005eff;"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -211,18 +197,23 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Kode Pertanyaan</td>
-                                                    <td>Jawaban</td>
-                                                    <td>
-                                                        <div class="col-6 ">
-                                                            <a href="" class="update-detail-btn"
-                                                                data-bs-target="#update-detail" data-bs-toggle="modal"> <i
-                                                                    class="fa-solid fa-pen-to-square"
-                                                                    style="color:#005eff;"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @if (isset($data['quisioner_level'][0]['main']))
+                                                    @foreach ($data['quisioner_level'][0]['main'] as $key => $item)
+                                                        <tr>
+                                                            <td>{{ $key }}</td>
+                                                            <td>{{ $item }}</td>
+                                                            <td>
+                                                                <div class="col-6 ">
+                                                                    <a href="" class="update-detail-btn"
+                                                                        data-bs-target="#update-detail"
+                                                                        data-bs-toggle="modal"><i
+                                                                            class="fa-solid fa-pen-to-square"
+                                                                            style="color: #005eff;"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -240,18 +231,23 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Kode Pertanyaan</td>
-                                                    <td>Jawaban</td>
-                                                    <td>
-                                                        <div class="col-6 ">
-                                                            <a href="" class="update-detail-btn"
-                                                                data-bs-target="#update-detail" data-bs-toggle="modal"> <i
-                                                                    class="fa-solid fa-pen-to-square"
-                                                                    style="color:#005eff;"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @if (isset($data['quisioner_level'][0]['furthe_study']))
+                                                    @foreach ($data['quisioner_level'][0]['furthe_study'] as $key => $item)
+                                                        <tr>
+                                                            <td>{{ $key }}</td>
+                                                            <td>{{ $item }}</td>
+                                                            <td>
+                                                                <div class="col-6 ">
+                                                                    <a href="" class="update-detail-btn"
+                                                                        data-bs-target="#update-detail"
+                                                                        data-bs-toggle="modal"><i
+                                                                            class="fa-solid fa-pen-to-square"
+                                                                            style="color: #005eff;"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -269,18 +265,23 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Kode Pertanyaan</td>
-                                                    <td>Jawaban</td>
-                                                    <td>
-                                                        <div class="col-6 ">
-                                                            <a href="" class="update-detail-btn"
-                                                                data-bs-target="#update-detail" data-bs-toggle="modal"> <i
-                                                                    class="fa-solid fa-pen-to-square"
-                                                                    style="color:#005eff;"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @if (isset($data['quisioner_level'][0]['competence']))
+                                                    @foreach ($data['quisioner_level'][0]['competence'] as $key => $item)
+                                                        <tr>
+                                                            <td>{{ $key }}</td>
+                                                            <td>{{ $item }}</td>
+                                                            <td>
+                                                                <div class="col-6 ">
+                                                                    <a href="" class="update-detail-btn"
+                                                                        data-bs-target="#update-detail"
+                                                                        data-bs-toggle="modal"><i
+                                                                            class="fa-solid fa-pen-to-square"
+                                                                            style="color: #005eff;"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -298,18 +299,23 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Kode Pertanyaan</td>
-                                                    <td>Jawaban</td>
-                                                    <td>
-                                                        <div class="col-6 ">
-                                                            <a href="" class="update-detail-btn"
-                                                                data-bs-target="#update-detail" data-bs-toggle="modal"> <i
-                                                                    class="fa-solid fa-pen-to-square"
-                                                                    style="color:#005eff;"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @if (isset($data['quisioner_level'][0]['studymethod']))
+                                                    @foreach ($data['quisioner_level'][0]['studymethod'] as $key => $item)
+                                                        <tr>
+                                                            <td>{{ $key }}</td>
+                                                            <td>{{ $item }}</td>
+                                                            <td>
+                                                                <div class="col-6 ">
+                                                                    <a href="" class="update-detail-btn"
+                                                                        data-bs-target="#update-detail"
+                                                                        data-bs-toggle="modal"><i
+                                                                            class="fa-solid fa-pen-to-square"
+                                                                            style="color: #005eff;"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -327,18 +333,23 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Kode Pertanyaan</td>
-                                                    <td>Jawaban</td>
-                                                    <td>
-                                                        <div class="col-6 ">
-                                                            <a href="" class="update-detail-btn"
-                                                                data-bs-target="#update-detail" data-bs-toggle="modal"> <i
-                                                                    class="fa-solid fa-pen-to-square"
-                                                                    style="color:#005eff;"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @if (isset($data['quisioner_level'][0]['startsearchjobs']))
+                                                    @foreach ($data['quisioner_level'][0]['startsearchjobs'] as $key => $item)
+                                                        <tr>
+                                                            <td>{{ $key }}</td>
+                                                            <td>{{ $item }}</td>
+                                                            <td>
+                                                                <div class="col-6 ">
+                                                                    <a href="" class="update-detail-btn"
+                                                                        data-bs-target="#update-detail"
+                                                                        data-bs-toggle="modal"><i
+                                                                            class="fa-solid fa-pen-to-square"
+                                                                            style="color: #005eff;"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -356,18 +367,23 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Kode Pertanyaan</td>
-                                                    <td>Jawaban</td>
-                                                    <td>
-                                                        <div class="col-6 ">
-                                                            <a href="" class="update-detail-btn"
-                                                                data-bs-target="#update-detail" data-bs-toggle="modal"> <i
-                                                                    class="fa-solid fa-pen-to-square"
-                                                                    style="color:#005eff;"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @if (isset($data['quisioner_level'][0]['howtofindjobs']))
+                                                    @foreach ($data['quisioner_level'][0]['howtofindjobs'] as $key => $item)
+                                                        <tr>
+                                                            <td>{{ $key }}</td>
+                                                            <td>{{ $item }}</td>
+                                                            <td>
+                                                                <div class="col-6 ">
+                                                                    <a href="" class="update-detail-btn"
+                                                                        data-bs-target="#update-detail"
+                                                                        data-bs-toggle="modal"><i
+                                                                            class="fa-solid fa-pen-to-square"
+                                                                            style="color: #005eff;"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -385,18 +401,23 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Kode Pertanyaan</td>
-                                                    <td>Jawaban</td>
-                                                    <td>
-                                                        <div class="col-6 ">
-                                                            <a href="" class="update-detail-btn"
-                                                                data-bs-target="#update-detail" data-bs-toggle="modal"> <i
-                                                                    class="fa-solid fa-pen-to-square"
-                                                                    style="color:#005eff;"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @if (isset($data['quisioner_level'][0]['companyapplied']))
+                                                    @foreach ($data['quisioner_level'][0]['companyapplied'] as $key => $item)
+                                                        <tr>
+                                                            <td>{{ $key }}</td>
+                                                            <td>{{ $item }}</td>
+                                                            <td>
+                                                                <div class="col-6 ">
+                                                                    <a href="" class="update-detail-btn"
+                                                                        data-bs-target="#update-detail"
+                                                                        data-bs-toggle="modal"><i
+                                                                            class="fa-solid fa-pen-to-square"
+                                                                            style="color: #005eff;"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -414,18 +435,23 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Kode Pertanyaan</td>
-                                                    <td>Jawaban</td>
-                                                    <td>
-                                                        <div class="col-6 ">
-                                                            <a href="" class="update-detail-btn"
-                                                                data-bs-target="#update-detail" data-bs-toggle="modal"> <i
-                                                                    class="fa-solid fa-pen-to-square"
-                                                                    style="color:#005eff;"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @if (isset($data['quisioner_level'][0]['jobsuitability']))
+                                                    @foreach ($data['quisioner_level'][0]['jobsuitability'] as $key => $item)
+                                                        <tr>
+                                                            <td>{{ $key }}</td>
+                                                            <td>{{ $item }}</td>
+                                                            <td>
+                                                                <div class="col-6 ">
+                                                                    <a href="" class="update-detail-btn"
+                                                                        data-bs-target="#update-detail"
+                                                                        data-bs-toggle="modal"><i
+                                                                            class="fa-solid fa-pen-to-square"
+                                                                            style="color: #005eff;"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -476,6 +502,22 @@
                     // Tambahkan opsi lain sesuai kebutuhan
                 });
             }
+        });
+
+        const tabTitles = document.querySelectorAll('.tab-title');
+
+        // Mendapatkan elemen h2 yang akan diubah
+        const h2Element = document.querySelector('.col-sm-12 h2');
+
+        // Menambahkan event listener ke setiap tab-title
+        tabTitles.forEach(tabTitle => {
+            tabTitle.addEventListener('click', function() {
+                // Mendapatkan teks dari tab-title yang diklik
+                const tabText = this.innerText.trim();
+
+                // Mengganti teks di h2 dengan teks dari tab-title yang diklik
+                h2Element.innerText = tabText;
+            });
         });
     </script>
 @endsection

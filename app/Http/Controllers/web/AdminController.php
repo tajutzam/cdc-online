@@ -34,7 +34,7 @@ class AdminController extends Controller
     public function dashboard()
     {
         // ambil 5 tahun terakhir angkatan
-        {
+        {   
             $lastFiveYearsHaveWorker = $this->userService->findLastFiveYearsAlumniWhoHaveWorked();
             $categories = array_keys($lastFiveYearsHaveWorker);
             $values = array_values($lastFiveYearsHaveWorker);

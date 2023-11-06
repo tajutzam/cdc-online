@@ -5,6 +5,7 @@ namespace App\Http\Controllers\web;
 use Illuminate\Http\Request;
 use App\Services\QuisionerService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ProdiQuesionerController extends Controller
 {
@@ -16,10 +17,12 @@ class ProdiQuesionerController extends Controller
         $this->quisionerService = new QuisionerService();
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->quisionerService->findAllQuisionerUser();
+        $prodiId = Auth::guard('prodi')->user()->prodi_id;
+
+        $data = $this->quisionerService->findAllQuisionerUserStudyProgram($prodiId, $request->get('tahun'), $request->get('bulan'));
 
         return view('prodi.quesioner.index', ['data' => $data]);
-    }   //
+    } //
 }

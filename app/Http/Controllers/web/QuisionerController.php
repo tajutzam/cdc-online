@@ -103,4 +103,16 @@ class QuisionerController extends Controller
         }
         return view('admin.quisioner.detail', ['data' => $data[0]]);
     }
+
+    public function detailQuisionerProdi($level, $userId)
+    {
+        $data = $this->quisionerService->findQuisionerByUser($userId, $level);
+        foreach ($data as $key => $value) {
+            # code...
+            if (sizeof($value['quisioner_level']) == 0) {
+                throw new WebException('Ops , data quisioner tidak dimteukan');
+            }
+        }
+        return view('prodi.quesioner.detail', ['data' => $data[0]]);
+    }
 }

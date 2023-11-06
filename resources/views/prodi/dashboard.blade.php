@@ -28,13 +28,13 @@
             var options = {
                 series: [{
                     name: '0 Bulan',
-                    data: [31, 40, 68, 31, 92]
+                    data: {!! json_encode($lastFive['zero']) !!}
                 }, {
                     name: '6 Bulan',
-                    data: [11, 82, 45, 80, 34]
+                    data: {!! json_encode($lastFive['six']) !!}
                 }, {
                     name: '12 Bulan',
-                    data: [11, 82, 70, 80, 34]
+                    data: {!! json_encode($lastFive['twelve']) !!}
                 }],
                 chart: {
                     foreColor: '#9ba7b2',
