@@ -1,29 +1,471 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Your API Documentation",
-        "description": "Description of your API goes here.",
+        "title": "API USER",
         "version": "1.0"
     },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
     "paths": {
-
-        "/api/user": {
+        "/user": {
             "get": {
                 "tags": [
                     "User"
                 ],
-                "summary": "Get user information",
-                "description": "Get information about a user",
-                "operationId": "getUser",
+                "summary": "Get user login",
+                "description": "Returns user data",
+                "operationId": "getUserData",
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "fetch success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "format": "uuid",
+                                                            "example": "42435330-f8d0-42c2-8d30-96b1c9659093"
+                                                        },
+                                                        "fullname": {
+                                                            "type": "string",
+                                                            "example": "mohammad tajut zamzami"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "test@gmail.com"
+                                                        },
+                                                        "nik": {
+                                                            "type": "string",
+                                                            "example": "***"
+                                                        },
+                                                        "no_telp": {
+                                                            "type": "string",
+                                                            "example": "***"
+                                                        },
+                                                        "foto": {
+                                                            "type": "string",
+                                                            "format": "uri",
+                                                            "example": "http://localhost:8000/users/foto.png"
+                                                        },
+                                                        "ttl": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2023-11-06T12:00:00Z"
+                                                        },
+                                                        "alamat": {
+                                                            "type": "string",
+                                                            "example": "jawa timur , banyuwangi"
+                                                        },
+                                                        "about": {
+                                                            "type": "string",
+                                                            "example": "saya adalah orang yang memiliki tekat tinggi"
+                                                        },
+                                                        "gender": {
+                                                            "type": "string",
+                                                            "example": "male"
+                                                        },
+                                                        "level": {
+                                                            "type": "string",
+                                                            "example": "user"
+                                                        },
+                                                        "linkedin": {
+                                                            "type": "string",
+                                                            "example": "linkedin.com/zam"
+                                                        },
+                                                        "facebook": {
+                                                            "type": "string",
+                                                            "example": null
+                                                        },
+                                                        "instagram": {
+                                                            "type": "string",
+                                                            "example": null
+                                                        },
+                                                        "twitter": {
+                                                            "type": "string",
+                                                            "example": null
+                                                        },
+                                                        "account_status": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "latitude": {
+                                                            "type": "string",
+                                                            "example": "123123123"
+                                                        },
+                                                        "longitude": {
+                                                            "type": "string",
+                                                            "example": "123123123"
+                                                        },
+                                                        "state_quisioner": {
+                                                            "type": "string",
+                                                            "example": "0"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "followers": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "jobs": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "format": "uuid",
+                                                                "example": "93f23e3e-b758-4e4b-877a-2032fc167d91"
+                                                            },
+                                                            "user_id": {
+                                                                "type": "string",
+                                                                "format": "uuid",
+                                                                "example": "42435330-f8d0-42c2-8d30-96b1c9659093"
+                                                            },
+                                                            "perusahaan": {
+                                                                "type": "string",
+                                                                "example": "BUMN"
+                                                            },
+                                                            "jabatan": {
+                                                                "type": "string",
+                                                                "example": "Backend Developer"
+                                                            },
+                                                            "gaji": {
+                                                                "type": "integer",
+                                                                "example": 20000000
+                                                            },
+                                                            "jenis_pekerjaan": {
+                                                                "type": "string",
+                                                                "example": "Tetap"
+                                                            },
+                                                            "tahun_masuk": {
+                                                                "type": "string",
+                                                                "example": "2022"
+                                                            },
+                                                            "tahun_keluar": {
+                                                                "type": "string",
+                                                                "example": "2023"
+                                                            },
+                                                            "pekerjaan_saatini": {
+                                                                "type": "integer",
+                                                                "example": 0
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2023-11-03T18:04:57.000000Z"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2023-11-03T18:04:57.000000Z"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "educations": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "perguruan": {
+                                                                "type": "string",
+                                                                "example": "Politeknik Negeri Jember"
+                                                            },
+                                                            "strata": {
+                                                                "type": "string",
+                                                                "example": "D4 - Sarjana Terapan"
+                                                            },
+                                                            "jurusan": {
+                                                                "type": "string",
+                                                                "example": "Teknologi Informasi"
+                                                            },
+                                                            "prodi": {
+                                                                "type": "string",
+                                                                "example": "Teknik Infomatika"
+                                                            },
+                                                            "tahun_masuk": {
+                                                                "type": "integer",
+                                                                "example": 2020
+                                                            },
+                                                            "tahun_lulus": {
+                                                                "type": "integer",
+                                                                "example": 2022
+                                                            },
+                                                            "id": {
+                                                                "type": "string",
+                                                                "format": "uuid",
+                                                                "example": "3cef676c-a46c-4bc0-add2-c688db509d32"
+                                                            },
+                                                            "no_ijazah": {
+                                                                "type": "string",
+                                                                "example": null
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
-                    "404": {
-                        "description": "User not found"
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 401
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ops your token is not valid"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Find all user",
+                "operationId": "6dfda3759ba6d9f46c76e273778dedf1",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "angkatan",
+                        "in": "query",
+                        "description": "Angkatan filter",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "prodi",
+                        "in": "query",
+                        "description": "Program Studi filter",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "total_page": {
+                                                    "type": "integer"
+                                                },
+                                                "total_items": {
+                                                    "type": "integer"
+                                                },
+                                                "0": {
+                                                    "properties": {
+                                                        "user": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "string"
+                                                                },
+                                                                "fullname": {
+                                                                    "type": "string"
+                                                                },
+                                                                "email": {
+                                                                    "type": "string"
+                                                                },
+                                                                "nik": {
+                                                                    "type": "string"
+                                                                },
+                                                                "no_telp": {
+                                                                    "type": "string"
+                                                                },
+                                                                "foto": {
+                                                                    "type": "string"
+                                                                },
+                                                                "ttl": {
+                                                                    "type": "string",
+                                                                    "nullable": true
+                                                                },
+                                                                "alamat": {
+                                                                    "type": "string"
+                                                                },
+                                                                "about": {
+                                                                    "type": "string"
+                                                                },
+                                                                "gender": {
+                                                                    "type": "string"
+                                                                },
+                                                                "level": {
+                                                                    "type": "string"
+                                                                },
+                                                                "linkedin": {
+                                                                    "type": "string"
+                                                                },
+                                                                "facebook": {
+                                                                    "type": "string",
+                                                                    "nullable": true
+                                                                },
+                                                                "instagram": {
+                                                                    "type": "string",
+                                                                    "nullable": true
+                                                                },
+                                                                "twiter": {
+                                                                    "type": "string",
+                                                                    "nullable": true
+                                                                },
+                                                                "account_status": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "latitude": {
+                                                                    "type": "string",
+                                                                    "nullable": true
+                                                                },
+                                                                "longtitude": {
+                                                                    "type": "string",
+                                                                    "nullable": true
+                                                                },
+                                                                "state_quisioner": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "followers": {
+                                                            "type": "array",
+                                                            "items": {}
+                                                        },
+                                                        "jobs": {
+                                                            "type": "array",
+                                                            "items": {}
+                                                        },
+                                                        "educations": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "perguruan": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "strata": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "jurusan": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "prodi": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "tahun_masuk": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "tahun_lulus": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "no_ijasah": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-    }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer_token": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearer_token": []
+        }
+    ]
 }
