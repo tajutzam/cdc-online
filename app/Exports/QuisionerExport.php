@@ -18,6 +18,8 @@ class QuisionerExport implements FromView
     private QuisionerService $quisionerService;
     private $tahun;
 
+    private $kodeProdi;
+
 
     public function __construct($tahun)
     {
