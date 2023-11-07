@@ -530,7 +530,7 @@
         </section><!-- End F.A.Q Section -->
 
         <!-- ======= Testimonials Section ======= -->
-        <section id="testimonials" class="testimonials">
+        {{-- <section id="testimonials" class="testimonials">
 
             <div class="container" data-aos="fade-up">
 
@@ -612,7 +612,7 @@
 
             </div>
 
-        </section><!-- End Testimonials Section -->
+        </section><!-- End Testimonials Section --> --}}
 
         <!-- ======= Team Section ======= -->
         <section id="team" class="team">
@@ -784,7 +784,7 @@
                             <span class="post-date">Minggu, 22 Juli 2024</span>
                             <h3 class="post-title">Yuk Terapkan Hidup Sehat</h3>
                             <a href="{{ route('blog-single') }}" class="readmore stretched-link mt-auto"><span>Baca
-                                    Selengkapny</span><i class="bi bi-arrow-right"></i></a>
+                                    Selengkapnya</span><i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
 
