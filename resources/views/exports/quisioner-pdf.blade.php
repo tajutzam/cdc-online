@@ -7,6 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Dokumen PDF CDC</title>
     <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+        }
+
         table {
             width: 100%;
             /* Lebar tabel 100% dari halaman */
@@ -57,9 +61,23 @@
 
 <body>
     <div class="header">
-        <p class="prodi">Program Studi Teknik Informatika</p>
-        <p class="jurusan">Jurusan Teknologi Informasi</p>
-        <p class="politeknik">Politeknik Negeri Jember</p>
+        <div class="row mt-2">
+            <div class="col-2 p-0 pt-4 text-right">
+                <img id="logo" src="logopolije.png" alt="Logo Instansi"
+                    style="width: 100px; height: 100px; padding: 0px; text-align: center;">
+            </div>
+            <div class="col-10 text-center p-0">
+                <h5 class="font-weight-bold m-0">KEMENTERIAN PENDIDIKAN KEBUDAYAAN, RISET DAN TEKNOLOGI</h5>
+                <h6 class=" font-weight-bold m-0">POLITEKNIK NEGERI JEMBER</h6>
+                <p class=" font-weight-bold m-0">JURUSAN TEKNOLOGI INFORMASI</p>
+                <p class="m-0">PROGRAM STUDI MANAJEMEN INFORMATIKA</p>
+                <p class="m-0">Jalan Mastrip Kotak Pos 164 Jember 68101 Telepon (0331) 333532-34 Fax. (0331) 333531
+                </p>
+                <p class="m-0">Email : politeknik@polije.ac.id Laman : polije.ac.id</p>
+            </div>
+
+        </div>
+        <hr class="border border-5 border-dark">
     </div>
     <h1>Kuesioner Identitas</h1>
     <table>
