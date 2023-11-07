@@ -250,7 +250,7 @@
             <x-slot name="title">Export To Excel</x-slot>
             <x-slot name="id">export</x-slot>
             <x-slot name="body">
-                <form action="{{ route('export') }}" method="post">
+                <form action="{{ route('quesioner-export') }}" method="post">
                     <label for="tahun-level-excel">Tahun Level Quisioner</label>
                     <select class="form-select form-select-sm mb-3" aria-label="Large select example" name="tahun" id="tahun-level-excel">
                         @php
@@ -279,11 +279,11 @@
         </x-modal-small>
 
 
-        <x-modal-small id="export-pdf" footer="footer" title="title" body="body">
+        <x-modal-small id="quesioner-export-pdf" footer="footer" title="title" body="body">
             <x-slot name="title">Export To PDF</x-slot>
             <x-slot name="id">export-pdf</x-slot>
             <x-slot name="body">
-                <form action="{{ route('export-pdf') }}" method="post">
+                <form action="{{ route('quesioner-export-pdf') }}" method="post">
                     <label for="tahun-bulan">Tahun Level Quisioner</label>
                     <select class="form-select form-select-sm mb-3" aria-label="Large select example" name="tahun"
                         id="tahun-bulan">
@@ -313,7 +313,7 @@
             <x-slot name="title">Import Excel</x-slot>
             <x-slot name="id">upload-excel</x-slot>
             <x-slot name="body">
-                <form action="{{ route('import') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('quesioner-import') }}" method="post" enctype="multipart/form-data">
                     <input type="file" name="excel" id="" accept=".xls, .xlsx" class="mb-3">
                     <div class="row justify-content-end mt-3">
                         <button class="col-3 btn btn-outline-danger btn-sm" type="reset"

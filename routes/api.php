@@ -31,42 +31,42 @@ use Illuminate\Support\Facades\Route;
 */
 // user
 Route::get("/user", [UserController::class, "getOneUser"]);
-Route::get("/users", [UserController::class, "findAllUser"])->middleware([VeriviedMiddleware::class]);
-Route::get("/user/detail/{id}", [UserController::class, "findUserById"])->middleware([VeriviedMiddleware::class]);
+Route::get("/users", [UserController::class, "findAllUser"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
+Route::get("/user/detail/{id}", [UserController::class, "findUserById"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
 Route::post("/user/search", [UserController::class, 'findByName'])->withoutMiddleware(VeriviedMiddleware::class);
 
 
-Route::put("/user/visibility/update", [UserController::class, "updateVisibility"])->middleware([VeriviedMiddleware::class]);
+Route::put("/user/visibility/update", [UserController::class, "updateVisibility"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
-Route::put("/user/profile", [UserController::class, "updateProfileUserLogin"])->middleware([VeriviedMiddleware::class]);
+Route::put("/user/profile", [UserController::class, "updateProfileUserLogin"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
-Route::get("/user/followers", [UserController::class, "findAllFollowers"])->middleware([VeriviedMiddleware::class]);
+Route::get("/user/followers", [UserController::class, "findAllFollowers"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
-Route::get("/user/followers/{id}", [UserController::class, "findAllFolowersJoin"])->middleware([VeriviedMiddleware::class]);
+Route::get("/user/followers/{id}", [UserController::class, "findAllFolowersJoin"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
-Route::post("/user/followers", [UserController::class, "followUser"])->middleware([VeriviedMiddleware::class]);
+Route::post("/user/followers", [UserController::class, "followUser"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
-Route::delete("/user/followers", [UserController::class, "unfollowUser"])->middleware([VeriviedMiddleware::class]);
+Route::delete("/user/followers", [UserController::class, "unfollowUser"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
-Route::get("/user/followed", [UserController::class, "showUserFolowed"])->middleware([VeriviedMiddleware::class]);
+Route::get("/user/followed", [UserController::class, "showUserFolowed"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
-Route::get("/user/followed/{id}", [UserController::class, 'showUserFolowedById'])->middleware([VeriviedMiddleware::class]);
+Route::get("/user/followed/{id}", [UserController::class, 'showUserFolowedById'])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
-Route::put("/user/profile/email", [UserController::class, "updateEmailUserLogin"])->middleware([VeriviedMiddleware::class]);
+Route::put("/user/profile/email", [UserController::class, "updateEmailUserLogin"])->middleware([TokenMiddleware::class, TokenMiddleware::class, VeriviedMiddleware::class]);
 
-Route::post("/user/profile/image", [UserController::class, "updateFotoProfile"])->middleware([VeriviedMiddleware::class]);
+Route::post("/user/profile/image", [UserController::class, "updateFotoProfile"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
 // education
-Route::post("/user/education/add", [EducationController::class, "addNewEducationUser"])->middleware([VeriviedMiddleware::class]);
+Route::post("/user/education/add", [EducationController::class, "addNewEducationUser"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
-Route::get("/user/education", [EducationController::class, "showEducationUserLogin"])->withoutMiddleware([VeriviedMiddleware::class]);
+Route::get("/user/education", [EducationController::class, "showEducationUserLogin"])->withoutMiddleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
-Route::put("/user/education/{idEducation}", [EducationController::class, "updateEducationUserLogin"])->middleware([VeriviedMiddleware::class]);
+Route::put("/user/education/{idEducation}", [EducationController::class, "updateEducationUserLogin"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
-Route::delete("/user/education", [EducationController::class, "deleteEducationById"])->middleware([VeriviedMiddleware::class]);
+Route::delete("/user/education", [EducationController::class, "deleteEducationById"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
-Route::get("/user/education/{id}", [EducationController::class, "findEducationByIdAndUserId"])->middleware([VeriviedMiddleware::class]);
+Route::get("/user/education/{id}", [EducationController::class, "findEducationByIdAndUserId"])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 
 //jobs
 Route::post("/user/jobs", [JobsController::class, "addNewJobsUser"]);

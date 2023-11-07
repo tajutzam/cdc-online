@@ -16,6 +16,9 @@ use Illuminate\Support\Str;
 
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
+
+
+
 class UserController extends Controller
 {
     //
@@ -28,33 +31,6 @@ class UserController extends Controller
     }
 
 
-    /**
-
-     * @OA\PathItem(
-     *   path="/api/user",
-     * @OA\Get(
-     *     path="/api/user",
-     *     operationId="getUser",
-     *     tags={"User"},
-     *     summary="Get user information",
-     *     description="Get information about a user",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="id", type="integer"),
-     *             @OA\Property(property="username", type="string"),
-     *             @OA\Property(property="email", type="string"),
-     *             // Add more properties as needed
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="User not found",
-     *     ),
-     * )
-     */
     public function getOneUser(Request $request)
     {
         $token = $request->header('Authorization');
@@ -66,7 +42,6 @@ class UserController extends Controller
             'data' => $data
         ], 200);
     }
-
     public function findAllUser(Request $request)
     {
         $userId = $this->userService->extractUserId($request->bearerToken());
@@ -79,6 +54,7 @@ class UserController extends Controller
         ], 200);
     }
 
+    
     public function updateVisibility(UpdateVisibleRequest $updateVisibleRequest)
     {
         $request = $updateVisibleRequest->all();

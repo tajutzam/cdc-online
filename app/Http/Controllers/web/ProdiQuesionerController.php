@@ -25,4 +25,22 @@ class ProdiQuesionerController extends Controller
 
         return view('prodi.quesioner.index', ['data' => $data]);
     } //
+
+
+    public function exportExcel()
+    {
+
+    }
+
+
+    public function exportPdf()
+    {
+
+    }
+
+    public function import()
+    {
+
+    }
+
 }
