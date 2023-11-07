@@ -75,6 +75,9 @@ Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group
         Route::prefix('quesioner')->group(function () {
             route::get('', [ProdiQuesionerController::class, 'index'])->name('quesioner-index');
             Route::get("/detail/{level}/{userId}", [QuisionerController::class, 'detailQuisionerProdi'])->name('detail-quisioner-prodi');
+            Route::post("export", [ProdiQuesionerController::class, "exportExcel"])->name("quesioner-export");
+            Route::post("export-pdf", [ProdiQuesionerController::class, "exportPdf"])->name("quesioner-export-pdf");
+            Route::post("import", [ProdiQuesionerController::class, "import"])->name("quesioner-import");
         });
         Route::prefix('user')->group(function () {
             Route::get('', [UserProdiController::class, 'index'])->name('user-prodi');

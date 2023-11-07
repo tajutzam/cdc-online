@@ -1,8 +1,13 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API USER",
-        "version": "1.0"
+        "title": "API USER DOCUMENTATIONS",
+        "version": "1.0",
+        "contact": {
+            "email": "mohammadtajutzamzami07@gmail.com",
+            "name": "Mohammad Tajut Zamzami",
+            "url": "https://github.com/tajutzam"
+        }
     },
     "servers": [
         {
@@ -12,9 +17,7 @@
     "paths": {
         "/user": {
             "get": {
-                "tags": [
-                    "User"
-                ],
+                "tags": ["User"],
                 "summary": "Get user login",
                 "description": "Returns user data",
                 "operationId": "getUserData",
@@ -268,9 +271,7 @@
         },
         "/users": {
             "get": {
-                "tags": [
-                    "User"
-                ],
+                "tags": ["User"],
                 "summary": "Find all user",
                 "operationId": "6dfda3759ba6d9f46c76e273778dedf1",
                 "parameters": [
@@ -445,6 +446,1383 @@
                                         }
                                     },
                                     "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/visibility/update": {
+            "description": "update visibility user",
+            "put": {
+                "description": "update visibility user",
+
+                "tags": ["User"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "type": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "key": {
+                                                    "example": "email"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "value": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success Update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Berhsail memperbarui visibility"
+                                        },
+                                        "code": {
+                                            "example": 200,
+                                            "type": "integer"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "example": null
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ops , nampaknya akun kamu belum terverifikasi"
+                                        },
+                                        "code": {
+                                            "example": 401,
+                                            "type": "integer"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "failed validation request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "example": null
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Type tidak boleh kosong"
+                                        },
+                                        "code": {
+                                            "example": 400,
+                                            "type": "integer"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "updateVisibility"
+            }
+        },
+        "/user/profile": {
+            "put": {
+                "tags": ["User"],
+                "responses": {
+                    "200": {
+                        "description": "Sukses Update Profile data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Berhsail memperbarui profile"
+                                        },
+                                        "code": {
+                                            "example": 200,
+                                            "type": "integer"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "failed validation request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Kolom Jenis Kelamin harus salah satu dari: \"male\" atau \"female\"."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": null
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "example": null
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ops your token is not valid please login"
+                                        },
+                                        "code": {
+                                            "example": 401,
+                                            "type": "integer"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user not verivied"
+                    }
+                }
+            }
+        },
+        "/user/profile/email": {
+            "put": {
+                "tags": ["User"],
+                "description": "update email user login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "mohammadtajutzamzami07@gmail.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success update email"
+                    },
+                    "400": {
+                        "description": "failed validation request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The email field is required."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": null
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 401
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ops your token is not valid"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user not verivied"
+                    }
+                }
+            }
+        },
+        "/user/profile/image": {
+            "description": "update foto profile",
+            "put": {
+                "description": "update foto profile",
+                "tags": ["User"],
+                "parameters": [
+                    {
+                        "name": "image",
+                        "in": "formdata",
+                        "description": "The file to upload",
+                        "required": true,
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success update foto profile",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "string",
+                                            "example": "http://localhost:8000/users/1699274715.png"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "code": {
+                                            "type": "integer"
+                                        },
+                                        "status": { "type": "boolean" }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 401
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ops your token is not valid"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "failed validation request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "example": null
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Type tidak boleh kosong"
+                                        },
+                                        "code": {
+                                            "example": 400,
+                                            "type": "integer"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user not verivied"
+                    }
+                }
+            }
+        },
+        "/user/detail/{id}": {
+            "description": "get user by id",
+            "get": {
+                "tags": ["User"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "example": "123123",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "description": "get user by id",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "user": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "fullname": {
+                                                            "type": "string"
+                                                        },
+                                                        "email": {
+                                                            "type": "string"
+                                                        },
+                                                        "nik": {
+                                                            "type": "string"
+                                                        },
+                                                        "no_telp": {
+                                                            "type": "string"
+                                                        },
+                                                        "foto": {
+                                                            "type": "string"
+                                                        },
+                                                        "ttl": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "alamat": {
+                                                            "type": "string"
+                                                        },
+                                                        "about": {
+                                                            "type": "string"
+                                                        },
+                                                        "gender": {
+                                                            "type": "string"
+                                                        },
+                                                        "level": {
+                                                            "type": "string"
+                                                        },
+                                                        "linkedin": {
+                                                            "type": "string"
+                                                        },
+                                                        "facebook": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "instagram": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "twiter": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "account_status": {
+                                                            "type": "integer",
+                                                            "format": "int32"
+                                                        },
+                                                        "latitude": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "longtitude": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "state_quisioner": {
+                                                            "type": "string"
+                                                        },
+                                                        "$isFollow": {
+                                                            "type": "boolean"
+                                                        }
+                                                    }
+                                                },
+                                                "followers": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {}
+                                                    }
+                                                },
+                                                "jobs": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {}
+                                                    }
+                                                },
+                                                "educations": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "perguruan": {
+                                                                "type": "string"
+                                                            },
+                                                            "strata": {
+                                                                "type": "string"
+                                                            },
+                                                            "jurusan": {
+                                                                "type": "string"
+                                                            },
+                                                            "prodi": {
+                                                                "type": "string"
+                                                            },
+                                                            "tahun_masuk": {
+                                                                "type": "integer",
+                                                                "format": "int32"
+                                                            },
+                                                            "tahun_lulus": {
+                                                                "type": "integer",
+                                                                "format": "int32"
+                                                            },
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "no_ijasah": {
+                                                                "type": "string",
+                                                                "format": "nullable"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User tidak ditemukan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user not verified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "user not authenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/search": {
+            "description": "find user by name",
+            "post": {
+                "tags": ["User"],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "fullname": {
+                                                        "type": "string"
+                                                    },
+                                                    "email": {
+                                                        "type": "string"
+                                                    },
+                                                    "nik": {
+                                                        "type": "string"
+                                                    },
+                                                    "no_telp": {
+                                                        "type": "string"
+                                                    },
+                                                    "foto": {
+                                                        "type": "string"
+                                                    },
+                                                    "ttl": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    },
+                                                    "alamat": {
+                                                        "type": "string"
+                                                    },
+                                                    "about": {
+                                                        "type": "string"
+                                                    },
+                                                    "gender": {
+                                                        "type": "string"
+                                                    },
+                                                    "level": {
+                                                        "type": "string"
+                                                    },
+                                                    "linkedin": {
+                                                        "type": "string"
+                                                    },
+                                                    "facebook": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    },
+                                                    "instagram": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    },
+                                                    "twiter": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    },
+                                                    "account_status": {
+                                                        "type": "integer",
+                                                        "format": "int32"
+                                                    },
+                                                    "latitude": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    },
+                                                    "longtitude": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    },
+                                                    "state_quisioner": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "401"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ops your token is not valid please login"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user not verified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "403"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "user not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "404"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "user dengan nama secondsadsdas tidak ditemukan"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "key": {
+                                        "type": "string",
+                                        "example": "zam"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/ranking/followers": {
+            "get": {
+                "tags": ["User"],
+                "summary": "get ranking user by followers",
+                "responses": {
+                    "200": {
+                        "description": "success fetch data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "8a11ba27-b171-4cdd-bd99-e66172bf0fd8"
+                                                    },
+                                                    "fullname": {
+                                                        "type": "string",
+                                                        "example": "second user"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "second@gmail.com"
+                                                    },
+                                                    "nik": {
+                                                        "type": "string",
+                                                        "example": "***"
+                                                    },
+                                                    "no_telp": {
+                                                        "type": "string",
+                                                        "example": "***"
+                                                    },
+                                                    "foto": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:8000/users/foto.png"
+                                                    },
+                                                    "ttl": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    },
+                                                    "alamat": {
+                                                        "type": "string",
+                                                        "example": "jawa timur , banyuwangi"
+                                                    },
+                                                    "about": {
+                                                        "type": "string",
+                                                        "example": "second abour"
+                                                    },
+                                                    "gender": {
+                                                        "type": "string",
+                                                        "example": "male"
+                                                    },
+                                                    "level": {
+                                                        "type": "string",
+                                                        "example": "user"
+                                                    },
+                                                    "linkedin": {
+                                                        "type": "string",
+                                                        "example": "linkedin.com/zam"
+                                                    },
+                                                    "facebook": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    },
+                                                    "instagram": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    },
+                                                    "twiter": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    },
+                                                    "account_status": {
+                                                        "type": "integer",
+                                                        "format": "int32",
+                                                        "example": "0"
+                                                    },
+                                                    "latitude": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    },
+                                                    "longtitude": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    },
+                                                    "state_quisioner": {
+                                                        "type": "string",
+                                                        "example": "0"
+                                                    },
+                                                    "followers": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "string",
+                                                                    "example": "263d9c3e-b8bd-47a3-971b-7d78faf248f2"
+                                                                },
+                                                                "user_id": {
+                                                                    "type": "string",
+                                                                    "example": "8a11ba27-b171-4cdd-bd99-e66172bf0fd8"
+                                                                },
+                                                                "folowers_id": {
+                                                                    "type": "string",
+                                                                    "example": "42435330-f8d0-42c2-8d30-96b1c9659093"
+                                                                },
+                                                                "created_at": {
+                                                                    "type": "string",
+                                                                    "example": "2023-11-06T13:11:51.000000Z"
+                                                                },
+                                                                "updated_at": {
+                                                                    "type": "string",
+                                                                    "example": "2023-11-06T13:11:51.000000Z"
+                                                                }
+                                                            }
+                                                        },
+                                                        "example": [
+                                                            {
+                                                                "id": "263d9c3e-b8bd-47a3-971b-7d78faf248f2",
+                                                                "user_id": "8a11ba27-b171-4cdd-bd99-e66172bf0fd8",
+                                                                "folowers_id": "42435330-f8d0-42c2-8d30-96b1c9659093",
+                                                                "created_at": "2023-11-06T13:11:51.000000Z",
+                                                                "updated_at": "2023-11-06T13:11:51.000000Z"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "total_followers": {
+                                                        "type": "integer",
+                                                        "format": "int32",
+                                                        "example": "1"
+                                                    },
+                                                    "job": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    },
+                                                    "company": {
+                                                        "type": "string",
+                                                        "format": "nullable"
+                                                    }
+                                                }
+                                            },
+                                            "example": [
+                                                {
+                                                    "id": "8a11ba27-b171-4cdd-bd99-e66172bf0fd8",
+                                                    "fullname": "second user",
+                                                    "email": "second@gmail.com",
+                                                    "nik": "***",
+                                                    "no_telp": "***",
+                                                    "foto": "http://localhost:8000/users/foto.png",
+                                                    "ttl": null,
+                                                    "alamat": "jawa timur , banyuwangi",
+                                                    "about": "second abour",
+                                                    "gender": "male",
+                                                    "level": "user",
+                                                    "linkedin": "linkedin.com/zam",
+                                                    "facebook": null,
+                                                    "instagram": null,
+                                                    "twiter": null,
+                                                    "account_status": 0,
+                                                    "latitude": null,
+                                                    "longtitude": null,
+                                                    "state_quisioner": "0",
+                                                    "followers": [
+                                                        {
+                                                            "id": "263d9c3e-b8bd-47a3-971b-7d78faf248f2",
+                                                            "user_id": "8a11ba27-b171-4cdd-bd99-e66172bf0fd8",
+                                                            "folowers_id": "42435330-f8d0-42c2-8d30-96b1c9659093",
+                                                            "created_at": "2023-11-06T13:11:51.000000Z",
+                                                            "updated_at": "2023-11-06T13:11:51.000000Z"
+                                                        }
+                                                    ],
+                                                    "total_followers": 1,
+                                                    "job": null,
+                                                    "company": null
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success fetch data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "401"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ops your token is not valid"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user not verified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "403"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ops akun kamu belum diverifikasi"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/ranking/salary": {
+            "get": {
+                "tags": ["User"],
+
+                "responses": {
+                    "200": {
+                        "description": "Sukses fetch data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "fullname": {
+                                                        "type": "string",
+                                                        "example": "Nama Lengkap Anda"
+                                                    },
+                                                    "last_position": {
+                                                        "type": "string",
+                                                        "example": "Backend Developer"
+                                                    },
+                                                    "highest_salary": {
+                                                        "type": "integer",
+                                                        "format": "int32",
+                                                        "example": "20000000"
+                                                    },
+                                                    "company": {
+                                                        "type": "string",
+                                                        "example": "BUMN"
+                                                    },
+                                                    "account_status": {
+                                                        "type": "integer",
+                                                        "format": "int32",
+                                                        "example": "1"
+                                                    },
+                                                    "image": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:8000/users/1699274715.png"
+                                                    }
+                                                }
+                                            },
+                                            "example": [
+                                                {
+                                                    "fullname": "Nama Lengkap Anda",
+                                                    "last_position": "Backend Developer",
+                                                    "highest_salary": 20000000,
+                                                    "company": "BUMN",
+                                                    "account_status": 1,
+                                                    "image": "http://localhost:8000/users/1699274715.png"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success fetch data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "401"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ops your token is not valid"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user not verified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "403"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ops akun kamu belum diverifikasi"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/position": {
+            "put": {
+                "tags": ["User"],
+
+                "summary": "user update position latitude longtitude",
+                "responses": {
+                    "200": {
+                        "description": "success update position user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "status": {
+                                                    "type": "boolean"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "berhasil memperbarui posisi"
+                                                },
+                                                "code": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "200"
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success update latitude"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "failed validation request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "400"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The latitude must be a number."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "user not authenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "401"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ops your token is not valid"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/logout": {
+            "post": {
+                "tags": ["User"],
+
+                "responses": {
+                    "200": {
+                        "description": "Sukses Logout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sukses Logout"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "user sudah logout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "401"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ops your token is not valid"
+                                        }
+                                    }
                                 }
                             }
                         }
