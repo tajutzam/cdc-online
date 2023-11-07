@@ -56,19 +56,18 @@
                               </div>
 
                               <h2 class="entry-title">
-                                  <a href="blog-single.html">Dolorum optio tempore voluptas dignissimos cumque fuga qui
+                                  <a href="{{ route('blog-single') }}">Dolorum optio tempore voluptas dignissimos cumque
+                                      fuga qui
                                       quibusdam quia</a>
                               </h2>
 
                               <div class="entry-meta">
                                   <ul>
                                       <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a
-                                              href="blog-single.html">Admin</a></li>
+                                              href="{{ route('blog-single') }}">Admin</a></li>
                                       <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a
-                                              href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a>
-                                      </li>
-                                      <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a
-                                              href="blog-single.html">12 Comments</a></li>
+                                              href="{{ route('blog-single') }}"><time datetime="2020-01-01">Jan 1,
+                                                  2020</time></a>
                                   </ul>
                               </div>
 
@@ -130,7 +129,7 @@
                               </div>
                           </div><!-- End blog author bio -->
 
-                          <div class="blog-comments">
+                          {{-- <div class="blog-comments">
 
                               <h4 class="comments-count">8 Komentar</h4>
 
@@ -176,7 +175,7 @@
 
                               </div>
 
-                          </div><!-- End blog comments -->
+                          </div><!-- End blog comments --> --}}
 
                       </div><!-- End blog entries list -->
 
@@ -187,32 +186,34 @@
                               <div class="sidebar-item recent-posts">
                                   <div class="post-item clearfix">
                                       <img src="{{ asset('/') }}assets/img/blog/blog-recent-1.jpg" alt="">
-                                      <h4><a href="blog-single.html">Nihil blanditiis at in nihil autem</a></h4>
+                                      <h4><a href="{{ route('blog-single') }}">Nihil blanditiis at in nihil autem</a></h4>
                                       <time datetime="2020-01-01">Jan 1, 2020</time>
                                   </div>
 
                                   <div class="post-item clearfix">
                                       <img src="{{ asset('/') }}assets/img/blog/blog-recent-2.jpg" alt="">
-                                      <h4><a href="blog-single.html">Quidem autem et impedit</a></h4>
+                                      <h4><a href="{{ route('blog-single') }}">Quidem autem et impedit</a></h4>
                                       <time datetime="2020-01-01">Jan 1, 2020</time>
                                   </div>
 
                                   <div class="post-item clearfix">
                                       <img src="{{ asset('/') }}assets/img/blog/blog-recent-3.jpg" alt="">
-                                      <h4><a href="blog-single.html">Id quia et et ut maxime similique occaecati ut</a>
+                                      <h4><a href="{{ route('blog-single') }}">Id quia et et ut maxime similique occaecati
+                                              ut</a>
                                       </h4>
                                       <time datetime="2020-01-01">Jan 1, 2020</time>
                                   </div>
 
                                   <div class="post-item clearfix">
                                       <img src="{{ asset('/') }}assets/img/blog/blog-recent-4.jpg" alt="">
-                                      <h4><a href="blog-single.html">Laborum corporis quo dara net para</a></h4>
+                                      <h4><a href="{{ route('blog-single') }}">Laborum corporis quo dara net para</a></h4>
                                       <time datetime="2020-01-01">Jan 1, 2020</time>
                                   </div>
 
                                   <div class="post-item clearfix">
                                       <img src="{{ asset('/') }}assets/img/blog/blog-recent-5.jpg" alt="">
-                                      <h4><a href="blog-single.html">Et dolores corrupti quae illo quod dolor</a></h4>
+                                      <h4><a href="{{ route('blog-single') }}">Et dolores corrupti quae illo quod dolor</a>
+                                      </h4>
                                       <time datetime="2020-01-01">Jan 1, 2020</time>
                                   </div>
 
