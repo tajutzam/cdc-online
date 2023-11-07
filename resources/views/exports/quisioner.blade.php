@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th>No</th>
-            <th>ID USER</th>
+            <th>ID User</th>
             <th>Kode PT</th>
             <th>Kode Prodi</th>
             <th>NIM</th>
@@ -45,7 +45,7 @@
             <th>F415</th>
             <th>F6</th>
             <th>F7</th>
-            <th>F7a</th>
+            <th>F7A</th>
             <th>F1001</th>
             <th>F1002</th>
             <th>F1601</th>
@@ -62,8 +62,8 @@
             <th>F1612</th>
             <th>F1613</th>
             <th>F505</th>
-            <th>F5a1</th>
-            <th>F5a2</th>
+            <th>F5A1</th>
+            <th>F5A2</th>
             <th>F1761</th>
             <th>F1762</th>
             <th>F1763</th>

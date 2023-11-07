@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Dokumen PDF CDC</title>
     <style>
         table {
             width: 100%;
@@ -41,27 +41,27 @@
         }
 
         .prodi {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
         }
 
         .jurusan {
-            font-size: 16px;
+            font-size: 18px;
         }
 
         .politeknik {
-            font-size: 14px;
+            font-size: 16px;
         }
     </style>
 </head>
 
 <body>
     <div class="header">
-        <p class="prodi">Prodi Teknik Informatika</p>
+        <p class="prodi">Program Studi Teknik Informatika</p>
         <p class="jurusan">Jurusan Teknologi Informasi</p>
         <p class="politeknik">Politeknik Negeri Jember</p>
     </div>
-    <h1>Quisioner Identitas</h1>
+    <h1>Kuesioner Identitas</h1>
     <table>
         <thead>
             <tr>
@@ -90,7 +90,7 @@
             @endforeach
         </tbody>
     </table>
-    <h1>Quisioner Main</h1>
+    <h1>Kuesioner Utama</h1>
     <table>
         <thead>
             <tr>
@@ -99,8 +99,8 @@
                 <th>F504</th>
                 <th>F1101</th>
                 <th>F5b</th>
-                <th>F5c</th>
-                <th>F5d</th>
+                <th>F5C</th>
+                <th>F5D</th>
                 <th>F505</th>
                 <th>F5A1</th>
                 <th>F5A2</th>
@@ -123,7 +123,7 @@
             @endforeach
         </tbody>
     </table>
-    <h1>Quisioner Study Lanjut </h1>
+    <h1>Kuesioner Studi Lanjut </h1>
     <table>
         <thead>
             <tr>
@@ -152,7 +152,7 @@
             @endforeach
         </tbody>
     </table>
-    <h1>Quisioner Mulai Mencari Pekerjaan</h1>
+    <h1>Kuesioner Mulai Mencari Pekerjaan</h1>
     <table>
         <thead>
             <tr>
@@ -171,7 +171,7 @@
             @endforeach
         </tbody>
     </table>
-    <h1>Quisioner Bagaimana Mencari Pekerjaan</h1>
+    <h1>Kuesioner Bagaimana Mencari Pekerjaan</h1>
     <table>
         <thead>
             <tr>
@@ -229,7 +229,7 @@
             @endforeach
         </tbody>
     </table>
-    <h1>Quisioner Persusahaan Dilamar</h1>
+    <h1>Kuesioner Perusahaan Dilamar</h1>
     <table>
         <thead>
             <tr>
@@ -252,7 +252,7 @@
             @endforeach
         </tbody>
     </table>
-    <h1>Quisioner kesesuaian pekerjaan</h1>
+    <h1>Kuesioner Kesesuain Pekerjaan</h1>
     <table>
         <thead>
             <tr>
@@ -291,7 +291,7 @@
             @endforeach
         </tbody>
     </table>
-    <h1>Quisioner Metode Belajar</h1>
+    <h1>Kuesioner Metode Belajar</h1>
     <table>
         <thead>
             <tr>
@@ -318,19 +318,19 @@
             @endforeach
         </tbody>
     </table>
-    <h1>Quisioner Kompeten</h1>
+    <h1>Kuesioner Kompeten</h1>
     <table>
         <thead>
             <tr>
-                <th>f1761</th>
-                <th>f1762</th>
+                <th>F1761</th>
+                <th>F1762</th>
                 <th>F1763</th>
                 <th>F1764</th>
                 <th>F1765</th>
                 <th>F1766</th>
                 <th>F1767</th>
                 <th>F1768</th>
-                <th>f1769</th>
+                <th>F1769</th>
                 <th>F1770</th>
                 <th>F1771</th>
                 <th>F1772</th>
