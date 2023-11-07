@@ -24,3 +24,4 @@ class IsProdiAdministratorMiddleware
         return redirect('prodi/login')->withErrors('Ops , Silahkan Login Terlebih dahulu');
     }
 }
+    

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\AlumniController;
+use App\Http\Controllers\LandingPageController;
 use App\Http\Middleware\IsAdminMiddleware;
 
 use App\Http\Controllers\web\NewsController;
@@ -47,9 +48,7 @@ use App\Http\Controllers\web\AuthController as WebAuthController;
 |
 */
 
-Route::get('/', function () {
-    return view('landing-page.index');
-})->name('/');
+Route::get('/', [LandingPageController::class , "index"])->name('/');
 
 Route::get('/landing-page/blog', [NewsController::class, 'findAllBlog'])->name('blog');
 

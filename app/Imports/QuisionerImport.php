@@ -16,9 +16,13 @@ class QuisionerImport implements ToCollection
     private QuisionerService $quisionerService;
 
 
-    public function __construct()
+    private $kodeProdi;
+
+
+    public function __construct($kodeProdi = null)
     {
         $this->quisionerService = new QuisionerService();
+        $this->kodeProdi = $kodeProdi;
     }
 
     /**
@@ -144,8 +148,6 @@ class QuisionerImport implements ToCollection
             $tempData = array_combine($lowerCaseKey, $filteredArray);
             array_push($newRequest, $tempData);
         }
-        $updated = $this->quisionerService->updateFromExcel($lowerCaseKey, $newRequest);
-
-
+        $updated = $this->quisionerService->updateFromExcel($lowerCaseKey, $newRequest, $this->kodeProdi);
     }
 }

@@ -579,7 +579,7 @@ class QuisionerService
 
 
 
-    public function findAllQuisionerUserStudyProgram($idProdi , $tahun = 0, $bulan = 0)
+    public function findAllQuisionerUserStudyProgram($idProdi, $tahun = 0, $bulan = 0)
     {
         $users = $this->user->has('quisioner_level')
             ->has('quisioner_level.identity')
@@ -605,7 +605,7 @@ class QuisionerService
             })
             ->with('educations')
             ->with('prodi')
-            ->where('kode_prodi' , $idProdi)
+            ->where('kode_prodi', $idProdi)
             ->get()
             ->toArray();
 
@@ -673,7 +673,7 @@ class QuisionerService
         return $data;
     }
 
-    public function exrportToExcel($tahunBulan)
+    public function exrportToExcel($tahunBulan, $kodeProdi = null)
     {
 
         list($year, $bulan) = explode('-', $tahunBulan);
@@ -697,9 +697,11 @@ class QuisionerService
             })
             ->with('educations')
             ->with('prodi')
+            ->when($kodeProdi != null, function ($query) use ($kodeProdi) {
+                $query->where('kode_prodi', $kodeProdi);
+            })
             ->get()
             ->toArray();
-
 
         $data = collect($users)->map(function ($user) {
             // Modify the items here
@@ -712,12 +714,21 @@ class QuisionerService
     }
 
 
-    public function updateFromExcel($keys, $data)
+    public function updateFromExcel($keys, $data, $kodeProdi = null)
     {
         Db::beginTransaction();
-
         foreach ($data as $value) {
-            $tempData = $this->quisionerLevel->where('user_id', $value['id user'])->where('level', strval($value['level']))->first();
+            if ($kodeProdi != null) {
+                $tempData = $this->quisionerLevel->where('user_id', $value['id user'])->where('level', strval($value['level']))
+                    ->with('user', function ($query) use ($kodeProdi) {
+                        $query->with('prodi')->where('id', $kodeProdi);
+                    })
+                    ->first();
+                // dd($tempData);
+            } else {
+                $tempData = $this->quisionerLevel->where('user_id', $value['id user'])->where('level', strval($value['level']))
+                    ->first();
+            }
             if (isset($tempData)) {
                 $idIdentitas = $tempData->identitas_section;
                 $idMain = $tempData->main_section;

@@ -758,7 +758,6 @@
                     <h2>Our Clients</h2>
                     <p>Temporibus omnis officia</p>
                 </header>
-
                 <div class="clients-slider swiper">
                     <div class="swiper-wrapper align-items-center">
                         <div class="swiper-slide"><img src="{{ asset('/') }}assets/img/clients/client-1.png"
@@ -796,45 +795,21 @@
 
                 <div class="row">
 
-                    <div class="col-lg-4">
-                        <div class="post-box">
-                            <div class="post-img"><img src="{{ asset('/') }}assets/img/blog/blog-1.jpg"
-                                    class="img-fluid" alt=""></div>
-                            <span class="post-date">Sabtu, 15 September 2023</span>
-                            <h3 class="post-title"> Mahasiswa Ciptakan Produk Wedang Jahe: Invoasi Terbaru</h3>
-                            <a href="{{ route('blog-single') }}" class="readmore stretched-link mt-auto"><span>Baca
-                                    Selengkapnya</span><i class="bi bi-arrow-right"></i></a>
+                    @foreach ($news as $item)
+                        <div class="col-lg-4">
+                            <div class="post-box">
+                                <div class="post-img"><img src="{{$item['image']}}"
+                                        class="img-fluid" alt=""></div>
+                                <span class="post-date">{{ date('D, d-m-Y', strtotime($item['created_at'])) }}</span>
+                                <h3 class="post-title"> {{$item['title']}}</h3>
+                                <a href="{{ route('blog-single') }}" class="readmore stretched-link mt-auto"><span>Baca
+                                        Selengkapnya</span><i class="bi bi-arrow-right"></i></a>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="post-box">
-                            <div class="post-img"><img src="{{ asset('/') }}assets/img/blog/blog-2.jpg"
-                                    class="img-fluid" alt=""></div>
-                            <span class="post-date">Jumat, 12 Agustus 2023</span>
-                            <h3 class="post-title">Dies Natalis Politeknik Negeri Jember:Wujudkan Invoasi Baru</h3>
-                            <a href="{{ route('blog-single') }}" class="readmore stretched-link mt-auto"><span>Baca
-                                    Selengkapnya</span><i class="bi bi-arrow-right"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="post-box">
-                            <div class="post-img"><img src="{{ asset('/') }}assets/img/blog/blog-3.jpg"
-                                    class="img-fluid" alt=""></div>
-                            <span class="post-date">Minggu, 22 Juli 2024</span>
-                            <h3 class="post-title">Yuk Terapkan Hidup Sehat</h3>
-                            <a href="{{ route('blog-single') }}" class="readmore stretched-link mt-auto"><span>Baca
-                                    Selengkapny</span><i class="bi bi-arrow-right"></i></a>
-                        </div>
-                    </div>
-
+                    @endforeach
                 </div>
-
             </div>
-
         </section><!-- End Recent Blog Posts Section -->
-
         <!-- ======= Contact Section ======= -->
         <section id="contact" class="contact">
 

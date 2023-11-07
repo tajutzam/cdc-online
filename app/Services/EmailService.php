@@ -65,7 +65,8 @@ class EmailService
         Mail::to($to)->send($this->recoveryPasswordMail);
     }
 
-    public function sendEmailSuccessUpdatePassword($user){
+    public function sendEmailSuccessUpdatePassword($user)
+    {
         $this->successUpdatePasswordMail->user = $user;
         Mail::to($user->email)->send($this->successUpdatePasswordMail);
     }

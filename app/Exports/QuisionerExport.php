@@ -21,10 +21,11 @@ class QuisionerExport implements FromView
     private $kodeProdi;
 
 
-    public function __construct($tahun)
+    public function __construct($tahun, $kodeProdi = null)
     {
         $this->quisionerService = new QuisionerService();
         $this->tahun = $tahun;
+        $this->kodeProdi = $kodeProdi;
     }
 
 
@@ -32,11 +33,13 @@ class QuisionerExport implements FromView
     public function view(): View
     {
 
-        $userQuisioner = $this->quisionerService->exrportToExcel($this->tahun);
+        // dd($this->kodeProdi);
+        $userQuisioner = $this->quisionerService->exrportToExcel($this->tahun, $this->kodeProdi);
 
+        
 
         if (sizeof($userQuisioner) == 0) {
-            $message = "Ops , quisioner dengan ".$this->tahun." tidak ditemukan";
+            $message = "Ops , quisioner dengan " . $this->tahun . " tidak ditemukan";
             throw new WebException($message);
         }
 
