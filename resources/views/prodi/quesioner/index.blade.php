@@ -303,7 +303,7 @@
 
 
 
-        <x-modal-small id="upload-excel" footer="footer" title="title" body="body">
+        <x-modal-medium id="upload-excel" footer="footer" title="title" body="body">
             <x-slot name="title">Import Excel</x-slot>
             <x-slot name="id">upload-excel</x-slot>
             <x-slot name="body">
@@ -316,7 +316,7 @@
                     </div>
                 </form>
             </x-slot>
-        </x-modal-small>
+        </x-modal-medium>
 
 
         <script>
