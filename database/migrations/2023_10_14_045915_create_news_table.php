@@ -17,7 +17,7 @@ class CreateNewsTable extends Migration
             $table->uuid('id')->primary();
             $table->string('title')->nullable(false);
             $table->text('description');
-            $table->boolean('active')->default(true);
+            // $table->boolean('active')->default(true);
             $table->string('image');
             $table->foreignUuid('admin_id')->references('id')->on('admin')->onUpdate('cascade');
             $table->timestamps();

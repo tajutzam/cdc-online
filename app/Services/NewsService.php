@@ -30,7 +30,7 @@ class NewsService
     public function findAll($page = 0)
     {
 
-        $data = $this->news->paginate(10, ['*'], 'page', $page); // Change 10 to the number of items you want per page
+        $data = $this->news->with('admin')->paginate(5, ['*'], 'page', $page); // Change 10 to the number of items you want per page
         $result = $this->castToPojo($data->items());
 
 
@@ -43,34 +43,15 @@ class NewsService
         $startDate = $endDate->copy()->startOfWeek(); // Start of the current week (Sunday)
         $endDate = $endDate->copy()->endOfWeek(); // End of the current week (Saturday)
 
-        // Create an array to store the counts for each day
-        $countsByDayActive = [];
-        $countsByDayNonActive = [];
+
         $countsAll = [];
 
-
-        // Loop through each day within the last week
-        $currentDate = $startDate->copy();
-        while ($currentDate <= $endDate) {
-            // Query to count active news items for the current day
-            $count = $this->news
-                ->where('active', true)
-                ->whereDate('created_at', $currentDate)
-                ->count();
-
-            // Store the count in the array with the date as the key
-            $countsByDayActive[$currentDate->toDateString()] = $count;
-
-            // Move to the next day
-            $currentDate->addDay();
-        }
         $currentDate = $startDate->copy();
         while ($currentDate <= $endDate) {
             // Query to count active news items for the current day
             $count = $this->news
                 ->whereDate('created_at', $currentDate)
                 ->count();
-
             // Store the count in the array with the date as the key
             $countsAll[$currentDate->toDateString()] = $count;
 
@@ -78,26 +59,10 @@ class NewsService
             $currentDate->addDay();
         }
 
-        $currentDate = $startDate->copy();
-
-        while ($currentDate <= $endDate) {
-            // Query to count active news items for the current day
-            $count = $this->news
-                ->where('active', false)
-                ->whereDate('updated_at', $currentDate)
-                ->count();
-
-            // Store the count in the array with the date as the key
-            $countsByDayNonActive[$currentDate->toDateString()] = $count;
-
-            // Move to the next day
-            $currentDate->addDay();
-        }
-
         return [
             'data' => $result,
-            'count_by_active' => $countsByDayActive,
-            'count_by_day_nonactive' => $countsByDayNonActive,
+            // 'count_by_active' => $countsByDayActive,
+            // 'count_by_day_nonactive' => $countsByDayNonActive,
             'count_all' => $countsAll,
             'pagination' => [
                 'current_page' => $data->currentPage(),
@@ -108,16 +73,19 @@ class NewsService
         ];
     }
 
-    public function findAllActive()
+
+
+
+    public function findLastInserted()
     {
 
-        $data = $this->news->with('admin')->where('active', true)->get()->toArray();
+        $data = $this->news->with('admin')->latest()->take(5)->get()->toArray();
         return $this->castToPojo($data);
     }
 
     function findById($id): array
     {
-        $data = $this->news->with('admin')->where('active', true)->where('id', $id)->first();
+        $data = $this->news->with('admin')->where('id', $id)->first();
         if (isset($data)) {
             $data = $data->toArray();
             $response = $this->castToSinglePojo($data);
@@ -142,7 +110,7 @@ class NewsService
             'image' => $fileName,
             'title' => $request['title'],
             'description' => $request['description'],
-            'active' => true,
+
         ]);
         if (isset($created)) {
             $this->notificationService->sendNotificationsNews($created->title, $created->id);
@@ -180,7 +148,6 @@ class NewsService
             'image' => $imageName,
             'title' => $request['title'],
             'description' => $request['description'],
-            'active' => $request['active']
         ]);
         if ($updated) {
             Db::commit();
@@ -238,4 +205,5 @@ class NewsService
 
         return $news;
     }
+
 }

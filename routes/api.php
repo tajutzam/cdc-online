@@ -6,11 +6,13 @@ use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\NewsController as ApiNewsController;
+use App\Http\Controllers\NotificationsController as ControllersNotificationsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\QuisionerController;
 use App\Http\Controllers\StudyProgramPublicController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\web\NewsController;
+use App\Http\Controllers\web\NotificationsController;
 use App\Http\Controllers\WhatshappController;
 use App\Http\Middleware\TokenMiddleware;
 use App\Http\Middleware\VeriviedMiddleware;
@@ -115,13 +117,16 @@ Route::get("/user/whatsapp", [WhatshappController::class, 'findAll']);
 Route::post('/user/post/search', [PostController::class, 'findByPosition'])->middleware(TokenMiddleware::class);
 
 // NEWS USER
-Route::get('/user/news', [ApiNewsController::class, 'findAllActive']);
+Route::get('/user/news', [ApiNewsController::class, 'findLastInserted']);
 Route::get('/user/news/{id}', [ApiNewsController::class, 'findById']);
 
 
 // notifications
 Route::put('/user/fcmtoken', [UserController::class, 'sendFcmToken'])->withoutMiddleware(VeriviedMiddleware::class);
 Route::put("/user/position", [UserController::class, "setPosition"]);
+
+
+Route::get("/user/notifications", [ControllersNotificationsController::class, "findAllNotificationsUser"]);
 
 Route::get("/user/ranking/followers", [UserController::class, "getTopUser"]);
 Route::get("/user/ranking/salary", [UserController::class, "getTopSalary"]);
