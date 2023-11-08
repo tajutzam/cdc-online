@@ -29,6 +29,7 @@ class NotificationService
         $factory = (new Factory)
             ->withServiceAccount($serviceAccountPath);
 
+
         $this->messaging = $factory->createMessaging();
         $this->notifications = new Notifications();
     }
@@ -59,10 +60,14 @@ class NotificationService
                 $query->orderBy('created_at', 'desc')->first(); // Ini mengambil item pertama
             },
             'prodi'
-        ])->whereDoesntHave('quisioner_level') // Menambahkan kondisi: tidak memiliki quisioner_level
+        ])
+            ->whereNotNull('fcm_token', )
+            ->whereDoesntHave('quisioner_level') // Menambahkan kondisi: tidak memiliki quisioner_level
             ->orWhereHas('quisioner_level', function ($query) {
                 $query->where('expired', '<', now()); // Menambahkan kondisi: masa expired quisioner_level habis
-            })->get()->toArray();
+            })
+            ->get()->toArray();
+
         foreach ($dataUser as $key => $value) {
             # code...
             if (sizeof($value['quisioner_level']) == 0) {
@@ -84,8 +89,8 @@ class NotificationService
 
     public function sendNotificationQuisioner($data)
     {
-        DB::beginTransaction();
-        foreach ($data as $value) {
+        Db::beginTransaction();
+        foreach ($data as $key => $value) {
             $user = $this->user->where('id', $value->id)->first();
             # code...
             if (isset($value->fcm_token)) {
@@ -112,6 +117,7 @@ class NotificationService
                         ]
                     );
                     if (isset($created)) {
+                        dd("oke");
                         Db::commit();
                     }
                 } catch (\Throwable $th) {
@@ -119,6 +125,44 @@ class NotificationService
                     throw new WebException($th->getMessage());
                 }
             }
+        }
+    }
+
+
+    public function sendNotificationPost($user, $title, $body, $idPost)
+    {
+        if (!isset($user->fcm_token)) {
+            throw new WebException("User Belum Mengupdate Fcm Token");
+        }
+        Db::beginTransaction();
+        try {
+            //code...
+            $message = CloudMessage::new()
+                ->withTarget('token', $user->fcm_token) // Replace with the recipient's FCM token
+                ->withNotification([
+                    'title' => $title,
+                    'body' => $body,
+                ])
+                ->withData(['type' => 'news']);
+            $this->messaging->send($message);
+            $users = $this->user->all()->toArray();
+            foreach ($users as $value) {
+                # code...
+                $created = $this->notifications->create(
+                    [
+                        'type' => 'post',
+                        'user_id' => $value['id'],
+                        'message' => $body,
+                        'id_body' => $idPost
+                    ]
+                );
+                if (isset($created)) {
+                    Db::commit();
+                }
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw new WebException($th->getMessage());
         }
     }
 
@@ -141,7 +185,7 @@ class NotificationService
                 $created = $this->notifications->create(
                     [
                         'type' => 'news',
-                        'user_id' => $value['id'],    
+                        'user_id' => $value['id'],
                         'message' => $title,
                         'id_body' => $idNews
                     ]

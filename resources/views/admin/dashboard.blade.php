@@ -138,7 +138,7 @@
                                                 </div>
                                             </td>
                                             <td>{{ $item['company'] }}</td>
-                                            <td>{{ number_format($item['highest_salary'], 0, '.', ',') }}</td>
+                                            <td>{{$item['highest_salary'] }}</td>
                                             <td>
                                                 @if ($item['account_status'])
                                                     <div class="badge rounded-pill bg-success w-100">Terverifikasi</div>

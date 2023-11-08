@@ -108,7 +108,7 @@ class UserService
         }
 
         $userPojo = $this->castToUserResponse($user);
-        $userPojo['$isFollow'] = $isFollow;
+        $userPojo['isFollow'] = $isFollow;
 
         $followersIds = collect($data['followers'])->pluck('folowers_id')->toArray();
         $followers = [];
@@ -140,7 +140,6 @@ class UserService
 
         return ResponseHelper::successResponse('success fetch data', $responsePojo, 200);
     }
-
 
     public function findAllUser($pageNumber, $angkatan, $prodi, $id) // need pagination 
     {
@@ -476,7 +475,7 @@ class UserService
             'ttl' => $user->ttl,
             'alamat' => $user->visible_alamat == 1 ? $user->alamat : "***",
             "about" => $user->about,
-            "gender" => $user->gender,
+            "gender" => $user->gender == 'male' ? "Laki-Laki" : "Perempuan",
             "level" => $user->level,
             "linkedin" => $user->linkedin,
             "facebook" => $user->facebook,
@@ -500,10 +499,10 @@ class UserService
             "nik" => $user['visible_nik'] == 1 ? $user['nik'] : "***",
             "no_telp" => $user['visible_no_telp'] == 1 ? $user['no_telp'] : "***",
             "foto" => $url,
-            'ttl' => $user['ttl'],
+            'ttl' => $user['visible_ttl'] == 1 ? $user['ttl'] : "***",
             'alamat' => $user['visible_alamat'] == 1 ? $user['alamat'] : "***",
             "about" => $user['about'],
-            "gender" => $user['gender'],
+            "gender" => $user['gender'] == "male" ? "Laki-Laki" : "Perempuan",
             "level" => $user['level'],
             "linkedin" => $user['linkedin'],
             "facebook" => $user['facebook'],
@@ -527,10 +526,10 @@ class UserService
             "nik" => $user['visible_nik'] == 1 ? $user['nik'] : "***",
             "no_telp" => $user['visible_no_telp'] == 1 ? $user['no_telp'] : "***",
             "foto" => $url,
-            'ttl' => $user['ttl'],
+            'ttl' => $user['visible_ttl'] == 1 ? $user['ttl'] : "***",
             'alamat' => $user['visible_alamat'] == 1 ? $user['alamat'] : "***",
             "about" => $user['about'],
-            "gender" => $user['gender'],
+            "gender" => $user['gender'] == "male" ? "Laki-Laki" : "Perempuan",
             "level" => $user['level'],
             "linkedin" => $user['linkedin'],
             "facebook" => $user['facebook'],
@@ -575,10 +574,12 @@ class UserService
             return count($user['jobs']) > 0; // Filter pengguna yang memiliki setidaknya satu pekerjaan.
         })->map(function ($user) {
             $lastJob = collect($user['jobs'])->where('pekerjaan_saatini', 1)->first();
+
+            $formattedCurrency = number_format($lastJob['gaji'], 2); // 2 decimal places for cents
             return [
                 'fullname' => $user['fullname'],
                 'last_position' => $lastJob ? $lastJob['jabatan'] : null,
-                'highest_salary' => $lastJob ? $lastJob['gaji'] : null,
+                'highest_salary' => $lastJob ? $formattedCurrency : null,
                 'company' => $lastJob['perusahaan'],
                 'account_status' => $user['account_status'],
                 'image' => url('/') . '/users/' . $user['foto']

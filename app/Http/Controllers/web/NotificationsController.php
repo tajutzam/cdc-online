@@ -25,6 +25,7 @@ class NotificationsController extends Controller
 
 
         $data = $this->notificationService->findAllUserNeedNotifications();
+        
 
 
         return view('admin.notifications.notifications', ['data' => $data]);
@@ -34,7 +35,7 @@ class NotificationsController extends Controller
     {
         $rules = [
             'users' => 'required',
-    ];
+        ];
 
         $customMessages = [
             'required' => ':attribute Dibutuhkan.',
