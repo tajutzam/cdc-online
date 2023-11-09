@@ -20,7 +20,6 @@ class NewsController extends Controller
 
         $this->newsService = new NewsService();
         $this->middleware(TokenMiddleware::class);
-
     }
 
 
@@ -35,5 +34,4 @@ class NewsController extends Controller
         $data = $this->newsService->findById($id);
         return ResponseHelper::successResponse('success fetch data', $data, 200);
     }
-
 }

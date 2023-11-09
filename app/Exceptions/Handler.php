@@ -90,6 +90,7 @@ class Handler extends ExceptionHandler
                     'message' => $e->getMessage()
                 ], 403);
             }
+
             if ($e instanceof UnauthorizedException) {
                 return response()->json([
                     'status' => false,

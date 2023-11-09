@@ -205,5 +205,4 @@ class NewsService
 
         return $news;
     }
-
 }
