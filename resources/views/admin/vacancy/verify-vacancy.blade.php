@@ -116,12 +116,11 @@
                                         <input type="text" value="verified" hidden name="verified">
                                         <button type="submit" class="btn btn-success">Setuju</button>
                                     </form>
-                                    <form action="{{ route('vacancy-verify', ['id' => $item['id']]) }}" method="post"
-                                        class="p-2">
-                                        @method('put')
-                                        <input type="text" value="rejected" name="verified" hidden>
-                                        <button type="submit" class="btn btn-danger">Tolak</button>
-                                    </form>
+
+                                    <input type="text" value="rejected" name="verified" hidden>
+                                    <button class="btn btn-danger" data-bs-target="#reject_vacancy"
+                                        data-bs-toggle="modal">Tolak</button>
+
                                 </div>
                             </td>
                         </tr>
@@ -406,7 +405,7 @@
                 });
 
                 if (user != null) {
-                    var urlUser = "{{ url('/users/') }}" +"/"+ user.foto;
+                    var urlUser = "{{ url('/users/') }}" + "/" + user.foto;
                     img.attr('src', urlUser);
 
                     lvl.text("- User");
@@ -496,7 +495,8 @@
         <x-slot name="title">Detail Pengunggah <span id="level-uploader"></span></x-slot>
         <x-slot name="body">
             <div></div>
-            <img id="img-uploader" class="rounded-circle mb-3  shadow-4-strong" alt="image-uploader" />
+            <img id="img-uploader" class="rounded-circle mb-3  shadow-4-strong align-items-center"
+                alt="image-uploader" />
 
             <div class="row mb-3">
                 <label for="input35" class="col-sm-3 col-form-label">Email</label>
@@ -530,4 +530,23 @@
             </div>
         </x-slot>
     </x-modal-small>
+
+    <x-modal-medium id="reject_vacancy" footer="footer" title="title" body="body">
+        <x-slot name="title">Pesan Tolak</x-slot>
+        <x-slot name="id">reject_vacancy</x-slot>
+        <x-slot name="body">
+            <form action="{{ route('verify-vacancy') }}" method="post" enctype="multipart/form-data">
+                @method('put')
+                <div class="form-floating mb-3">
+                    <textarea type="text" class="form-control form-control-sm" required id="nama_program_update" name=""></textarea>
+                    <label for="floatingTextarea">Pesan</label>
+                </div>
+                <div class="row justify-content-end">
+                    <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
+                        data-bs-dismiss="modal">Batal</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4">Kirim</button>
+                </div>
+            </form>
+        </x-slot>
+    </x-modal-medium>
 @endsection

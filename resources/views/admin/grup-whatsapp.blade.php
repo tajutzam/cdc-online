@@ -61,7 +61,7 @@
 
             </div>
         </div>
-        <div class="row  pe-3 ps-3 justify-content-between gap-lg-5">
+        <div class="row  pe-3 ps-3 justify-content-start gap-lg-4">
             @foreach ($data['groups'] as $item)
                 <div class="card p-0" style="width: 18rem;">
                     <div class="card-body text-center">

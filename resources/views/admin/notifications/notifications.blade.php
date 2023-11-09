@@ -48,9 +48,9 @@
                                 <th>Foto</th>
                                 <th>Status Akun</th>
                                 <th>Kemajuan</th>
-                                <th>Level Quisioner</th>
+                                <th>Level Kuesioner</th>
                                 {{-- <th>Detail Kuesioner</th> --}}
-                                <th>Notifikasi</th>
+                                {{-- <th>Notifikasi</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -61,7 +61,10 @@
                                     <td style="text-align: start">{{ $item['fullname'] }}</td style="text-align: start">
                                     <td style="text-align: start" style="text-align: start">
                                         {{ $item['prodi']['nama_prodi'] ?? '-' }}</td>
-                                    <td><img style="height: 100px" src="{{ $item['foto'] }}" alt="foto alumni"></td>
+                                    <td>
+                                        <img src="{{ $item['foto'] }}" class="rounded-circle" width="46" height="46"
+                                            alt="" />
+                                    </td>
                                     <td>
                                         @if ($item['account_status'])
                                             <i class="fa-solid fa-circle-check" style="color: #005eff;"></i>
@@ -88,12 +91,12 @@
                                     </td>
                                     {{-- <td><button type="button" class="btn btn-warning btn-sm">Detail</button>
                             </td> --}}
-                                    <td>
+                                    {{-- <td>
                                         <a href="">
                                             <i class="fa-solid fa-paper-plane" style="color: #005eff;"></i><span
                                                 class="text-decoration-none"> </span>
                                         </a>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>
