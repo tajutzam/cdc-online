@@ -17,7 +17,7 @@ class LandingPageController extends Controller
 
     public function index()
     {
-        $news = $this->newsService->findAllActive();
+        $news = $this->newsService->findLastInserted();
         $news = array_slice($news, 0, 3);
         return view('landing-page.index', ['news' => $news]);
     }
