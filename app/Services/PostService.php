@@ -26,11 +26,12 @@ class PostService
 
     private Post $post;
 
-
+    private NotificationService $notificationService;
 
     public function __construct()
     {
         $this->post = new Post();
+        $this->notificationService = new NotificationService();
     }
 
     public function addPostJob($userId, $image, $request, $adminId = null)
@@ -104,20 +105,22 @@ class PostService
 
     public function updateVerified($data)
     {
-
         DB::beginTransaction();
-
         $updated = $this->post->where('id', $data['id'])->update([
             'verified' => $data['verified']
         ]);
-
         if ($updated) {
+            $post = $this->post->where('id', $data['id'])->with('user')->first();
             DB::commit();
+            if ($data['verified'] == 'verified') {
+                $this->notificationService->sendNotificationPost($post->user, "Selamat, Lowongan Anda Disetujui !", "Lowongan : " . $post->position . " di :" . $post->perusahaan, $post->id);
+            } else {
+                $this->notificationService->sendNotificationPost($post->user, "Mohon Maaf, Lowongan Anda Ditolak", "Pesan", $post->id);
+            }
             return ResponseHelper::successResponse('Berhasil memperbarui Verifikasi', $updated, 200);
         }
         throw new WebException('Ops, Gagal memperbarui Verifikasi');
     }
-
 
 
     public function getAllPost($page, $userId)

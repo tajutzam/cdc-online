@@ -27,7 +27,7 @@ class PostController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'image' => 'required|image|mimes:jpeg,png,jpg|max:1048',
-            'link_apply' => 'required',
+            'link_apply' => 'required|url',
             'company' => 'required',
             'description' => 'required',
             'expired' => 'required|date_format:Y-m-d',

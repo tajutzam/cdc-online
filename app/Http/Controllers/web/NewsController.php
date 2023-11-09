@@ -24,10 +24,11 @@ class NewsController extends Controller
     {
         $data = $this->newsService->findAll($request->get('page'));
 
+        // dd($data);
 
-        $counts_by_day_active = array_values($data['count_by_active']);
-        $counts_by_day_non_active = array_values($data['count_by_day_nonactive']);
-        $counts_by_day_all = array_values($data['count_all']);
+        // $counts_by_day_active = array_values($data['count_by_active']);
+        // $counts_by_day_non_active = array_values($data['count_by_day_nonactive']);
+        // $counts_by_day_all = array_values($data['count_all']);
 
 
 
@@ -35,14 +36,7 @@ class NewsController extends Controller
         $tempNonActive = 0;
 
 
-        foreach ($data['data'] as $value) {
-            # code...
-            if ($value['active'] == true) {
-                $tempActive += 1;
-            } else {
-                $tempNonActive += 1;
-            }
-        }
+
 
         $total = [
             'active' => $tempActive,
@@ -57,9 +51,9 @@ class NewsController extends Controller
                 'total' => sizeof($data['data']),
             ],
             'count' => [
-                'active' => $counts_by_day_active,
-                'non_active' => $counts_by_day_non_active,
-                'all' => $counts_by_day_all
+                'active' => [],
+                'non_active' => [],
+                'all' => array_values($data['count_all'])
             ]
         ]);
     }
@@ -109,7 +103,6 @@ class NewsController extends Controller
                 'title' => 'required|max:100',
                 'description' => 'required|max:10000',
                 'id' => 'required'
-
             ];
         }
         $customMessages = [
@@ -134,10 +127,15 @@ class NewsController extends Controller
         return $this->newsService->delete($data['id']);
     }
 
-    public function findAllBlog()
+    public function findAllBlog(Request $request)
     {
-        $data = $this->newsService->findAllActive();
-    
-        return view('landing-page.blog' , ['data' => $data]);
+        $data = $this->newsService->findAll($request->get('page'));
+        $latest = $this->newsService->findLastInserted();
+        unset($data['count_all']);
+        return view('landing-page.blog', ['data' => $data, 'lastest' => $latest]);
+    }
+
+    public function detailBlog($id){
+        
     }
 }

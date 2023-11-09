@@ -27,7 +27,6 @@ class NewsSeeder extends Seeder
         News::create([
             'title' => 'Polije Membangun sekolah baru',
             'description' => $faker->sentence,
-            'active' => true,
             'image' => 'image',
             'admin_id' => Admin::all()->first()->id
         ]);
