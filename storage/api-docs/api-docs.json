@@ -1829,6 +1829,400 @@
                     }
                 }
             }
+        },
+        "/user/post": {
+            "post": {
+                "tags": ["Vacancy"],
+                "description": "add vacancy",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "image",
+                        "description": "Your request payload",
+                        "required": true,
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "link_apply",
+                        "description": "Your request payload",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "company",
+                        "description": "Your request payload",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "description",
+                        "description": "Your request payload",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "expired",
+                        "description": "Your request payload",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type_job",
+                        "description": "Your request payload",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "position",
+                        "description": "Your request payload",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "sukses",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "http://localhost:8000/users/post/1699520933.png"
+                                                },
+                                                "link_apply": {
+                                                    "type": "string",
+                                                    "example": "https://chat.openai.com/"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "kerja sampingan enak dan oke"
+                                                },
+                                                "company": {
+                                                    "type": "string",
+                                                    "example": "polije"
+                                                },
+                                                "position": {
+                                                    "type": "string",
+                                                    "example": "backend developer"
+                                                },
+                                                "type_jobs": {
+                                                    "type": "string",
+                                                    "example": "Purnawaktu"
+                                                },
+                                                "expired": {
+                                                    "type": "string",
+                                                    "example": "2023-12-29T17:00:00.000000Z"
+                                                },
+                                                "user_id": {
+                                                    "type": "string",
+                                                    "example": "96a8a118-868f-43e7-93ec-0965ea36b4f6"
+                                                },
+                                                "admin_id": {
+                                                    "type": "string",
+                                                    "format": "nullable"
+                                                },
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "bd492dd4-6281-41eb-9988-cf554356ccc2"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2023-11-09T09:08:53.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-11-09T09:08:53.000000Z"
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Berhasil menambahkan Lowongan"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "201"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": ""
+                    },
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "401"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ops your token is not valid"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "forbiden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "403"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ops akun kamu belum diverifikasi"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "sukses",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "0": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "example": "bd492dd4-6281-41eb-9988-cf554356ccc2"
+                                                        },
+                                                        "user_id": {
+                                                            "type": "string",
+                                                            "example": "96a8a118-868f-43e7-93ec-0965ea36b4f6"
+                                                        },
+                                                        "link_apply": {
+                                                            "type": "string",
+                                                            "example": "https://chat.openai.com/"
+                                                        },
+                                                        "image": {
+                                                            "type": "string",
+                                                            "example": "http://localhost:8000/users/post/1699520933.png"
+                                                        },
+                                                        "description": {
+                                                            "type": "string",
+                                                            "example": "kerja sampingan enak dan oke"
+                                                        },
+                                                        "company": {
+                                                            "type": "string",
+                                                            "example": "polije"
+                                                        },
+                                                        "position": {
+                                                            "type": "string",
+                                                            "example": "backend developer"
+                                                        },
+                                                        "expired": {
+                                                            "type": "string",
+                                                            "example": "2023-12-30 00:00:00"
+                                                        },
+                                                        "post_at": {
+                                                            "type": "string",
+                                                            "example": "2023-11-08 14:42:09"
+                                                        },
+                                                        "can_comment": {
+                                                            "type": "integer",
+                                                            "format": "int32",
+                                                            "example": "1"
+                                                        },
+                                                        "verified": {
+                                                            "type": "string",
+                                                            "example": "verified"
+                                                        },
+                                                        "comments": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {}
+                                                            },
+                                                            "example": []
+                                                        },
+                                                        "type_jobs": {
+                                                            "type": "string",
+                                                            "example": "Purnawaktu"
+                                                        },
+                                                        "uploader": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "string",
+                                                                    "example": "96a8a118-868f-43e7-93ec-0965ea36b4f6"
+                                                                },
+                                                                "fullname": {
+                                                                    "type": "string",
+                                                                    "example": "Nama Lengkap Anda"
+                                                                },
+                                                                "email": {
+                                                                    "type": "string",
+                                                                    "example": "safiraput66@gmail.com"
+                                                                },
+                                                                "nik": {
+                                                                    "type": "string",
+                                                                    "example": "***"
+                                                                },
+                                                                "no_telp": {
+                                                                    "type": "string",
+                                                                    "example": "***"
+                                                                },
+                                                                "foto": {
+                                                                    "type": "string",
+                                                                    "example": "http://localhost:8000/users/foto.png"
+                                                                },
+                                                                "ttl": {
+                                                                    "type": "string",
+                                                                    "example": "Tempat Tanggal Lahir Anda"
+                                                                },
+                                                                "alamat": {
+                                                                    "type": "string",
+                                                                    "example": "Alamat Anda"
+                                                                },
+                                                                "about": {
+                                                                    "type": "string",
+                                                                    "example": "Tentang Anda"
+                                                                },
+                                                                "gender": {
+                                                                    "type": "string",
+                                                                    "example": "male"
+                                                                },
+                                                                "level": {
+                                                                    "type": "string",
+                                                                    "example": "user"
+                                                                },
+                                                                "linkedin": {
+                                                                    "type": "string",
+                                                                    "example": "Link LinkedIn Anda"
+                                                                },
+                                                                "facebook": {
+                                                                    "type": "string",
+                                                                    "format": "nullable"
+                                                                },
+                                                                "instagram": {
+                                                                    "type": "string",
+                                                                    "example": "Akun Instagram Anda"
+                                                                },
+                                                                "twiter": {
+                                                                    "type": "string",
+                                                                    "format": "nullable"
+                                                                },
+                                                                "account_status": {
+                                                                    "type": "integer",
+                                                                    "format": "int32",
+                                                                    "example": "1"
+                                                                },
+                                                                "latitude": {
+                                                                    "type": "string",
+                                                                    "format": "nullable"
+                                                                },
+                                                                "longtitude": {
+                                                                    "type": "string",
+                                                                    "format": "nullable"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "total_page": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "1"
+                                                },
+                                                "total_item": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "1"
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sukses Fetch Data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {

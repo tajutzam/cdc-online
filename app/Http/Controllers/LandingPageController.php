@@ -21,4 +21,13 @@ class LandingPageController extends Controller
         $news = array_slice($news, 0, 3);
         return view('landing-page.index', ['news' => $news]);
     }
+
+
+    public function findById($id)
+    {
+        $data = $this->newsService->findById($id);
+        $news = $this->newsService->findLastInserted();
+        $news = array_slice($news, 0, 3);
+        return view('landing-page.blog-single', ['blog' => $data , 'news' => $news]);
+    }
 }

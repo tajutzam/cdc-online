@@ -48,13 +48,11 @@ use App\Http\Controllers\web\AuthController as WebAuthController;
 |
 */
 
-Route::get('/', [LandingPageController::class , "index"])->name('/');
+Route::get('/', [LandingPageController::class, "index"])->name('/');
 
 Route::get('/landing-page/blog', [NewsController::class, 'findAllBlog'])->name('blog');
 
-Route::get('/landing-page/single-blog', function () {
-    return view('landing-page.blog-single');
-})->name('blog-single');
+Route::get('/landing-page/single-blog/{id}', [LandingPageController::class, 'findById'])->name('blog-single');
 
 Route::get('/landing-page/portofolio', function () {
     return view('landing-page.portofolio-details');

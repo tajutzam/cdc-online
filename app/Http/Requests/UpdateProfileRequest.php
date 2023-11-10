@@ -33,9 +33,9 @@ class UpdateProfileRequest extends FormRequest
             'x' => 'nullable|string',
             'facebook' => 'nullable|string',
             'no_telp' => 'required|max:13',
-            'gender' => 'required|in:male,female',
+            'gender' => 'required',
             'alamat' => 'required',
-            'nik' => 'required|unique:users,email'
+            'nik' => 'required'
         ];
     }
 

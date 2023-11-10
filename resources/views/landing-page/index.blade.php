@@ -753,15 +753,15 @@
                 </header>
 
                 <div class="row">
-
                     @foreach ($news as $item)
                         <div class="col-lg-4">
                             <div class="post-box">
-                                <div class="post-img"><img src="{{$item['image']}}"
-                                        class="img-fluid" alt=""></div>
+                                <div class="post-img"><img src="{{ $item['image'] }}" class="img-fluid" alt="">
+                                </div>
                                 <span class="post-date">{{ date('D, d-m-Y', strtotime($item['created_at'])) }}</span>
-                                <h3 class="post-title"> {{$item['title']}}</h3>
-                                <a href="{{ route('blog-single') }}" class="readmore stretched-link mt-auto"><span>Baca
+                                <h3 class="post-title"> {{ $item['title'] }}</h3>
+                                <a href="{{ route('blog-single', ['id' => $item['id']]) }}"
+                                    class="readmore stretched-link mt-auto"><span>Baca
                                         Selengkapnya</span><i class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>

@@ -728,23 +728,18 @@ class UserService
     public function updateUserLogin($request, $userId)
     {
         DB::beginTransaction();
+        $filteredKeys = array_filter(array_keys($request), function ($key) use ($request) {
+            return $request[$key] !== '***';
+        });
+
+        $dataBasedOnFilteredKeys = array_intersect_key($request, array_flip($filteredKeys));
+        $dataBasedOnFilteredKeys['twiter'] = $dataBasedOnFilteredKeys['x'];
+        unset($dataBasedOnFilteredKeys['x']);
+
         try {
             //code...
-            $isUpdate = $this->userModel->where('id', $userId)->update([
-
-                'fullname' => $request['fullname'],
-                'ttl' => $request['ttl'],
-                'about' => $request['about'],
-                'linkedin' => $request['linkedin'],
-                'instagram' => $request['instagram'],
-                'twiter' => $request['x'],
-                'facebook' => $request['facebook'],
-                'no_telp' => $request['no_telp'],
-                'gender' => $request['gender'],
-                'alamat' => $request['alamat'],
-                'nik' => $request['nik']
-
-            ]);
+            // check 4 visibility
+            $isUpdate = $this->userModel->where('id', $userId)->update($dataBasedOnFilteredKeys);
             if ($isUpdate) {
                 DB::commit();
                 return ResponseHelper::successResponse('success memberbarui profile', $isUpdate, 200);
