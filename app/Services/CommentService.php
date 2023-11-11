@@ -72,6 +72,7 @@ class CommentService
 
         $isDelete = $comment->delete();
         if ($isDelete) {
+            Db::commit();
             return [
                 'status' => true,
                 'message' => 'success delete comment',
