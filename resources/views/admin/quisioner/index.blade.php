@@ -71,54 +71,6 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Angkatan
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <?php
-                                    $currentYear = date('Y');
-                                    for ($i = 0; $i < 5; $i++) {
-                                        $year = $currentYear - $i;
-                                        echo '<li><a class="dropdown-item tahun" href="#" data-year="' . $year . '">' . $year . '</a></li>';
-                                        if ($i < 4) {
-                                            echo '<li><hr class="dropdown-divider"></li>';
-                                        }
-                                    }
-                                    ?>
-                                </ul>
-                            </div>
-
-                            <div id="btn-hover" class="btn-group" role="group" aria-label="Basic mixed styles example"
-                                style="padding: 1%">
-                                <!-- Tombol-tombol dengan tautan -->
-                                <button type="button" class="btn btn-outline-danger text-danger" id="bulan-0">
-                                    <a href="?bulan=0" style="text-decoration: none;">0 Bulan</a>
-                                </button>
-
-                                <button type="button" class="btn btn-outline-warning text-warning" id="bulan-6">
-                                    <a href="?bulan=6" style="text-decoration: none;">6 Bulan</a>
-                                </button>
-
-                                <button type="button" class="btn btn-outline-success" id="bulan-12">
-                                    <a href="?bulan=12" style="text-decoration: none;">12 Bulan</a>
-                                </button>
-
-                                <style>
-                                    button a {
-                                        color: inherit;
-                                        /* Warna teks menjadi putih saat tombol di-hover */
-                                    }
-
-                                    /* Aturan CSS untuk mengatur tautan saat tombol di-hover */
-                                    button:hover a {
-                                        color: white;
-                                        /* Warna teks menjadi putih saat tombol di-hover */
-                                    }
-                                </style>
-
-                            </div>
                         </div>
 
                         <div class="col-md-6 text-md-end">
@@ -165,8 +117,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="example"
-                                    class="table table-striped table-bordered table-hover table-condensed"
+                                <table id="example" class="table table-striped table-bordered table-hover table-condensed"
                                     style="width:100%">
                                     <thead>
                                         <tr>
