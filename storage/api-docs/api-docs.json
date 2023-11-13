@@ -2036,6 +2036,7 @@
                 }
             },
             "get": {
+                "tags": ["Vacancy"],
                 "responses": {
                     "200": {
                         "description": "sukses",
@@ -2223,8 +2224,199 @@
                     }
                 }
             }
+        },
+        "/user/post/detail-post/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": ["Vacancy"],
+                "description": "get post by id",
+                "responses": {
+                    "200": {
+                        "description": "sukses",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "bbefbdfe-9bf3-495b-a1b3-258da2eeb506"
+                                                },
+                                                "user_id": {
+                                                    "type": "string",
+                                                    "example": "eafcc2b5-f801-4997-ad23-8a46078b42e5"
+                                                },
+                                                "link_apply": {
+                                                    "type": "string",
+                                                    "example": "https://chat.openai.com/"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "http://localhost:8000/users/post/1699693579.png"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "kerja sampingan enak dan oke"
+                                                },
+                                                "company": {
+                                                    "type": "string",
+                                                    "example": "polije"
+                                                },
+                                                "position": {
+                                                    "type": "string",
+                                                    "example": "frontend"
+                                                },
+                                                "expired": {
+                                                    "type": "string",
+                                                    "example": "2023-12-30 00:00:00"
+                                                },
+                                                "post_at": {
+                                                    "type": "string",
+                                                    "example": "2023-11-08 14:42:09"
+                                                },
+                                                "can_comment": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "1"
+                                                },
+                                                "verified": {
+                                                    "type": "string",
+                                                    "example": "verified"
+                                                },
+                                                "comments": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {}
+                                                    },
+                                                    "example": []
+                                                },
+                                                "type_jobs": {
+                                                    "type": "string",
+                                                    "example": "Purnawaktu"
+                                                },
+                                                "uploader": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "example": "eafcc2b5-f801-4997-ad23-8a46078b42e5"
+                                                        },
+                                                        "fullname": {
+                                                            "type": "string",
+                                                            "example": "Nama Lengkap Anda"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "test@gmail.com"
+                                                        },
+                                                        "nik": {
+                                                            "type": "string",
+                                                            "example": "***"
+                                                        },
+                                                        "no_telp": {
+                                                            "type": "string",
+                                                            "example": "***"
+                                                        },
+                                                        "foto": {
+                                                            "type": "string",
+                                                            "example": "http://localhost:8000/users/foto.png"
+                                                        },
+                                                        "ttl": {
+                                                            "type": "string",
+                                                            "example": "Tempat Tanggal Lahir Anda"
+                                                        },
+                                                        "alamat": {
+                                                            "type": "string",
+                                                            "example": "Alamat Anda"
+                                                        },
+                                                        "about": {
+                                                            "type": "string",
+                                                            "example": "Tentang Anda"
+                                                        },
+                                                        "gender": {
+                                                            "type": "string",
+                                                            "example": "male"
+                                                        },
+                                                        "level": {
+                                                            "type": "string",
+                                                            "example": "user"
+                                                        },
+                                                        "linkedin": {
+                                                            "type": "string",
+                                                            "example": "Link LinkedIn Anda"
+                                                        },
+                                                        "facebook": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "instagram": {
+                                                            "type": "string",
+                                                            "example": "Akun Instagram Anda"
+                                                        },
+                                                        "twiter": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "account_status": {
+                                                            "type": "integer",
+                                                            "format": "int32",
+                                                            "example": "1"
+                                                        },
+                                                        "latitude": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "longtitude": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success fetch data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "bad request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "forbiden"
+                    }
+                }
+            }
         }
     },
+
     "components": {
         "securitySchemes": {
             "bearer_token": {

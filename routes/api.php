@@ -135,7 +135,7 @@ Route::get("/user/ranking/salary", [UserController::class, "getTopSalary"]);
 // comment
 Route::post('/user/post/comment', [CommentsController::class, 'addComment']);
 Route::delete('/user/post/comment', [CommentsController::class, 'deleteComment']);
-
+Route::get("user/post/detail-post/{id}", [PostController::class, "findById"]);
 
 // admin api
 Route::put("/admin/lowongan/verified", [PostController::class, 'updateVerified'])->withoutMiddleware([TokenMiddleware::class, VeriviedMiddleware::class]);

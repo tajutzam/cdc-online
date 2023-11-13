@@ -271,6 +271,16 @@ class PostService
         throw new NotFoundException('Ops, Lowongan tidak ditemukan');
     }
 
+
+    public function findByIdCast($id)
+    {
+        $post = $this->findById($id);
+        if (isset($post)) {
+            return $this->castToResponse($post);
+        }
+        throw new NotFoundException('Ops, Lowongan tidak ditemukan');
+    }
+
     public function info()
     {
         echo phpinfo();
@@ -484,6 +494,9 @@ class PostService
 
         return $data;
     }
+
+
+
 
 
 
