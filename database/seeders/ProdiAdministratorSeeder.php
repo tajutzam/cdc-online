@@ -23,7 +23,7 @@ class ProdiAdministratorSeeder extends Seeder
                 'password' => Hash::make('rahasia'),
                 'nik' => '023123123123123123',
                 'address' => 'banyuwangi',
-                'name' => 'Bapak Oskar Oasis',
+                'name' => 'Bapak Alfa',
                 'prodi_id' => 55301
             ]
         );

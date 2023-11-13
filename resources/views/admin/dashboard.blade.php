@@ -50,10 +50,9 @@
                     </div>
 
                     <div class=" mb-0">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d32654820.88251219!2d117.88879999999999!3d-2.4456499999999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2c4c07d7496404b7%3A0xe37b4de71badf485!2sIndonesia!5e0!3m2!1sen!2sid!4v1698663949011!5m2!1sen!2sid"
-                            width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <!-- Replace your iframe with this div for the Leaflet map -->
+                        <div id="mapid" style="height: 400px;"></div>
+
                     </div>
                     <div class="card-footer mb-3">
                         <div class="d-flex align-items-center">
@@ -138,7 +137,7 @@
                                                 </div>
                                             </td>
                                             <td>{{ $item['company'] }}</td>
-                                            <td>{{$item['highest_salary'] }}</td>
+                                            <td>{{ $item['highest_salary'] }}</td>
                                             <td>
                                                 @if ($item['account_status'])
                                                     <div class="badge rounded-pill bg-success w-100">Terverifikasi</div>
@@ -326,5 +325,41 @@
                 }],
             })
         });
+    </script>
+
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var mymap = L.map('mapid').setView([-8.159953, 113.723081], 5);
+
+        var customIcon = L.icon({
+            iconUrl: 'custom-icon.png',
+            iconSize: [40, 40], // Size of the icon
+            iconAnchor: [20, 40], // Point of the icon which will correspond to marker's location
+            popupAnchor: [0, -40] // Point from which the popup should open relative to the iconAnchor
+        });
+
+        // Add the tile layer (a base map)
+        var customIcon = L.icon({
+            iconUrl: '{{ url('/') }}/assets/images/admin.png',
+            iconSize: [40, 40], // Size of the icon
+            iconAnchor: [20, 40], // Point of the icon which will correspond to marker's location
+            popupAnchor: [0, -40] // Point from which the popup should open relative to the iconAnchor
+        });
+
+        // Add the tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(mymap);
+        var users = {!! json_encode($users) !!}
+        console.log(users);
+        users.forEach(element => {
+            console.log(element);
+            L.marker([element.latitude, element.longtitude], {
+                icon: customIcon
+            }).addTo(mymap).bindPopup(`${element.fullname} <br> ${element.prodi.nama_prodi}`);
+        });
+        // Add a marker with the custom icon
     </script>
 @endsection

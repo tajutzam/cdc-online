@@ -48,24 +48,6 @@ class UserSeeder extends Seeder
             'email_verivied' => 1,
             'kode_prodi' => 79402,
             'nim' => 'e41212336'
-
         ]);
-        User::create([
-            "email" => "safiraput66@gmail.com",
-            "password" => Hash::make("rahasia"),
-            "fullname" => "zam",
-            "nik" => "01928182812010",
-            "no_telp" => "085607185972",
-            "foto" => "foto.png",
-            "linkedin" => "linkedin.com/zam",
-            'level' => 'user',
-            "alamat" => 'thrid',
-            'gender' => 'female',
-            'about' => "thrid  about",
-            'email_verivied' => 1,
-            'kode_prodi' => 55301,
-            'nim' => 'e41212335'
-        ]);
-
     }
 }

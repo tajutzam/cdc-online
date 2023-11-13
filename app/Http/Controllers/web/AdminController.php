@@ -34,10 +34,12 @@ class AdminController extends Controller
     public function dashboard()
     {
         // ambil 5 tahun terakhir angkatan
-        {   
+        {
             $lastFiveYearsHaveWorker = $this->userService->findLastFiveYearsAlumniWhoHaveWorked();
             $categories = array_keys($lastFiveYearsHaveWorker);
             $values = array_values($lastFiveYearsHaveWorker);
+            $users = $this->userService->findAll();
+
 
 
             foreach ($categories as $key => $value) {
@@ -76,12 +78,19 @@ class AdminController extends Controller
             $totalUsers = $this->userService->totalUsers();
         } {
             $topSalary = $this->userService->getTopUserBySalary();
-        }
-        {
+        } {
             $topFollowers = $this->userService->getTopUser();
         }
 
-        return view('admin.dashboard', ['lastFive' => $lastFive, 'totalPerStudyProgram' => $totalPerStudyProgam, 'enrollProgres' => $enrollProgres, 'total' => $totalUsers , 'topSalary' => $topSalary , 'topFollowers' => $topFollowers]);
+        return view('admin.dashboard', [
+            'users' => $users['alumni'],
+            'lastFive' => $lastFive,
+            'totalPerStudyProgram' => $totalPerStudyProgam,
+            'enrollProgres' => $enrollProgres,
+            'total' => $totalUsers,
+            'topSalary' => $topSalary,
+            'topFollowers' => $topFollowers
+        ]);
     }
 
     public function settingsAdmin()

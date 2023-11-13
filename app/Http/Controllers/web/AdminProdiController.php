@@ -25,7 +25,8 @@ class AdminProdiController extends Controller
         $lastFive = $this->userService->findLastFiveYearsAlumniWhoHaveWorkedByStudyProgram($prodiId);
         $categories = array_keys($lastFive);
         $values = array_values($lastFive);
-
+        $users = $this->userService->findAllByProdi(true, Auth::guard('prodi')->user()->prodi->id);
+        // dd($users);
 
         foreach ($categories as $key => $value) {
             # code...
@@ -55,7 +56,7 @@ class AdminProdiController extends Controller
             'categories' => $categories
         ];
 
-        return view('prodi.dashboard', ['lastFive' => $lastFive]);
+        return view('prodi.dashboard', ['lastFive' => $lastFive, 'users' => $users['alumni']]);
     }
 
     public function settingsAdmin()

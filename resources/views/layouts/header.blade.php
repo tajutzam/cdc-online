@@ -46,6 +46,7 @@
 
     <!-- ApexCharts (jika Anda menggunakannya) -->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
     <title>Admin - CDC Politeknik Negeri Jember</title>
 </head>
