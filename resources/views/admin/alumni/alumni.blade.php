@@ -129,18 +129,18 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td> <img src={{ $item['foto'] }} class="rounded-circle" width="40"
                                                     height="40" alt=""></td>
+                                            <td>{{ $item['nim'] }}</td>
+                                            <td>{{ $item['nik'] }}</td>
+                                            <td>{{ $item['fullname'] }}</td>
                                             @if ($item['prodi'] != null)
-                                                <td>{{ $item['prodi']['id'] }}</td>
                                                 <td>{{ $item['prodi']['nama_prodi'] }}</td>
                                             @else
                                                 <td>-</td>
                                                 <td>-</td>
                                             @endif
                                             <td>{{ $item['email'] }}</td>
-                                            <td>{{ $item['email'] }}</td>
-                                            <td>{{ $item['foto'] }}</td>
-                                            <td>2025</td>
-                                            <td>2021</td>
+                                            <td>{{ $item['educations'][0]['tahun_lulus'] }}</td>
+                                            <td>{{ $item['educations'][0]['tahun_masuk'] }}</td>
                                             @if ($item['account_status'])
                                                 <td>
                                                     <div class="badge rounded-pill bg-primary w-100">Terverifikasi</div>
@@ -151,7 +151,6 @@
                                                     </div>
                                                 </td>
                                             @endif
-
                                             @if ($item['latitude'] == null)
                                                 <td style="color: gray">Latitude Tidak Ada</td>
                                             @else
