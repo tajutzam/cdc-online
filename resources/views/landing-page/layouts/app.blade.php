@@ -7,6 +7,8 @@
     @yield('content')
 
     @include('landing-page.layouts.footer')
+    @include('sweetalert::alert')
+
 </body>
 
 

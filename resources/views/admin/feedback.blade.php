@@ -40,30 +40,37 @@
         </div>
         <div class="row">
             {{-- Gunakan Perulangan di col-sm-6 --}}
-            <div class="col-sm-6">
-                <div class="row pt-2">
-                    <div class="col-sm">
-                        <div class="card pb-0 mb-0" style="background-color: #007bff; border-radius: 10px 10px 0 0;">
-                            <h5 class="p-2"
-                                style="padding-inline-start: 10px; margin: 0; color: white; font-weight: bold; height:0%;">
-                                <i class="fas fa-user"></i> Nama Pengguna
-                            </h5>
-                        </div>
-                        <div class="card pt-0 mb-0">
-                            <div class="card-body">
-                                <p class="card-text">Ini adalah komentar yang ditulis oleh pengguna. Ini adalah contoh
-                                    komentar yang panjang.</p>
-                                <form class="mt-3">
-                                    <div class="form-group">
-                                        <textarea class="form-control" rows="3" placeholder="Balas komentar..."></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Kirim</button>
-                                </form>
+            @foreach ($data as $item)
+                <div class="col-sm-6">
+                    <div class="row pt-2">
+                        <div class="col-sm">
+                            <div class="card pb-0 mb-0" style="background-color: #007bff; border-radius: 10px 10px 0 0;">
+                                <h5 class="p-2"
+                                    style="padding-inline-start: 10px; margin: 0; color: white; font-weight: bold; height:0%;">
+                                    <i class="fas fa-user"></i> {{ $item['name'] }}
+                                </h5>
+                            </div>
+                            <div class="card pt-0 mb-0">
+                                <div class="card-body">
+                                    <p class="card-text">{{ $item['questions'] }}</p>
+                                    @if (isset($item['answer']))
+                                        <p class="card-text">{{ $item['answer'] }}</p>
+                                    @else
+                                        <form method="post" action="{{ route('answer', ['id' => $item['id']]) }}"
+                                            class="mt-3">
+                                            @csrf
+                                            <div class="form-group">
+                                                <textarea class="form-control" name="answer" rows="3" placeholder="Balas komentar..."></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Kirim</button>
+                                        </form>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
         <nav>
             <ul class="pagination justify-content-start pt-3">

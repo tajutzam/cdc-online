@@ -53,15 +53,15 @@
                                 </div>
 
                                 <h2 class="entry-title">
-                                    <a href="{{ route('blog-single') }}">{{ $item['title'] }}</a>
+                                    <a href="{{ route('blog-single', ['id' => $item['id']]) }}">{{ $item['title'] }}</a>
                                 </h2>
 
                                 <div class="entry-meta">
                                     <ul>
                                         <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a
-                                                href="{{ route('blog-single') }}">{{ $item['admin']['name'] }}</a></li>
+                                                href="{{ route('blog-single', ['id' => $item['id']]) }}">{{ $item['admin']['name'] }}</a></li>
                                         <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a
-                                                href="{{ route('blog-single') }}"><time
+                                                href="{{ route('blog-single', ['id' => $item['id']]) }}"><time
                                                     datetime="2020-01-01">{{ date('D, d-m-Y', strtotime($item['created_at'])) }}
                                                 </time></a>
                                         </li>
@@ -71,7 +71,7 @@
                                     <span class="text-truncate">{!! $item['description'] !!}</span>
 
                                     <div class="read-more">
-                                        <a href="{{ route('blog-single') }}">Selengkapnya</a>
+                                        <a href="{{ route('blog-single', ['id' => $item['id']]) }}">Selengkapnya</a>
                                     </div>
                                 </div>
                             </article><!-- End blog entry -->
@@ -114,7 +114,8 @@
                                 @foreach ($lastest as $item)
                                     <div class="post-item clearfix">
                                         <img src="{{ $item['image'] }}" alt="image-berita">
-                                        <h4><a href="{{ route('blog-single') }}">{{ $item['title'] }}</a>
+                                        <h4><a
+                                                href="{{ route('blog-single', ['id' => $item['id']]) }}">{{ $item['title'] }}</a>
                                         </h4>
                                         <time
                                             datetime="2020-01-01">{{ date('D, d-m-Y', strtotime($item['created_at'])) }}</time>
@@ -126,5 +127,5 @@
                 </div>
             </div>
         </section><!-- End Blog Section -->
-    </main><!-- End #main --> 
+    </main><!-- End #main -->
 @endsection

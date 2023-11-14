@@ -14,7 +14,7 @@ class CreateCommentTable extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->string('comment')->nullable(false);
             // $table->foreignUuid('post_id')->references('id')->on('post')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignUuid('post_id')->nullable(true)->references('id')->on('post')->onDelete('cascade')->cascadeOnUpdate();

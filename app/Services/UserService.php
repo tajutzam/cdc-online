@@ -728,23 +728,18 @@ class UserService
     public function updateUserLogin($request, $userId)
     {
         DB::beginTransaction();
+        $filteredKeys = array_filter(array_keys($request), function ($key) use ($request) {
+            return $request[$key] !== '***';
+        });
+
+        $dataBasedOnFilteredKeys = array_intersect_key($request, array_flip($filteredKeys));
+        $dataBasedOnFilteredKeys['twiter'] = $dataBasedOnFilteredKeys['x'];
+        unset($dataBasedOnFilteredKeys['x']);
+
         try {
             //code...
-            $isUpdate = $this->userModel->where('id', $userId)->update([
-
-                'fullname' => $request['fullname'],
-                'ttl' => $request['ttl'],
-                'about' => $request['about'],
-                'linkedin' => $request['linkedin'],
-                'instagram' => $request['instagram'],
-                'twiter' => $request['x'],
-                'facebook' => $request['facebook'],
-                'no_telp' => $request['no_telp'],
-                'gender' => $request['gender'],
-                'alamat' => $request['alamat'],
-                'nik' => $request['nik']
-
-            ]);
+            // check 4 visibility
+            $isUpdate = $this->userModel->where('id', $userId)->update($dataBasedOnFilteredKeys);
             if ($isUpdate) {
                 DB::commit();
                 return ResponseHelper::successResponse('success memberbarui profile', $isUpdate, 200);
@@ -1257,4 +1252,30 @@ class UserService
         return $this->userModel->count();
     }
 
+    public function findAllUserHaveWork()
+    {
+        return $this->userModel
+            ->whereHas('quisioner_level', function ($query) {
+                $query->whereHas('main', function ($mainQuery) {
+                    $mainQuery->orWhere('f8', 'Bekerja (full time/part time)');
+                    $mainQuery->orWhere('f8', 'Wiraswasta');
+                });
+            })->count();
+    }
+
+    public function findAllUserHaveNotWork()
+    {
+        return $this->userModel
+    ->whereDoesntHave('quisioner_level') // Equivalent to orWhereNotHas for absence of related models
+    ->orWhereHas('quisioner_level', function ($query) {
+        $query->whereHas('main', function ($mainQuery) {
+            $mainQuery->where(function ($mainWhere) {
+                $mainWhere->where('f8', 'Belum memungkinkan bekerja')
+                    ->orWhere('f8', 'Tidak kerja tetapi sedang mencari kerja');
+            });
+        });
+    })
+    ->count();
+
+    }
 }
