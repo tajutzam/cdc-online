@@ -324,7 +324,7 @@ class PostService
             ->where('expired', '>', $now)
             ->where('verified', '=', 'verified')
             ->where('user_id', '<>', $userId)
-            ->where('position', 'like', '%' . $request['key'] . '%')
+            ->where('position', 'LIKE', "%{$request['key']}%")
             ->orWhereNotNull('admin_id')
             ->with([
                 'comments' => function ($query) {
