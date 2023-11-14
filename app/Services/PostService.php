@@ -353,10 +353,7 @@ class PostService
             }
             array_push($data, $tempPost);
         }
-
         return ResponseHelper::successResponse('Sukses Fetch Data', $data, 200);
-
-
     }
 
 
