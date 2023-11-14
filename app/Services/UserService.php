@@ -1252,4 +1252,30 @@ class UserService
         return $this->userModel->count();
     }
 
+    public function findAllUserHaveWork()
+    {
+        return $this->userModel
+            ->whereHas('quisioner_level', function ($query) {
+                $query->whereHas('main', function ($mainQuery) {
+                    $mainQuery->orWhere('f8', 'Bekerja (full time/part time)');
+                    $mainQuery->orWhere('f8', 'Wiraswasta');
+                });
+            })->count();
+    }
+
+    public function findAllUserHaveNotWork()
+    {
+        return $this->userModel
+    ->whereDoesntHave('quisioner_level') // Equivalent to orWhereNotHas for absence of related models
+    ->orWhereHas('quisioner_level', function ($query) {
+        $query->whereHas('main', function ($mainQuery) {
+            $mainQuery->where(function ($mainWhere) {
+                $mainWhere->where('f8', 'Belum memungkinkan bekerja')
+                    ->orWhere('f8', 'Tidak kerja tetapi sedang mencari kerja');
+            });
+        });
+    })
+    ->count();
+
+    }
 }

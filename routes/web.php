@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\web\QuestionsController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -49,7 +50,7 @@ use App\Http\Controllers\web\AuthController as WebAuthController;
 */
 
 Route::get('/', [LandingPageController::class, "index"])->name('/');
-
+Route::post("/questions", [QuestionsController::class, "store"])->name('asking');
 Route::get('/landing-page/blog', [NewsController::class, 'findAllBlog'])->name('blog');
 
 Route::get('/landing-page/single-blog/{id}', [LandingPageController::class, 'findById'])->name('blog-single');
@@ -105,7 +106,9 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::delete('/grup-whatsapp', [GrupWhatsappController::class, 'delete'])->name('grup-delete');
     Route::put('/grup-whatsapp', [GrupWhatsappController::class, 'update'])->name('grup-put');
 
-    Route::get('/feedback', [FeedbackController::class, 'feedback'])->name('feedback');
+    Route::get('/feedback', [QuestionsController::class, 'index'])->name('feedback');
+    Route::post('/answer/{id}', [QuestionsController::class, 'answer'])->name('answer');
+
 
 
     // Route::get('/trix', 'TrixController@index');
