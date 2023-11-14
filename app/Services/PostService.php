@@ -319,15 +319,12 @@ class PostService
     {
 
         $now = Carbon::now();
-
         $expiredPosts = $this->post
             ->where('expired', '>', $now)
             ->where('verified', '=', 'verified')
             ->where('user_id', '<>', $userId)
-            ->where(function ($query) use ($request) {
-                $query->where('position', 'LIKE', "%{$request['key']}%")
-                    ->orWhereNotNull('admin_id');
-            })
+            ->where('position', 'like', '%' . $request['key'] . '%')
+            // ->orWhereNotNull('admin_id')
             ->with([
                 'comments' => function ($query) {
                     $query->with('user');
@@ -336,7 +333,6 @@ class PostService
                 'admin'
             ])
             ->get();
-
 
         $data = [];
 
