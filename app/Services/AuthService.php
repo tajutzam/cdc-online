@@ -169,7 +169,8 @@ class AuthService
                 'expire_email' => $expired,
                 'nim' => $request['nim'],
                 'kode_prodi' => $request['kode_prodi'],
-                'account_status' => $isActive
+                'account_status' => $isActive,
+                'foto' => 'default.png'
             ]);
             $isCreated = $this->education->create([
                 'user_id' => $user->id,
