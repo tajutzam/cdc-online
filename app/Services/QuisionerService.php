@@ -142,6 +142,39 @@ class QuisionerService
 
     }
 
+
+
+    public function updateQuisionerIdentity($request)
+    {
+        $identity = $this->identity->where('id', $request['id'])->first();
+        if (isset($identity)) {
+            unset($request['id']);
+
+            try {
+                //code...
+                $isUpdate = $identity->update([
+                    'kdptimsmh' => '005019',
+                    'kdpstmsmh' => $request['kode_prodi'],
+                    'nimhsmsmh' => $request['nim'],
+                    'nmmhsmsmh' => $request['nama_lengkap'],
+                    'telpomsmh' => $request['no_telp'],
+                    'emailmsmh' => $request['email'],
+                    'tahun_lulus' => $request['tahun_lulus'],
+                    'nik' => $request['nik'],
+                    'npwp' => $request['npwp'],
+                ]);
+                return $isUpdate;
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+        }
+        throw new NotFoundException("Ops , Quisioner Tidak Ditemukan");
+    }
+
+
+
+
+
     public function addQuisionerMain($request, $userId)
     {
         DB::beginTransaction();
@@ -813,7 +846,7 @@ class QuisionerService
                         'f416',
                     ])));
 
-                    $this->updateCompanyApplie($idCompanyApplied, array_intersect_key($value, array_flip([
+                    $this->updateCompanyApplied($idCompanyApplied, array_intersect_key($value, array_flip([
                         'f6',
                         'f7',
                         'f7a',
@@ -864,70 +897,172 @@ class QuisionerService
         }
     }
 
-    private function updateMain($idMain, $data)
+    public function updateMain($idMain, $data)
     {
 
-        $updated = $this->mainSection->where('id', $idMain)->update($data);
-        if ($updated) {
-            Db::commit();
+        $main = $this->mainSection->where('id', $idMain)->first();
+        if (!isset($main)) {
+            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
+        }
+        try {
+            //code...
+            $updated = $main->update($data);
+            if ($updated) {
+                Db::commit();
+                return $updated;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw new Exception($th->getMessage());
         }
     }
 
-    private function updateFrutheStudy($idFurthe, $data)
+    public function updateFrutheStudy($idFurthe, $data)
     {
         $data['f18d'] = Carbon::parse($data['f18d']);
-        $updated = $this->furtheStudy->where('id', $idFurthe)->update($data);
-        if ($updated) {
-            Db::commit();
+        $furtheStudy = $this->furtheStudy->where('id', $idFurthe)->first();
+        if (!isset($furtheStudy)) {
+            throw new NotFoundException("Ops , Quisioner Tidak Ditemukan ");
+        }
+        try {
+            //code...
+            $updated = $furtheStudy->update($data);
+            if ($updated) {
+                Db::commit();
+                return $updated;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw new Exception($th->getMessage());
         }
     }
 
-    private function updateCompetence($idCompetence, $data)
+    public function updateCompetence($idCompetence, $data)
     {
-        $updated = $this->competence->where('id', $idCompetence)->update($data);
-        if ($updated) {
-            Db::commit();
+        $competence = $this->competence->where('id', $idCompetence)->first();
+
+        if (!isset($competence)) {
+            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
         }
+
+        try {
+            //code...
+            $updated = $competence->update($data);
+            if ($updated) {
+                Db::commit();
+                return $updated;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw new Exception($th->getMessage());
+        }
+
     }
 
-    private function updateStudyMethod($idStudyMethod, $data)
+    public function updateStudyMethod($idStudyMethod, $data)
     {
-        $updated = $this->studyMethod->where('id', $idStudyMethod)->update($data);
-        if ($updated) {
-            Db::commit();
+        $studyMethod = $this->studyMethod->where('id', $idStudyMethod)->first();
+        if (!isset($studyMethod)) {
+            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
         }
+        try {
+            //code...
+            $updated = $studyMethod->update($data);
+            if ($updated) {
+                Db::commit();
+                return $updated;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw new Exception($th->getMessage());
+        }
+
     }
 
-    private function updateJobsStreet($idJobsStreet, $data)
+    public function updateJobsStreet($idJobsStreet, $data)
     {
-        $updated = $this->startSearchJob->where('id', $idJobsStreet)->update($data);
-        if ($updated) {
-            Db::commit();
+        $job = $this->startSearchJob->where('id', $idJobsStreet)->first();
+        if (!isset($job)) {
+            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
+
         }
+        try {
+            //code...
+            $updated = $job->update($data);
+            if ($updated) {
+                Db::commit();
+                return $updated;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw new Exception($th->getMessage());
+        }
+
     }
 
-    private function updateHowFindJob($idHowFindJob, $data)
+    public function updateHowFindJob($idHowFindJob, $data)
     {
-        $updated = $this->howFindJob->where('id', $idHowFindJob)->update($data);
-        if ($updated) {
-            Db::commit();
+        $howFindJob = $this->howFindJob->where('id', $idHowFindJob)->first();
+        if (!isset($howFindJob)) {
+            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
         }
+        try {
+            //code...
+            $updated = $howFindJob->update($data);
+            if ($updated) {
+                Db::commit();
+                return $updated;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw new Exception($th->getMessage());
+        }
+
     }
 
-    private function updateCompanyApplie($idCompanyApplied, $data)
+    public function updateCompanyApplied($idCompanyApplied, $data)
     {
-        $updated = $this->comapnyAppled->where('id', $idCompanyApplied)->update($data);
-        if ($updated) {
-            Db::commit();
+        $companyApplied = $this->comapnyAppled->where('id', $idCompanyApplied)->first();
+
+        if (!isset($companyApplied)) {
+            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
         }
+
+        try {
+            //code...
+            $updated = $companyApplied->update($data);
+            if ($updated) {
+                Db::commit();
+                return $updated;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw new Exception($th->getMessage());
+        }
+
     }
 
-    private function updateJobSuitability($idJobSuitability, $data)
+    public function updateJobSuitability($idJobSuitability, $data)
     {
-        $updated = $this->jobSuitability->where('id', $idJobSuitability)->update($data);
-        if ($updated) {
-            Db::commit();
+        $jobSuitability = $this->jobSuitability->where('id', $idJobSuitability)->first();
+        if (!isset($jobSuitability)) {
+            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
         }
+
+        try {
+            //code...
+            $updated = $jobSuitability->update($data);
+            if ($updated) {
+                Db::commit();
+                return $updated;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw new Exception($th->getMessage());
+
+        }
+
+
     }
 
     private function successResponse($data, $code, $message)

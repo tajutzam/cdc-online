@@ -2414,6 +2414,967 @@
                     }
                 }
             }
+        },
+        "/user/quisioner/identity": {
+            "put": {
+                "tags": ["Quisioner"],
+                "requestBody": {
+                    "description": "",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": "9d9cad42-d1ce-48bf-8088-7ecafe032442"
+                                    },
+                                    "kode_prodi": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "13311"
+                                    },
+                                    "nim": {
+                                        "type": "string",
+                                        "example": "1231231"
+                                    },
+                                    "nama_lengkap": {
+                                        "type": "string",
+                                        "example": "zam"
+                                    },
+                                    "no_telp": {
+                                        "type": "string",
+                                        "example": "085607181231"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "mohammad@gmail.com"
+                                    },
+                                    "tahun_lulus": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "2017"
+                                    },
+                                    "nik": {
+                                        "type": "string",
+                                        "example": "1234561234567890"
+                                    },
+                                    "npwp": {
+                                        "type": "string",
+                                        "example": "1234561234567890"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sukses Memperbarui Data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "quisioner tidak ditemukan"
+                    },
+                    "400": {
+                        "description": "validation exception"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        },
+        "/user/quisioner/main": {
+            "put": {
+                "tags": ["Quisioner"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": "123123123"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "Bekerja (full time/part time)"
+                                    },
+                                    "is_less_6_months": {
+                                        "type": "boolean"
+                                    },
+                                    "pre_grad_employment_months": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "5"
+                                    },
+                                    "monthly_income": {
+                                        "type": "number",
+                                        "example": "3000.5"
+                                    },
+                                    "post_grad_months": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "2"
+                                    },
+                                    "code_province": {
+                                        "type": "string",
+                                        "example": "Jawa Barat"
+                                    },
+                                    "code_regency": {
+                                        "type": "string",
+                                        "example": "Bandung"
+                                    },
+                                    "agency_type": {
+                                        "type": "string",
+                                        "example": "Perusahaan"
+                                    },
+                                    "company_name": {
+                                        "type": "string",
+                                        "example": "Contoh Perusahaan"
+                                    },
+                                    "job_title": {
+                                        "type": "string",
+                                        "example": "Founder"
+                                    },
+                                    "work_level": {
+                                        "type": "string",
+                                        "example": "Lokal/wilayah/wiraswasta tidak berbadan hukum"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sukses Update Quisioner"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation exception "
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "not found quisioner"
+                    },
+                    "500": {
+                        "description": "error internal"
+                    }
+                }
+            }
+        },
+        "/user/quisioner/furthestudy": {
+            "put": {
+                "tags": ["Quisioner"],
+
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "study_funding_source": {
+                                        "type": "string",
+                                        "example": "Bea Siswa"
+                                    },
+                                    "univercity_name": {
+                                        "type": "string",
+                                        "example": "Nama Perguruan Tinggi Anda"
+                                    },
+                                    "study_program": {
+                                        "type": "string",
+                                        "example": "Nama Program Studi Anda"
+                                    },
+                                    "study_start_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-10-04"
+                                    },
+                                    "education_funding_source": {
+                                        "type": "string",
+                                        "example": "Sumber Dana Pendidikan Anda"
+                                    },
+                                    "financial_source": {
+                                        "type": "string",
+                                        "example": "Sumber Dana Lainnya"
+                                    },
+                                    "study_job_relationship": {
+                                        "type": "string",
+                                        "example": "Sangat Erat"
+                                    },
+                                    "job_education_level": {
+                                        "type": "string",
+                                        "example": "Setingkat lebih tinggi"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sukses Update Quisioner"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation exception "
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "not found quisioner"
+                    },
+                    "500": {
+                        "description": "error internal"
+                    }
+                }
+            }
+        },
+        "/user/quisioner/competence": {
+            "put": {
+                "tags": ["Quisioner"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": "asdasd"
+                                    },
+                                    "etik_lulus": {
+                                        "type": "string",
+                                        "example": "Sangat Rendah"
+                                    },
+                                    "etika_saatini": {
+                                        "type": "string",
+                                        "example": "Rendah"
+                                    },
+                                    "keahlian_lulus": {
+                                        "type": "string",
+                                        "example": "Tinggi"
+                                    },
+                                    "keahlian_saatini": {
+                                        "type": "string",
+                                        "example": "Netral"
+                                    },
+                                    "english_lulus": {
+                                        "type": "string",
+                                        "example": "Sangat Tinggi"
+                                    },
+                                    "english_saatini": {
+                                        "type": "string",
+                                        "example": "Sangat Rendah"
+                                    },
+                                    "teknologi_informasi_lulus": {
+                                        "type": "string",
+                                        "example": "Rendah"
+                                    },
+                                    "teknologi_informasi_saatini": {
+                                        "type": "string",
+                                        "example": "Tinggi"
+                                    },
+                                    "komunikasi_lulus": {
+                                        "type": "string",
+                                        "example": "Netral"
+                                    },
+                                    "komunikasi_saatini": {
+                                        "type": "string",
+                                        "example": "Netral"
+                                    },
+                                    "kerjasama_lulus": {
+                                        "type": "string",
+                                        "example": "Sangat Tinggi"
+                                    },
+                                    "kerjasama_saatini": {
+                                        "type": "string",
+                                        "example": "Tinggi"
+                                    },
+                                    "pengembangan_diri_lulus": {
+                                        "type": "string",
+                                        "example": "Sangat Rendah"
+                                    },
+                                    "pengembangan_diri_saatini": {
+                                        "type": "string",
+                                        "example": "Sangat Tinggi"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sukses Update Quisioner"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation exception "
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "not found quisioner"
+                    },
+                    "500": {
+                        "description": "error internal"
+                    }
+                }
+            }
+        },
+        "/user/quisioner/studymethod": {
+            "put": {
+                "tags": ["Quisioner"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": "asdasd"
+                                    },
+                                    "academicStudy": {
+                                        "type": "string",
+                                        "example": "Sangat Besar"
+                                    },
+                                    "demonstrasi": {
+                                        "type": "string",
+                                        "example": "Besar"
+                                    },
+                                    "research_participation": {
+                                        "type": "string",
+                                        "example": "Cukup Besar"
+                                    },
+                                    "intern": {
+                                        "type": "string",
+                                        "example": "Kurang"
+                                    },
+                                    "practice": {
+                                        "type": "string",
+                                        "example": "Tidak Sama Sekali"
+                                    },
+                                    "field_work": {
+                                        "type": "string",
+                                        "example": "Sangat Besar"
+                                    },
+                                    "discucion": {
+                                        "type": "string",
+                                        "example": "Besar"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sukses Update Quisioner"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation exception "
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "not found quisioner"
+                    },
+                    "500": {
+                        "description": "error internal"
+                    }
+                }
+            }
+        },
+        "/user/quisioner/jobstreet": {
+            "put": {
+                "tags": ["Quisioner"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": "sadasd"
+                                    },
+                                    "job_search_start": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2022-10-31"
+                                    },
+                                    "before_graduation": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "3"
+                                    },
+                                    "after_graduation": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "6"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sukses Update Quisioner"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation exception "
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "not found quisioner"
+                    },
+                    "500": {
+                        "description": "error internal"
+                    }
+                }
+            }
+        },
+        "/user/quisioner/howtofindjobs": {
+            "put": {
+                "tags": ["Quisioner"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": "asdasd"
+                                    },
+                                    "news_paper": {
+                                        "type": "boolean"
+                                    },
+                                    "unknown_vacancies": {
+                                        "type": "boolean"
+                                    },
+                                    "exchange": {
+                                        "type": "boolean"
+                                    },
+                                    "contacted_company": {
+                                        "type": "boolean"
+                                    },
+                                    "Kemenakertrans": {
+                                        "type": "boolean"
+                                    },
+                                    "commercial_swasta": {
+                                        "type": "boolean"
+                                    },
+                                    "cdc": {
+                                        "type": "boolean"
+                                    },
+                                    "alumni": {
+                                        "type": "boolean"
+                                    },
+                                    "network_college": {
+                                        "type": "boolean"
+                                    },
+                                    "relation": {
+                                        "type": "boolean"
+                                    },
+                                    "self_employed": {
+                                        "type": "boolean"
+                                    },
+                                    "intern": {
+                                        "type": "boolean"
+                                    },
+                                    "workplace_during_college": {
+                                        "type": "boolean"
+                                    },
+                                    "internet": {
+                                        "type": "boolean"
+                                    },
+                                    "other": {
+                                        "type": "boolean"
+                                    },
+                                    "other_job_source": {
+                                        "type": "string",
+                                        "example": "Lainnya"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sukses Update Quisioner"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation exception "
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "not found quisioner"
+                    },
+                    "500": {
+                        "description": "error internal"
+                    }
+                }
+            }
+        },
+        "/user/quisioner/companyapplied": {
+            "put": {
+                "tags": ["Quisioner"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": "123123"
+                                    },
+                                    "job_applications_before_first_job": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "10"
+                                    },
+                                    "job_applications_responses": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "5"
+                                    },
+                                    "interview_invitations": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "3"
+                                    },
+                                    "job_search_recently_active": {
+                                        "type": "string",
+                                        "example": "Tidak"
+                                    },
+                                    "job_search_recently_active_other": {
+                                        "type": "string",
+                                        "example": "saya"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sukses Update Quisioner"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation exception "
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "not found quisioner"
+                    },
+                    "500": {
+                        "description": "error internal"
+                    }
+                }
+            }
+        },
+        "/user/quisioner/jobsuitability": {
+            "put": {
+                "tags": ["Quisioner"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": "2842aef5-94f2-4be1-a48a-3e6ad5056dbd"
+                                    },
+                                    "job_suitability_not_related": {
+                                        "type": "string",
+                                        "example": "Tidak sesuai"
+                                    },
+                                    "job_suitability_not_related_2": {
+                                        "type": "string",
+                                        "example": "Pekerjaan saya sudah sesuai"
+                                    },
+                                    "job_suitability_reason": {
+                                        "type": "string",
+                                        "example": "Pekerjaan saya sudah sesuai"
+                                    },
+                                    "job_suitability_reason_2": {
+                                        "type": "string",
+                                        "example": "Pekerjaan saya sudah sesuai"
+                                    },
+                                    "other_reason": {
+                                        "type": "string",
+                                        "example": "Saya dipromosikan ke posisi yang kurang berhubungan dengan pendidikan saya dibanding posisi sebelumnya"
+                                    },
+                                    "other_reason_2": {
+                                        "type": "string",
+                                        "example": "Pekerjaan saya sudah sesuai"
+                                    },
+                                    "other_reason_3": {
+                                        "type": "string",
+                                        "example": "Pekerjaan saya saat ini lebih aman/terjamin/secure"
+                                    },
+                                    "other_reason_4": {
+                                        "type": "string",
+                                        "example": "Pekerjaan saya saat ini lebih menarik"
+                                    },
+                                    "other_reason_5": {
+                                        "type": "string",
+                                        "example": "Pekerjaan saya saat ini lebih memungkinkan saya mengambil pekerjaan tambahan/jadwal yang fleksibel dll"
+                                    },
+                                    "other_reason_6": {
+                                        "type": "string",
+                                        "example": "Pekerjaan saya saat ini lokasinya lebih dekat dari rumah saya"
+                                    },
+                                    "other_reason_7": {
+                                        "type": "string",
+                                        "example": "Pekerjaan saya saat ini dapat lebih menjamin kebutuhan keluarga saya"
+                                    },
+                                    "other_reason_8": {
+                                        "type": "string",
+                                        "example": "Pada awal meniti karir ini saya harus menerima pekerjaan yang tidak berhubungan dengan pendidikan saya"
+                                    },
+                                    "other_reason_9": {
+                                        "type": "string",
+                                        "example": "Pekerjaan saya sudah sesuai"
+                                    },
+                                    "other_reason_10": {
+                                        "type": "string",
+                                        "example": "Alasan lainnya"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sukses Update Quisioner"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation exception "
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "not found quisioner"
+                    },
+                    "500": {
+                        "description": "error internal"
+                    }
+                }
+            }
+        },
+        "/auth/user/register": {
+            "post": {
+                "tags": ["Auth"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "safiraput77@gmail.com"
+                                    },
+                                    "nik": {
+                                        "type": "string",
+                                        "example": "0922221as12sa422"
+                                    },
+                                    "fullname": {
+                                        "type": "string",
+                                        "example": "okasdasd"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "rahasia"
+                                    },
+                                    "no_telp": {
+                                        "type": "string",
+                                        "example": "0876123123123"
+                                    },
+                                    "alamat": {
+                                        "type": "string",
+                                        "example": "banyuwangi jawa timur"
+                                    },
+                                    "nim": {
+                                        "type": "string",
+                                        "example": "e4121223s2"
+                                    },
+                                    "kode_prodi": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "13311"
+                                    },
+                                    "tahun_lulus": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "2022"
+                                    },
+                                    "angkatan": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "2017"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success registrasi",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "201"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Berhasil Registrasi silahkan login"
+                                        },
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation exception"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
         }
     },
 

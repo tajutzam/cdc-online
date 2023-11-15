@@ -94,14 +94,37 @@ Route::get("/prodi", [StudyProgramPublicController::class, "findAll"]);
 
 // quisioner
 Route::post("/user/quisioner/identity", [QuisionerController::class, 'addQuisionerIdentity']);
+Route::put("/user/quisioner/identity", [QuisionerController::class, 'updateIdentity']);
+
 Route::post("/user/quisioner/main", [QuisionerController::class, "addQuisionerMain"]);
+Route::put("/user/quisioner/main", [QuisionerController::class, "updateMain"]);
+
 Route::post("/user/quisioner/furthestudy", [QuisionerController::class, 'addQuisionerFurtheStudy']);
+Route::put("/user/quisioner/furthestudy", [QuisionerController::class, 'updateFurtheStudy']);
+
+
+
 Route::post("/user/quisioner/competence", [QuisionerController::class, 'addQuisionerCompetence']);
+Route::put("/user/quisioner/competence", [QuisionerController::class, 'updateCompetence']);
+
 Route::post("/user/quisioner/studymethod", [QuisionerController::class, 'addQuisionerStudyMethod']);
+Route::put("/user/quisioner/studymethod", [QuisionerController::class, 'updateStudyMethod']);
+
+
 Route::post("/user/quisioner/jobstreet", [QuisionerController::class, 'addQuisionerJobStreet']);
+Route::put("/user/quisioner/jobstreet", [QuisionerController::class, 'updateJobStreet']);
+
 Route::post("/user/quisioner/howtofindjobs", [QuisionerController::class, 'addQuisionerHowFindJobs']);
+Route::put("/user/quisioner/howtofindjobs", [QuisionerController::class, 'updateHowFindJobs']);
+
+
 Route::post("/user/quisioner/companyapplied", [QuisionerController::class, 'addQuisionerCompanyApplied']);
+Route::put("/user/quisioner/companyapplied", [QuisionerController::class, 'updateCompanyApplied']);
+
+
 Route::post("/user/quisioner/jobsuitability", [QuisionerController::class, 'addQuisionerjobSuitability']);
+Route::put("/user/quisioner/jobsuitability", [QuisionerController::class, 'updatejobSuitability']);
+
 Route::get("/user/quisioner/check", [QuisionerController::class, 'showUpdateQuisionerLevel']);
 Route::post("/user/logout", [UserController::class, "logout"]);
 Route::post("/user/post", [PostController::class, 'addPost'])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);

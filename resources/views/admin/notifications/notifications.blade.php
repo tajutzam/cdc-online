@@ -50,7 +50,6 @@
                                 <th>Kemajuan</th>
                                 <th>Level Quisioner</th>
                                 {{-- <th>Detail Kuesioner</th> --}}
-                                <th>Notifikasi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,15 +63,22 @@
                                     <td><img style="height: 100px" src="{{ $item['foto'] }}" alt="foto alumni"></td>
                                     <td>
                                         @if ($item['account_status'])
-                                            <i class="fa-solid fa-circle-check" style="color: #005eff;"></i>
+                                            <span class="badge badge-success">Terverifikasi</span>
                                         @else
-                                            <i class="fa-solid fa-circle-xmark" style="color: #ff0000;"></i>
+                                            <span class="badge badge-warning">Tidak Terverifikasi</span>
                                         @endif
                                     </td>
                                     <td>
+                                        @php
+                                            if ($item['presentasi'] == 0) {
+                                                $presentasi = 25;
+                                            } else {
+                                                $presentasi = ($item['presentasi'] / 9) * 100;
+                                            }
+                                        @endphp
                                         <div class="progress" role="progressbar" aria-label="Success example"
                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                            <div class="progress-bar bg-success" style="width: 25%">
+                                            <div class="progress-bar bg-success" style="width: {{ $presentasi }}%">
                                                 {{ $item['presentasi'] }}/9
                                             </div>
                                         </div>
@@ -88,12 +94,7 @@
                                     </td>
                                     {{-- <td><button type="button" class="btn btn-warning btn-sm">Detail</button>
                             </td> --}}
-                                    <td>
-                                        <a href="">
-                                            <i class="fa-solid fa-paper-plane" style="color: #005eff;"></i><span
-                                                class="text-decoration-none"> </span>
-                                        </a>
-                                    </td>
+
                                 </tr>
                             @endforeach
                         </tbody>

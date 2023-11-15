@@ -115,4 +115,9 @@ class QuisionerController extends Controller
         }
         return view('prodi.quesioner.detail', ['data' => $data[0]]);
     }
+
+
+
+    
+
 }

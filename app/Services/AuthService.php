@@ -143,6 +143,13 @@ class AuthService
     public function registerUser(array $request)
     {
 
+        $graduateYear = $request['tahun_lulus'];
+        $fiveYearsAgo = Carbon::now()->subYears(5)->year;
+        $isActive = false;
+        if($fiveYearsAgo > $graduateYear){
+            $isActive = true;
+        }
+
         DB::beginTransaction();
         $prodi = $this->prodi->where('id', $request['kode_prodi'])->first();
         if (!isset($prodi)) {
@@ -161,12 +168,15 @@ class AuthService
                 "alamat" => $request['alamat'],
                 'expire_email' => $expired,
                 'nim' => $request['nim'],
-                'kode_prodi' => $request['kode_prodi']
+                'kode_prodi' => $request['kode_prodi'],
+                'account_status' => $isActive
             ]);
             $isCreated = $this->education->create([
                 'user_id' => $user->id,
                 'perguruan' => 'Politeknik Negeri Jember',
-                'prodi' => $request['kode_prodi']
+                'prodi' => $prodi->nama_prodi,
+                'tahun_masuk' => $request['angkatan'],
+                'tahun_lulus' => $request['tahun_lulus']
             ]);
             if (isset($isCreated)) {
                 DB::commit();

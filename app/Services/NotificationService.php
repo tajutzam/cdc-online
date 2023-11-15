@@ -54,19 +54,32 @@ class NotificationService
             "company_applied_section",
             "job_suitability_section"
         ];
+        // cari data user yang educations tahun lulus > 5
+
+        $userId = $this->user
+            ->whereHas('educations', function ($query) {
+                $query->where('perguruan', 'Politeknik Negeri Jember')
+                    ->where('tahun_lulus', '>=', Carbon::now()->subYears(5)->year);
+            })
+            ->select('id')
+            ->get()->toArray();
+
 
         $dataUser = $this->user->with([
             'quisioner_level' => function ($query) {
-                $query->orderBy('created_at', 'desc')->first(); // Ini mengambil item pertama
+                $query->orderBy('created_at', 'desc')->first();
             },
-            'prodi'
-        ])
-            ->whereNotNull('fcm_token', )
-            ->whereDoesntHave('quisioner_level') // Menambahkan kondisi: tidak memiliki quisioner_level
-            ->orWhereHas('quisioner_level', function ($query) {
-                $query->where('expired', '<', now()); // Menambahkan kondisi: masa expired quisioner_level habis
+            'prodi',
+            'educations'
+        ])->whereIn('id', $userId)->whereNotNull('fcm_token')
+            ->where(function ($query) {
+                $query->orWhereDoesntHave('quisioner_level')
+                    ->orWhereHas('quisioner_level', function ($subquery) {
+                        $subquery->where('expired', '<', now());
+                    });
             })
-            ->get()->toArray();
+            ->get()
+            ->toArray();
 
         foreach ($dataUser as $key => $value) {
             # code...
@@ -98,6 +111,8 @@ class NotificationService
                     $user->update([
                         'account_status' => false
                     ]);
+                    Db::commit();
+                    dd();
                     //code...
                     $messageBody = 'Halo, Silahkan Mengisi Quisioner Kemajuan Quisioner Sekarang ' . $value->presentasi . "/9";
                     $message = CloudMessage::new()
@@ -124,6 +139,8 @@ class NotificationService
                     //throw $th;
                     throw new WebException($th->getMessage());
                 }
+            } else {
+                throw new WebException("Terdapat user tidak memiliki fcm token");
             }
         }
     }

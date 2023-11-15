@@ -264,7 +264,7 @@ class PostService
 
     public function findById($id)
     {
-        $post = $this->post->where('id', $id)->first();
+        $post = $this->post->where('id', $id)->with('comments.user')->first();
         if (isset($post)) {
             return $post;
         }
@@ -287,9 +287,17 @@ class PostService
     }
     private function castToResponse($data)
     {
-
+        // dd($data->toArray());
         $fotoName = isset($data->image) == true ? $data->image : '';
         $url = url('/') . "/users/post/" . $fotoName;
+        $comments = $data->comments->toArray();
+        $dataComments = [];
+        foreach ($comments as $key => $value) {
+            # code...
+            $userComment = $this->castToUserResponseFromArray($value['user']);
+            $value['user'] = $userComment;
+            array_push($dataComments, $value);
+        }
         $uploader = null;
         if (isset($data->user)) {
             $uploader = $this->castToUserResponse($data->user);
@@ -308,7 +316,7 @@ class PostService
             'post_at' => $data->post_at,
             'can_comment' => $data->can_comment,
             'verified' => $data->verified,
-            'comments' => $data->comments->toArray(),
+            'comments' => $dataComments,
             'type_jobs' => $data->type_jobs,
             'uploader' => $uploader
         ];
@@ -429,6 +437,34 @@ class PostService
         })->toArray();
 
         return $dataResponse;
+    }
+
+
+    public function castToUserResponseFromArray($user)
+    {
+
+        $url = url('/') . "/users/" . $user['foto'];
+        return [
+            "id" => $user['id'],
+            "fullname" => $user['visible_fullname'] == 1 ? $user['fullname'] : "***",
+            "email" => $user['visible_email'] == 1 ? $user['email'] : "***",
+            "nik" => $user['visible_nik'] == 1 ? $user['nik'] : "***",
+            "no_telp" => $user['visible_no_telp'] == 1 ? $user['no_telp'] : "***",
+            "foto" => $url,
+            'ttl' => $user['visible_ttl'] == 1 ? $user['ttl'] : "***",
+            'alamat' => $user['visible_alamat'] == 1 ? $user['alamat'] : "***",
+            "about" => $user['about'],
+            "gender" => $user['gender'] == "male" ? "Laki-Laki" : "Perempuan",
+            "level" => $user['level'],
+            "linkedin" => $user['linkedin'],
+            "facebook" => $user['facebook'],
+            "instagram" => $user['instagram'],
+            'twiter' => $user['twiter'],
+            'account_status' => $user['account_status'],
+            'latitude' => $user['latitude'],
+            'longtitude' => $user['longtitude'],
+            'state_quisioner' => $user['state_quisioner']
+        ];
     }
 
 
