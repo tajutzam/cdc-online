@@ -140,7 +140,9 @@
                                                 <td>{{ $item['prodi']['nama_prodi'] }}</td>
                                                 <td>{{ $item['email'] }}</td>
                                                 <td><img style="max-height: 50px" class="img-fluid"
-                                                        src="{{ $item['foto'] }}" alt="foto_user"></td>
+                                                        src="{{ $item['foto'] }}" alt="foto_user"
+                                                        onerror="this.onerror=null; this.src='{{ url('/') }}/assets/images/usernull.jpg'">
+                                                </td>
                                                 <td>{{ $item['tahun_masuk'] }}</td>
                                                 <td>{{ $item['tahun_lulus'] }}</td>
                                                 <td class="text-center">
@@ -214,7 +216,7 @@
                         <option value="xlsx" class="text-body-emphasis">Xlxs</option>
                         <option value="csv">Csv</option>
                     </select>
-                    <div class="row justify-content-end">
+                    <div class="row justify-content-end p-3">
                         <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
                             data-bs-dismiss="modal">Tutup</button>
                         <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>

@@ -101,27 +101,32 @@
                             <td>{{ $item['company'] }}</td>
                             <td>{{ $item['position'] }}</td>
                             <td>{{ $item['description'] }}</td>
-                            <td><img style="height: 100px; width: 100px" src="{{ $item['image'] }}" alt="foto poster"></td>
-                            <td><a href="{{ $item['link_apply'] }}"
-                                    class="text-decoration-none  font-italic">link_apply</a>
+                            <td> <img src="{{ $item['image'] }}" alt="" class="" width="100"
+                                    height="100"
+                                    onerror="this.onerror=null; this.src='{{ url('/') }}/assets/images/squarenull.jpg'">
+                            </td>
+                            <td><a href="{{ $item['link_apply'] }}" class="text-decoration-none  font-italic"><i
+                                        class="fas fa-link"></i></a>
                             </td>
 
                             <td>{{ date('Y-F-d H:i', strtotime($item['expired'])) }}</td>
                             <td>{{ date('Y-F-d H:i', strtotime($item['post_at'])) }}</td>
                             <td>
-                                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                    <form action="{{ route('vacancy-verify', ['id' => $item['id']]) }}" method="post"
-                                        class="p-2">
-                                        @method('put')
-                                        <input type="text" value="verified" hidden name="verified">
-                                        <button type="submit" class="btn btn-success">Setuju</button>
-                                    </form>
+
+                                <form action="{{ route('vacancy-verify', ['id' => $item['id']]) }}" method="post"
+                                    class="p-2">
+                                    @method('put')
+                                    <input type="text" value="verified" hidden name="verified">
+                                    <button type="submit" class="btn btn-success">Setuju</button>
 
                                     <input type="text" value="rejected" name="verified" hidden>
                                     <button class="btn btn-danger" data-bs-target="#reject_vacancy"
                                         data-bs-toggle="modal">Tolak</button>
+                                </form>
 
-                                </div>
+
+
+
                             </td>
                         </tr>
                     @endforeach
@@ -535,7 +540,7 @@
         <x-slot name="title">Pesan Tolak</x-slot>
         <x-slot name="id">reject_vacancy</x-slot>
         <x-slot name="body">
-            <form action="{{ route('verify-vacancy') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('vacancy') }}" method="post" enctype="multipart/form-data">
                 @method('put')
                 <div class="form-floating mb-3">
                     <textarea type="text" class="form-control form-control-sm" required id="nama_program_update" name=""></textarea>

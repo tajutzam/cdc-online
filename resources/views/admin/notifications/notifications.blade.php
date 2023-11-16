@@ -63,7 +63,8 @@
                                         {{ $item['prodi']['nama_prodi'] ?? '-' }}</td>
                                     <td>
                                         <img src="{{ $item['foto'] }}" class="rounded-circle" width="46" height="46"
-                                            alt="" />
+                                            alt=""
+                                            onerror="this.onerror=null; this.src='{{ url('/') }}/assets/images/usernull.jpg'" />
                                     </td>
                                     <td>
                                         @if ($item['account_status'])
@@ -100,7 +101,7 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        </tabel>
+
                 </div>
             </div>
         </div>

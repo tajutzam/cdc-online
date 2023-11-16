@@ -188,8 +188,10 @@
                                                 <td>{{ $item['fullname'] }}</td>
                                                 <td>{{ $item['prodi']['nama_prodi'] }}</td>
                                                 <td>{{ $item['email'] }}</td>
-                                                <td><img style="max-height: 50px" class="img-fluid"
-                                                        src="{{ $item['foto'] }}" alt="foto_user"></td>
+                                                <td><img style="width:45px; height:45px;" class="img-fluid rounded-circle"
+                                                        src="{{ $item['foto'] }}" alt="foto_user"
+                                                        onerror="this.onerror=null; this.src='{{ url('/') }}/assets/images/usernull.jpg'">
+                                                </td>
                                                 <td>{{ $item['tahun_masuk'] }}</td>
                                                 <td>{{ $item['tahun_lulus'] }}</td>
                                                 <td class="text-center">

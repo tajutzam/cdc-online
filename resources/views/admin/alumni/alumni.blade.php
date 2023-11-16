@@ -108,10 +108,10 @@
                                         <th rowspan="2" style="text-align: center;  vertical-align: middle;">Email
                                         </th>
                                         <th rowspan="2" style="text-align: center;  vertical-align: middle;">Tahun
-                                            Lulus
+                                            Masuk
                                         </th>
                                         <th rowspan="2" style="text-align: center;  vertical-align: middle;">Tahun
-                                            Masuk
+                                            Lulus
                                         </th>
                                         <th rowspan="2" style="text-align: center;  vertical-align: middle;">Status
                                         </th>
@@ -123,24 +123,31 @@
                                     </tr>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     @foreach ($data['alumni'] as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td> <img src={{ $item['foto'] }} class="rounded-circle" width="40"
-                                                    height="40" alt=""></td>
+                                            <td> <img src="{{ $item['foto'] }}" class="rounded-circle" width="46"
+                                                    height="46" alt=""
+                                                    onerror="this.onerror=null; this.src='{{ url('/') }}/assets/images/usernull.jpg'" />
+                                            </td>
+                                            <td>{{ $item['nim'] }}</td>
+                                            <td>{{ $item['nik'] }}</td>
+                                            <td>{{ $item['fullname'] }}</td>
                                             @if ($item['prodi'] != null)
-                                                <td>{{ $item['prodi']['id'] }}</td>
                                                 <td>{{ $item['prodi']['nama_prodi'] }}</td>
                                             @else
                                                 <td>-</td>
                                                 <td>-</td>
                                             @endif
+
                                             <td>{{ $item['email'] }}</td>
-                                            <td>{{ $item['email'] }}</td>
-                                            <td>{{ $item['foto'] }}</td>
                                             <td>2025</td>
                                             <td>2021</td>
+                                            {{-- 
+                                            <td>{{ $item['educations']['tahun_masuk'] }}</td>
+                                            <td>{{ $item['educations']['tahun_lulus'] }}</td> --}}
                                             @if ($item['account_status'])
                                                 <td>
                                                     <div class="badge rounded-pill bg-primary w-100">Terverifikasi</div>

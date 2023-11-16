@@ -5,7 +5,7 @@
         </div>
         <div>
 
-            <img src="{{ asset('/') }}assets/images/side-logo.png" class="logo-text" style="width: 80px">
+            <img src="{{ asset('/') }}assets/images/logosideblack.png" class="logo-text" style="width: 80px">
             {{-- <h6 class="logo-text" style="color: black; text-align: start">Careear Development Center</h6> --}}
         </div>
         <div class="toggle-icon ms-auto"><i class='bx bx-arrow-back'></i>

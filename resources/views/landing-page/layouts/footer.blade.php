@@ -21,7 +21,7 @@
                   <div class="row gy-4">
                       <div class="col-lg-5 col-md-12 footer-info">
                           <a href="{{ route('/') }}" class="logo d-flex align-items-center">
-                              <img src="{{ asset('/') }}assets/img/logoblue.png" alt="">
+                              <img src="{{ asset('/') }}assets/img/logobluerec.png" alt="">
 
                           </a>
                           <p>Aplikasi ini ditujukan untuk Seluruh Alumni Politeknik Negeri Jember guna membantu

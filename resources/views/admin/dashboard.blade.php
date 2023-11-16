@@ -77,8 +77,9 @@
                         @foreach ($topFollowers as $item)
                             <div class="customers-list-item d-flex align-items-center border-bottom p-2 cursor-pointer">
                                 <div class="">
-                                    <img src="{{ $item['foto'] }}" class="rounded-circle" width="46" height="46"
-                                        alt="" />
+                                    <img src="{{ $item['foto'] }}" alt="" class="rounded-circle" width="46"
+                                        height="46"
+                                        onerror="this.onerror=null; this.src='{{ url('/') }}/assets/images/usernull.jpg'">
                                 </div>
                                 <div class="ms-2">
                                     <h6 class="mb-1 font-14">{{ $item['fullname'] }}</h6>
@@ -126,8 +127,10 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="">
-                                                        <img src="{{ $item['image'] }}" class="rounded-circle"
-                                                            width="46" height="46" alt="" />
+
+                                                        <img src="{{ $item['image'] }}" alt=""
+                                                            class="rounded-circle" width="46" height="46"
+                                                            onerror="this.onerror=null; this.src='{{ url('/') }}/assets/images/usernull.jpg'">
                                                     </div>
                                                     <div class="ms-2">
                                                         <h6 class="mb-1 font-14">{{ $item['fullname'] }}</h6>
@@ -357,20 +360,22 @@
             // console.log(element);
             if (element.latitude != null) {
                 var customIcon = L.icon({
-                    iconUrl: `{{ url('/') }}/users/${element.foto}`,
+                    iconUrl: `{{ url('/') }}/assets/images/pin.png`,
                     iconSize: [40, 40],
                     iconAnchor: [20, 40],
                     popupAnchor: [0, -40],
-                    html: '<img class="rounded-circle" width="46" height="46"    src="{{ url('/') }}/users/' +
-                        element
-                        .foto + '"/>'
+                    html: '<div style="border-radius: 50%; overflow: hidden; width: 40px; height: 40px;">' +
+                        '<img src="{{ url('/') }}/users/' + element.foto +
+                        '" style="width: 100%; height: 100%; object-fit: cover;"/>' +
+                        '</div>'
                 });
+
 
                 L.marker([element.latitude, element.longtitude], {
                     icon: customIcon
                 }).addTo(mymap).bindPopup(
                     `${element.fullname} <br> ${element.prodi.nama_prodi} <br> ${element.educations[0].tahun_masuk}`
-                    );
+                );
             }
         });
         // Add a marker with the custom icon

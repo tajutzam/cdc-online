@@ -145,11 +145,13 @@
                                                     <td>{{ $item['company'] }}</td>
                                                     <td>{{ $item['position'] }}</td>
                                                     <td>{{ $item['description'] }}</td>
-                                                    <td><img style="height: 80px" src="{{ asset('/users/post/') }}{{ '/' . $item['image'] }}"
+                                                    <td><img style="height: 80px"
+                                                            src="{{ asset('/users/post/') }}{{ '/' . $item['image'] }}"
                                                             alt="{{ $item['image'] }}"></td>
                                                     <td>{{ $item['post_at'] }}</td>
                                                     <td>{{ $item['expired'] }}</td>
-                                                    <td><a href="{{ $item['link_apply'] }}">Link_Apply</a></td>
+                                                    <td><a href="{{ $item['link_apply'] }}"><i
+                                                                class="fas fa-link"></i></a></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -187,8 +189,9 @@
                                                     <td>{{ $item['company'] }}</td>
                                                     <td>{{ $item['position'] }}</td>
                                                     <td>{{ $item['description'] }}</td>
-                                                    <td><img style="height: 80px" src="{{ asset('/users/post/') }}{{ '/' . $item['image'] }}"
-                                                        alt="{{ $item['image'] }}"></td>
+                                                    <td><img style="height: 80px"
+                                                            src="{{ asset('/users/post/') }}{{ '/' . $item['image'] }}"
+                                                            alt="{{ $item['image'] }}"></td>
                                                     <td>{{ $item['post_at'] }}</td>
                                                     <td>{{ $item['expired'] }}</td>
                                                     <td><a href="{{ $item['link_apply'] }}">Link_Apply</a></td>

@@ -4,7 +4,7 @@
           <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
               <a href="{{ route('/') }}" class="logo align-items-center">
-                  <img src="{{ asset('/') }}assets/img/logoblue.png" alt="">
+                  <img src="{{ asset('/') }}assets/img/logobluerec.png" alt="">
               </a>
 
               <nav id="navbar" class="navbar">

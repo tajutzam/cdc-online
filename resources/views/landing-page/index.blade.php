@@ -4,7 +4,7 @@
         <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
             <a href="{{ route('/') }}" class="logo align-items-center">
-                <img src="{{ asset('/') }}assets/img/logoblue.png" alt="">
+                <img src="{{ asset('/') }}assets/img/logobluerec.png" alt="">
 
             </a>
 
@@ -59,7 +59,7 @@
                     <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
                         <div class="content">
                             <h3>Tentang Aplikasi</h3>
-                            <h2> Aplikasi CDC (Career Development Center) Politeknik Negeri Jember</h2>
+                            <h2> Aplikasi CDC (Career Development & Counseling) Politeknik Negeri Jember</h2>
                             <p style="text-align: justify">
                                 Adalah solusi inovatif yang
                                 dirancang
@@ -139,8 +139,8 @@
                         <div class="count-box">
                             <i class="bi bi-people"></i>
                             <div>
-                                <span data-purecounter-start="0" data-purecounter-end="{{$user}}" data-purecounter-duration="1"
-                                    class="purecounter"></span>
+                                <span data-purecounter-start="0" data-purecounter-end="{{ $user }}"
+                                    data-purecounter-duration="1" class="purecounter"></span>
                                 <p>Total Alumni Bekerja</p>
                             </div>
                         </div>
@@ -150,8 +150,8 @@
                         <div class="count-box">
                             <i class="bi bi-people" style="color: #bb0852;"></i>
                             <div>
-                                <span data-purecounter-start="0" data-purecounter-end="{{$notWork}}" data-purecounter-duration="1"
-                                    class="purecounter"></span>
+                                <span data-purecounter-start="0" data-purecounter-end="{{ $notWork }}"
+                                    data-purecounter-duration="1" class="purecounter"></span>
                                 <p>Total Alumni Belum Bekerja</p>
                             </div>
                         </div>
@@ -161,8 +161,8 @@
                         <div class="count-box">
                             <i class="bi bi-mortarboard" style="color: #ee6c20;"></i>
                             <div>
-                                <span data-purecounter-start="0" data-purecounter-end="{{$prodi}}" data-purecounter-duration="1"
-                                    class="purecounter"></span>
+                                <span data-purecounter-start="0" data-purecounter-end="{{ $prodi }}"
+                                    data-purecounter-duration="1" class="purecounter"></span>
                                 <p>Total Program Studi</p>
                             </div>
                         </div>
@@ -172,7 +172,7 @@
                         <div class="count-box">
                             <i class="bi bi-folder" style="color: #15be56;"></i>
                             <div>
-                                <span data-purecounter-start="0" data-purecounter-end="{{$post}}"
+                                <span data-purecounter-start="0" data-purecounter-end="{{ $post }}"
                                     data-purecounter-duration="1" class="purecounter"></span>
                                 <p>Total Lowongan</p>
                             </div>
@@ -338,7 +338,8 @@
                     <div class="row">
 
                         <div class="col-xl-4 text-center" data-aos="fade-right" data-aos-delay="100">
-                            <img src="{{ asset('/') }}assets/img/features-3.png" class="img-fluid p-4" alt="">
+                            <img src="{{ asset('/') }}assets/img/features-3.png" class="img-fluid p-4"
+                                alt="">
                         </div>
 
                         <div class="col-xl-8 d-flex content">
@@ -415,13 +416,13 @@
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button"
                                             data-bs-toggle="collapse" data-bs-target="#faq-content-1">
-                                            {{$item['questions']}}
+                                            {{ $item['questions'] }}
                                         </button>
                                     </h2>
                                     <div id="faq-content-1" class="accordion-collapse collapse"
                                         data-bs-parent="#faqlist1">
                                         <div class="accordion-body">
-                                            {{$item['answer']}}
+                                            {{ $item['answer'] }}
                                         </div>
                                     </div>
                                 </div>
