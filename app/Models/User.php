@@ -51,7 +51,8 @@ class User extends Authenticatable
         'state_quisioner',
         'fcm_token',
         'longtitude',
-        'latitude'
+        'latitude',
+        'required_to_fill'
     ];
 
     /**

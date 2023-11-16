@@ -35,7 +35,6 @@ class QuisionerImport implements ToCollection
 
         $rules = [
             "No",
-            "ID USER",
             "Kode PT",
             "Kode Prodi",
             "NIM",
@@ -119,13 +118,16 @@ class QuisionerImport implements ToCollection
             "F26",
             "F27",
             "Level",
+            "ID USER",
         ];
         //
         $header = $collection->toArray()[0];
+        // dd($header , $rules);
 
         foreach ($rules as $key => $value) {
             # code...
-            if ($header[$key] != $value) {
+            if (strtolower($header[$key]) != strtolower($value)) {
+                // dd($value , $header[$key]);
                 throw new WebException("Error parsing Code , Check Code on your excel");
             }
         }

@@ -2,7 +2,6 @@
     <thead>
         <tr>
             <th>No</th>
-            <th>ID User</th>
             <th>Kode PT</th>
             <th>Kode Prodi</th>
             <th>NIM</th>
@@ -85,14 +84,14 @@
             <th>F25</th>
             <th>F26</th>
             <th>F27</th>
-            <th>Level</th>
+            <th style="background-color: salmon">Level</th>
+            <th style="background-color: salmon">ID User</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($data as $item)
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $item['id'] }}</td>
                 <td>{{ $item['quisioner'][0]['identity']['kdptimsmh'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['identity']['kdpstmsmh'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['identity']['nimhsmsmh'] ?? '' }}</td>
@@ -191,7 +190,8 @@
                 <td>{{ $item['quisioner'][0]['studymethod']['f25'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['studymethod']['f26'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['studymethod']['f27'] ?? '' }}</td>
-                <td>{{ $item['quisioner'][0]['level'] }}</td>
+                <td style="background-color: salmon">{{ $item['quisioner'][0]['level'] }}</td>
+                <td style="background-color: salmon">{{ $item['id'] }}</td>
             </tr>
         @endforeach
     </tbody>

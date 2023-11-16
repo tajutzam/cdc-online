@@ -74,11 +74,12 @@ class QuisionerService
 
         $user = $this->user->find($userId);
         $quisionerLevel = $this->quisionerLevel->where('user_id', $userId)->orderBy('created_at', 'desc')->first();
-        $prodi = $this->quisionerProdi->where('id', $request['kode_prodi'])->first();
+        $prodi = $this->quisionerProdi->where('id', $request['kode_prodi'])->first(); 
 
-        if ($user->account_status) {
+        if ($user->account_status && $user->required_to_fill == false) {
             throw new BadRequestException('kamu tidak bisa mengisi quisioner , akun kamu sudah terverifikasi');
         }
+
 
         if (!isset($prodi)) {
             throw new NotFoundException("ops , nampaknya kode program studi yang kamu pilih tidak ada", 404);
@@ -141,8 +142,6 @@ class QuisionerService
         }
 
     }
-
-
 
     public function updateQuisionerIdentity($request)
     {
@@ -751,6 +750,7 @@ class QuisionerService
     {
         Db::beginTransaction();
         foreach ($data as $value) {
+            // dd($value);
             if ($kodeProdi != null) {
                 $tempData = $this->quisionerLevel->where('user_id', $value['id user'])->where('level', strval($value['level']))
                     ->with('user', function ($query) use ($kodeProdi) {
@@ -770,7 +770,7 @@ class QuisionerService
                 $idStudyMethod = $tempData->study_method_section;
                 $idJobsStreet = $tempData->jobs_street_section;
                 $idHowFindJobs = $tempData->how_find_jobs_section;
-                $idCompanyApplied = $tempData->commpany_applied_section;
+                $idCompanyApplied = $tempData->company_applied_section;
                 $idJobSuitability = $tempData->job_suitability_section;
                 try {
                     //code...
@@ -902,7 +902,7 @@ class QuisionerService
 
         $main = $this->mainSection->where('id', $idMain)->first();
         if (!isset($main)) {
-            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
+            throw new NotFoundException("Ops, Quisioner Main Tidak Ditemukan");
         }
         try {
             //code...
@@ -922,7 +922,7 @@ class QuisionerService
         $data['f18d'] = Carbon::parse($data['f18d']);
         $furtheStudy = $this->furtheStudy->where('id', $idFurthe)->first();
         if (!isset($furtheStudy)) {
-            throw new NotFoundException("Ops , Quisioner Tidak Ditemukan ");
+            throw new NotFoundException("Ops , Quisioner Furthe Study Tidak Ditemukan");
         }
         try {
             //code...
@@ -942,7 +942,7 @@ class QuisionerService
         $competence = $this->competence->where('id', $idCompetence)->first();
 
         if (!isset($competence)) {
-            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
+            throw new NotFoundException("Ops, Quisioner Kompeten Tidak Ditemukan");
         }
 
         try {
@@ -963,7 +963,7 @@ class QuisionerService
     {
         $studyMethod = $this->studyMethod->where('id', $idStudyMethod)->first();
         if (!isset($studyMethod)) {
-            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
+            throw new NotFoundException("Ops, Quisioner Metode Belajar Tidak Ditemukan");
         }
         try {
             //code...
@@ -983,7 +983,7 @@ class QuisionerService
     {
         $job = $this->startSearchJob->where('id', $idJobsStreet)->first();
         if (!isset($job)) {
-            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
+            throw new NotFoundException("Ops, Quisioner Jobs Street Tidak Ditemukan");
 
         }
         try {
@@ -1004,7 +1004,7 @@ class QuisionerService
     {
         $howFindJob = $this->howFindJob->where('id', $idHowFindJob)->first();
         if (!isset($howFindJob)) {
-            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
+            throw new NotFoundException("Ops, Quisioner Bagaimana Mendapat Pekerjaan Tidak Ditemukan");
         }
         try {
             //code...
@@ -1022,10 +1022,11 @@ class QuisionerService
 
     public function updateCompanyApplied($idCompanyApplied, $data)
     {
+
         $companyApplied = $this->comapnyAppled->where('id', $idCompanyApplied)->first();
 
         if (!isset($companyApplied)) {
-            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
+            throw new NotFoundException("Ops, Quisioner Perusahaan Dilamar Tidak Ditemukan");
         }
 
         try {
@@ -1046,7 +1047,7 @@ class QuisionerService
     {
         $jobSuitability = $this->jobSuitability->where('id', $idJobSuitability)->first();
         if (!isset($jobSuitability)) {
-            throw new NotFoundException("Ops, Quisioner Tidak Ditemukan");
+            throw new NotFoundException("Ops, Quisioner Kesesuaian Pekerjaan Tidak Ditemukan");
         }
 
         try {

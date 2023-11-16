@@ -146,8 +146,10 @@ class AuthService
         $graduateYear = $request['tahun_lulus'];
         $fiveYearsAgo = Carbon::now()->subYears(5)->year;
         $isActive = false;
-        if($fiveYearsAgo > $graduateYear){
+        $required_to_fill = false;
+        if ($fiveYearsAgo > $graduateYear) {
             $isActive = true;
+            $required_to_fill = true;
         }
 
         DB::beginTransaction();
@@ -170,7 +172,8 @@ class AuthService
                 'nim' => $request['nim'],
                 'kode_prodi' => $request['kode_prodi'],
                 'account_status' => $isActive,
-                'foto' => 'default.png'
+                'foto' => 'default.png',
+                'required_to_fill' => $required_to_fill
             ]);
             $isCreated = $this->education->create([
                 'user_id' => $user->id,
