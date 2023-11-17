@@ -157,6 +157,24 @@ class AuthService
         if (!isset($prodi)) {
             throw new NotFoundException('ops, prodi tidak ditemukan');
         }
+
+
+        // $response = Http::withHeaders([
+        //     'X-RapidAPI-Host' => 'indonesian-identification-card-ktp.p.rapidapi.com',
+        //     'X-RapidAPI-Key' => env('NIK_API_KEY'),
+        // ])->get("https://indonesian-identification-card-ktp.p.rapidapi.com/api/v3/check", [
+        //             'nik' => $request['nik'],
+        //             // Tambahkan parameter kueri lainnya sesuai kebutuhan
+        //         ]);
+
+
+        // $status = $response->status();
+        // if ($status != 200) {
+        //     throw new BadRequestException("Ops, Nik kamu tidak terdaftar di Data Kementrian Silahkan Masukan Nik Yang Sesuai");
+        // }
+
+        // dd($response->getBody());
+
         try {
             //code...
             $expired = Carbon::now()->addHour();
