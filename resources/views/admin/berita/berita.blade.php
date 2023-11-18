@@ -77,7 +77,8 @@
                             {{ $item['title'] }}
                         </h5>
                     </div>
-                    <img class="card-img-top  pt-3" src="{{ $item['image'] }}" alt="foto berita" class="card-img">
+                    <img class="card-img-top  pt-3" src="{{ $item['image'] }}" alt="foto berita" class="card-img "
+                        onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg';">
 
                     <div class="card-body">
                         <div class="row m-o">

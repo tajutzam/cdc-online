@@ -59,7 +59,7 @@
                     <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
                         <div class="content">
                             <h3>Tentang Aplikasi</h3>
-                            <h2> Aplikasi CDC (Career Development Center) Politeknik Negeri Jember</h2>
+                            <h2> Aplikasi CDC (Career Development & Counseling) Politeknik Negeri Jember</h2>
                             <p style="text-align: justify">
                                 Adalah solusi inovatif yang
                                 dirancang
@@ -139,8 +139,8 @@
                         <div class="count-box">
                             <i class="bi bi-people"></i>
                             <div>
-                                <span data-purecounter-start="0" data-purecounter-end="{{$user}}" data-purecounter-duration="1"
-                                    class="purecounter"></span>
+                                <span data-purecounter-start="0" data-purecounter-end="{{ $user }}"
+                                    data-purecounter-duration="1" class="purecounter"></span>
                                 <p>Total Alumni Bekerja</p>
                             </div>
                         </div>
@@ -150,8 +150,8 @@
                         <div class="count-box">
                             <i class="bi bi-people" style="color: #bb0852;"></i>
                             <div>
-                                <span data-purecounter-start="0" data-purecounter-end="{{$notWork}}" data-purecounter-duration="1"
-                                    class="purecounter"></span>
+                                <span data-purecounter-start="0" data-purecounter-end="{{ $notWork }}"
+                                    data-purecounter-duration="1" class="purecounter"></span>
                                 <p>Total Alumni Belum Bekerja</p>
                             </div>
                         </div>
@@ -161,8 +161,8 @@
                         <div class="count-box">
                             <i class="bi bi-mortarboard" style="color: #ee6c20;"></i>
                             <div>
-                                <span data-purecounter-start="0" data-purecounter-end="{{$prodi}}" data-purecounter-duration="1"
-                                    class="purecounter"></span>
+                                <span data-purecounter-start="0" data-purecounter-end="{{ $prodi }}"
+                                    data-purecounter-duration="1" class="purecounter"></span>
                                 <p>Total Program Studi</p>
                             </div>
                         </div>
@@ -172,7 +172,7 @@
                         <div class="count-box">
                             <i class="bi bi-folder" style="color: #15be56;"></i>
                             <div>
-                                <span data-purecounter-start="0" data-purecounter-end="{{$post}}"
+                                <span data-purecounter-start="0" data-purecounter-end="{{ $post }}"
                                     data-purecounter-duration="1" class="purecounter"></span>
                                 <p>Total Lowongan</p>
                             </div>
@@ -338,7 +338,8 @@
                     <div class="row">
 
                         <div class="col-xl-4 text-center" data-aos="fade-right" data-aos-delay="100">
-                            <img src="{{ asset('/') }}assets/img/features-3.png" class="img-fluid p-4" alt="">
+                            <img src="{{ asset('/') }}assets/img/features-3.png" class="img-fluid p-4"
+                                alt="">
                         </div>
 
                         <div class="col-xl-8 d-flex content">
@@ -415,13 +416,13 @@
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button"
                                             data-bs-toggle="collapse" data-bs-target="#faq-content-1">
-                                            {{$item['questions']}}
+                                            {{ $item['questions'] }}
                                         </button>
                                     </h2>
                                     <div id="faq-content-1" class="accordion-collapse collapse"
                                         data-bs-parent="#faqlist1">
                                         <div class="accordion-body">
-                                            {{$item['answer']}}
+                                            {{ $item['answer'] }}
                                         </div>
                                     </div>
                                 </div>
@@ -434,93 +435,10 @@
 
         </section><!-- End F.A.Q Section -->
 
-        <!-- ======= Testimonials Section ======= -->
-        {{-- <section id="testimonials" class="testimonials">
 
-            <div class="container" data-aos="fade-up">
-
-                <header class="section-header">
-                    <h2>Testimoni</h2>
-                    <p>Bagaimana kata Pengguna ?</p>
-                </header>
-
-                <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="200">
-                    <div class="swiper-wrapper">
-
-                        <div class="swiper-slide">
-                            <div class="testimonial-item">
-
-                                <p>
-                                    Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit
-                                    rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam,
-                                    risus at semper.
-                                </p>
-                                <h3>Saul Goodman</h3>
-                                <h4>Ceo &amp; Founder</h4>
-                            </div>
-                        </div><!-- End testimonial item -->
-
-                        <div class="swiper-slide">
-                            <div class="testimonial-item">
-
-                                <p>
-                                    Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid
-                                    cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet
-                                    legam anim culpa.
-                                </p>
-                                <h3>Sara Wilsson</h3>
-                                <h4>Designer</h4>
-                            </div>
-                        </div><!-- End testimonial item -->
-
-                        <div class="swiper-slide">
-                            <div class="testimonial-item">
-
-                                <p>
-                                    Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem
-                                    veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint
-                                    minim.
-                                </p>
-                                <h3>Jena Karlis</h3>
-                                <h4>Store Owner</h4>
-                            </div>
-                        </div><!-- End testimonial item -->
-
-                        <div class="swiper-slide">
-                            <div class="testimonial-item">
-
-                                <p>
-                                    Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim
-                                    fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem
-                                    dolore labore illum veniam.
-                                </p>
-                                <h3>Matt Brandon</h3>
-                                <h4>Freelancer</h4>
-                            </div>
-                        </div><!-- End testimonial item -->
-
-                        <div class="swiper-slide">
-                            <div class="testimonial-item">
-                                <p>
-                                    Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster
-                                    veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam
-                                    culpa fore nisi cillum quid.
-                                </p>
-                                <h3>John Larson</h3>
-                                <h4>Entrepreneur</h4>
-                            </div>
-                        </div><!-- End testimonial item -->
-
-                    </div>
-                    <div class="swiper-pagination"></div>
-                </div>
-
-            </div>
-
-        </section><!-- End Testimonials Section --> --}}
 
         <!-- ======= Team Section ======= -->
-        <section id="team" class="team">
+        {{-- <section id="team" class="team">
 
             <div class="container" data-aos="fade-up">
 
@@ -611,7 +529,7 @@
 
             </div>
 
-        </section><!-- End Team Section -->
+        </section><!-- End Team Section --> --}}
 
         <!-- ======= Clients Section ======= -->
         {{-- <section id="clients" class="clients">
@@ -696,18 +614,12 @@
                                     <p>Gedung JTI,<br>Politeknik Negeri Jember</p>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="info-box">
-                                    <i class="bi bi-telephone"></i>
-                                    <h3>Telepon</h3>
-                                    <p>+1 5589 55488 55<br>+1 6678 254445 41</p>
-                                </div>
-                            </div>
+
                             <div class="col-md-6">
                                 <div class="info-box">
                                     <i class="bi bi-envelope"></i>
                                     <h3>Email</h3>
-                                    <p>cdcpolije@gmail.com<br>jtinove@police.ac.id</p>
+                                    <p>cdcpolije@gmail.com<br>jtinova@police.ac.id</p>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -769,6 +681,79 @@
             </div>
 
         </section><!-- End Contact Section -->
+
+        <section id="now" class="features">
+
+            <div class="container" data-aos="fade-up">
+
+                <header class="section-header">
+                    <h2>PENGEMBANG</h2>
+
+                </header>
+
+                <div class="row">
+
+
+
+                    <div class="col-lg-12 mt-12 mt-lg-0 ">
+                        <div class="row align-self-center gy-4">
+
+                            <div class="col-6" data-aos="zoom-out" data-aos-delay="300">
+                                <div class="feature-box d-flex align-items-center">
+                                    <a
+                                        href="https://www.linkedin.com/in/achmad-fawaid?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
+                                        <i class="bi bi-linkedin"></i></a>
+                                    <div class="member-info">
+                                        <h3>Achmad Fawaid</h3>
+                                        <span>Mobile Developer</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6" data-aos="zoom-out" data-aos-delay="300">
+                                <div class="feature-box d-flex align-items-center">
+                                    <a
+                                        href="https://www.linkedin.com/in/mohammad-tajut-zam-zami-645b54221?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
+                                        <i class="bi bi-linkedin"></i></a>
+                                    <div class="member-info">
+                                        <h3>Mohammad Tajut Zam Zami</h3>
+                                        <span>Backend Developer</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6" data-aos="zoom-out" data-aos-delay="300">
+                                <div class="feature-box d-flex align-items-center">
+                                    <a
+                                        href="https://www.linkedin.com/in/zhaqianroufa?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
+                                        <i class="bi bi-linkedin"></i></a>
+                                    <div class="member-info">
+                                        <h3>Zhaqian Rouf Alfauzi</h3>
+                                        <span>UI/UX, Frontend Web Developer</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6" data-aos="zoom-out" data-aos-delay="300">
+                                <div class="feature-box d-flex align-items-center">
+                                    <a
+                                        href="https://www.linkedin.com/in/shilmia-madina-3544a4277?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
+                                        <i class="bi bi-linkedin"></i></a>
+                                    <div class="member-info">
+                                        <h3>Shilmia Madina</h3>
+                                        <span>UI/UX</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div> <!-- / row -->
+            </div>
+
+        </section>
 
     </main><!-- End #main -->
 @endsection
