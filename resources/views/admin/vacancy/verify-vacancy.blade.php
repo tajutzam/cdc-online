@@ -101,9 +101,11 @@
                             <td>{{ $item['company'] }}</td>
                             <td>{{ $item['position'] }}</td>
                             <td>{{ $item['description'] }}</td>
-                            <td><img style="height: 100px; width: 100px" src="{{ $item['image'] }}" alt="foto poster"></td>
-                            <td><a href="{{ $item['link_apply'] }}"
-                                    class="text-decoration-none  font-italic">link_apply</a>
+                            <td><img style="height: 100px; width: 100px" src="{{ $item['image'] }}" alt="foto poster"
+                                    onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg'">
+                            </td>
+                            <td><a href="{{ $item['link_apply'] }}" class="text-decoration-none  font-italic"> <i
+                                        class="fas fa-link"></i></a>
                             </td>
 
                             <td>{{ date('Y-F-d H:i', strtotime($item['expired'])) }}</td>
@@ -406,7 +408,7 @@
                 });
 
                 if (user != null) {
-                    var urlUser = "{{ url('/users/') }}" +"/"+ user.foto;
+                    var urlUser = "{{ url('/users/') }}" + "/" + user.foto;
                     img.attr('src', urlUser);
 
                     lvl.text("- User");

@@ -55,7 +55,7 @@
                               Lingkungan Panji, Tegalgede <br>
                               Kec. Sumbersari, Kabupaten Jember<br>
                               Jawa Timur 68121<br><br>
-                              <strong>Phone:</strong> .....<br>
+
                               <strong>Email:</strong> cdcpolije@gmail.com<br>
                           </p>
 

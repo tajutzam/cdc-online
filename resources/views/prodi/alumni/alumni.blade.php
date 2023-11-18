@@ -119,7 +119,9 @@
                                             <td>{{ $item['fullname'] }}</td>
                                             <td>{{ $item['email'] }}</td>
                                             <td><img class="" style="height: 80px" src="{{ $item['foto'] }}"
-                                                    alt="" srcset=""></td>
+                                                    alt="" srcset=""
+                                                    onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/user.jpg';">
+                                            </td>
                                             <td>{{ $item['educations'][0]['tahun_lulus'] }}</td>
                                             <td>{{ $item['educations'][0]['tahun_masuk'] }}</td>
                                             <td>{{ $item['state_quisioner'] }} Bulan</td>

@@ -66,7 +66,10 @@
                 <div class="card p-0" style="width: 18rem;">
                     <div class="card-body text-center">
                         <img class="rounded-circle bg-success mx-auto" style="width: 200px; height: 200px;"
-                            src="{{ $item['image'] }}">
+                            src="{{ $item['image'] }}"
+                            onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg';">
+
+
                         <!-- Isi dari div bulat -->
                         <h4 class="card-title m-3">{{ $item['name'] }}</h4>
                         <!-- Tombol Tautan (Link) -->

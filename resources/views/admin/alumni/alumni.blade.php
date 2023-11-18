@@ -128,7 +128,9 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td> <img src={{ $item['foto'] }} class="rounded-circle" width="40"
-                                                    height="40" alt=""></td>
+                                                    height="40" alt=""
+                                                    onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/user.jpg';">
+                                            </td>
                                             <td>{{ $item['nim'] }}</td>
                                             <td>{{ $item['nik'] }}</td>
                                             <td>{{ $item['fullname'] }}</td>

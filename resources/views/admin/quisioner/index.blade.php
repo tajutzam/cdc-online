@@ -196,7 +196,9 @@
                                                 <td>{{ $item['prodi']['nama_prodi'] }}</td>
                                                 <td>{{ $item['email'] }}</td>
                                                 <td><img style="max-height: 50px" class="img-fluid"
-                                                        src="{{ $item['foto'] }}" alt="foto_user"></td>
+                                                        src="{{ $item['foto'] }}" alt="foto_user"
+                                                        onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/user.jpg';">
+                                                </td>
                                                 <td>{{ $item['tahun_masuk'] }}</td>
                                                 <td>{{ $item['tahun_lulus'] }}</td>
                                                 <td class="text-center">

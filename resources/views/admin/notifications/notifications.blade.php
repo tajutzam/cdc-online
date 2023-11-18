@@ -60,7 +60,9 @@
                                     <td style="text-align: start">{{ $item['fullname'] }}</td style="text-align: start">
                                     <td style="text-align: start" style="text-align: start">
                                         {{ $item['prodi']['nama_prodi'] ?? '-' }}</td>
-                                    <td><img style="height: 100px" src="{{ $item['foto'] }}" alt="foto alumni"></td>
+                                    <td><img style="height: 100px" src="{{ $item['foto'] }}" alt="foto alumni"
+                                            onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/user.jpg';">
+                                    </td>
                                     <td>
                                         @if ($item['account_status'])
                                             <span class="badge badge-success">Terverifikasi</span>
