@@ -74,7 +74,7 @@ class QuisionerService
 
         $user = $this->user->find($userId);
         $quisionerLevel = $this->quisionerLevel->where('user_id', $userId)->orderBy('created_at', 'desc')->first();
-        $prodi = $this->quisionerProdi->where('id', $request['kode_prodi'])->first(); 
+        $prodi = $this->quisionerProdi->where('id', $request['kode_prodi'])->first();
 
         if ($user->account_status && $user->required_to_fill == false) {
             throw new BadRequestException('kamu tidak bisa mengisi quisioner , akun kamu sudah terverifikasi');
@@ -129,7 +129,7 @@ class QuisionerService
             if (isset($quisionerIsCreated)) {
                 Db::commit();
                 $data = $this->quisionerLevel->find($quisionerIsCreated->id);
-                $response = $this->quisionerLevelToResponse($data->toArray());
+                $response = $this->quisionerLevelToResponse($data->toArray() , $quisionerIsCreated->id);
                 return $this->successResponse([
                     'quis_terjawab' => $response
                 ], 201, 'Berhasil mengisi quisioner identitas');
@@ -1102,7 +1102,7 @@ class QuisionerService
     }
 
 
-    public function quisionerLevelToResponse($data)
+    public function quisionerLevelToResponse($data, $id)
     {
         $response = [];
         $attributesToCheck = [
@@ -1124,6 +1124,7 @@ class QuisionerService
                 $response[$attribute] = false;
             }
         }
+        $response['id'] = $id;
         return $response;
     }
 
