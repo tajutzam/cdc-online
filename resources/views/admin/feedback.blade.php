@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div class="card radius-10">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="row">
-            {{-- Gunakan Perulangan di col-sm-6 --}}
+
             @foreach ($data as $item)
                 <div class="col-sm-6">
                     <div class="row pt-2">
@@ -65,6 +65,8 @@
                                             <button type="submit" class="btn btn-primary">Kirim</button>
                                         </form>
                                     @endif
+                                    <button type="submit" class="btn btn-danger" data-bs-target="#delete-feedback" d
+                                        data-bs-toggle="modal">Hapus</button>
                                 </div>
                             </div>
                         </div>
@@ -93,81 +95,21 @@
         </nav>
     </div>
 
-    <script>
-        $(function() {
-            // chart 1
-            var e = {
-                series: [{
-                    name: "Feedback",
-                    data: [240, 160, 671, 414, 555, 257, 901]
-                }],
-                chart: {
-                    type: "line",
-                    height: 65,
-                    toolbar: {
-                        show: !1
-                    },
-                    zoom: {
-                        enabled: !1
-                    },
-                    dropShadow: {
-                        enabled: !0,
-                        top: 3,
-                        left: 14,
-                        blur: 4,
-                        opacity: .12,
-                        color: "#0d6efd"
-                    },
-                    sparkline: {
-                        enabled: !0
-                    }
-                },
-                markers: {
-                    size: 0,
-                    colors: ["#0d6efd"],
-                    strokeColors: "#fff",
-                    strokeWidth: 2,
-                    hover: {
-                        size: 7
-                    }
-                },
-                dataLabels: {
-                    enabled: !1
-                },
-                stroke: {
-                    show: !0,
-                    width: 3,
-                    curve: "smooth"
-                },
-                colors: ["#0d6efd"],
-                xaxis: {
-                    categories: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-                },
-                fill: {
-                    opacity: 1
-                },
-                tooltip: {
-                    theme: "dark",
-                    fixed: {
-                        enabled: !1
-                    },
-                    x: {
-                        show: !1
-                    },
-                    y: {
-                        title: {
-                            formatter: function(e) {
-                                return ""
-                            }
-                        }
-                    },
-                    marker: {
-                        show: !1
-                    }
-                }
-            };
-            new ApexCharts(document.querySelector("#feedback-chart"), e).render();
 
-        });
-    </script>
+    <x-modal-small id="delete-feedback" footer="footer" title="title" body="body">
+        <x-slot name="title">Hapus Feedback</x-slot>
+        <x-slot name="id">delete-feedback</x-slot>
+        <x-slot name="body">
+            <h5 class="mb-3">Apakah anda yakin ingin menghapus data ini ? </h5>
+            <form action="" method="POST">
+                <input type="text" hidden id="feedback-delete-id" name="id">
+
+                <div class="row justify-content-center m-0">
+                    <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
+                        data-bs-dismiss="modal">Tidak</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4" type="submit">Ya</button>
+                </div>
+            </form>
+        </x-slot>
+    </x-modal-small>
 @endsection

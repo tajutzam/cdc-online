@@ -61,7 +61,7 @@
 
             </div>
         </div>
-        <div class="row  pe-3 ps-3 justify-content-between gap-lg-5">
+        <div class="row  pe-3 ps-3 justify-content-start gap-lg-5">
             @foreach ($data['groups'] as $item)
                 <div class="card p-0" style="width: 18rem;">
                     <div class="card-body text-center">
@@ -213,7 +213,7 @@
             <form action="{{ route('grup-delete') }}" method="post" enctype="multipart/form-data">
                 @method('delete')
                 <div class="form-floating mb-3">
-                    <h6> Apakah anda yakin menghapus Grup Bondowoso</h6>
+                    <h6> Apakah anda yakin menghapus Grup ?</h6>
                 </div>
                 <input type="text" name="id" id="id_delete" hidden>
                 <div class="row justify-content-end">

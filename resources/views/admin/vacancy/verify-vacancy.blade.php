@@ -101,7 +101,7 @@
                             <td>{{ $item['company'] }}</td>
                             <td>{{ $item['position'] }}</td>
                             <td>{{ $item['description'] }}</td>
-                            <td><img style="height: 100px; width: 100px" src="{{ $item['image'] }}" alt="foto poster"
+                            <td><img style="height: 100px; width: 100px" src="{{ $item['image'] }}"
                                     onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg'">
                             </td>
                             <td><a href="{{ $item['link_apply'] }}" class="text-decoration-none  font-italic"> <i
