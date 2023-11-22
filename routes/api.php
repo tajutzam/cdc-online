@@ -177,6 +177,8 @@ Route::post('/alumni/acc', [AlumniController::class, 'accOrReject']);
 
 Route::post('/verifikasi/alumni', [AlumniController::class, 'verifikasiAlumni']);
 
+Route::get("user/card", [UserController::class, "card"]);
+
 
 // documentations
 Route::get('/api/documentation', function () {

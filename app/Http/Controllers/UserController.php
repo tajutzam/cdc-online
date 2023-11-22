@@ -54,7 +54,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    
+
     public function updateVisibility(UpdateVisibleRequest $updateVisibleRequest)
     {
         $request = $updateVisibleRequest->all();
@@ -234,6 +234,14 @@ class UserController extends Controller
         $userId = $this->userService->extractUserId($request->bearerToken());
         $response = $this->userService->logout($userId);
         return ResponseHelper::successResponse($response['message'], $response['data'], $response['code']);
+    }
+
+    public function card(Request $request)
+    {
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        $response = $this->userService->userCard($userId);
+        return ResponseHelper::successResponse('success fetch data', $response, 200);
+
     }
 
 }

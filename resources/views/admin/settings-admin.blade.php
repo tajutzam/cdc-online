@@ -49,58 +49,62 @@
         <div class="row justify-content-center">
             <div class="col-sm-10">
                 <div class="card">
-                    <div class="card-body">
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Nama</h6>
+                    <form action="{{ route('settings-admin-put') }}" method="post">
+                        @csrf
+                        @method('put')
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Nama</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" class="form-control"
+                                        value="{{ Auth::guard('admin')->user()->name }}" name="name" />
+                                </div>
                             </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control"
-                                    value="{{ Auth::guard('admin')->user()->name }}" />
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Email</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" class="form-control"
+                                        value="{{ Auth::guard('admin')->user()->email }}" name="email" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">NPWP</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" class="form-control"
+                                        value="{{ Auth::guard('admin')->user()->npwp }}" name="npwp" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Alamat</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" class="form-control"
+                                        value="{{ Auth::guard('admin')->user()->alamat }}" name="address" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Password</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" class="form-control" name="password" />
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-9 text-secondary text-end    ">
+                                    <input type="submit" class="btn btn-primary px-4" value="Simpan" />
+                                </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Email</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control"
-                                    value="{{ Auth::guard('admin')->user()->email }}" />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">NPWP</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control"
-                                    value="{{ Auth::guard('admin')->user()->npwp }}" />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Alamat</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control"
-                                    value="{{ Auth::guard('admin')->user()->alamat }}" />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Password</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" value="******" />
-                            </div>
-                        </div>
-                        <div class="row ">
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-9 text-secondary text-end    ">
-                                <input type="button" class="btn btn-primary px-4" value="Simpan" />
-                            </div>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

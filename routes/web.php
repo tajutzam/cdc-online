@@ -70,6 +70,8 @@ Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group
     function () {
         Route::get('/dashboard', [AdminProdiController::class, 'dashboard'])->name('dashboard-prodi');
         Route::get('/settings-admin', [AdminProdiController::class, 'settingsAdmin'])->name('settings-admin-prodi');
+        Route::put('/settings-admin', [ProdiAdminController::class, 'update'])->name('settings-admin-prodi-put');
+
         Route::prefix('quesioner')->group(function () {
             route::get('', [ProdiQuesionerController::class, 'index'])->name('quesioner-index');
             Route::get("/detail/{level}/{userId}", [QuisionerController::class, 'detailQuisionerProdi'])->name('detail-quisioner-prodi');
@@ -99,7 +101,9 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::get('/manage-admin-prodi', [ManageProdiAdminController::class, 'manageAdminProdi'])->name('manage-admin-prodi');
     Route::post("/manage-admin-prodi", [ManageProdiAdminController::class, "addNewAdminProdi"])->name('manage-admin-prodi-add');
     Route::delete("/manage-admin-prodi", [ManageProdiAdminController::class, 'delete'])->name('manage-admin-prodi-delete');
-    Route::get('/settings-admin', [AdminController::class, 'settingsAdmin'])->name('settings-admin');
+    Route::get('/settings-admin', [AdminController::class, 'settingsAdmin'])->name('settings-admin-put');
+    Route::put('/settings-admin', [AdminController::class, 'update'])->name('settings-admin');
+
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/grup-whatsapp', [GrupWhatsappController::class, 'grupWhatsapp'])->name('grup');
     Route::post('/grup-whatsapp', [GrupWhatsappController::class, 'store'])->name('grup-post');

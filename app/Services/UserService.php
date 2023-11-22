@@ -299,8 +299,8 @@ class UserService
             ->whereHas('educations', function ($educationQuery) {
                 $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
             })->whereHas('prodi', function ($prodiQuery) use ($kodeProdi) {
-                $prodiQuery->where('id', $kodeProdi); // Gunakan nilai $kodeProdi dari parameter
-            })
+            $prodiQuery->where('id', $kodeProdi); // Gunakan nilai $kodeProdi dari parameter
+        })
             ->groupBy('account_status')
             ->get();
 
@@ -1081,7 +1081,8 @@ class UserService
                     '0' => 0,
                     '6' => 0,
                     '12' => 0
-                ];; // Tambahkan array kosong
+                ];
+                ; // Tambahkan array kosong
             }
         }
         return $groupedUsers;
@@ -1153,7 +1154,8 @@ class UserService
                     '0' => 0,
                     '6' => 0,
                     '12' => 0
-                ];; // Tambahkan array kosong
+                ];
+                ; // Tambahkan array kosong
             }
         }
         return $groupedUsers;
@@ -1271,4 +1273,25 @@ class UserService
             })
             ->count();
     }
+
+    public function userCard($userId)
+    {
+        $user = $this->userModel
+            ->with([
+                'educations' => function ($query) {
+                    $query->where('perguruan', 'Politeknik Negeri Jember')->first();
+                }
+            ])
+            ->where('id', $userId)
+            ->first();
+
+        $response = $this->castToUserResponseFromArray($user);
+        $response['educations'] = $user['educations'][0]->toArray();
+        return $response;
+    }
+
+
+
+
+
 }

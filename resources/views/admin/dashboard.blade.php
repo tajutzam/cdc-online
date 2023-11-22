@@ -363,7 +363,7 @@
             // console.log(element);
             if (element.latitude != null) {
                 var customIcon = L.icon({
-                    iconUrl: `{{ url('/') }}/assets/images.pin.png`,
+                    iconUrl: `{{ url('/') }}/assets/images/pin.png`,
                     iconSize: [40, 40],
                     iconAnchor: [20, 40],
                     popupAnchor: [0, -40],
