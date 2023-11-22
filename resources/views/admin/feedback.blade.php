@@ -6,10 +6,10 @@
             <div class="col-sm-12">
                 <div class="card radius-10">
                     <div class="card-body">
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center"> 
                             <div>
                                 <p class="mb-0 text-secondary">Total Pesan Masuk</p>
-                                <h4 class="my-1">28</h4>
+                                <h4 class="my-1">{{sizeof($data)}}</h4>
                             </div>
                             <div class="widgets-icons bg-light-primary text-primary ms-auto"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -65,8 +65,9 @@
                                             <button type="submit" class="btn btn-primary">Kirim</button>
                                         </form>
                                     @endif
-                                    <button type="submit" class="btn btn-danger" data-bs-target="#delete-feedback" d
-                                        data-bs-toggle="modal">Hapus</button>
+                                    <button type="button" class="btn btn-danger btn-delete-feedback"
+                                        data-bs-target="#delete-feedback" d data-bs-toggle="modal"
+                                        data-id="{{ $item['id'] }}">Hapus</button>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +102,9 @@
         <x-slot name="id">delete-feedback</x-slot>
         <x-slot name="body">
             <h5 class="mb-3">Apakah anda yakin ingin menghapus data ini ? </h5>
-            <form action="" method="POST">
+            <form action="{{ route('feedback-delete') }}" method="POST">
+                @method('delete')
+                @csrf
                 <input type="text" hidden id="feedback-delete-id" name="id">
 
                 <div class="row justify-content-center m-0">
@@ -112,4 +115,17 @@
             </form>
         </x-slot>
     </x-modal-small>
+
+
+    <script>
+        $(document).ready(function() {
+            // declare
+            $('.btn-delete-feedback').on('click', function() {
+                console.log('ya');
+                let id = $(this).data('id');
+                var id_input = $('#feedback-delete-id');
+                id_input.val(id);
+            });
+        });
+    </script>
 @endsection
