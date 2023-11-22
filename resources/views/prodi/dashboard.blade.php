@@ -7,7 +7,7 @@
                 <div class=" py-3">
                     <div class="row align-items-center">
                         <div class="col-md-6">
-                            <h4 class="mb-3 mb-md-0"> <i class="bx bx-home-alt"></i> Program Studi [Nama Prodi] </h4>
+                            <h4 class="mb-3 mb-md-0"> <i class="bx bx-home-alt"></i> Program Studi {{Auth::guard('prodi')->user()->name}}</h4>
                         </div>
                     </div>
                 </div>

@@ -29,7 +29,8 @@
                                 style="width: 110px; margin:0%">
                             <div style="width: 100%; height: 1px; background-color: #000; opacity: 50%; margin:2%;">
                             </div>
-                            <h5 style="text-align: center; margin: 0%">Teknologi Informasi</h5>
+                            <h5 style="text-align: center; margin: 0%">{{ auth('prodi')->user()->name }}</h5>
+
                         </div>
                     </div>
                 </div>
@@ -55,7 +56,7 @@
                                 <h6 class="mb-0">Nama</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" />
+                                <input type="text" name="name" class="form-control" value="{{ auth('prodi')->user()->name }} " />
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -63,7 +64,7 @@
                                 <h6 class="mb-0">Email</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" />
+                                <input type="text" name="email" class="form-control" value="{{ auth('prodi')->user()->email }}" />
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -71,7 +72,7 @@
                                 <h6 class="mb-0">NPWP</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" />
+                                <input type="text" name="npwp" class="form-control" value="{{ auth('prodi')->user()->nik }}" />
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -79,7 +80,7 @@
                                 <h6 class="mb-0">Alamat</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" />
+                                <input type="text" class="form-control" name="address" value="{{ auth('prodi')->user()->address }}" />
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -87,7 +88,7 @@
                                 <h6 class="mb-0">Password</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" />
+                                <input type="text" class="form-control" name="password"/>
                             </div>
                         </div>
                         <div class="row ">

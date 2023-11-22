@@ -35,5 +35,10 @@ class ProdiAdminController extends Controller
         return redirect('prodi/login');
     }
 
+    public function update(Request $request)
+    {
+            
+    }
+
 
 }

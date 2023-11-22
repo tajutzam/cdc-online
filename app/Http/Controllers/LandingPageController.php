@@ -19,8 +19,9 @@ class LandingPageController extends Controller
     private UserService $userService;
 
     public function __construct()
-    {
+    { 
         $this->newsService = new NewsService();
+     
         $this->questionService = new QuestionsService();
         $this->prodiService = new ProdiService();
         $this->postService = new PostService();
@@ -29,6 +30,7 @@ class LandingPageController extends Controller
 
     public function index()
     {
+       
         $news = $this->newsService->findLastInserted();
         $news = array_slice($news, 0, 3);
         $questions = $this->questionService->findAllAnsweredQuestions()->toArray();
