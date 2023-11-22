@@ -39,7 +39,6 @@ class LandingPageController extends Controller
         $work = $this->userService->findAllUserHaveWork();
         $notWork = $this->userService->findAllUserHaveNotWork();
         // dd($first, $second);
-
         return view('landing-page.index', ['news' => $news, 'questions' => $questions, 'prodi' => $prodi, 'post' => $post, 'user' => $work, 'notWork' => $notWork]);
     }
 

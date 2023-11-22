@@ -11,7 +11,7 @@
                                 <p class="mb-0 text-secondary">Total Lowongan Aktif</p>
                                 <h4 class="my-1">{{ sizeof($data['active']) }}</h4>
                             </div>
-
+                            {{-- 
                             <div class="ms-auto">
                                 <p class="mb-0 font-13 text-success ">+12 Lowongan <svg xmlns="http://www.w3.org/2000/svg"
                                         width="20" height="20" fill="currentColor" class="bi bi-clipboard-data"
@@ -25,7 +25,7 @@
                                     </svg>
                                 </p>
                                 <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
-                            </div>
+                            </div> --}}
                         </div>
                         <div id="active-chart-vacancy"></div>
                     </div>
@@ -40,7 +40,7 @@
                                 <h4 class="my-1">{{ sizeof($data['nonActive']) }}</h4>
                             </div>
 
-                            <div class="ms-auto">
+                            {{-- <div class="ms-auto">
                                 <p class="mb-0 font-13 text-primary ">+12 Lowongan <svg xmlns="http://www.w3.org/2000/svg"
                                         width="20" height="20" fill="currentColor" class="bi bi-clipboard-data"
                                         viewBox="0 0 16 16">
@@ -53,7 +53,7 @@
                                     </svg>
                                 </p>
                                 <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
-                            </div>
+                            </div> --}}
                         </div>
                         <div id="not-active-chart-vacancy"></div>
                     </div>
@@ -198,8 +198,8 @@
                                                     </td>
                                                     <td>{{ $item['post_at'] }}</td>
                                                     <td>{{ $item['expired'] }}</td>
-                                                    <td><a href="{{ $item['link_apply'] }}"><i
-                                                                class="fas fa-link"></i></a></td>
+                                                    <td><a href="{{ $item['link_apply'] }}"><i class="fas fa-link"></i></a>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

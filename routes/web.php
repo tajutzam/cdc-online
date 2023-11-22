@@ -108,6 +108,8 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
 
     Route::get('/feedback', [QuestionsController::class, 'index'])->name('feedback');
     Route::post('/answer/{id}', [QuestionsController::class, 'answer'])->name('answer');
+    Route::delete('feedback', [QuestionsController::class, 'delete'])->name('feedback-delete');
+
 
 
 

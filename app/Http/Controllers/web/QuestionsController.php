@@ -53,4 +53,13 @@ class QuestionsController extends Controller
         Alert::success("Sukses", "Berhasil Menjawab Pertanyaan");
         return back();
     }
+
+
+    public function delete(Request $request)
+    {
+        $data = $this->validate($request, ['id' => 'required']);
+        $this->questionsService->delete($data['id']);
+        Alert::success("Sukses", "Berhasil menghapus feedback");
+        return back();
+    }
 }

@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -22,7 +23,7 @@ return new class extends Migration {
             $table->integer('tahun_masuk')->nullable(true);
             $table->integer('tahun_lulus')->nullable(true);
             $table->string('no_ijasah')->nullable(true);
-            $table->string('perguruan')->nullable(false)->default('Polteknik Negeri Jember');
+            $table->string('perguruan')->nullable(false)->default('Politeknik Negeri Jember');
             $table->timestamps();
         });
     }
