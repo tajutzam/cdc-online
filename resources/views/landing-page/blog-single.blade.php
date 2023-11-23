@@ -50,11 +50,13 @@
                           <article class="entry entry-single">
 
                               <div class="entry-img">
-                                  <img src="{{ $blog['image'] }}" alt="" class="img-fluid">
+                                  <img src="{{ $blog['image'] }}" alt=""
+                                      onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg';"
+                                      class="img-fluid">
                               </div>
 
                               <h2 class="entry-title">
-                                  <a href="{{ route('blog-single', ['id' => $blog['idz']]) }}">{{ $blog['title'] }}</a>
+                                  <a href="{{ route('blog-single', ['id' => $blog['id']]) }}">{{ $blog['title'] }}</a>
                               </h2>
                               {{-- @dd($blog) --}}
                               <div class="entry-meta">
@@ -99,7 +101,8 @@
 
                                   @foreach ($news as $item)
                                       <div class="post-item clearfix">
-                                          <img src="{{ $item['image'] }}" alt="">
+                                          <img src="{{ $item['image'] }}" alt=""
+                                              onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg';">
                                           <h4><a
                                                   href="{{ route('blog-single', ['id' => $item['id']]) }}">{{ $item['title'] }}</a>
                                           </h4>

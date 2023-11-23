@@ -49,7 +49,7 @@
                             <article class="entry">
 
                                 <div class="entry-img">
-                                    <img src="{{ $item['image'] }}" alt="poster" class="img-fluid">
+                                    <img src="{{ $item['image'] }}" onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg';" alt="poster" class="img-fluid">
                                 </div>
 
                                 <h2 class="entry-title">
@@ -59,7 +59,8 @@
                                 <div class="entry-meta">
                                     <ul>
                                         <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a
-                                                href="{{ route('blog-single', ['id' => $item['id']]) }}">{{ $item['admin']['name'] }}</a></li>
+                                                href="{{ route('blog-single', ['id' => $item['id']]) }}">{{ $item['admin']['name'] }}</a>
+                                        </li>
                                         <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a
                                                 href="{{ route('blog-single', ['id' => $item['id']]) }}"><time
                                                     datetime="2020-01-01">{{ date('D, d-m-Y', strtotime($item['created_at'])) }}
@@ -113,7 +114,8 @@
                             <div class="sidebar-item recent-posts">
                                 @foreach ($lastest as $item)
                                     <div class="post-item clearfix">
-                                        <img src="{{ $item['image'] }}" alt="image-berita">
+                                        <img src="{{ $item['image'] }}" alt="image-berita"
+                                            onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg';">
                                         <h4><a
                                                 href="{{ route('blog-single', ['id' => $item['id']]) }}">{{ $item['title'] }}</a>
                                         </h4>
