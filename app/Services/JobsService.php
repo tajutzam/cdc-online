@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Exceptions\NotFoundException;
 use App\Helper\ResponseHelper;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class JobsService
@@ -118,6 +119,19 @@ class JobsService
             return ResponseHelper::successResponse('success fetch data', $job[0], 200);
         }
         throw new NotFoundException('ops , jobs not found');
+    }
+
+
+
+    public function countJobByUserId($id)
+    {
+
+        $user = User::where('id', $id)->first();
+        if (isset($user)) {
+            return $this->jobs->where('user_id')->count();
+        }
+        throw new NotFoundException("Ops , user tidak ditemukan");
+
     }
 
 }
