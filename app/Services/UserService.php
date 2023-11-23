@@ -287,7 +287,7 @@ class UserService
         })->whereHas('prodi', function ($prodiQuery) use ($kodeProdi) {
             $prodiQuery->where('id', $kodeProdi); // Gunakan nilai $kodeProdi dari parameter
         })->get()->map(function ($user) {
-            return $this->castToUserResponseFromArrayWithJoin($user);
+                return $user;
         })->toArray();
 
 
