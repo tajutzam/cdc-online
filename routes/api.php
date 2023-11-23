@@ -176,6 +176,8 @@ Route::get("/alumni/submissions", [AlumniController::class, 'findAllSubmissions'
 Route::post('/alumni/acc', [AlumniController::class, 'accOrReject']);
 
 Route::get("user/jobs/count/{id}", [JobsController::class, "countJobs"])->withoutMiddleware(VeriviedMiddleware::class);
+Route::get("user/post/count/{id}", [PostController::class, "countPost"])->withoutMiddleware(VeriviedMiddleware::class)->middleware(TokenMiddleware::class);
+
 
 Route::post('/verifikasi/alumni', [AlumniController::class, 'verifikasiAlumni']);
 

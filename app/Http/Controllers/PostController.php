@@ -151,4 +151,12 @@ class PostController extends Controller
         $data = $this->postService->findByIdCast($id);
         return ResponseHelper::successResponse("Success fetch data", $data, 200);
     }
+
+
+    public function countPost($id)
+    {
+        $data = $this->postService->countPostByUserId($id);
+        return ResponseHelper::successResponse("Sucess fetch data", $data, 200);
+    }
+
 }

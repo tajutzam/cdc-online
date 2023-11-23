@@ -529,6 +529,14 @@ class PostService
 
 
 
+    public function countPostByUserId($id)
+    {
+        $user = User::where('id', $id)->first();
+        if (!isset($user)) {
+            throw new NotFoundException("Ops , user tidak ditemukan");
+        }
+        return $this->post->where('user_id', $id)->count();
+    }
 
 
 
