@@ -49,8 +49,9 @@
                             <article class="entry">
 
                                 <div class="entry-img">
-                                    <img src="{{ $item['image'] }}" alt="poster" class="img-fluid"
-                                        onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/squarenull.jpg';">
+                                    <img src="{{ $item['image'] }}"
+                                        onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg';"
+                                        alt="poster" class="img-fluid">
                                 </div>
 
                                 <h2 class="entry-title">

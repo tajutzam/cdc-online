@@ -55,6 +55,22 @@ class QuestionsService
         }
     }
 
+
+    public function delete($id){
+        $questions= $this->questions->where('id' , $id)->first(); 
+        if(!isset($questions)){
+            throw new WebException("Ops , Pertanyaan Tidak ditemukan");
+        }
+        try {
+            //code...
+            $questions->delete();
+            return;
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw new WebException($th->getMessage());
+        }
+    }
+
     public function findAllAnsweredQuestions()
     {
         return $this->questions->whereNotNull('answer')->get();

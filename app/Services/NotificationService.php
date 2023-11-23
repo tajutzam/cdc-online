@@ -24,6 +24,7 @@ class NotificationService
     public function __construct()
     {
         $this->user = new User();
+
         $serviceAccountPath = storage_path(env('FIREBASE_CREDENTIALS'));
 
         $factory = (new Factory)

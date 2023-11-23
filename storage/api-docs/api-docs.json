@@ -4067,12 +4067,12 @@
             }
         },
         "/user/quisioner/companyapplied": {
-            "post":{
+            "post": {
                 "tags": ["Quisioner"],
-                "requestBody":{
+                "requestBody": {
                     "content": {
-                        "application/json":{
-                            "schema":{
+                        "application/json": {
+                            "schema": {
                                 "properties": {
                                     "job_applications_before_first_job": {
                                         "type": "integer",
@@ -4103,11 +4103,11 @@
                     }
                 },
                 "responses": {
-                    "201":{
+                    "201": {
                         "description": "success response",
                         "content": {
-                            "application/json":{
-                                "schema":{
+                            "application/json": {
+                                "schema": {
                                     "properties": {
                                         "data": {
                                             "type": "object",
@@ -4267,12 +4267,12 @@
             }
         },
         "/user/quisioner/jobsuitability": {
-            "post":{
-                "tags": ["Quisioner"], 
-                "requestBody":{
+            "post": {
+                "tags": ["Quisioner"],
+                "requestBody": {
                     "content": {
-                        "application/json":{
-                            "schema":{
+                        "application/json": {
+                            "schema": {
                                 "properties": {
                                     "job_suitability_not_related": {
                                         "type": "string",
@@ -4336,11 +4336,11 @@
                     }
                 },
                 "responses": {
-                    "201":{
-                        "description": "Sukses response" , 
+                    "201": {
+                        "description": "Sukses response",
                         "content": {
-                            "application/json":{
-                                "schema":{
+                            "application/json": {
+                                "schema": {
                                     "properties": {
                                         "data": {
                                             "type": "object",
@@ -4641,6 +4641,175 @@
                     },
                     "500": {
                         "description": "internal server error"
+                    }
+                }
+            }
+        },
+        "/user/card": {
+            "get": {
+                "tags": ["User"],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "dcb97944-b102-46ad-a459-f29539d12332"
+                                                },
+                                                "fullname": {
+                                                    "type": "string",
+                                                    "example": "mohammad tajut zamzami"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "test@gmail.com"
+                                                },
+                                                "nik": {
+                                                    "type": "string",
+                                                    "example": "***"
+                                                },
+                                                "no_telp": {
+                                                    "type": "string",
+                                                    "example": "***"
+                                                },
+                                                "foto": {
+                                                    "type": "string",
+                                                    "example": "http://localhost:8001/users/foto.png"
+                                                },
+                                                "ttl": {
+                                                    "type": "string",
+                                                    "format": "nullable"
+                                                },
+                                                "alamat": {
+                                                    "type": "string",
+                                                    "example": "jawa timur , banyuwangi"
+                                                },
+                                                "about": {
+                                                    "type": "string",
+                                                    "example": "saya adalah orang yang memiliki tekat tinggi"
+                                                },
+                                                "gender": {
+                                                    "type": "string",
+                                                    "example": "Laki-Laki"
+                                                },
+                                                "level": {
+                                                    "type": "string",
+                                                    "example": "user"
+                                                },
+                                                "linkedin": {
+                                                    "type": "string",
+                                                    "example": "linkedin.com/zam"
+                                                },
+                                                "facebook": {
+                                                    "type": "string",
+                                                    "format": "nullable"
+                                                },
+                                                "instagram": {
+                                                    "type": "string",
+                                                    "format": "nullable"
+                                                },
+                                                "twiter": {
+                                                    "type": "string",
+                                                    "format": "nullable"
+                                                },
+                                                "account_status": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "0"
+                                                },
+                                                "latitude": {
+                                                    "type": "string",
+                                                    "format": "nullable"
+                                                },
+                                                "longtitude": {
+                                                    "type": "string",
+                                                    "format": "nullable"
+                                                },
+                                                "state_quisioner": {
+                                                    "type": "string",
+                                                    "example": "0"
+                                                },
+                                                "educations": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "example": "1c9cdfe5-2ef4-40f7-861a-9e170646c1a8"
+                                                        },
+                                                        "user_id": {
+                                                            "type": "string",
+                                                            "example": "dcb97944-b102-46ad-a459-f29539d12332"
+                                                        },
+                                                        "strata": {
+                                                            "type": "string",
+                                                            "example": "D4"
+                                                        },
+                                                        "jurusan": {
+                                                            "type": "string",
+                                                            "example": "Teknologi Informasi"
+                                                        },
+                                                        "prodi": {
+                                                            "type": "string",
+                                                            "example": "Teknik Infomatika"
+                                                        },
+                                                        "tahun_masuk": {
+                                                            "type": "integer",
+                                                            "format": "int32",
+                                                            "example": "2020"
+                                                        },
+                                                        "tahun_lulus": {
+                                                            "type": "integer",
+                                                            "format": "int32",
+                                                            "example": "2022"
+                                                        },
+                                                        "no_ijasah": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "perguruan": {
+                                                            "type": "string",
+                                                            "example": "Politeknik Negeri Jember"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "example": "2023-11-22T07:25:36.000000Z"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "example": "2023-11-22T07:25:36.000000Z"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success fetch data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "500": {
+                        "description": "server error"
                     }
                 }
             }

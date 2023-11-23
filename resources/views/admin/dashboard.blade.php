@@ -130,8 +130,9 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="">
-                                                        <img src="{{ $item['foto'] }}" class="rounded-circle" width="46"
-                                                            height="46" alt=""
+
+                                                        <img src="{{ $item['image'] }}" class="rounded-circle"
+                                                            width="46" height="46" alt=""
                                                             onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/user.jpg';" />
                                                     </div>
                                                     <div class="ms-2">
@@ -362,7 +363,7 @@
             // console.log(element);
             if (element.latitude != null) {
                 var customIcon = L.icon({
-                    iconUrl: `{{ url('/') }}/assets/images.pin.png`,
+                    iconUrl: `{{ url('/') }}/assets/images/pin.png`,
                     iconSize: [40, 40],
                     iconAnchor: [20, 40],
                     popupAnchor: [0, -40],

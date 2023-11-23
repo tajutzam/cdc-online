@@ -4,12 +4,14 @@ namespace App\Http\Controllers\web;
 
 use App\Exceptions\WebException;
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Services\AdminService;
 use App\Services\AuthService;
 use App\Services\QuisionerService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class AdminController extends Controller
@@ -150,6 +152,60 @@ class AdminController extends Controller
     public function logout()
     {
         return $this->authService->logoutAdmin();
+    }
+
+
+    public function update(Request $request)
+    {
+
+
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required | email',
+            'npwp' => 'required',
+            'address' => 'required'
+        ]);
+        $id = auth('admin')->user()->id;
+
+        $prodiAdmin = Admin::find($id);
+        $prodiAdmins = Admin::where('email', '<>', $prodiAdmin->email)->get()->toArray();
+        foreach ($prodiAdmins as $key => $value) {
+            # code...
+            if ($request->input('email') == $value['email']) {
+                throw new WebException("Email Sudah Digunakan");
+            }
+        }
+        $passwordUpdate = false;
+        if ($request->input('password') != null) {
+            $passwordUpdate = true;
+        }
+        if (!$passwordUpdate) {
+
+            Admin::where('id', $id)->update(
+                [
+                    'name' => $request->input('name'),
+                    'npwp' => $request->input('npwp'),
+                    'alamat' => $request->input('address'),
+                    'email' => $request->input('email')
+                ]
+            );
+            Alert::success("Sukses", "Berhasil Memperbarui  Admin");
+            return back();
+        } else {
+            $id = auth('admin')->user()->id;
+            Admin::where('id', $id)->update(
+                [
+                    'name' => $request->input('name'),
+                    'npwp' => $request->input('npwp'),
+                    'alamat' => $request->input('address'),
+                    'email' => $request->input('email'),
+                    'password' => Hash::make($request->input('password'))
+                ]
+            );
+            Alert::success("Sukses", "Berhasil Memperbarui   Admin Silahkan Login Ulang");
+            auth('admin')->logout();
+            return redirect('admin/login');
+        }
     }
 
 

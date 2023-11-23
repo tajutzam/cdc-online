@@ -127,8 +127,9 @@
                                     @foreach ($data['alumni'] as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td> <img src={{ $item['foto'] }} class="rounded-circle" width="40"
-                                                    height="40" alt=""
+
+                                            <td> <img src={{ url('/users/') . '/' . $item['foto'] }} class="rounded-circle"
+                                                    width="40" height="40" alt=""
                                                     onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/user.jpg';">
                                             </td>
                                             <td>{{ $item['nim'] }}</td>

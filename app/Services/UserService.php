@@ -225,6 +225,7 @@ class UserService
         })->get()->toArray();
 
 
+
         $statusCounts = $this->userModel
             ->select('account_status', DB::raw('COUNT(*) as count'))
             ->when(isset($active), function ($query) use ($active) {
@@ -266,8 +267,6 @@ class UserService
             ->whereBetween('created_at', [$startDate, $endDate]) // Filter data yang dibuat dalam rentang waktu (Minggu hingga Sabtu)
             ->count(); // Menghitung jumlah data
 
-
-
         $response['count'] = [
             'active' => $active,
             'nonactive' => $nonActive,
@@ -288,7 +287,7 @@ class UserService
         })->whereHas('prodi', function ($prodiQuery) use ($kodeProdi) {
             $prodiQuery->where('id', $kodeProdi); // Gunakan nilai $kodeProdi dari parameter
         })->get()->map(function ($user) {
-            return $this->castToUserResponseFromArrayWithJoin($user);
+                return $user;
         })->toArray();
 
 
@@ -378,7 +377,6 @@ class UserService
             return ResponseHelper::successResponse('Berhsail memperbarui visibility', $updated, 200);
         }
         throw new Exception('ops , gagal memperbarui visibility terjadi kesalahan');
-
     }
 
 
@@ -621,7 +619,6 @@ class UserService
             "id" => $education['id'],
             "no_ijasah" => $education['no_ijasah'],
         ];
-
     }
 
     public function followUser($idUserLogin, $userId)
@@ -907,7 +904,6 @@ class UserService
         } else {
             throw new NotFoundException('ops , Nampaknya user yang kamu cari tidak ditemukan');
         }
-
     }
 
     public function updateLongtitudeLatitude($request, $userId)
@@ -1266,16 +1262,36 @@ class UserService
     public function findAllUserHaveNotWork()
     {
         return $this->userModel
-    ->whereDoesntHave('quisioner_level') // Equivalent to orWhereNotHas for absence of related models
-    ->orWhereHas('quisioner_level', function ($query) {
-        $query->whereHas('main', function ($mainQuery) {
-            $mainQuery->where(function ($mainWhere) {
-                $mainWhere->where('f8', 'Belum memungkinkan bekerja')
-                    ->orWhere('f8', 'Tidak kerja tetapi sedang mencari kerja');
-            });
-        });
-    })
-    ->count();
-
+            ->whereDoesntHave('quisioner_level') // Equivalent to orWhereNotHas for absence of related models
+            ->orWhereHas('quisioner_level', function ($query) {
+                $query->whereHas('main', function ($mainQuery) {
+                    $mainQuery->where(function ($mainWhere) {
+                        $mainWhere->where('f8', 'Belum memungkinkan bekerja')
+                            ->orWhere('f8', 'Tidak kerja tetapi sedang mencari kerja');
+                    });
+                });
+            })
+            ->count();
     }
+
+    public function userCard($userId)
+    {
+        $user = $this->userModel
+            ->with([
+                'educations' => function ($query) {
+                    $query->where('perguruan', 'Politeknik Negeri Jember')->first();
+                }
+            ])
+            ->where('id', $userId)
+            ->first();
+
+        $response = $this->castToUserResponseFromArray($user);
+        $response['educations'] = $user['educations'][0]->toArray();
+        return $response;
+    }
+
+
+
+
+
 }

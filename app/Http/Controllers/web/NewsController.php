@@ -63,8 +63,8 @@ class NewsController extends Controller
 
         $rules = [
             'title' => 'required|max:100',
-            'description' => 'required|max:500',
-            'image' => 'required|max:1024|mimes:jpeg,png,jpg',
+            'description' => 'required',
+            'image' => 'required|max:3072|mimes:jpeg,png,jpg',
         ];
 
 
@@ -95,7 +95,7 @@ class NewsController extends Controller
             $rules = [
                 'title' => 'required|max:100',
                 'description' => 'required|max:10000',
-                'image-update' => 'required|max:1024|mimes:jpeg,png,jpg',
+                'image-update' => 'required|max:3072|mimes:jpeg,png,jpg',
                 'id' => 'required'
             ];
         } else {
@@ -135,7 +135,7 @@ class NewsController extends Controller
         return view('landing-page.blog', ['data' => $data, 'lastest' => $latest]);
     }
 
-    public function detailBlog($id){
-        
+    public function detailBlog($id)
+    {
     }
 }

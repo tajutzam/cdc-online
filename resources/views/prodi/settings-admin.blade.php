@@ -29,7 +29,8 @@
                                 style="width: 110px; margin:0%">
                             <div style="width: 100%; height: 1px; background-color: #000; opacity: 50%; margin:2%;">
                             </div>
-                            <h5 style="text-align: center; margin: 0%">Teknologi Informasi</h5>
+                            <h5 style="text-align: center; margin: 0%">{{ auth('prodi')->user()->prodi->nama_prodi }}</h5>
+
                         </div>
                     </div>
                 </div>
@@ -44,59 +45,75 @@
                     </div>
                 </div>
             </div>
+
         </div>
+
 
         <div class="row justify-content-center">
             <div class="col-sm-10">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Nama</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Email</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">NPWP</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Alamat</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Password</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row ">
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-9 text-secondary text-end    ">
-                                <input type="button" class="btn btn-primary px-4" value="Simpan" />
-                            </div>
-                        </div>
+                @if ($errors->any())
+                    <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+                        <div class="text-white">{{ $errors->first() }}</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
+                @endif
+                <div class="card">
+                    <form action="{{ route('settings-admin-prodi-put', ['id' => 1]) }}" method="post">
+                        @csrf
+                        @method('put')
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Nama</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" name="name" class="form-control"
+                                        value="{{ auth('prodi')->user()->name }} " />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Email</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" name="email" class="form-control"
+                                        value="{{ auth('prodi')->user()->email }}" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">NPWP</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" name="npwp" class="form-control" name="npwp"
+                                        value="{{ auth('prodi')->user()->nik }}" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Alamat</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" class="form-control" name="address"
+                                        value="{{ auth('prodi')->user()->address }}" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Password</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" class="form-control" name="password" />
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-9 text-secondary text-end    ">
+                                    <input type="submit" class="btn btn-primary px-4" value="Simpan" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

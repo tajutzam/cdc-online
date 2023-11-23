@@ -11,7 +11,7 @@
                 </div>
             @endif
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
@@ -31,26 +31,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <p class="mb-0 text-secondary">Alumni Belum Mengisi Quisioner</p>
-                                    <h4 class="my-1">{{ $data['blank'] }}</h4>
-                                </div>
 
-                                {{-- <div class="ms-auto">
-                                    <p class="mb-0 font-13 text-danger ">+12 Alumni Tidak Terverifikasi <i
-                                            class='bx bxs-pencil font-20'></i>
-                                    </p>
-                                    <p class="mb-0 font-13 text-secondary">Dari Minggu Lalu</p>
-                                </div> --}}
-                            </div>
-                            <div id="not-verify-chart-quesioner"></div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="row">
