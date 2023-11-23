@@ -287,7 +287,7 @@ class UserService
         })->whereHas('prodi', function ($prodiQuery) use ($kodeProdi) {
             $prodiQuery->where('id', $kodeProdi); // Gunakan nilai $kodeProdi dari parameter
         })->get()->map(function ($user) {
-                return $user;
+            return $user;
         })->toArray();
 
 
@@ -492,6 +492,7 @@ class UserService
         $url = url('/') . "/users/" . $user['foto'];
         return [
             "id" => $user['id'],
+            'nim' => $user['nim'],
             "fullname" => $user['visible_fullname'] == 1 ? $user['fullname'] : "***",
             "email" => $user['visible_email'] == 1 ? $user['email'] : "***",
             "nik" => $user['visible_nik'] == 1 ? $user['nik'] : "***",

@@ -39,39 +39,45 @@ class AlumniService
         $success = false;
         Alumni::truncate(); // delete data before update
         while ($interval != $nowYears) {
-            $responseToken = $this->generateToken();
-            $header = [
-                'Authorization' => 'Bearer ' . $responseToken->access_token,
-                'Accept' => 'application/json',
-                'User-Agent' => '/Postman/i'
-            ];
-            $response = Http::withHeaders($header)->timeout(200)->get('http://api.polije.ac.id/resources/akademik/mahasiswa/wisuda', [
-                'debug' => true,
-                'tahun_lulus' => $interval
-            ]);
-            if ($response->successful()) {
-                $data = $response->json();
-                DB::beginTransaction();
-                try {
+            try {
+                //code...
+                $responseToken = $this->generateToken();
+                $header = [
+                    'Authorization' => 'Bearer ' . $responseToken->access_token,
+                    'Accept' => 'application/json',
+                    'User-Agent' => '/Postman/i'
+                ];
+                $response = Http::withHeaders($header)->timeout(200)->get('http://api.polije.ac.id/resources/akademik/mahasiswa/wisuda', [
+                    'debug' => true,
+                    'tahun_lulus' => $interval
+                ]);
+                if ($response->successful()) {
                     $data = $response->json();
-                    foreach ($data as $key => $value) {
-                        # code...
-                        $data[$key]['id'] = Str::uuid()->toString();
+                    DB::beginTransaction();
+                    try {
+                        $data = $response->json();
+                        foreach ($data as $key => $value) {
+                            # code...
+                            $data[$key]['id'] = Str::uuid()->toString();
+                        }
+                        $created = Alumni::insert($data);
+                        if ($created) {
+                            DB::commit();
+                            $interval++;
+                            $success = true;
+                        }
+                    } catch (Throwable $e) {
+                        $success = false;
+                        throw new WebException($e->getMessage());
                     }
-                    $created = Alumni::insert($data);
-                    if ($created) {
-                        DB::commit();
-                        $interval++;
-                        $success = true;
-                    }
-                } catch (Throwable $e) {
-                    dd($e->getMessage());
-                    $success = false;
-                    throw new WebException($e->getMessage());
+                } else {
+                    throw new WebException('Terjadi kesalahan pada Api Referensi');
                 }
-            } else {
-                throw new WebException('ngen');
+            } catch (Throwable $th) {
+                //throw $th;
+                throw new WebException($th->getMessage());
             }
+
         }
         if ($success) {
             return true;
@@ -92,28 +98,35 @@ class AlumniService
             throw new Exception('ops , your env not included the token');
         }
 
-        $curl = curl_init();
+        try {
+            //code...
+            $curl = curl_init();
 
-        curl_setopt_array(
-            $curl,
-            array(
-                CURLOPT_URL => 'http://api.polije.ac.id/oauth/token',
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-                CURLOPT_POSTFIELDS => array('grant_type' => $grant_type, 'client_id' => $client_id, 'client_secret' => $client_secreet),
-            )
-        );
+            curl_setopt_array(
+                $curl,
+                array(
+                    CURLOPT_URL => 'http://api.polije.ac.id/oauth/token',
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',
+                    CURLOPT_POSTFIELDS => array('grant_type' => $grant_type, 'client_id' => $client_id, 'client_secret' => $client_secreet),
+                )
+            );
 
-        $response = curl_exec($curl);
+            $response = curl_exec($curl);
 
-        curl_close($curl);
 
-        return json_decode($response);
+            curl_close($curl);
+
+            return json_decode($response);
+        } catch (Throwable $th) {
+            //throw $th;
+            throw new WebException($th->getMessage());
+        }
     }
 
 
