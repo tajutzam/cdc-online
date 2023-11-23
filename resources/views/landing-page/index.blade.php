@@ -152,7 +152,7 @@
                             <div>
                                 <span data-purecounter-start="0" data-purecounter-end="{{ $notWork }}"
                                     data-purecounter-duration="1" class="purecounter"></span>
-                                <p>Total Alumni Belum Bekerja</p>
+                                <p>Total Belum Bekerja</p>
                             </div>
                         </div>
                     </div>
