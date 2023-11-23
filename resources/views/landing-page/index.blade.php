@@ -579,7 +579,9 @@
                     @foreach ($news as $item)
                         <div class="col-lg-4">
                             <div class="post-box">
-                                <div class="post-img"><img src="{{ $item['image'] }}" class="img-fluid" alt="">
+                                <div class="post-img"><img src="{{ $item['image'] }}"
+                                        onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg';"
+                                        class="img-fluid" alt="">
                                 </div>
                                 <span class="post-date">{{ date('D, d-m-Y', strtotime($item['created_at'])) }}</span>
                                 <h3 class="post-title"> {{ $item['title'] }}</h3>
