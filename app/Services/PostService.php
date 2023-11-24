@@ -493,6 +493,7 @@ class PostService
         while ($startDate <= $endDate) {
             $count = $this->post
                 ->whereDate('created_at', $startDate->toDateString())
+                ->where('expired', '>', Carbon::now())
                 ->where('verified', 'verified')
                 ->count();
 
@@ -508,8 +509,10 @@ class PostService
         while ($startDate <= $endDate) {
             $count = $this->post
                 ->whereDate('created_at', $startDate->toDateString())
-                ->where('verified', '<>', 'verified')
-                ->where('expired', '<', Carbon::now())
+                ->where(function ($query) {
+                    $query->where('verified', '!=', 'verified') // Assuming 'verified' is a specific value, update accordingly
+                        ->orWhere('expired', '<', Carbon::now());
+                })
                 ->count();
 
             $data['countPerDayNonactive'][$startDate->format('Y-m-d')] = $count;
