@@ -50,9 +50,8 @@
                           <article class="entry entry-single">
 
                               <div class="entry-img">
-                                  <img src="{{ $blog['image'] }}" alt=""
-                                      onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg';"
-                                      class="img-fluid">
+                                  <img src="{{ $blog['image'] }}" alt="" class="img-fluid"
+                                      onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullrectangle.jpg';">
                               </div>
 
                               <h2 class="entry-title">
@@ -79,8 +78,8 @@
                           </article><!-- End blog entry -->
 
                           <div class="blog-author d-flex align-items-center">
-                              <img src="{{ asset('/') }}assets/img/blog/blog-author.jpg"
-                                  class="rounded-circle float-left" alt="">
+                              <img src="{{ asset('/') }}assets/images/user.jpg" class="rounded-circle float-left"
+                                  alt="">
                               <div>
                                   <h4>{{ $blog['admin']['name'] }}</h4>
                                   <p>
@@ -101,8 +100,8 @@
 
                                   @foreach ($news as $item)
                                       <div class="post-item clearfix">
-                                          <img src="{{ $item['image'] }}" alt=""
-                                              onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg';">
+                                          <img src="{{ $item['image'] }}"
+                                              alt=""onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg';">
                                           <h4><a
                                                   href="{{ route('blog-single', ['id' => $item['id']]) }}">{{ $item['title'] }}</a>
                                           </h4>

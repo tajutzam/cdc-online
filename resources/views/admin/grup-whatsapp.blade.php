@@ -9,9 +9,9 @@
             </div>
         @endif
         <div class="row">
-            <div class="col-sm-6">
-                <div class="card radius-10">
-                    <div class="card-body">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body" style="height: 110%">
                         <div class="d-flex align-items-center">
                             <div>
                                 <p class="mb-0 text-secondary">Jumlah Grup Whatsapp</p>
