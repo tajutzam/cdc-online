@@ -715,7 +715,7 @@
                             <div class="col-6" data-aos="zoom-out" data-aos-delay="300">
                                 <div class="feature-box d-flex align-items-center">
                                     <a
-                                        href="https://www.linkedin.com/in/mohammad-tajut-zam-zami-645b54221?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
+                                        href="https://www.linkedin.com/in/mohammad-tajut-zam-zami?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
                                         <i class="bi bi-linkedin"></i></a>
                                     <div class="member-info">
                                         <h3>Mohammad Tajut Zam Zami</h3>

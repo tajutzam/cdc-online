@@ -17,22 +17,11 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         $this->call([
             QuisProdiSeeder::class,
-            UserSeeder::class,
-            FollowerSeeder::class,
-            EducationSeeder::class,
             ProvinceSeeder::class,
             RegencySeeder::class,
+            UserSeeder::class, 
             AdminSeeder::class,
-            PostSeeder::class,
-            NewsSeeder::class,
-            JobsSeeder::class,
-            ProdiAdministratorSeeder::class,
-            WhatsappsSeeder::class
         ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }

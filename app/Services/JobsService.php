@@ -104,9 +104,9 @@ class JobsService
                 //code...
                 $isDelete = $job->delete();
                 Db::commit();
-                return ResponseHelper::successResponse('Berhasil memperbarui pekerjaan', $isDelete, 200);
+                return ResponseHelper::successResponse('Berhasil Menghapus pekerjaan', $isDelete, 200);
             } catch (\Throwable $th) {
-                throw new \Exception('gagal Memperbarui pekerjaan terjadi kesalahan');
+                throw new \Exception('gagal Menghapus pekerjaan terjadi kesalahan');
             }
         }
         throw new NotFoundException('ops , jobs not found');

@@ -20,21 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-lg-4 text-center">
-                <div class="card">
-                    <div class="card-body" style="padding: 0% ; margin-top: 5%; margin-bottom: 2%">
-                        <div class="d-flex flex-column align-items-center text-center">
-                            <img src="{{ asset('/') }}assets/images/admin.png" class="logo-text"
-                                style="width: 110px; margin:0%">
-                            <div style="width: 100%; height: 1px; background-color: #000; opacity: 50%; margin:2%;">
-                            </div>
-                            <h5 style="text-align: center; margin: 0%">Teknologi Informasi</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         <div class="row justify-content-center">
             <div class="col-sm-10" style="height: 60px">
                 <div class="card" style="background-color: #007bff; border-radius: 10px 10px 0 0;">
