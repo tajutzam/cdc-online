@@ -125,6 +125,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    
                                     @foreach ($topSalary as $item)
                                         <tr>
                                             <td>

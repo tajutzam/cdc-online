@@ -566,23 +566,34 @@ class UserService
 
     public function getTopUserBySalary()
     {
-        $data = $this->userModel->with('jobs')->get()->toArray();
+        $data = $this->userModel->with([
+            'jobs' => function ($query) {
+                $query->where('pekerjaan_saatini', true);
+            }
+        ])->get()->toArray();
 
         // Gunakan metode koleksi untuk mengambil nama posisi pekerjaan terakhir dan gaji tertinggi
         return collect($data)->filter(function ($user) {
             return count($user['jobs']) > 0; // Filter pengguna yang memiliki setidaknya satu pekerjaan.
         })->map(function ($user) {
-            $lastJob = collect($user['jobs'])->where('pekerjaan_saatini', 1)->first();
+            if (isset($user['jobs'])) {
+                $lastJob = collect($user['jobs'])->where('pekerjaan_saatini', 1)->first();
 
-            $formattedCurrency = number_format($lastJob['gaji'], 2); // 2 decimal places for cents
-            return [
-                'fullname' => $user['fullname'],
-                'last_position' => $lastJob ? $lastJob['jabatan'] : null,
-                'highest_salary' => $lastJob ? $formattedCurrency : null,
-                'company' => $lastJob['perusahaan'],
-                'account_status' => $user['account_status'],
-                'image' => url('/') . '/users/' . $user['foto']
-            ];
+                $formattedCurrency = 0;
+
+                if (isset($lastJob)) {
+                    $formattedCurrency = number_format($lastJob['gaji'], 2); // 2 decimal places for cents
+                    return [
+                        'fullname' => $user['fullname'],
+                        'last_position' => $lastJob ? $lastJob['jabatan'] : null,
+                        'highest_salary' => $lastJob ? $formattedCurrency : null,
+                        'company' => $lastJob['perusahaan'],
+                        'account_status' => $user['account_status'],
+                        'image' => url('/') . '/users/' . $user['foto']
+                    ];
+                }
+            }
+
         })->sortByDesc('highest_salary')->values()->take(20)->toArray();
     }
 
