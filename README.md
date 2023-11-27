@@ -22,4 +22,6 @@ Cdc merupakan sebuah sistem informasi yang diperuntukan untuk alumni yang ada pa
 ## Contributor
 
 - [Mohammad Tajut Zamzami - Backend](https://www.linkedin.com/in/mohammad-tajut-zam-zami)
+- [Zhaqian Rouf Alfauzi - Backend](https://www.linkedin.com/in/zhaqianroufa)
+
 
