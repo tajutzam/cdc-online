@@ -1298,7 +1298,11 @@ class UserService
             ->first();
 
         $response = $this->castToUserResponseFromArray($user);
-        $response['educations'] = $user['educations'][0]->toArray();
+        if (isset($response['educations'][0])) {
+            $response['educations'] = $user['educations'][0]->toArray();
+        } else {
+            $response['educations'] = [];
+        }
         return $response;
     }
 

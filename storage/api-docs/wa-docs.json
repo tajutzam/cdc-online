@@ -1,0 +1,99 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Wa Group  DOCUMENTATIONS",
+        "version": "1.0",
+        "contact": {
+            "email": "mohammadtajutzamzami07@gmail.com",
+            "name": "Mohammad Tajut Zamzami",
+            "url": "https://github.com/tajutzam"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
+    "paths": {
+        "/user/whatsapp": {
+            "get": {
+                "description": "get all group whatshapp",
+                "responses": {
+                    "200": {
+                        "description": "success fetch data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "00fdf9be-d4f8-42a9-8e63-0ddbaeab96aa"
+                                                    },
+                                                    "url": {
+                                                        "type": "string",
+                                                        "example": "https://swagger.io/"
+                                                    },
+                                                    "image": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:8000/whatshapps/1701147628.png"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "IKAPJ Domisili Bondowoso"
+                                                    }
+                                                }
+                                            },
+                                            "example": [
+                                                {
+                                                    "id": "00fdf9be-d4f8-42a9-8e63-0ddbaeab96aa",
+                                                    "url": "https://swagger.io/",
+                                                    "image": "http://localhost:8000/whatshapps/1701147628.png",
+                                                    "name": "IKAPJ Domisili Bondowoso"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success fetch data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthenticated"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer_token": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearer_token": []
+        }
+    ]
+}

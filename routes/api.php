@@ -142,6 +142,7 @@ Route::post('/user/post/search', [PostController::class, 'findByPosition'])->mid
 // NEWS USER
 Route::get('/user/news', [ApiNewsController::class, 'findLastInserted']);
 Route::get('/user/news/{id}', [ApiNewsController::class, 'findById']);
+Route::get("/user/news-all" , [ApiNewsController::class , "findAll"]);
 
 
 // notifications

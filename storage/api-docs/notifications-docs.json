@@ -1,0 +1,185 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Notifications User DOCUMENTATIONS",
+        "version": "1.0",
+        "contact": {
+            "email": "mohammadtajutzamzami07@gmail.com",
+            "name": "Mohammad Tajut Zamzami",
+            "url": "https://github.com/tajutzam"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
+    "paths": {
+       "/user/notifications":{
+        "get":{
+            "description": "get all notificatios user login" , 
+            "responses": {
+                "200":{
+                    "description": "success fetch data" , 
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "properties": {
+                                    "data": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "example": "a81a1c60-b2dc-432d-a885-b91ccdea2c89"
+                                            },
+                                            "fullname": {
+                                                "type": "string",
+                                                "example": "mohammad tajut zamzami"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "test@gmail.com"
+                                            },
+                                            "nik": {
+                                                "type": "string",
+                                                "example": "***"
+                                            },
+                                            "no_telp": {
+                                                "type": "string",
+                                                "example": "***"
+                                            },
+                                            "foto": {
+                                                "type": "string",
+                                                "example": "http://localhost:8000/users/foto.png"
+                                            },
+                                            "ttl": {
+                                                "type": "string",
+                                                "format": "nullable"
+                                            },
+                                            "alamat": {
+                                                "type": "string",
+                                                "example": "jawa timur , banyuwangi"
+                                            },
+                                            "about": {
+                                                "type": "string",
+                                                "example": "saya adalah orang yang memiliki tekat tinggi"
+                                            },
+                                            "gender": {
+                                                "type": "string",
+                                                "example": "male"
+                                            },
+                                            "level": {
+                                                "type": "string",
+                                                "example": "user"
+                                            },
+                                            "nim": {
+                                                "type": "string",
+                                                "example": "e41212337"
+                                            },
+                                            "linkedin": {
+                                                "type": "string",
+                                                "example": "linkedin.com/zam"
+                                            },
+                                            "facebook": {
+                                                "type": "string",
+                                                "format": "nullable"
+                                            },
+                                            "instagram": {
+                                                "type": "string",
+                                                "format": "nullable"
+                                            },
+                                            "twiter": {
+                                                "type": "string",
+                                                "format": "nullable"
+                                            },
+                                            "account_status": {
+                                                "type": "integer",
+                                                "format": "int32",
+                                                "example": "1"
+                                            },
+                                            "notifications": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "example": "dead4783-fbc4-4372-a9ce-58ef8cb39228"
+                                                        },
+                                                        "user_id": {
+                                                            "type": "string",
+                                                            "example": "a81a1c60-b2dc-432d-a885-b91ccdea2c89"
+                                                        },
+                                                        "type": {
+                                                            "type": "string",
+                                                            "example": "news"
+                                                        },
+                                                        "message": {
+                                                            "type": "string",
+                                                            "example": "Polije Disnatalis"
+                                                        },
+                                                        "id_body": {
+                                                            "type": "string",
+                                                            "example": "f27cc88f-fbfa-4c34-9145-13082a8b40a9"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "example": "2023-11-28T04:51:20.000000Z"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "example": "2023-11-28T04:51:20.000000Z"
+                                                        }
+                                                    }
+                                                },
+                                                "example": [
+                                                    {
+                                                        "id": "dead4783-fbc4-4372-a9ce-58ef8cb39228",
+                                                        "user_id": "a81a1c60-b2dc-432d-a885-b91ccdea2c89",
+                                                        "type": "news",
+                                                        "message": "Polije Disnatalis",
+                                                        "id_body": "f27cc88f-fbfa-4c34-9145-13082a8b40a9",
+                                                        "created_at": "2023-11-28T04:51:20.000000Z",
+                                                        "updated_at": "2023-11-28T04:51:20.000000Z"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Success Fetch data"
+                                    },
+                                    "code": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "200"
+                                    },
+                                    "status": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+       }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer_token": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearer_token": []
+        }
+    ]
+}

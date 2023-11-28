@@ -19,6 +19,28 @@ Cdc merupakan sebuah sistem informasi yang diperuntukan untuk alumni yang ada pa
 - news-docs.json
 - alumni-docs.json
 
+
+
+### format response
+
+```json
+
+    "data": {
+		"type": "object" ,
+        "nullable" : true
+	},
+	"message": {
+		"type": "string",
+	},
+	"code": {
+		"type": "integer",
+	},
+	"status": {
+		"type": "boolean"
+	}
+
+```
+
 ## Contributor
 
 - [Mohammad Tajut Zamzami - Backend](https://www.linkedin.com/in/mohammad-tajut-zam-zami)

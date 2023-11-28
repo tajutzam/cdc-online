@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\ResponseHelper;
 use App\Http\Middleware\TokenMiddleware;
 use App\Http\Middleware\VeriviedMiddleware;
 use App\Http\Requests\AddEducationRequest;
@@ -21,7 +22,7 @@ class EducationController extends Controller
     {
         $this->educationService = new EducationService();
         $this->userService = new UserService();
-        $this->middleware([TokenMiddleware::class , VeriviedMiddleware::class]); // user need token to access this controller
+        $this->middleware([TokenMiddleware::class, VeriviedMiddleware::class]); // user need token to access this controller
     }
 
     public function addNewEducationUser(AddEducationRequest $request)
@@ -70,7 +71,9 @@ class EducationController extends Controller
     public function findEducationByIdAndUserId(Request $request, $id)
     {
         $userId = $this->userService->extractUserId($request->bearerToken());
-        return $this->educationService->findEducationById($id, $userId);
+        $data = $this->educationService->findEducationById($id, $userId);
+
+        return ResponseHelper::successResponse("success fetch data", $data, 200);
     }
 
 

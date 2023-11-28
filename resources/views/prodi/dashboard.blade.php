@@ -7,7 +7,8 @@
                 <div class=" py-3">
                     <div class="row align-items-center">
                         <div class="col-md-6">
-                            <h4 class="mb-3 mb-md-0"> <i class="bx bx-home-alt"></i> {{auth('prodi')->user()->prodi->nama_prodi}} {{Auth::guard('prodi')->user()->name}}</h4>
+                            <h4 class="mb-3 mb-md-0"> <i class="bx bx-home-alt"></i> Program Studi
+                                {{ auth('prodi')->user()->prodi->nama_prodi }} </h4>
                         </div>
                     </div>
                 </div>

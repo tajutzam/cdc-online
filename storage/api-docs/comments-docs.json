@@ -1,0 +1,179 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Comment DOCUMENTATIONS",
+        "version": "1.0",
+        "contact": {
+            "email": "mohammadtajutzamzami07@gmail.com",
+            "name": "Mohammad Tajut Zamzami",
+            "url": "https://github.com/tajutzam"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
+    "paths": {
+        "/userpost/comment": {
+            "post": {
+                "tags": ["comments"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "comment": {
+                                        "type": "string",
+                                        "example": "ini komen"
+                                    },
+                                    "post_id": {
+                                        "type": "string",
+                                        "example": "21b8b5f5-c1c6-48c1-8e56-5e01223cf2a9"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "success add new comment",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "post_id": {
+                                                    "type": "string",
+                                                    "example": "21b8b5f5-c1c6-48c1-8e56-5e01223cf2a9"
+                                                },
+                                                "user_id": {
+                                                    "type": "string",
+                                                    "example": "988f966a-20ff-4f53-9b9c-26a25e12f85a"
+                                                },
+                                                "comment": {
+                                                    "type": "string",
+                                                    "example": "ini komen"
+                                                },
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "bed58c27-6a18-4f8a-82f5-5ceb845ed929"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2023-11-27T15:59:03.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-11-27T15:59:03.000000Z"
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success add comment"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "201"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "post not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "forbiden access "
+                    }
+                }
+            },  
+            "delete": {
+                "tags": ["comments"],
+                "description": "delete api commment",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "post_id": {
+                                        "type": "string",
+                                        "example": "21b8b5f5-c1c6-48c1-8e56-5e01223cf2a9"
+                                    },
+                                    "comment_id": {
+                                        "type": "string",
+                                        "example": "bed58c27-6a18-4f8a-82f5-5ceb845ed929"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success delete comment",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success delete comment"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "post not found or comment not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "forbiden access "
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer_token": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearer_token": []
+        }
+    ]
+}

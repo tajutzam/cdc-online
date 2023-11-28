@@ -36,4 +36,10 @@ class NewsController extends Controller
         return ResponseHelper::successResponse('success fetch data', $data, 200);
     }
 
+    public function findAll()
+    {
+        $data = $this->newsService->findAll();
+        return ResponseHelper::successResponse("success fetch data", $data['data'], 200);
+    }
+
 }
