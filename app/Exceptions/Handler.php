@@ -49,6 +49,7 @@ class Handler extends ExceptionHandler
     {
         $this->renderable(function (Throwable $e) {
          
+            
             if ($e instanceof BadRequestException) {
                 DB::rollBack();
                 return response()->json([

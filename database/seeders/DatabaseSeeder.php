@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             QuisProdiSeeder::class,
             ProvinceSeeder::class,
             RegencySeeder::class,
-            UserSeeder::class, 
             AdminSeeder::class,
         ]);
 

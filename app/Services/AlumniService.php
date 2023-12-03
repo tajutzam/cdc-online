@@ -179,6 +179,16 @@ class AlumniService
         return $this->alumni->all();
     }
 
+
+    public function verivicationUser($request){
+        $alumni = $this->alumni->where('nim', $request['nim'])->orWhere('email', $request['email'])->first();
+        if(!isset($alumni)){
+            throw new BadRequestException("Ops, Nampaknya Data Yaang Kamu berikan bukanlah alumni dari Politeknik Negeri Jember silahkan ajukan data alumni pada menu yang sudah ditentukan");
+        }
+        return $alumni; 
+    }
+
+
     public function getCountPerDay()
     {
 

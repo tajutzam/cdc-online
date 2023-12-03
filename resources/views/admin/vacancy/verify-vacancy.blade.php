@@ -413,6 +413,7 @@
 
                     lvl.text("- User");
                     emailInput.val(user.email);
+                    console.log(user);
                     gender.val(user.gender);
                     address.val(user.alamat);
                     nim.val(user.nim);
@@ -503,31 +504,31 @@
             <div class="row mb-3">
                 <label for="input35" class="col-sm-3 col-form-label">Email</label>
                 <div class="col-sm-9">
-                    <input readonly type="text" class="form-control" id="email-user" placeholder="Enter Your Name">
+                    <input readonly type="email" class="form-control" id="email-user" placeholder="Email">
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="input36" class="col-sm-3 col-form-label">Nama Lengkap</label>
                 <div class="col-sm-9">
-                    <input readonly type="text" class="form-control" id="fullname-user" placeholder="Phone No">
+                    <input readonly type="text" class="form-control" id="fullname-user" placeholder="Nama Lengkap">
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="input37" class="col-sm-3 col-form-label">NIM / NPWP</label>
                 <div class="col-sm-9">
-                    <input readonly type="email" class="form-control" id="nim-user" placeholder="Email Address">
+                    <input readonly type="email" class="form-control" id="nim-user" placeholder="NIM">
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="input37" class="col-sm-3 col-form-label">Alamat</label>
                 <div class="col-sm-9">
-                    <input readonly type="email" class="form-control" id="address-user" placeholder="Email Address">
+                    <input readonly type="email" class="form-control" id="address-user" placeholder="Alamat">
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="input37" class="col-sm-3 col-form-label">Jenis Kelamin</label>
                 <div class="col-sm-9">
-                    <input readonly type="email" class="form-control" id="gender-user" placeholder="Email Address">
+                    <input readonly type="text" class="form-control" id="gender-user" placeholder="Jenis Kelamin">
                 </div>
             </div>
         </x-slot>

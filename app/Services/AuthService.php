@@ -42,6 +42,8 @@ class AuthService
 
     private PasswordResetService $passwordResetService;
 
+    private AlumniService $alumniService;
+
 
 
     public function __construct()
@@ -52,6 +54,7 @@ class AuthService
         $this->userService = new UserService();
         $this->prodi = new QuisionerProdi();
         $this->passwordResetService = new PasswordResetService();
+        $this->alumniService = new AlumniService();
     }
 
     public function login($emailOrNikRequest, $password)
@@ -143,6 +146,8 @@ class AuthService
     public function registerUser(array $request)
     {
 
+        $referenceAlumni = $this->alumniService->verivicationUser($request);
+
         $graduateYear = $request['tahun_lulus'];
         $fiveYearsAgo = Carbon::now()->subYears(5)->year;
         $isActive = false;
@@ -152,28 +157,28 @@ class AuthService
             $required_to_fill = true;
         }
 
+        $gender = null;
+        $jenisKelaminReference = $referenceAlumni->jenis_kelamin;
+
+        if ($jenisKelaminReference !== null) {
+            // Convert to lowercase for case-insensitive comparison
+            $lowercaseJenisKelamin = strtolower($jenisKelaminReference);
+
+            if (strpos($lowercaseJenisKelamin, 'laki') !== false) {
+                $gender = 'male';
+            } elseif (strpos($lowercaseJenisKelamin, 'perempuan') !== false) {
+                $gender = 'female';
+            }
+        }
+
+        // Now $gender holds the desired value based on the conditions
+
+
         DB::beginTransaction();
         $prodi = $this->prodi->where('id', $request['kode_prodi'])->first();
         if (!isset($prodi)) {
             throw new NotFoundException('ops, prodi tidak ditemukan');
         }
-
-
-        // $response = Http::withHeaders([
-        //     'X-RapidAPI-Host' => 'indonesian-identification-card-ktp.p.rapidapi.com',
-        //     'X-RapidAPI-Key' => env('NIK_API_KEY'),
-        // ])->get("https://indonesian-identification-card-ktp.p.rapidapi.com/api/v3/check", [
-        //             'nik' => $request['nik'],
-        //             // Tambahkan parameter kueri lainnya sesuai kebutuhan
-        //         ]);
-
-
-        // $status = $response->status();
-        // if ($status != 200) {
-        //     throw new BadRequestException("Ops, Nik kamu tidak terdaftar di Data Kementrian Silahkan Masukan Nik Yang Sesuai");
-        // }
-
-        // dd($response->getBody());
 
         try {
             //code...
@@ -191,7 +196,8 @@ class AuthService
                 'kode_prodi' => $request['kode_prodi'],
                 'account_status' => $isActive,
                 'foto' => 'default.png',
-                'required_to_fill' => $required_to_fill
+                'required_to_fill' => $required_to_fill,
+                'gender' => $gender
             ]);
             $isCreated = $this->education->create([
                 'user_id' => $user->id,
@@ -213,28 +219,37 @@ class AuthService
         }
     }
 
+    public function resendVerification()
+    {
+
+    }
+
+
 
     public function updateVeriviedEmail($id)
     {
         $user = $this->user->where('id', $id)->first();
-        if (Carbon::now()->greaterThan($user->expire_email)) {
-            return view('emails.expire', ['resendLink' => 'localhost:8000/api/users']);
-        } else {
-            $value = $this->userService->updateEmailVerivied($id, true);
-            if ($value['status']) {
-                return view('emails.success-verivied');
+
+        if (isset($user)) {
+            if (Carbon::now()->greaterThan($user->expire_email)) {
+                return view('emails.expire', ['data' => $user]);
             } else {
-                if ($value['code'] == 404) {
-                    return view('emails.error-verivied', ['data' => 'Ops , akunmu gagal diverifikasi , user tidak ditemukan']);
-                } else if ($value['code'] == 102) {
-                    return view('emails.error-verivied', ['data' => 'Akun mu sudah diverifikasi silahkan login']);
-                } else if ($value['code'] == 103) {
-                    return view('emails.error-verivied', ['data' => 'Ops , akunmu gagal diverifikasi , terjadi kesalahan']);
+                $value = $this->userService->updateEmailVerivied($id, true);
+                if ($value['status']) {
+                    return view('emails.success-verivied');
+                } else {
+                    if ($value['code'] == 404) {
+                        return view('emails.error-verivied', ['data' => 'Ops , akunmu gagal diverifikasi , user tidak ditemukan']);
+                    } else if ($value['code'] == 102) {
+                        return view('emails.error-verivied', ['data' => 'Akun mu sudah diverifikasi silahkan login']);
+                    } else if ($value['code'] == 103) {
+                        return view('emails.error-verivied', ['data' => 'Ops , akunmu gagal diverifikasi , terjadi kesalahan']);
+                    }
                 }
             }
         }
+        throw new WebException("Ops, User tidak ditemukan");
     }
-
 
     public function verifikasiEmail($email)
     {
@@ -248,6 +263,29 @@ class AuthService
             'code' => 200,
             'data' => true
         ];
+    }
+
+    public function resendEmailVerification($email)
+    {
+        $user = $this->user->where('email', $email)->first();
+        if (!isset($user)) {
+            throw new WebException("Ops, Link ada tidak valid");
+        }
+
+        try {
+            //code...
+            $expired = Carbon::now()->addHour();
+            $user->update([
+                'expire_email' => $expired
+            ]);
+            DB::commit();
+            $link = url('/') . '/api/user/verivication/email?id=' . "$user->id";
+            // user berhasil registrasi , kirim email
+            $this->emailService->sendEmailVerifikasi($user->email, $link, $expired->format('F j - H:i'));
+        } catch (Throwable $th) {
+            //throw $th;
+            throw new WebException($th->getMessage());
+        }
     }
 
 

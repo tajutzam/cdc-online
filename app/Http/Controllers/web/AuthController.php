@@ -26,6 +26,7 @@ class AuthController extends Controller
     private UserService $userService;
     private EmailService $emailService;
 
+    private AuthService $authService;
 
 
 
@@ -36,6 +37,7 @@ class AuthController extends Controller
         $this->passwordResetService = new PasswordResetService();
         $this->userService = new UserService();
         $this->emailService = new EmailService();
+        $this->authService = new AuthService();
     }
 
     public function loginAdmin(Request $request)
@@ -107,4 +109,17 @@ class AuthController extends Controller
             throw new WebException('Gagal Memperbarui Password Terjadi Kesalahan');
         }
     }
+
+
+
+    public function resendEmail(Request $request)
+    {
+        $this->authService->resendEmailVerification($request->input('email'));
+        return redirect("resend");
+    }
+
+    public function resendView(){
+        return view("emails.success-resend-email ");
+    }
+
 }

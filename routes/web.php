@@ -172,6 +172,10 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
 
 
 
+Route::post("resend", [WebAuthController::class, "resendEmail"])->name('resend');
+Route::get("resend", [WebAuthController::class, "resendView"])->name('success-resend');
+
+
 Route::get('/info', function () {
     echo phpinfo();
 });
