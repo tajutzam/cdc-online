@@ -6,10 +6,10 @@
             <div class="col-sm-12">
                 <div class="card radius-10">
                     <div class="card-body">
-                        <div class="d-flex align-items-center"> 
+                        <div class="d-flex align-items-center">
                             <div>
                                 <p class="mb-0 text-secondary">Total Pesan Masuk</p>
-                                <h4 class="my-1">{{sizeof($data)}}</h4>
+                                <h4 class="my-1">{{ sizeof($data) }}</h4>
                             </div>
                             <div class="widgets-icons bg-light-primary text-primary ms-auto"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -62,12 +62,18 @@
                                             <div class="form-group">
                                                 <textarea class="form-control" name="answer" rows="3" placeholder="Balas komentar..."></textarea>
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Kirim</button>
+                                            <div class="button-group">
+                                                @if (isset($item['answer']))
+                                                
+                                                    <button type="button" class="btn btn-danger btn-delete-feedback"
+                                                        data-bs-target="#delete-feedback" d data-bs-toggle="modal"
+                                                        data-id="{{ $item['id'] }}">Hapus</button>
+                                                @endif
+                                                <button type="submit" class="btn btn-primary">Kirim</button>
+                                            </div>
+
                                         </form>
                                     @endif
-                                    <button type="button" class="btn btn-danger btn-delete-feedback"
-                                        data-bs-target="#delete-feedback" d data-bs-toggle="modal"
-                                        data-id="{{ $item['id'] }}">Hapus</button>
                                 </div>
                             </div>
                         </div>

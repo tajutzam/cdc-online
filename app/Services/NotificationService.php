@@ -55,7 +55,7 @@ class NotificationService
             "company_applied_section",
             "job_suitability_section"
         ];
-        // cari data user yang educations tahun lulus > 5
+        // cari data user yang educations tahun lulus > 5PP
 
         $userId = $this->user
             ->whereHas('educations', function ($query) {
@@ -64,7 +64,7 @@ class NotificationService
             })
             ->select('id')
             ->get()->toArray();
-
+        
 
         $dataUser = $this->user->with([
             'quisioner_level' => function ($query) {
@@ -81,6 +81,7 @@ class NotificationService
             })
             ->get()
             ->toArray();
+      
 
         foreach ($dataUser as $key => $value) {
             # code...
@@ -103,8 +104,10 @@ class NotificationService
 
     public function sendNotificationQuisioner($data)
     {
+
         Db::beginTransaction();
         foreach ($data as $key => $value) {
+
             $user = $this->user->where('id', $value->id)->first();
             # code...
             if (isset($value->fcm_token)) {
@@ -113,9 +116,10 @@ class NotificationService
                         'account_status' => false
                     ]);
                     Db::commit();
-                    dd();
+
                     //code...
                     $messageBody = 'Halo, Silahkan Mengisi Quisioner Kemajuan Quisioner Sekarang ' . $value->presentasi . "/9";
+
                     $message = CloudMessage::new()
                         ->withTarget('token', $value->fcm_token) // Replace with the recipient's FCM token
                         ->withNotification([
@@ -123,6 +127,7 @@ class NotificationService
                             'body' => $messageBody,
                         ])
                         ->withData(['type' => 'quisioner']);
+
                     $this->messaging->send($message);
                     $created = $this->notifications->create(
                         [
@@ -133,7 +138,6 @@ class NotificationService
                         ]
                     );
                     if (isset($created)) {
-                        dd("oke");
                         Db::commit();
                     }
                 } catch (\Throwable $th) {

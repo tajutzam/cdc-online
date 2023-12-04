@@ -69,7 +69,7 @@
         </div>
 
 
-        <div class="row ps-3 pe-3 justify-content-between gap-1">
+        <div class="row ps-3 pe-3 justify-content-start gap-5">
             @foreach ($data['data'] as $item)
                 <div class="card p-0" style="width: 18rem;">
                     <div class="card-header">

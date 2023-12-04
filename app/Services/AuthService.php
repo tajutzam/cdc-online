@@ -197,14 +197,17 @@ class AuthService
                 'account_status' => $isActive,
                 'foto' => 'default.png',
                 'required_to_fill' => $required_to_fill,
-                'gender' => $gender
+                'gender' => $gender,
+                'ttl' => '-'
             ]);
             $isCreated = $this->education->create([
                 'user_id' => $user->id,
                 'perguruan' => 'Politeknik Negeri Jember',
                 'prodi' => $prodi->nama_prodi,
                 'tahun_masuk' => $request['angkatan'],
-                'tahun_lulus' => $request['tahun_lulus']
+                'tahun_lulus' => $request['tahun_lulus'],
+                'jurusan' => $referenceAlumni->jurusan,
+                'strata' => 'D4'
             ]);
             if (isset($isCreated)) {
                 DB::commit();
@@ -213,7 +216,7 @@ class AuthService
                 $this->emailService->sendEmailVerifikasi($user->email, $link, $expired->format('F j - H:i'));
             }
             return true;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             Db::rollBack();
             throw new Exception($th->getMessage()); //throw $th;
         }
