@@ -466,7 +466,9 @@
 
                 <div class="mb-3">
                     <label for="formFile" class="form-label">Poster</label>
-                    <input name="image" class="form-control  form-control-sm" type="file" id="formFile" required>
+                    <input name="image" accept="image/*" class="form-control form-control-sm" type="file"
+                        id="formFile" required>
+
                 </div>
                 <div class="form-check-danger form-check form-switch ps-5 pb-2">
                     <input name="can_comment" class="form-check-input" type="checkbox"
@@ -476,7 +478,7 @@
                 <div class="form-floating mb-3">
                     <textarea required name="description" class="form-control" placeholder="Leave a description" id="floatingTextarea"></textarea>
                     <label for="floatingTextarea">Deskripsi</label>
-                </div>
+                </div>  
                 <label class="form-label">Jenis Pekerjaan</label>
                 <select name="type_jobs" class="form-select mb-3" aria-label="Multiple select example">
                     <option selected>Pilih</option>
