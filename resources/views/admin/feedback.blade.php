@@ -53,8 +53,12 @@
                             <div class="card pt-0 mb-0">
                                 <div class="card-body">
                                     <p class="card-text">{{ $item['questions'] }}</p>
+
                                     @if (isset($item['answer']))
                                         <p class="card-text">{{ $item['answer'] }}</p>
+                                        <button type="button" class="btn btn-danger btn-delete-feedback"
+                                            data-bs-target="#delete-feedback" d data-bs-toggle="modal"
+                                            data-id="{{ $item['id'] }}">Hapus</button>
                                     @else
                                         <form method="post" action="{{ route('answer', ['id' => $item['id']]) }}"
                                             class="mt-3">
@@ -63,12 +67,10 @@
                                                 <textarea class="form-control" name="answer" rows="3" placeholder="Balas komentar..."></textarea>
                                             </div>
                                             <div class="button-group">
-                                                @if (isset($item['answer']))
-                                                
-                                                    <button type="button" class="btn btn-danger btn-delete-feedback"
-                                                        data-bs-target="#delete-feedback" d data-bs-toggle="modal"
-                                                        data-id="{{ $item['id'] }}">Hapus</button>
-                                                @endif
+
+                                                <button type="button" class="btn btn-danger btn-delete-feedback"
+                                                    data-bs-target="#delete-feedback" d data-bs-toggle="modal"
+                                                    data-id="{{ $item['id'] }}">Hapus</button>
                                                 <button type="submit" class="btn btn-primary">Kirim</button>
                                             </div>
 

@@ -1296,9 +1296,9 @@ class UserService
             ])
             ->where('id', $userId)
             ->first();
-
+               
         $response = $this->castToUserResponseFromArray($user);
-        if (isset($response['educations'][0])) {
+        if (isset($user['educations'][0])) {
             $response['educations'] = $user['educations'][0]->toArray();
         } else {
             $response['educations'] = [];
