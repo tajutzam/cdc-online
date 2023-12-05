@@ -51,6 +51,34 @@ use App\Http\Controllers\web\RegencyController;
 |
 */
 
+Route::get('/company/vacancy', function () {
+    return view('company.vacancy');
+})->name('vacancy-company');
+
+
+
+Route::get('/verify/company', function () {
+    return view('admin.aktivasi.company');
+})->name('aktivasi-company');
+
+Route::get('/data/company', function () {
+    return view('admin.company-data');
+})->name('company-data');
+
+
+Route::get('/admin/mitra', function () {
+    return view('admin.vacancy.mitra-vacancy');
+})->name('vacancy-mitra');
+
+
+Route::get('/company/login', function () {
+    return view('company.auth.login');
+})->name('login');
+
+Route::get('/company/register', function () {
+    return view('company.auth.register');
+})->name('register');
+
 Route::get('/bank-account', function () {
     return view('admin.rekening');
 })->name('rekening');
