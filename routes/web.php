@@ -37,6 +37,8 @@ use App\Http\Controllers\web\ProdiQuesionerController;
 use App\Http\Middleware\IsProdiAdministratorMiddleware;
 use App\Http\Controllers\web\ManageProdiAdminController;
 use App\Http\Controllers\web\AuthController as WebAuthController;
+use App\Http\Controllers\web\ProvinceController;
+use App\Http\Controllers\web\RegencyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +51,13 @@ use App\Http\Controllers\web\AuthController as WebAuthController;
 |
 */
 
+Route::get('/bank-account', function () {
+    return view('admin.rekening');
+})->name('rekening');
+
+
+
+
 Route::get('/', [LandingPageController::class, "index"])->name('/');
 Route::post("/questions", [QuestionsController::class, "store"])->name('asking');
 Route::get('/landing-page/blog', [NewsController::class, 'findAllBlog'])->name('blog');
@@ -58,6 +67,10 @@ Route::get('/landing-page/single-blog/{id}', [LandingPageController::class, 'fin
 Route::get('/landing-page/portofolio', function () {
     return view('landing-page.portofolio-details');
 })->name('portofolio-details');
+
+
+
+
 
 Route::get('/forgotpassword/{token}', [WebAuthController::class, "recovery"])->name('forgotpassword');
 Route::put("/forgotpassword/{token}", [WebAuthController::class, 'updatePassword'])->name('forgotpassword-put');
@@ -167,6 +180,14 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
         Route::post("import", [QuisionerController::class, 'import'])->name('import');
         Route::post("export-pdf", [QuisionerController::class, "exportPdf"])->name('export-pdf');
     });
+
+
+    Route::get('/provinsi', [ProvinceController::class , "index"])->name('provinsi');
+
+    Route::post('provinsi', [ProvinceController::class, 'import'])->name('province-import');
+    Route::post('regency', [RegencyController::class, 'import'])->name('regency-import');
+    Route::get('kabupaten', [RegencyController::class, 'index'])->name('kabupaten');
+
 
 });
 

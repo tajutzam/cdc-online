@@ -12,7 +12,7 @@ class Regency extends Model
     protected $table = 'regency';
 
     protected $fillable = [
-        'id',
-        'regency_name'
+        'kode_kabupaten',
+        'nama_kabupaten'
     ];
 }

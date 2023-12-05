@@ -14,7 +14,8 @@ class CreateRegencyTable extends Migration
     public function up()
     {
         Schema::create('regency', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+            $table->id();
+            $table->unsignedBigInteger('kode_kabupaten');
             $table->string('nama_kabupaten');
             $table->timestamps();
         });
