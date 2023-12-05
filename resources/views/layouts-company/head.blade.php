@@ -616,9 +616,10 @@
                     <a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret"
                         href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="{{ asset('/') }}assets/images/admin.png" class="user-img" alt="user avatar">
+                        {{-- kasih logo perusahaan buat pp --}}
                         <div class="user-info">
-                            <p class="user-name mb-0">{{ Auth::guard('prodi')->user()->name }}</p>
-                            <p class="designattion mb-0">role : {{ Auth::guard('prodi')->user()->role }}</p>
+                            <p class="user-name mb-0">Teaching Factory</p>
+                            {{-- <p class="designattion mb-0">role : {{ Auth::guard('prodi')->user()->role }}</p> --}}
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
