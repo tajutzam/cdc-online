@@ -8,7 +8,9 @@ use App\Http\Controllers\JobsController;
 use App\Http\Controllers\NewsController as ApiNewsController;
 use App\Http\Controllers\NotificationsController as ControllersNotificationsController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\QuisionerController;
+use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\StudyProgramPublicController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\web\NewsController;
@@ -142,7 +144,7 @@ Route::post('/user/post/search', [PostController::class, 'findByPosition'])->mid
 // NEWS USER
 Route::get('/user/news', [ApiNewsController::class, 'findLastInserted']);
 Route::get('/user/news/{id}', [ApiNewsController::class, 'findById']);
-Route::get("/user/news-all" , [ApiNewsController::class , "findAll"]);
+Route::get("/user/news-all", [ApiNewsController::class, "findAll"]);
 
 
 // notifications
@@ -183,6 +185,11 @@ Route::get("user/post/count/{id}", [PostController::class, "countPost"])->withou
 Route::post('/verifikasi/alumni', [AlumniController::class, 'verifikasiAlumni']);
 
 Route::get("user/card", [UserController::class, "card"]);
+
+
+
+Route::get("regency", [RegencyController::class, "findAll"]);
+Route::get("province", [ProvinceController::class, "findAll"]);
 
 
 // documentations
