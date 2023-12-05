@@ -234,7 +234,14 @@
             <x-slot name="id">export</x-slot>
             <x-slot name="body">
                 <form action="{{ route('export') }}" method="post">
-                    <label for="tahun-level-excel">Tahun Level Quisioner</label>
+                    <label for="tahun-level-excel" style="font-weight: bold"> Tahun Level Kuesioner</label> <br>
+                    <label for="jenex">Jenis Export</label>
+                    <select name="" id="jenex" class="form-select form-select-sm mb-3">
+                        <option value="">Akademik</option>
+                        <option value="">Laporan</option>
+                    </select>
+
+                    <label for="tahun-level-excel">Pilih Tahun</label>
                     <select class="form-select form-select-sm mb-3" aria-label="Large select example" name="tahun"
                         id="tahun-level-excel">
                         @php
@@ -248,12 +255,13 @@
                             </optgroup>
                         @endfor
                     </select>
-                    <select class="form-select" name="format" multiple aria-label="Multiple select example">
+
+                    <select class="form-select " name="format" multiple aria-label="Multiple select example">
                         <option selected>Pilih Format Export</option>
                         <option value="xlsx" class="text-body-emphasis">Xlxs</option>
                         <option value="csv">Csv</option>
                     </select>
-                    <div class="row justify-content-end">
+                    <div class="row justify-content-end mt-2">
                         <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
                             data-bs-dismiss="modal">Tutup</button>
                         <button class="col-3 btn btn-outline-primary btn-sm mx-4">Simpan</button>

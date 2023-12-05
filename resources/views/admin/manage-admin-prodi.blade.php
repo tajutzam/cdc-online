@@ -78,6 +78,7 @@
                                         <th>Email</th>
                                         <th>Dibuat</th>
                                         <th>Diperbarui</th>
+                                        <th>Akses Export</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -91,6 +92,14 @@
                                             <td>{{ $item['email'] }}</td>
                                             <td>{{ date('Y-m-d H:i', strtotime($item['created_at'])) }}</td>
                                             <td>{{ date('Y-m-d H:i', strtotime($item['updated_at'])) }}</td>
+                                            <td>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch"
+                                                        id="flexSwitchCheckDefault" onchange="updateLabel()">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault"
+                                                        id="statusLabel"> </label>
+                                                </div>
+                                            </td>
                                             <td>
                                                 <div class="row text-center">
                                                     <div class="col-12">
@@ -190,5 +199,17 @@
                 modal.find('#admin-delete-id').val(id); // Menetapkan ID ke input dalam modal
             });
         });
+    </script>
+    <script>
+        function updateLabel() {
+            var checkbox = document.getElementById("flexSwitchCheckDefault");
+            var label = document.getElementById("statusLabel");
+
+            if (checkbox.checked) {
+                label.innerHTML = "Aktif";
+            } else {
+                label.innerHTML = "Tidak Aktif";
+            }
+        }
     </script>
 @endsection
