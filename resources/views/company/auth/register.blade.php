@@ -87,7 +87,8 @@
 
                                             </div>
                                             <div class="text-center mt-3">
-                                                <p>Sudah mempunyai akun? <a href="{{ route('login') }}">Masuk</a></p>
+                                                <p>Sudah mempunyai akun? <a href="{{ route('login-company') }}">Masuk</a>
+                                                </p>
                                             </div>
                                         </form>
                                     </div>

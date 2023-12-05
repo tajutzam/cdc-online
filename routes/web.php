@@ -51,8 +51,8 @@ use App\Http\Controllers\web\RegencyController;
 |
 */
 
-Route::get('/company/vacancy', function () {
-    return view('company.vacancy');
+Route::get('/company/history', function () {
+    return view('company.vacancy.company-history');
 })->name('vacancy-company');
 
 
@@ -73,7 +73,7 @@ Route::get('/admin/mitra', function () {
 
 Route::get('/company/login', function () {
     return view('company.auth.login');
-})->name('login');
+})->name('login-company');
 
 Route::get('/company/register', function () {
     return view('company.auth.register');

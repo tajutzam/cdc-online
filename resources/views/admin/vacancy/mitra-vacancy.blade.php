@@ -51,6 +51,7 @@
 
                         <th>Kadaluwarsa</th>
                         <th>Diunggah</th>
+                        <th>Bukti Pembayaran</th>
                         <th>Perizinan</th>
                     </tr>
                 </thead>
@@ -73,6 +74,7 @@
 
                         <td>Kadaluwarsa</td>
                         <td>17 agustus 1020</td>
+                        <td><img src="" alt="bukti pembayaran"></td>
                         <td style="text-align: center">
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a href=""><button type="button"
