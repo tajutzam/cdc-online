@@ -3,16 +3,17 @@
 
 
 <!-- Mirrored from codervent.com/syndron/demo/vertical/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 29 Jul 2023 03:54:59 GMT -->
-@include('layouts-company.header')
+@include('layouts.header')
 
 <body>
     <!--wrapper-->
     <div class="wrapper">
         <!--sidebar wrapper -->
-        @include('layouts-company.sidebar')
+        @include('layouts.sidebar')
+        @include('layouts.switcher')
         <!--end sidebar wrapper -->
         <!--start header -->
-        @include('layouts-company.head')
+        @include('layouts.head')
         <!--end header -->
         <!--start page wrapper -->
         <div class="page-wrapper">
@@ -27,7 +28,7 @@
         <!--Start Back To Top Button-->
         <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
         <!--End Back To Top Button-->
-        <footer class="page-footer" style=" z-index:999;">
+        <footer class="page-footer">
             <p class="mb-0">CDC (Career Development & Counseling) Politeknik Negeri Jember © 2023. All right reserved.
             </p>
         </footer>
@@ -36,7 +37,7 @@
 
     <!--end switcher-->
     <!-- Bootstrap JS -->
-    @include('layouts-company.footer')
+    @include('layouts.footer')
     @include('sweetalert::alert')
 </body>
 

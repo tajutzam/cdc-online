@@ -51,8 +51,16 @@ use App\Http\Controllers\web\AuthController as WebAuthController;
 
 Route::get('/company/history', function () {
     return view('company.vacancy.company-history');
-})->name('vacancy-company');
+})->name('vacancy-company-history');
 
+Route::get('/company/apply', function () {
+    return view('company.vacancy.apply-vacancy');
+})->name('vacancy-company-apply');
+
+
+Route::get('/company/settings', function () {
+    return view('company.settings');
+})->name('company-settings');
 
 
 Route::get('/verify/company', function () {
