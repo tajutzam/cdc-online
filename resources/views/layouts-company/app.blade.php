@@ -10,6 +10,7 @@
     <div class="wrapper">
         <!--sidebar wrapper -->
         @include('layouts-company.sidebar')
+        @include('layouts-company.switcher')
         <!--end sidebar wrapper -->
         <!--start header -->
         @include('layouts-company.head')
@@ -27,7 +28,7 @@
         <!--Start Back To Top Button-->
         <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
         <!--End Back To Top Button-->
-        <footer class="page-footer" style=" z-index:999;">
+        <footer class="page-footer">
             <p class="mb-0">CDC (Career Development & Counseling) Politeknik Negeri Jember © 2023. All right reserved.
             </p>
         </footer>

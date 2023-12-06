@@ -41,6 +41,7 @@ use App\Http\Controllers\web\BankController;
 use App\Http\Controllers\web\MitraSubmissiosController;
 use App\Http\Controllers\web\ProvinceController;
 use App\Http\Controllers\web\RegencyController;
+use App\Http\Middleware\MitraMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,12 +54,6 @@ use App\Http\Controllers\web\RegencyController;
 |
 */
 
-Route::get('/company/history', function () {
-    return view('company.vacancy.company-history');
-})->name('vacancy-company');
-
-
-;
 
 
 
@@ -72,7 +67,7 @@ Route::get('/company/login', function () {
     return view('company.auth.login');
 })->name('login-company');
 
-Route::post('/company/login',[MitraSubmissiosController::class , "login"])->name('login-company-post');
+Route::post('/company/login', [MitraSubmissiosController::class, "login"])->name('login-company-post');
 
 Route::get('/company/register', function () {
     return view('company.auth.register');
@@ -233,6 +228,16 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
 
 });
 
+
+Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () {
+    Route::get("apply", [MitraSubmissiosController::class, "apply"])->name('vacancy-company-apply');
+    Route::get("history", [MitraSubmissiosController::class, "history"])->name('vacancy-company-history');
+
+    Route::get('settings', function () {
+        return view('company.settings');
+    })->name('company-settings');
+
+});
 
 
 Route::post("resend", [WebAuthController::class, "resendEmail"])->name('resend');

@@ -2,6 +2,7 @@
 @section('content')
     <div class="wrapper">
         <div class="section-authentication-cover">
+
             <div class="">
                 <div class="row g-0">
 
@@ -19,6 +20,13 @@
 
                     <div class="col-12 col-xl-5 col-xxl-4 auth-cover-right align-items-center justify-content-center">
                         <div class="container rounded-0 m-3 shadow-none bg-transparent mb-0">
+                            @if ($errors->any())
+                                <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+                                    <div class="text-white">{{ $errors->first() }}</div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            @endif
                             <div class="card-body p-sm-5">
                                 <div class="">
                                     <div class="mb-3 text-center">
@@ -40,8 +48,9 @@
                                             <div class="col-12">
                                                 <label for="inputChoosePassword" class="form-label">Password</label>
                                                 <div class="input-group" id="show_hide_password">
-                                                    <input type="password" required class="form-control border-end-0" name="password"
-                                                        id="inputChoosePassword" placeholder="Masukkan Password Anda ">
+                                                    <input type="password" required class="form-control border-end-0"
+                                                        name="password" id="inputChoosePassword"
+                                                        placeholder="Masukkan Password Anda ">
                                                     <a href="javascript:;" class="input-group-text bg-transparent"><i
                                                             class='bx bx-hide'></i></a>
                                                 </div>

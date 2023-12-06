@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\web;
 
+use App\Exceptions\WebException;
 use App\Http\Controllers\Controller;
 use App\Services\MitraService;
 use Illuminate\Http\Request;
@@ -84,8 +85,21 @@ class MitraSubmissiosController extends Controller
     public function login(Request $request)
     {
         $isLogin = auth('mitra')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')]);
+        if ($isLogin) {
+            return redirect("/company/apply");
+        }
+        throw new WebException("Silahkan Cek Email Atau Password Anda");
+    }
 
-        return redirect();
+    public function apply()
+    {
+        return view('company.vacancy.apply-vacancy');
+    }
+
+    public function history()
+    {
+        return view('company.vacancy.company-history');
+
     }
 
 }
