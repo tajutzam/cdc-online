@@ -37,6 +37,7 @@ use App\Http\Controllers\web\ProdiQuesionerController;
 use App\Http\Middleware\IsProdiAdministratorMiddleware;
 use App\Http\Controllers\web\ManageProdiAdminController;
 use App\Http\Controllers\web\AuthController as WebAuthController;
+use App\Http\Controllers\web\BankController;
 use App\Http\Controllers\web\ProvinceController;
 use App\Http\Controllers\web\RegencyController;
 
@@ -79,15 +80,13 @@ Route::get('/company/register', function () {
     return view('company.auth.register');
 })->name('register');
 
-Route::get('/bank-account', function () {
-    return view('admin.rekening');
-})->name('rekening');
+
 
 
 
 
 Route::get('/', [LandingPageController::class, "index"])->name('/');
-Route::post("/questions", [QuestionsController::class, "store"])->name('asking');
+Route::post("/questions", [QuisionerController::class, "store"])->name('asking');
 Route::get('/landing-page/blog', [NewsController::class, 'findAllBlog'])->name('blog');
 
 Route::get('/landing-page/single-blog/{id}', [LandingPageController::class, 'findById'])->name('blog-single');
@@ -156,6 +155,11 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::delete('feedback', [QuestionsController::class, 'delete'])->name('feedback-delete');
 
 
+    Route::get('/bank-account', [BankController::class , "adminBank"])->name('rekening');
+    Route::post('/bank-account', [BankController::class , "store"])->name('rekening-post');
+    Route::put('/bank-account', [BankController::class , "update"])->name('rekening-put');
+
+    
 
 
     // Route::get('/trix', 'TrixController@index');

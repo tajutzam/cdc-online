@@ -165,8 +165,8 @@
                 <td>{{ $item['quisioner'][0]['jobsuitability']['f1612'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['jobsuitability']['f1613'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['main']['f505'] ?? '' }}</td>
-                <td>{{ $item['quisioner'][0]['main']['province']['nama_provinsi'] ?? '' }}</td>
-                <td>{{ $item['quisioner'][0]['main']['regency']['nama_kabupaten'] ?? '' }}</td>
+                <td>{{ $item['quisioner'][0]['main']['province']['kode_provinsi'] ?? '' }}</td>
+                <td>{{ $item['quisioner'][0]['main']['regency']['kode_kabupaten'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['competence']['f1761'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['competence']['f1762'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['competence']['f1763'] ?? '' }}</td>

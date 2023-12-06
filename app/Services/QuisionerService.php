@@ -129,7 +129,7 @@ class QuisionerService
             if (isset($quisionerIsCreated)) {
                 Db::commit();
                 $data = $this->quisionerLevel->find($quisionerIsCreated->id);
-                $response = $this->quisionerLevelToResponse($data->toArray() , $quisionerIsCreated->id);
+                $response = $this->quisionerLevelToResponse($data->toArray(), $quisionerIsCreated->id);
                 return $this->successResponse([
                     'quis_terjawab' => $response
                 ], 201, 'Berhasil mengisi quisioner identitas');
@@ -718,6 +718,9 @@ class QuisionerService
             ->with('quisioner_level', function ($query) use ($bulan) {
                 $query->with('identity');
                 $query->with('main');
+                $query->with('main.province');
+                $query->with('main.regency');
+
                 $query->with('furthe_study');
                 $query->with('competence');
                 $query->with('studymethod');
@@ -744,6 +747,10 @@ class QuisionerService
 
         return $data;
     }
+
+
+
+
 
 
     public function updateFromExcel($keys, $data, $kodeProdi = null)
@@ -1160,5 +1167,477 @@ class QuisionerService
         return $users;
     }
 
+
+
+    public function exrportToExcelAkreditasi($tahunBulan, $kodeProdi = null)
+    {
+
+        list($year, $bulan) = explode('-', $tahunBulan);
+
+        $users = $this->user->has('quisioner_level')
+            ->whereHas('educations', function ($query) use ($year) {
+                $query->where('perguruan', 'Politeknik Negeri Jember');
+                $query->where('tahun_lulus', $year);
+            })
+            ->with('quisioner_level', function ($query) use ($bulan) {
+                $query->with('identity');
+                $query->with('main');
+                $query->with('main.province');
+                $query->with('main.regency');
+
+                $query->with('furthe_study');
+                $query->with('competence');
+                $query->with('studymethod');
+                $query->with('startsearchjobs');
+                $query->with('howtofindjobs');
+                $query->with('companyapplied');
+                $query->with('jobsuitability');
+                $query->where('level', $bulan);
+            })
+            ->with('educations')
+            ->with('prodi')
+            ->when($kodeProdi != null, function ($query) use ($kodeProdi) {
+                $query->where('kode_prodi', $kodeProdi);
+            })
+            ->get()
+            ->toArray();
+
+        $data = collect($users)->map(function ($user) {
+            // Modify the items here
+            $tempUser = $this->castToUserResponseFromArray($user);
+            $dataQuisioner = $tempUser['quisioner'][0];
+
+            $competence = $this->castComptenceLevelToAkreditasi($dataQuisioner['competence']);
+            $dataQuisioner['competence'] = $competence;
+            $dataQuisioner['studymethod'] = $this->castStudyMethodToAkreditasi($dataQuisioner['studymethod']);
+            $dataQuisioner['furthe_study'] = $this->castFurtheStudyAkreditasi($dataQuisioner['furthe_study']);
+            $dataQuisioner['startsearchjobs'] = $this->castStartSearchJobAkreditasi($dataQuisioner['startsearchjobs']);
+            $dataQuisioner['main'] = $this->castMainToAkreditasi($dataQuisioner['main']);
+            $dataQuisioner['companyapplied'] = $this->castCompanyAppliedAkreditasi($dataQuisioner['companyapplied']);
+            $dataQuisioner['jobsuitability'] = $this->castJobsuitabilityAkreditasi($dataQuisioner['jobsuitability']);
+            $tempUser['quisioner'][0] = $dataQuisioner;
+            return $tempUser;
+        })->toArray();
+
+
+   
+
+        return $data;
+    }
+
+
+    private function castComptenceLevelToAkreditasi($data)
+    {
+        $result = [];
+        unset($data['id']);
+        foreach ($data as $key => $value) {
+            # code...
+            $akreditasi = 1;
+            switch ($value) {
+                case "Sangat Rendah":
+                    $akreditasi = 1;
+                    break;
+                case "Rendah":
+                    $akreditasi = 2;
+                    break;
+                case "Netral":
+                    $akreditasi = 3;
+                    break;
+                case "Tinggi":
+                    $akreditasi = 4;
+                    break;
+                case "Sangat Tinggi":
+                    $akreditasi = 5;
+                    break;
+                default:
+                    $akreditasi = 1;
+            }
+            $result[$key] = $akreditasi;
+        }
+        return $result;
+    }
+
+
+    public function castStudyMethodToAkreditasi($data)
+    {
+        $result = [];
+        unset($data['id']);
+        foreach ($data as $key => $value) {
+            # code...
+            $akreditasi = 1;
+            switch ($value) {
+                case "Sangat Besar":
+                    $akreditasi = 1;
+                    break;
+                case "Besar":
+                    $akreditasi = 2;
+                    break;
+                case "Cukup Besar":
+                    $akreditasi = 3;
+                    break;
+                case "Kurang":
+                    $akreditasi = 4;
+                    break;
+                case "Tidak Sama Sekali":
+                    $akreditasi = 5;
+                    break;
+                default:
+                    $akreditasi = 1;
+            }
+            $result[$key] = $akreditasi;
+        }
+        return $result;
+    }
+
+
+    private function castFurtheStudyAkreditasi($data)
+    {
+        unset($data['id']);
+        $result = $data;
+        if ($data['f18a'] == 'Beasiswa') {
+            $result['f18a'] = 1;
+        } else {
+            $result['f18a'] = 2;
+        }
+
+
+        switch ($data['f1201']) {
+            case 'Biaya Sendiri/Keluarga':
+                # code...
+                $result['f1201'] = 1;
+                break;
+            case 'Beasiswa ADIK':
+                # code...
+                $result['f1201'] = 2;
+                break;
+            case 'Beasiswa BIDIKMISI':
+                # code...
+                $result['f1201'] = 3;
+                break;
+            case 'Beasiswa PPA':
+                # code...
+                $result['f1201'] = 4;
+                break;
+            case 'Beasiswa AFIRMASI':
+                # code...
+                $result['f1201'] = 5;
+                break;
+            case 'Beasiswa Perusahaan/Swasta ':
+                # code...
+                $result['f1201'] = 6;
+                break;
+            case 'Lainnya, tuliskan':
+                # code...
+                $result['f1201'] = 7;
+                break;
+            default:
+                # code...
+                $result['f1201'] = 1;
+                break;
+        }
+
+
+        switch ($data['f14']) {
+            case "Sangat Erat":
+                $result['f14'] = 1;
+                break;
+            case "Erat":
+                $result['f14'] = 2;
+                break;
+            case "Cukup Erat":
+                $result['f14'] = 3;
+                break;
+            case "Kurang Erat":
+                $result['f14'] = 4;
+                break;
+            case "Tidak Sama Sekali":
+                $result['f14'] = 5;
+                break;
+            default:
+                $result['f14'] = 1;
+                break;
+        }
+
+
+
+        switch ($data['f15']) {
+            case "Setingkat Lebih Tinggi":
+                $result['f15'] = 1;
+                break;
+            case "Tingkat yang Sama":
+                $result['f15'] = 2;
+                break;
+            case "Setingkat Lebih Rendah":
+                $result['f15'] = 3;
+                break;
+            case "Tidak Perlu Pendidikan Tinggi":
+                $result['f15'] = 4;
+                break;
+            default:
+                $result['f15'] = 1;
+                break;
+        }
+
+        return $result;
+    }
+
+
+    private function castStartSearchJobAkreditasi($data)
+    {
+        $result = $data;
+        switch ($data['f301']) {
+            case 'Saya mencari kerja sebelum lulus':
+                # code...
+                $result['f301'] = 1;
+                break;
+            case 'Saya mencari kerja sesudah wisuda':
+                # code...
+                $result['f301'] = 2;
+                break;
+            case 'Saya tidak mencari kerja':
+                # code...
+                $result['f301'] = 3;
+                break;
+            default:
+                # code...
+                $result['f301'] = 1;
+                break;
+        }
+        return $result;
+    }
+
+    private function castMainToAkreditasi($data)
+    {
+        $result = $data;
+        switch ($data['f8']) {
+            case 'Bekerja (full time / part time)':
+                # code...
+                $result['f8'] = 1;
+                break;
+            case 'Belum memungkinkan bekerja':
+                # code...
+                $result['f8'] = 2;
+                break;
+            case 'Wiraswasta':
+                # code...
+                $result['f8'] = 3;
+                break;
+            case 'Melanjutkan Pendidikan':
+                # code...
+                $result['f8'] = 4;
+                break;
+            case 'Tidak kerja tetapi sedang mencari kerja':
+                # code...
+                $result['f8'] = 5;
+                break;
+            default:
+                # code...
+                $result['f8'] = 1;
+                break;
+        }
+
+        if ($data['f504'] = "Ya") {
+            $result['f504'] = 1;
+        } else {
+            $result['f504'] = 2;
+        }
+
+        switch ($data['f1101']) {
+            case 'Intansi pemerintah':
+                # code...
+                $result['f1101'] = 1;
+                break;
+            case 'BUMN/BUMD':
+                # code...
+                $result['f1101'] = 6;
+                break;
+            case 'Institusi/Organisasi Multilateral':
+                # code...
+                $result['f1101'] = 7;
+                break;
+            case 'Organisasi non-profit/Lembaga Swadaya Masyarakat':
+                # code...
+                $result['f1101'] = 2;
+                break;
+            case 'Perusahaan swasta':
+                # code...
+                $result['f1101'] = 3;
+                break;
+            case 'Wiraswasta/perusahaan sendiri':
+                # code...
+                $result['f1101'] = 4;
+                break;
+            case 'Lainnya, Tuliskan':
+                # code...
+                $result['f1101'] = 5;
+                break;
+            default:
+                # code...
+                $result['f1101'] = 5;
+                break;
+        }
+
+        switch ($data['f5c']) {
+            case 'Founder':
+                # code...
+                $result['f5c'] = 1;
+                break;
+            case 'Co-Founder':
+                # code...
+                $result['f5c'] = 2;
+                break;
+            case 'Staff':
+                # code...
+                $result['f5c'] = 3;
+                break;
+            case 'Freelance/Kerja Lepas':
+                # code...
+                $result['f5c'] = 4;
+                break;
+            default:
+                $result['f5c'] = 4;
+                # code...
+                break;
+        }
+
+
+        switch ($data['f5d']) {
+            case 'Lokal/wilayah/wiraswasta tidak berbadan hukum':
+                # code...
+                $result['f5d'] = 1;
+                break;
+            case 'Nasional/wiraswasta berbadan hukum':
+                # code...
+                $result['f5d'] = 2;
+                break;
+            case 'Multinasional/Internasional':
+                # code...
+                $result['f5d'] = 3;
+                break;
+
+            default:
+                # code...
+                $result['f5d'] = 1;
+                break;
+        }
+
+        return $result;
+    }
+
+    private function castCompanyAppliedAkreditasi($data)
+    {
+        $result = $data;
+        switch ($data['f1001']) {
+            case 'Tidak':
+                # code...
+                $result['f1001'] = 1;
+                break;
+            case 'Tidak, tapi saya sedang menunggu hasil lamaran kerja':
+                # code...
+                $result['f1001'] = 2;
+                break;
+            case 'Ya, saya akan mulai bekerja dalam 2 minggu ke depan':
+                # code...
+                $result['f1001'] = 3;
+                break;
+            case 'Ya, tapi saya belum pasti akan bekerja dalam 2 minggu ke depan':
+                # code...
+                $result['f1001'] = 4;
+                break;
+            case 'Lainya':
+                # code...
+                $result['f1001'] = 5;
+                break;
+            default:
+                # code...
+                $result['f1001'] = 5;
+                break;
+        }
+        return $result;
+    }
+
+
+
+    private function castJobsuitabilityAkreditasi($data)
+    {
+        $result = $data;
+        if ($data['f1601'] == 'Tidak sesuai') {
+            $result['f1601'] = 0;
+        } else {
+            $result['f1601'] = 1;
+        }
+
+        if ($data['f1602'] == 'Saya belum mendapatkan pekerjaan yang lebih sesuai') {
+            $result['f1602'] = 1;
+        } else {
+            $result['f1602'] = 0;
+        }
+        if ($data['f1603'] == 'Di pekerjaan ini saya memeroleh prospek karir yang baik') {
+            $result['f1603'] = 1;
+        } else {
+            $result['f1603'] = 0;
+        }
+
+        if ($data['f1604'] == 'Saya lebih suka bekerja di area pekerjaan yang tidak ada hubungannya dengan pendidikan saya') {
+            $result['f1604'] = 1;
+        } else {
+            $result['f1604'] = 0;
+        }
+
+        if ($data['f1605'] == 'Saya dipromosikan ke posisi yang kurang berhubungan dengan pendidikan saya dibanding posisi sebelumnya') {
+            $result['f1605'] = 1;
+        } else {
+            $result['f1605'] = 0;
+        }
+
+        if ($data['f1606'] == 'Saya dapat memeroleh pendapatan yang lebih tinggi di pekerjaan ini') {
+            $result['f1606'] = 1;
+        } else {
+            $result['f1606'] = 0;
+        }
+
+        if ($data['f1607'] == 'Saya dapat memeroleh pendapatan yang lebih tinggi di pekerjaan ini') {
+            $result['f1607'] = 1;
+        } else {
+            $result['f1607'] = 0;
+        }
+
+        if ($data['f1608'] == "Pekerjaan saya saat ini lebih menarik") {
+            $result['f1608'] = 1;
+        } else {
+            $result['f1608'] = 0;
+        }
+
+        if ($data['f1609'] == "Pekerjaan saya saat ini lebih memungkinkan saya mengambil pekerjaan tambahan/jadwal yang fleksibel, dll") {
+            $result['f1609'] = 1;
+        } else {
+            $result['f1609'] = 0;
+        }
+
+        if ($data['f1610'] == "Pekerjaan saya saat ini lokasinya lebih dekat dari rumah saya") {
+            $result['f1610'] = 1;
+        } else {
+            $result['f1610'] = 0;
+        }
+
+        if ($data['f1611'] == "Pekerjaan saya saat ini dapat lebih menjamin kebutuhan keluarga saya") {
+            $result['f1611'] = 1;
+        } else {
+            $result['f1611'] = 0;
+        }
+
+        if ($data['f1612'] == "Pada awal meniti karir ini, saya harus menerima pekerjaan yang tidak berhubungan dengan pendidikan saya") {
+            $result['f1612'] = 1;
+        } else {
+            $result['f1612'] = 0;
+        }
+
+        if ($data['f1613'] == "Lainnya") {
+            $result['f1613'] = 1;
+        } else {
+            $result['f1613'] = 0;
+        }
+        return $result;
+    }
 
 }

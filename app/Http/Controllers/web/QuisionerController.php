@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\web;
 
 use App\Exceptions\WebException;
+use App\Exports\QuisionerAkreditasiExport;
 use App\Exports\QuisionerExport;
 use App\Exports\QuisionerPdfExport;
 use App\Http\Controllers\Controller;
@@ -45,14 +46,22 @@ class QuisionerController extends Controller
             'required' => ':attribute Dibutuhkan.',
         ];
         $data = $this->validate($request, $rules, $customMessages);
+        if ($request->input('type') == 'laporan') {
+            try {
+                //code...
+                return Excel::download(new QuisionerExport($request->input('tahun')), "laporan-Tahun Lulus-" . $request->input('tahun') . "." . $data['format']);
+            } catch (\Throwable $th) {
+                //throw $th;
+                throw new WebException($th->getMessage());
+            }
+        }
         try {
             //code...
-            return Excel::download(new QuisionerExport($request->input('tahun')), "rekap_kuisioner_" . $request->input('tahun') . "." . $data['format']);
+            return Excel::download(new QuisionerAkreditasiExport($request->input('tahun')), "Akreditasi-Tahun Lulus-" . $request->input('tahun') . "." . $data['format']);
         } catch (\Throwable $th) {
             //throw $th;
             throw new WebException($th->getMessage());
         }
-
     }
 
 
@@ -118,6 +127,6 @@ class QuisionerController extends Controller
 
 
 
-    
+
 
 }

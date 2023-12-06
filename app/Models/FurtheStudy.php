@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FurtheStudy extends Model
 {
-    use HasFactory , Uuids;
+    use HasFactory, Uuids;
 
     protected $table = 'furthe_study';
 
@@ -16,6 +16,7 @@ class FurtheStudy extends Model
     protected $fillable = [
         'f18a',
         'f18b',
+        'f18c',
         'f18d',
         'f1201',
         'f1202',
@@ -31,5 +32,5 @@ class FurtheStudy extends Model
     {
         return $this->hasOne(QuisionerLevel::class);
     }
-  
+
 }
