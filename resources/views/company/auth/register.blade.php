@@ -29,40 +29,56 @@
                                         <h3 class="" style="font-weight: bold">Daftar Perusahaan</h3>
                                         <p class="mb-0">Masukkan Data yang Sesuai</p>
                                     </div>
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+                                            <div class="text-white">{{ $errors->first() }}</div>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close"></button>
+                                        </div>
+                                    @endif
                                     <div class="form-body">
-                                        <form class="row g-3" method="POST" action="">
-
+                                        <form class="row g-3" method="POST" action="{{ route('mitra-register') }}"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            @method('post')
                                             <div class="col-12">
                                                 <label for="inputNama" class="form-label">Nama Perusahaan</label>
                                                 <input type="text" class="form-control" id="inputNama"
-                                                    placeholder="Masukkan Nama Perusahaan " name="">
+                                                    placeholder="Masukkan Nama Perusahaan " name="name">
                                             </div>
 
                                             <div class="col-12">
                                                 <label for="inputNIB" class="form-label">NIB (Nomor Induk Berusaha)</label>
                                                 <input type="text" class="form-control" id="inputNIB"
-                                                    placeholder="Masukkan Nomor Induk Berusaha " name="">
+                                                    placeholder="Masukkan Nomor Induk Berusaha " name="nib">
                                             </div>
                                             <div class="col-12">
                                                 <label for="inputSuratIzin" class="form-label">Surat Izin Usaha</label>
                                                 <input type="file" class="form-control" id="inputSuratIzin"
-                                                    placeholder="" name="">
+                                                    placeholder="" name="business_license" accept=".pdf">
+
                                             </div>
                                             <div class="col-12">
                                                 <label for="inputLogo" class="form-label">Logo Perusahaan</label>
                                                 <input type="file" class="form-control" id="inputLogo" placeholder=""
-                                                    name="">
+                                                    name="logo" accept=".jpg, .png">
+
                                             </div>
                                             <div class="col-12">
                                                 <label for="inputAddres" class="form-label">Alamat Perusahaan</label>
                                                 <input type="text" class="form-control" id="inputAddres"
-                                                    placeholder="Masukkan Alamat " name="">
+                                                    placeholder="Masukkan Alamat " name="address">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="phoneNumber" class="form-label">Nomor Telepon</label>
+                                                <input type="number" class="form-control" id="phoneNumber"
+                                                    placeholder="Masukkan Nomor Hp " name="phone">
                                             </div>
 
                                             <div class="col-12">
                                                 <label for="inputEmail" class="form-label">Email</label>
                                                 <input type="email" class="form-control" id="inputEmail"
-                                                    placeholder="Masukkan Email" name="">
+                                                    placeholder="Masukkan Email" name="email">
                                             </div>
                                             <div class="col-12">
                                                 <label for="inputChoosePassword" class="form-label">Password</label>

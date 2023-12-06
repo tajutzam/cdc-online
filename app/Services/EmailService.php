@@ -4,6 +4,8 @@
 namespace App\Services;
 
 use App\Mail\EmailVeriviedMail;
+use App\Mail\MitraMail;
+use App\Mail\MitraRejected;
 use App\Mail\RecoveryPasswordMail;
 use App\Mail\SubmissionsEmail;
 use App\Mail\SuccessUpdatePasswordMail;
@@ -65,9 +67,20 @@ class EmailService
         Mail::to($to)->send($this->recoveryPasswordMail);
     }
 
-    public function sendEmailSuccessUpdatePassword($user){
+    public function sendEmailSuccessUpdatePassword($user)
+    {
         $this->successUpdatePasswordMail->user = $user;
         Mail::to($user->email)->send($this->successUpdatePasswordMail);
     }
+
+    public function sendMailMitra($to, $type)
+    {
+        if ($type) {
+            Mail::to($to)->send(new MitraMail());
+        }else{
+            Mail::to($to)->send(new MitraRejected());
+        }
+    }
+
 
 }

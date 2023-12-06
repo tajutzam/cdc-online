@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Admin;
+use App\Models\Mitra;
 use App\Models\ProdiAdministrator;
 
 return [
@@ -53,7 +54,11 @@ return [
         'prodi' => [
             'driver' => 'session',
             'provider' => 'prodi'
-        ]
+        ],
+        "mitra" => [
+            'driver' => 'session',
+            'provider' => 'mitra'
+        ],
     ],
 
     /*
@@ -86,6 +91,10 @@ return [
         'prodi' => [
             'driver' => 'eloquent',
             'model' => ProdiAdministrator::class,
+        ],
+        'mitra' => [
+            'driver' => 'eloquent',
+            'model' => Mitra::class,
         ],
     ],
 

@@ -38,6 +38,7 @@ use App\Http\Middleware\IsProdiAdministratorMiddleware;
 use App\Http\Controllers\web\ManageProdiAdminController;
 use App\Http\Controllers\web\AuthController as WebAuthController;
 use App\Http\Controllers\web\BankController;
+use App\Http\Controllers\web\MitraSubmissiosController;
 use App\Http\Controllers\web\ProvinceController;
 use App\Http\Controllers\web\RegencyController;
 
@@ -57,14 +58,9 @@ Route::get('/company/history', function () {
 })->name('vacancy-company');
 
 
+;
 
-Route::get('/verify/company', function () {
-    return view('admin.aktivasi.company');
-})->name('aktivasi-company');
 
-Route::get('/data/company', function () {
-    return view('admin.company-data');
-})->name('company-data');
 
 
 Route::get('/admin/mitra', function () {
@@ -76,9 +72,14 @@ Route::get('/company/login', function () {
     return view('company.auth.login');
 })->name('login-company');
 
+Route::post('/company/login',[MitraSubmissiosController::class , "login"])->name('login-company-post');
+
 Route::get('/company/register', function () {
     return view('company.auth.register');
 })->name('register');
+
+
+Route::post("/company/register", [MitraSubmissiosController::class, "register"])->name('mitra-register');
 
 
 
@@ -155,11 +156,11 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::delete('feedback', [QuestionsController::class, 'delete'])->name('feedback-delete');
 
 
-    Route::get('/bank-account', [BankController::class , "adminBank"])->name('rekening');
-    Route::post('/bank-account', [BankController::class , "store"])->name('rekening-post');
-    Route::put('/bank-account', [BankController::class , "update"])->name('rekening-put');
+    Route::get('/bank-account', [BankController::class, "adminBank"])->name('rekening');
+    Route::post('/bank-account', [BankController::class, "store"])->name('rekening-post');
+    Route::put('/bank-account', [BankController::class, "update"])->name('rekening-put');
 
-    
+
 
 
     // Route::get('/trix', 'TrixController@index');
@@ -214,12 +215,21 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     });
 
 
-    Route::get('/provinsi', [ProvinceController::class , "index"])->name('provinsi');
+    Route::get('/provinsi', [ProvinceController::class, "index"])->name('provinsi');
 
     Route::post('provinsi', [ProvinceController::class, 'import'])->name('province-import');
     Route::post('regency', [RegencyController::class, 'import'])->name('regency-import');
     Route::get('kabupaten', [RegencyController::class, 'index'])->name('kabupaten');
 
+
+
+    Route::get('/verify/company', [MitraSubmissiosController::class, "index"])->name('aktivasi-company');
+    Route::post('/verify/company/accpet', [MitraSubmissiosController::class, "accept"])->name('company-accept');
+    Route::post('/verify/company/reject', [MitraSubmissiosController::class, "reject"])->name('company-reject');
+
+
+
+    Route::get('/data/company', [MitraSubmissiosController::class, "mitra"])->name('company-data');
 
 });
 

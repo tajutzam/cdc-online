@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class MitraSubmission extends Model
+
+class Mitra extends Authenticatable
 {
-
     use HasFactory, Uuids;
-    protected $table = 'mitra_submissions';
+
+    protected $table = 'mitra';
 
     protected $fillable = [
         'logo',
@@ -22,5 +24,4 @@ class MitraSubmission extends Model
         'email',
         'password',
     ];
-    // Add any additional methods or relationships here
 }

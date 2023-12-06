@@ -14,7 +14,15 @@ class CreateMitraTable extends Migration
     public function up()
     {
         Schema::create('mitra', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->string('logo');
+            $table->string('name');
+            $table->string('nib');
+            $table->string('business_license');
+            $table->string('phone');
+            $table->string('address');
+            $table->string('email');
+            $table->string('password');
             $table->timestamps();
         });
     }
