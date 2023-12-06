@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('layouts-company.auth')
 @section('content')
     <div class="wrapper">
         <div class="section-authentication-cover">

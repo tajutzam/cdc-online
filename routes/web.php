@@ -74,6 +74,13 @@ Route::get('/company/register', function () {
 })->name('register');
 
 
+
+
+Route::get('/company/resetpassword', function () {
+    return view('company.auth.reset-password');
+})->name('resetcompany');
+
+
 Route::post("/company/register", [MitraSubmissiosController::class, "register"])->name('mitra-register');
 
 
@@ -225,7 +232,6 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
 
 
     Route::get('/data/company', [MitraSubmissiosController::class, "mitra"])->name('company-data');
-
 });
 
 
@@ -236,7 +242,6 @@ Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () 
     Route::get('settings', function () {
         return view('company.settings');
     })->name('company-settings');
-
 });
 
 
