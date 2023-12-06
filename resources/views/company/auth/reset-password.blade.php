@@ -16,19 +16,28 @@
                                         <h5 class="">Ganti Password</h5>
                                         <p class="mb-0">Masukkan Password Baru Anda</p>
                                     </div>
-                                    <div class="mb-3 mt-4">
-                                        <label class="form-label">Password Baru</label>
-                                        <input type="text" class="form-control" placeholder="Enter new password" />
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="form-label">Konfirmasi Password</label>
-                                        <input type="text" class="form-control" placeholder="Confirm password" />
-                                    </div>
-                                    <div class="d-grid gap-2">
-                                        <button type="button" class="btn btn-primary">Ubah Password</button> <a
-                                            href="auth-basic-signin.html" class="btn btn-light"><i
-                                                class='bx bx-arrow-back mr-1'></i>Kembali Masuk</a>
-                                    </div>
+                                    <form action="{{ route('mitra-reset-password') }}" method="post"
+                                        onsubmit="return validatePassword()">
+                                        @method('put')
+                                        <div class="mb-3 mt-4">
+                                            <label class="form-label">Password Baru</label>
+                                            <input type="password" id="newPassword" class="form-control"
+                                                placeholder="Enter new password" required name="password" />
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">Konfirmasi Password</label>
+                                            <input type="password" id="confirmPassword" class="form-control"
+                                                placeholder="Confirm password" required />
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button type="submit" class="btn btn-primary">Ubah Password</button>
+                                            <a href="{{ route('vacancy-company-history') }}" class="btn btn-light">
+                                                <i class='bx bx-arrow-back mr-1'></i> Kembali Masuk
+                                            </a>
+                                        </div>
+                                    </form>
+
+
                                 </div>
                             </div>
                         </div>
@@ -37,4 +46,17 @@
             </div>
         </div>
     </div>
+    <script>
+        function validatePassword() {
+            var newPassword = document.getElementById('newPassword').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert('Password Baru dan Konfirmasi Password harus sama.');
+                return false;
+            }
+            // Continue with form submission
+            return true;
+        }
+    </script>
 @endsection

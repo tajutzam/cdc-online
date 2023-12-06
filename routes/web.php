@@ -76,9 +76,6 @@ Route::get('/company/register', function () {
 
 
 
-Route::get('/company/resetpassword', function () {
-    return view('company.auth.reset-password');
-})->name('resetcompany');
 
 
 Route::post("/company/register", [MitraSubmissiosController::class, "register"])->name('mitra-register');
@@ -242,6 +239,17 @@ Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () 
     Route::get('settings', function () {
         return view('company.settings');
     })->name('company-settings');
+
+
+    Route::get('resetpassword', function () {
+        return view('company.auth.reset-password');
+    })->name('resetcompany');
+
+    Route::put("settings", [MitraSubmissiosController::class, "updateAccount"])->name('mitra-put');
+    Route::put("resetpassword", [MitraSubmissiosController::class, "updatePassword"])->name('mitra-reset-password');
+    Route::post("logout", [MitraSubmissiosController::class, "logout"])->name('mitra-logout');
+
+
 });
 
 
