@@ -3,17 +3,17 @@
 
 
 <!-- Mirrored from codervent.com/syndron/demo/vertical/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 29 Jul 2023 03:54:59 GMT -->
-@include('layouts.header')
+@include('layouts-company.header')
 
 <body>
     <!--wrapper-->
     <div class="wrapper">
         <!--sidebar wrapper -->
-        @include('layouts.sidebar')
-        @include('layouts.switcher')
+        @include('layouts-company.sidebar')
+        @include('layouts-company.switcher')
         <!--end sidebar wrapper -->
         <!--start header -->
-        @include('layouts.head')
+        @include('layouts-company.head')
         <!--end header -->
         <!--start page wrapper -->
         <div class="page-wrapper">
@@ -37,7 +37,7 @@
 
     <!--end switcher-->
     <!-- Bootstrap JS -->
-    @include('layouts.footer')
+    @include('layouts-company.footer')
     @include('sweetalert::alert')
 </body>
 

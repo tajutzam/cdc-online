@@ -53,9 +53,19 @@ Route::get('/company/history', function () {
     return view('company.vacancy.company-history');
 })->name('vacancy-company-history');
 
+
+
+Route::get('/company/apply/next/end', function () {
+    return view('company.vacancy.apply-vacancy-end');
+})->name('vacancy-company-apply-end');
+
 Route::get('/company/apply', function () {
     return view('company.vacancy.apply-vacancy');
 })->name('vacancy-company-apply');
+
+Route::get('/company/apply/next', function () {
+    return view('company.vacancy.apply-vacancy-next');
+})->name('vacancy-company-apply-next');
 
 
 Route::get('/company/settings', function () {
