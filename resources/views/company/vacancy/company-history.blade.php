@@ -100,47 +100,4 @@
             </table>
         </div>
     </div>
-
-
-
-
-
-    <x-modal-small id="detail-user" footer="footer" title="title" body="body">
-        <x-slot name="title">Detail Pengunggah <span id="level-uploader"></span></x-slot>
-        <x-slot name="body">
-            <div></div>
-            <img id="img-uploader" class="rounded-circle mb-3  shadow-4-strong" alt="image-uploader" />
-
-            <div class="row mb-3">
-                <label for="input35" class="col-sm-3 col-form-label">Email</label>
-                <div class="col-sm-9">
-                    <input readonly type="text" class="form-control" id="email-user" placeholder="Enter Your Name">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="input36" class="col-sm-3 col-form-label">Nama Lengkap</label>
-                <div class="col-sm-9">
-                    <input readonly type="text" class="form-control" id="fullname-user" placeholder="Phone No">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="input37" class="col-sm-3 col-form-label">NIM / NPWP</label>
-                <div class="col-sm-9">
-                    <input readonly type="email" class="form-control" id="nim-user" placeholder="Email Address">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="input37" class="col-sm-3 col-form-label">Alamat</label>
-                <div class="col-sm-9">
-                    <input readonly type="email" class="form-control" id="address-user" placeholder="Email Address">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="input37" class="col-sm-3 col-form-label">Jenis Kelamin</label>
-                <div class="col-sm-9">
-                    <input readonly type="email" class="form-control" id="gender-user" placeholder="Email Address">
-                </div>
-            </div>
-        </x-slot>
-    </x-modal-small>
 @endsection
