@@ -2,6 +2,13 @@
 
 
 @section('content')
+
+    <style>
+        table tbody tr td img{
+            height: 100px;
+        }
+    </style>
+
     <div class="container-fluid">
 
 
@@ -56,34 +63,38 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>No</td>
-                        <td>Teaching factory</td>
-                        <td>Frontend</td>
-                        <td>Hayo kerja g lu</td>
-                        <td>
-                            <img src="" alt="" style="height: 100px; "
-                                onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg'">
-                        </td>
+                    @foreach ($data as $item)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item['company'] }}</td>
+                            <td>{{ $item['position'] }}</td>
+                            <td>{{ $item['description'] }}</td>
+                            <td>
+                                <img src="{{ $item['image'] }}" alt="" style="height: 100px; "
+                                    onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg'">
+                            </td>
 
-                        <td style="text-align: center"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-                                fill="currentColor" class="bi bi-folder-symlink-fill" viewBox="0 0 16 16">
-                                <path
-                                    d="M13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2l.04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3M2.19 3c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672a1 1 0 0 1 .707.293L7.586 3H2.19m9.608 5.271-3.182 1.97c-.27.166-.616-.036-.616-.372V9.1s-2.571-.3-4 2.4c.571-4.8 3.143-4.8 4-4.8v-.769c0-.336.346-.538.616-.371l3.182 1.969c.27.166.27.576 0 .742" />
-                            </svg></td>
+                            <td style="text-align: center"><a href="{{ $item['link_apply'] }}" target="_blank"
+                                    rel="noopener noreferrer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                        fill="currentColor" class="bi bi-folder-symlink-fill" viewBox="0 0 16 16">
+                                        <path
+                                            d="M13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2l.04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3M2.19 3c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672a1 1 0 0 1 .707.293L7.586 3H2.19m9.608 5.271-3.182 1.97c-.27.166-.616-.036-.616-.372V9.1s-2.571-.3-4 2.4c.571-4.8 3.143-4.8 4-4.8v-.769c0-.336.346-.538.616-.371l3.182 1.969c.27.166.27.576 0 .742" />
+                                    </svg></a></td>
 
-                        <td>Kadaluwarsa</td>
-                        <td>17 agustus 1020</td>
-                        <td><img src="" alt="bukti pembayaran"></td>
-                        <td style="text-align: center">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href=""><button type="button"
-                                        class="btn btn-success me-2 mb-2">Setujui</button></a>
-                                <a href=""> <button type="button" class="btn btn-danger">Tolak</button></a>
+                            <td>{{ \Carbon\Carbon::parse($item['expired'])->format('Y-m-d') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item['post_at'])->format('Y-m-d') }}</td>
+                            <td><img src="{{ $item['bukti'] }}" alt="bukti pembayaran"></td>
+                            <td style="text-align: center">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a href=""><button type="button"
+                                            class="btn btn-success me-2 mb-2">Setujui</button></a>
+                                    <a href=""> <button type="button" class="btn btn-danger">Tolak</button></a>
 
-                            </div>
-                        </td>
-                    </tr>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

@@ -90,9 +90,49 @@
         .select-image:hover {
             background: var(--dark-blue);
         }
+
+
+        .img-area {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        #file {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        img {
+            width: 200px;
+            /* Adjust the size as needed */
+            height: auto;
+        }
+
+        /* Add styles to indicate hover effect and make the hidden input cover the image */
+        .img-area:hover {
+            /* Add your hover styles here */
+            border: 2px solid #007bff;
+        }
+
+        /* Add styles to indicate hover effect and make the hidden input cover the image */
+        .img-area:hover #file {
+            display: block;
+        }
     </style>
     <div class="container-fluid">
-
+        @if ($errors->any())
+            <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+                <div class="text-white">{{ $errors->first() }}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="mt-4">
             <div class="col p-0">
                 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -128,141 +168,199 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <form action="{{ route('vacancy-end-post') }}" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Rincian</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-hover" style="border-radius: 7px">
 
-            <div class="col-sm-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Rincian</h5>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-hover" style="border-radius: 7px">
+                                <tbody>
+                                    <tr>
+                                        <th style=" width: 70px">Posisi</th>
+                                        <td>:</td>
 
+                                        <td>Sekretaris</td>
+                                        <input type="text" value="{{ $data['position'] }}" hidden name="position">
+                                    </tr>
+                                    <tr>
 
+                                        <th style=" width: 70px">Diunggah</th>
+                                        <td>:</td>
+                                        <td>{{ $data['upload_at'] }}</td>
+                                        <input type="date" value="{{ $data['upload_at'] }}" hidden name="upload_at">
+                                    </tr>
+                                    <tr>
 
-                            <tbody>
-                                <tr>
-                                    <th style=" width: 70px">Posisi</th>
-                                    <td>:</td>
+                                        <th style=" width: 70px">Kadaluwarsa</th>
+                                        <td>:</td>
+                                        <td>{{ $data['expired_at'] }}</td>
+                                        <input type="date" value="{{ $data['expired_at'] }}" hidden name="expired">
 
-                                    <td>Sekretaris</td>
-                                </tr>
-                                <tr>
+                                    </tr>
+                                    <tr>
+                                        <th style=" width: 70px">Tautan</th>
+                                        <td>:</td>
+                                        <td><a href="{{ $data['link'] }}">{{ $data['link'] }}</a></td>
+                                        <input type="text" value="{{ $data['link'] }}" name="link_apply" hidden>
 
-                                    <th style=" width: 70px">Diunggah</th>
-                                    <td>:</td>
-                                    <td>12 Januari 2022</td>
-                                </tr>
-                                <tr>
+                                    </tr>
 
-                                    <th style=" width: 70px">Kadaluwarsa</th>
-                                    <td>:</td>
-                                    <td>18 Januari 2022</td>
-                                </tr>
-                                <tr>
-                                    <th style=" width: 70px">Tautan</th>
-                                    <td>:</td>
-                                    <td><a href="google.com">google.com</a></td>
-                                </tr>
+                                    <tr>
+                                        <th style=" width: 70px">Tipe Pekerjaan</th>
+                                        <td>:</td>
+                                        <td>{{ $data['type_jobs'] }}</td>
+                                        <input type="text" value="{{ $data['link'] }}" name="type_jobs" hidden>
 
-                                <tr>
-                                    <th style=" width: 70px">Deskripsi</th>
-                                    <td>:</td>
-                                    <td>
-                                        Unyuvevev
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                    </tr>
 
-                </div>
-            </div>
-
-
-
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Poster</h5>
-                    </div>
-                    <div class="card-body">
-
-                        <div class="container">
-
-                            <input type="file" id="file" accept="image/*" hidden>
-                            <div class="img-area" data-img="">
-                                <i class='bx bxs-cloud-upload icon'></i>
-                                <h3>Poster Anda</h3>
-
-                            </div>
-
+                                    <tr>
+                                        <th style=" width: 70px">Deskripsi</th>
+                                        <td>:</td>
+                                        <td>
+                                            {{ $data['description'] }}
+                                            <input type="text" value="{{ $data['description'] }}" name="description"
+                                                hidden>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-
                 </div>
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Poster</h5>
+                        </div>
+                        <div class="card-body">
+
+                            {{-- @dd($data) --}}
+                            <div class="container">
+
+                                <div class="img-area" data-img="">
+                                    <img src="{{ url('/') . '/mitra/vacancy-temp/' . $data['poster'] }}" alt="Poster"
+                                        onclick="openFileInput()" id="previewImage">
+                                    <input type="file" id="file" accept="image/*" onchange="updateImage()"
+                                        name="poster" hidden>
+                                    <input type="file" id="bukti" name="bukti" hidden>
+                                    <img src="{{ url('/') . '/mitra/bukti/temp/' . $data['bukti_path'] }}" alt="sas"
+                                        id="buktiPreview" hidden>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                {{-- @dd($data) --}}
             </div>
 
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
 
-        </div>
-
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-body">
-
-                        <div class="row" style="justify-items: end; text-align: end;">
-                            <div class="col">
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    {{-- <button type="button" class="btn btn-primary">Left</button> --}}
-
-                                    <a href="{{ route('vacancy-company-history') }}"><button type="button"
-                                            class="btn btn-success"> <i class="fas fa-check"></i> Konfirmasi</button></a>
-
+                            <div class="row" style="justify-items: end; text-align: end;">
+                                <div class="col">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        {{-- <button type="button" class="btn btn-primary">Left</button> --}}
+                                        <button type="submit" class="btn btn-success"> <i class="fas fa-check"></i>
+                                            Konfirmasi</button>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
+
                 </div>
             </div>
-        </div>
+        </form>
     </div>
     <script>
-        const selectImage = document.querySelector('.select-image');
-        const inputFile = document.querySelector('#file');
-        const imgArea = document.querySelector('.img-area');
+        // document.getElementById('file').value = 
+        var src = document.getElementById('previewImage').src;
+        var srcBukti = document.getElementById('buktiPreview').src;
 
-        selectImage.addEventListener('click', function() {
-            inputFile.click();
-        })
 
-        inputFile.addEventListener('change', function() {
-            const image = this.files[0]
-            if (image.size < 2000000) {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const allImg = imgArea.querySelectorAll('img');
-                    allImg.forEach(item => item.remove());
-                    const imgUrl = reader.result;
-                    const img = document.createElement('img');
-                    img.src = imgUrl;
-                    imgArea.appendChild(img);
-                    imgArea.classList.add('active');
-                    imgArea.dataset.img = image.name;
 
-                    // Set z-index dynamically
-                    const zIndexValue = allImg.length + 1; // Make sure it's higher than existing images
-                    img.style.zIndex = zIndexValue;
-                    imgArea.style.zIndex = zIndexValue;
-                    imgArea.querySelector('::before').style.zIndex = zIndexValue -
-                        1; // Set pseudo-element z-index
-
+        function toDataUrl(url, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    callback(xhr.response);
+                } else {
+                    console.error('Failed to load image. Status code: ' + xhr.status);
                 }
-                reader.readAsDataURL(image);
-            } else {
-                alert("Image size more than 2MB");
-            }
-        })
+            };
+            xhr.onerror = function() {
+                console.error('Network error while loading image.');
+            };
+            xhr.open('GET', url);
+            xhr.responseType = 'blob';
+            xhr.send();
+        }
+
+        let image;
+        toDataUrl(src, function(blob) {
+            console.log("blob ", blob);
+
+            const imageType = blob.type; // Get the image type (e.g., "image/jpeg" or "image/png")
+            const fileExtension = imageType.split('/')[1]; // Extract the file extension
+
+            const dT = new ClipboardEvent('').clipboardData ||
+                // Firefox < 62 workaround exploiting https://bugzilla.mozilla.org/show_bug.cgi?id=1422655
+                new DataTransfer(); // specs compliant (as of March 2018 only Chrome)
+
+            const fileName = 'myNewFile.' + fileExtension; // Construct the file name with the correct extension
+            dT.items.add(new File([blob], fileName, {
+                type: imageType
+            }));
+
+            document.querySelector('#file').files = dT.files;
+        });
+
+
+        toDataUrl(srcBukti,
+            function(blob) {
+                console.log("blob ", blob);
+
+                const imageType = blob.type; // Get the image type (e.g., "image/jpeg" or "image/png")
+                const fileExtension = imageType.split('/')[1]; // Extract the file extension
+
+                const dT = new ClipboardEvent('').clipboardData ||
+                    // Firefox < 62 workaround exploiting https://bugzilla.mozilla.org/show_bug.cgi?id=1422655
+                    new DataTransfer(); // specs compliant (as of March 2018 only Chrome)
+
+                const fileName = 'bukti.' + fileExtension; // Construct the file name with the correct extension
+                dT.items.add(new File([blob], fileName, {
+                    type: imageType
+                }));
+
+                document.querySelector('#bukti').files = dT.files;
+            });
+
+        // Get the image source
+        function openFileInput() {
+            // Trigger click on the hidden file input when the image is clicked
+            document.getElementById('file').click();
+        }
+
+        function updateImage() {
+            var input = document.getElementById('file');
+            var reader = new FileReader();
+
+            // Read the selected file as a data URL and set it as the image source
+            reader.onload = function(e) {
+                document.querySelector('.img-area img').src = e.target.result;
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
     </script>
 @endsection

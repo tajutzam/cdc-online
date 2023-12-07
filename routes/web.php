@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\web\QuestionsController;
+use App\Http\Middleware\PaymentFirst;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,7 @@ use App\Http\Controllers\web\MitraSubmissiosController;
 use App\Http\Controllers\web\ProvinceController;
 use App\Http\Controllers\web\RegencyController;
 use App\Http\Middleware\MitraMiddleware;
+use App\Http\Middleware\VacancyFirst;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,23 +60,14 @@ use App\Http\Middleware\MitraMiddleware;
 
 
 
-Route::get('/admin/mitra', function () {
-    return view('admin.vacancy.mitra-vacancy');
-})->name('vacancy-mitra');
 
 
-Route::get('/company/apply/next', function () {
-    return view('company.vacancy.apply-vacancy-next');
-})->name('vacancy-next');
 
 
-Route::get('/company/resetpassword', function () {
-    return view('company.auth.reset-password');
-})->name('reset-company');
 
-Route::get('/company/apply/end', function () {
-    return view('company.vacancy.apply-vacancy-end');
-})->name('vacancy-end');
+
+
+
 
 Route::get('/company/login', function () {
     return view('company.auth.login');
@@ -85,6 +78,10 @@ Route::post('/company/login', [MitraSubmissiosController::class, "login"])->name
 Route::get('/company/register', function () {
     return view('company.auth.register');
 })->name('register');
+
+
+
+
 
 
 Route::post("/company/register", [MitraSubmissiosController::class, "register"])->name('mitra-register');
@@ -238,16 +235,35 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
 
 
     Route::get('/data/company', [MitraSubmissiosController::class, "mitra"])->name('company-data');
+
+
+    Route::get('/mitra', [PostController::class , "verivyMitraVacancy"])->name('vacancy-mitra');
+
 });
 
 
 Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () {
     Route::get("apply", [MitraSubmissiosController::class, "apply"])->name('vacancy-company-apply');
     Route::get("history", [MitraSubmissiosController::class, "history"])->name('vacancy-company-history');
+    Route::post("apply", [MitraSubmissiosController::class, "applyToNext"])->name('apply-post');
+
+
+    Route::get('/apply/next', [MitraSubmissiosController::class, "next"])->name('vacancy-next')->middleware(PaymentFirst::class);
+    Route::post("/apply/next", [MitraSubmissiosController::class, "nextPerfom"])->name('vacancy-next-post');
+
+
+    Route::get('/resetpassword', function () {
+        return view('company.auth.reset-password');
+    })->name('reset-company');
+
+    Route::get('/apply/end', [MitraSubmissiosController::class, "end"])->name('vacancy-end')->middleware(VacancyFirst::class);
+    Route::post('/apply/end', [MitraSubmissiosController::class, "endPerfom"])->name('vacancy-end-post')->middleware(VacancyFirst::class);
 
     Route::get('settings', function () {
         return view('company.settings');
     })->name('company-settings');
+
+
 });
 
 

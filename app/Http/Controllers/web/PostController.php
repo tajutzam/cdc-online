@@ -29,8 +29,6 @@ class PostController extends Controller
 
         $data = $this->postService->findVerivyVacancy();
 
-
-
         // Extract the counts and dates from the $countsByDay array
         $dates = array_keys($data['count_by_day']);
         $counts_by_day = array_values($data['count_by_day']);
@@ -42,6 +40,26 @@ class PostController extends Controller
             'total' => sizeOf($data['vacancy'])
         ]);
     }
+
+    public function verivyMitraVacancy(){
+        $data = $this->postService->findVerifyVacancyMitra();
+        // dd($data);
+
+       
+        // Extract the counts and dates from the $countsByDay array
+        $dates = array_keys($data['count_by_day']);
+        $counts_by_day = array_values($data['count_by_day']);
+
+    
+
+        return view('admin.vacancy.mitra-vacancy', [
+            'data' => $data['vacancy'],
+            'total_of_week' => $data['total_of_week'],
+            'count_by_day' => $counts_by_day,
+            'total' => sizeOf($data['vacancy'])
+        ]);
+    }
+
     public function history()
     {
         $data = $this->postService->findHistoryVacancy();

@@ -1,13 +1,8 @@
-@section('content')
-    @extends('layouts-company.app')
-
+@extends('layouts-company.app')
 @section('content')
     <style>
         /* Import Google Font - Poppins */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
-
-
 
         .select-btn {
             display: flex;
@@ -242,7 +237,12 @@
         }
     </style>
     <div class="container-fluid">
-
+        @if ($errors->any())
+            <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+                <div class="text-white">{{ $errors->first() }}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="mt-4">
             <div class="col p-0">
                 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -262,47 +262,48 @@
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-body">
+        <form action="{{ route('apply-post') }}" method="post" onsubmit="return validateForm()"
+            enctype="multipart/form-data">
+            <div class="card">
+                <div class="card-body">
 
-                <div class="row" style="justify-items: end; text-align: end;">
-                    <div class="col">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            {{-- <button type="button" class="btn btn-primary">Left</button> --}}
+                    <div class="row" style="justify-items: end; text-align: end;">
+                        <div class="col">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                {{-- <button type="button" class="btn btn-primary">Left</button> --}}
 
-                            <a href="{{ route('vacancy-next') }}"> <button type="button" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-chevron-right"></i> Selanjutnya
-                                </button></a>
+                                </button>
 
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-7">
-                <div class="card">
-                    <div class="card-body">
-                        <form action="">
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="card">
+                        <div class="card-body">
+
 
                             <div class="form mb-3">
                                 <div class="form">
                                     <label for="" style="font-weight: bold;">Tipe Bank</label>
                                     <div class="banksearch">
 
-                                        <div class="select-btn">
-
-                                            <span>Pilih Bank</span>
-                                            <i class="uil uil-angle-down"></i>
-                                        </div>
-                                        <div class="content">
-                                            <div class="search">
-                                                <i class="fas fa-search"></i>
-                                                <input spellcheck="false" type="text" placeholder="Cari">
-                                            </div>
-                                            <ul class="options"></ul>
-                                        </div>
+                                        {{-- <div class="select-btn">
+                                                <span>Pilih Bank</span>
+                                                <i class="uil uil-angle-down"></i>
+                                            </div> --}}
+                                        <select class="form-select" aria-label="Default select example" id="bankSelect"
+                                            onchange="updateNoRekening()" name="bank">
+                                            <option value="Pilih Bank" selected>Pilih Bank</option>
+                                            @foreach ($banks as $item)
+                                                <option value="{{ $item->id }}">{{ $item->bank }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -312,7 +313,7 @@
                                     <div class="">
                                         <label for="" style="font-weight: bold;">No Rekening</label>
                                         <input style="background-color: #E7E7E7;" type="text" class="form-control"
-                                            placeholder="Rekening" readonly>
+                                            placeholder="Rekening" readonly id="no_rekening">
                                     </div>
 
                                 </div>
@@ -322,49 +323,40 @@
                                     <div class="">
                                         <label for="" style="font-weight: bold;">Harga</label>
                                         <input style="background-color: #E7E7E7;" type="text" class="form-control"
-                                            placeholder="Harga Layanan" readonly>
+                                            placeholder="Harga Layanan" readonly id="nominal">
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-5">
-                <div class="card">
-                    <div class="card-header">
-                        <h6>Bukti Pembayaran</h6>
-                    </div>
-                    <div class="card-body">
-
-                        <div class="container">
-
-                            <input type="file" id="file" accept="image/*" hidden>
-                            <div class="img-area" data-img="">
-                                <i class="fas fa-receipt icon"></i>
-                                <br>
-                                <h3 style="text-align: center">Unggah Bukti pembayaran</h3>
-                                <p>Pastikan file kurang dari <span>2MB</span></p>
-                            </div>
-                            <button class="select-image"> Pilih Bukti</button>
                         </div>
                     </div>
+                </div>
 
+                <div class="col-sm-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>Bukti Pembayaran</h6>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="container">
+
+                                <input type="file" id="file" style="display: none" accept="image/*" hidden
+                                    style="" id="bukti" name="bukti">
+                                <div class="img-area" data-img="">
+                                    <i class="fas fa-receipt icon"></i>
+                                    <br>
+                                    <h3 style="text-align: center">Unggah Bukti pembayaran</h3>
+                                    <p>Pastikan file kurang dari <span>2MB</span></p>
+                                </div>
+                                <button type="button" class="select-image"> Pilih Bukti</button>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-
-
-        </div>
+        </form>
     </div>
-    <script>
-        const textarea = document.querySelector("textarea");
-        textarea.addEventListener("keyup", e => {
-            textarea.style.height = "63px";
-            let scHeight = e.target.scrollHeight;
-            textarea.style.height = `${scHeight}px`;
-        });
-    </script>
 
     <script>
         const selectImage = document.querySelector('.select-image');
@@ -403,69 +395,64 @@
             }
         })
     </script>
+
+
+
     <script>
-        const banksearch = document.querySelector(".banksearch"),
-            selectBtn = banksearch.querySelector(".select-btn"),
-            searchInp = banksearch.querySelector("input"),
-            options = banksearch.querySelector(".options");
-        let bankDetails = {
-            "Mandiri": {
-                noRekening: "123",
-                harga: "2000"
-            },
-            "BRI": {
-                noRekening: "345",
-                harga: "300"
-            },
-            "BCA": {
-                noRekening: "255",
-                harga: "500"
-            },
-            "Mega": {
-                noRekening: "144",
-                harga: "700"
-            },
-            "BNI": {
-                noRekening: "555",
-                harga: "8000"
-            },
-        };
+        function validateForm() {
 
-        function addBank(selectedBank) {
-            options.innerHTML = "";
-            Object.keys(bankDetails).forEach(bank => {
-                let isSelected = bank == selectedBank ? "selected" : "";
-                let li = `<li onclick="updateName(this)" class="${isSelected}">${bank}</li>`;
-                options.insertAdjacentHTML("beforeend", li);
-            });
-        }
-        addBank();
+            var selectedBank = document.querySelector('#bankSelect').value;
+            var bukti = document.querySelector('#file');
+            console.log(bukti.value);
 
-        function updateName(selectedLi) {
-            const selectedBank = selectedLi.innerText;
-            searchInp.value = "";
-            addBank(selectedBank);
-            banksearch.classList.remove("active");
-            selectBtn.firstElementChild.innerText = selectedBank;
+            if (selectedBank === 'Pilih Bank') {
+                alert('Harap pilih bank sebelum melanjutkan.');
+                return false; // Prevent form submission
+            }
 
-            // Fill the corresponding details based on the selected bank
-            const selectedBankDetails = bankDetails[selectedBank];
-            document.querySelector('[placeholder="Rekening"]').value = selectedBankDetails.noRekening;
-            document.querySelector('[placeholder="Harga Layanan"]').value = selectedBankDetails.harga;
+            if (bukti.files.length <= 0) {
+                alert('Harap Masukan Bukti terlebih dahulu');
+                return false;
+            }
+
+
+            // if (bukti.value == null) {
+            //     alert('Harap Masukan Bukti Terlebih dahulu');
+            //     return false;
+            // }
+
+
+
+            // If the bank is selected, you can proceed with the form submission
+            return true;
         }
 
-        searchInp.addEventListener("keyup", () => {
-            let arr = [];
-            let searchWord = searchInp.value.toLowerCase();
-            arr = Object.keys(bankDetails).filter(data => {
-                return data.toLowerCase().startsWith(searchWord);
-            }).map(data => {
-                let isSelected = data == selectBtn.firstElementChild.innerText ? "selected" : "";
-                return `<li onclick="updateName(this)" class="${isSelected}">${data}</li>`;
-            }).join("");
-            options.innerHTML = arr ? arr : `<p style="margin-top: 10px;">Oops! Bank not found</p>`;
-        });
-        selectBtn.addEventListener("click", () => banksearch.classList.toggle("active"));
+
+        function updateNoRekening() {
+            var selectedBankId = document.querySelector('#bankSelect').value;
+            var bukti = document.querySelector('#file');
+
+            console.log(selectedBankId);
+
+            if (selectedBankId === 'Pilih Bank') {
+                console.log("masuk sini");
+                document.querySelector('#no_rekening').value = null;
+                document.querySelector('#nominal').value = null;
+                document.getElementById('file').setAttribute('hidden', 'true');
+            } else {
+                bukti.removeAttribute('hidden');
+                var bankData = {!! json_encode($banks) !!};
+                // Find the selected bank in the bankData array
+                var selectedBank = bankData.find(function(bank) {
+                    return bank.id == selectedBankId;
+                });
+                // Update the No Rekening field with the selected bank's information
+                document.querySelector('#no_rekening').value = selectedBank.va_number;
+                document.querySelector('#nominal').value = selectedBank.nominal;
+            }
+
+            // Assuming you have a JavaScript variable called 'bankData' containing bank information
+            // You may need to fetch the bank data from the server using AJAX if not available in JavaScript
+        }
     </script>
-
 @endsection

@@ -103,6 +103,49 @@ class PostService
     }
 
 
+
+    public function addPostJobMitra($image, $mitraId, $request)
+    {
+        DB::beginTransaction();
+        $folder = "users/post";
+        $fileName = time() . '.' . $image->getClientOriginalExtension();
+        $urlResource = $image->move($folder, $fileName);
+        if (!isset($urlResource)) {
+            throw new BadRequest('Ops, Gagal mengirim status silaahkan coba lagi');
+        }
+        $isCreated = $this->post->create(
+            [
+                'image' => $fileName,
+                'link_apply' => $request['link_apply'],
+                'description' => $request['description'],
+                'company' => $request['company'],
+                'position' => $request['position'],
+                'type_jobs' => $request['type_jobs'],
+                'expired' => Carbon::parse($request['expired']),
+                'user_id' => null,
+                'admin_id' => null,
+                'post_at' => Carbon::parse($request['upload_at']),
+                'mitra_id' => $mitraId,
+                'can_comment' => true,
+                'bukti' => $request['bukti']
+            ]
+        );
+        if (isset($isCreated)) {
+            DB::commit();
+            return [
+                'status' => true,
+                'message' => 'Sukses membuat Lowongan'
+            ];
+        } else {
+            DB::rollBack();
+            return [
+                'status' => false,
+                'message' => 'Gagal membuat Lowongan'
+            ];
+        }
+    }
+
+
     public function updateVerified($data)
     {
         DB::beginTransaction();
@@ -383,17 +426,24 @@ class PostService
             'can_comment' => $data['can_comment'],
             'verified' => $data['verified'],
             'user' => $data['user'] ?? null,
-            'admin' => $data['admin'] ?? null
+            'admin' => $data['admin'] ?? null,
+            'mitra' => $data['mitra'] ?? null,
+            'bukti' => $data['bukti'] == null ? null : url('/')."/bukti/".$data['bukti']
         ];
     }
 
 
     public function findVerivyVacancy()
     {
-        $data = $this->post->where(
-            'verified',
-            'waiting'
-        )->with('user', 'admin')->orderBy('verified', 'asc')->get()->toArray();
+        $data = $this->post
+            ->where('verified', 'waiting')
+            ->where(function ($query) {
+                $query->whereHas('user')->orWhereHas('admin');
+            })
+            ->with('user', 'admin')
+            ->orderBy('verified', 'asc')
+            ->get()
+            ->toArray();
 
         $endDate = Carbon::now(); // Current date and time
         $startDate = $endDate->copy()->startOfWeek(); // Start of the current week (Sunday)
@@ -438,6 +488,65 @@ class PostService
 
         return $dataResponse;
     }
+
+
+    public function findVerifyVacancyMitra()
+    {
+        $data = $this->post
+            ->where('verified', 'waiting')
+            ->where(function ($query) {
+                $query->whereHas('mitra');
+            })
+            ->with('mitra')
+            ->orderBy('verified', 'asc')
+            ->get()
+            ->toArray();
+       
+
+        $endDate = Carbon::now(); // Current date and time
+        $startDate = $endDate->copy()->startOfWeek(); // Start of the current week (Sunday)
+        $endDate = $endDate->copy()->endOfWeek(); // End of the current week (Saturday)
+
+        $count = $this->post
+            ->where('verified', 'waiting')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->count();
+
+
+        // Calculate the start date and end date for the one-week period
+        // Calculate the start date (Sunday) and end date (Saturday) for the one-week period
+
+
+        // Create an array to store the counts for each day
+        $countsByDay = [];
+
+        // Loop through each day within the one-week period
+        $currentDate = $startDate->copy();
+        while ($currentDate <= $endDate) {
+            // Count the job postings for the current day
+            $countTempDay = $this->post
+                ->where('verified', 'waiting')
+                ->whereDate('created_at', $currentDate)
+                ->count();
+
+            // Store the count in the array with the date as the key
+            $countsByDay[$currentDate->toDateString()] = $countTempDay;
+
+            // Move to the next day
+            $currentDate->addDay();
+        }
+
+
+        $dataResponse['total_of_week'] = $count;
+        $dataResponse['count_by_day'] = $countsByDay;
+        $collection = collect($data);
+        $dataResponse['vacancy'] = $collection->map(function ($data) {
+            return $this->castToResponseFromArray($data);
+        })->toArray();
+
+        return $dataResponse;
+    }
+
 
 
     public function castToUserResponseFromArray($user)

@@ -25,12 +25,19 @@ class Post extends Model
         'verified',
         'type_jobs',
         'admin_id',
-        'post_at'
+        'post_at',
+        'mitra_id',
+        'bukti'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, "user_id");
+    }
+
+    public function mitra()
+    {
+        return $this->belongsTo(Mitra::class, "mitra_id");
     }
 
     public function admin()

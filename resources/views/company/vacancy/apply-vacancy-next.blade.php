@@ -127,7 +127,12 @@
         }
     </style>
     <div class="container-fluid">
-
+        @if ($errors->any())
+            <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+                <div class="text-white">{{ $errors->first() }}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="mt-4">
             <div class="col p-0">
                 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -140,46 +145,48 @@
                                             d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7H1.633z" />
                                     </svg></i></a>
                             </li>
-
                             <li class="breadcrumb-item active" aria-current="page">Pengajuan Lowongan</li>
                         </ol>
                     </nav>
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-body">
+        <form action="{{ route('vacancy-next-post') }}" method="post" enctype="multipart/form-data"
+            onsubmit="return validateImage()">
+            <div class="card">
+                <div class="card-body">
 
-                <div class="row" style="justify-items: end; text-align: end;">
-                    <div class="col">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            {{-- <button type="button" class="btn btn-primary">Left</button> --}}
-                            <a href="{{ route('vacancy-company-apply') }}" class="me-3"> <button type="button"
-                                    class="btn btn-secondary">
-                                    <i class="fas fa-chevron-left"></i> Sebelumnya
-                                </button></a>
-                            <a href=" {{ route('vacancy-end') }}"> <button type="button" class="btn btn-primary">
+                    <div class="row" style="justify-items: end; text-align: end;">
+                        <div class="col">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                {{-- <button type="button" class="btn btn-primary">Left</button> --}}
+                                <a href="{{ route('vacancy-company-apply') }}" class="me-3"> <button type="button"
+                                        class="btn btn-secondary">
+                                        <i class="fas fa-chevron-left"></i> Sebelumnya
+                                    </button></a>
+                                <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-chevron-right"></i> Selanjutnya
-                                </button></a>
+                                </button>
 
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
+            <div class="row">
 
 
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-body">
-                        <form action="">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+
                             <div class="form mb-3">
                                 <div class="form">
                                     <div class="">
                                         <label for="" style="font-weight: bold;">Posisi</label>
-                                        <input type="text" class="form-control" placeholder="Masukkan Posisi">
+                                        <input type="text" class="form-control" placeholder="Masukkan Posisi"
+                                            name="position">
                                     </div>
 
                                 </div>
@@ -189,11 +196,11 @@
                                 <div class="form-row">
                                     <div class="col">
                                         <label style="font-weight: bold; " for="">Diunggah</label>
-                                        <input type="date" class="form-control" placeholder="">
+                                        <input type="date" class="form-control" placeholder="" name="upload_at">
                                     </div>
                                     <div class="col">
                                         <label for="" style="font-weight: bold;">Kadaluwarsa</label>
-                                        <input type="date" class="form-control" placeholder="">
+                                        <input type="date" class="form-control" placeholder="" name="expired_at">
                                     </div>
                                 </div>
                             </div>
@@ -202,22 +209,36 @@
                                 <div class="form">
                                     <div class="">
                                         <label for="" style="font-weight: bold;">Tautan</label>
-                                        <input type="text" class="form-control" placeholder="Masukkan Tautan">
+                                        <input type="text" class="form-control" placeholder="Masukkan Tautan"
+                                            name="link">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form mb-3">
+                                <label for="" style="font-weight: bold;">Tipe Pekerjaan</label>
+                                <select class="form-select" aria-label="Default select example" id="bankSelect"
+                                    name="type_jobs">
+                                    <option value="Pilih Bank" selected>Pilih Tipe Pekerjaan</option>
+                                    <option value="Part Time"> Part Time</option>
+                                    <option value="wiraswasta"> Wiraswasta</option>
+                                    <option value="fulltime"> Fulltime</option>
+                                    <option value="karyawan"> Karyawan</option>
+                                    <option value="magang"> Magang</option>
+                                </select>
+                            </div>
+
+                            <input type="hidden" name="bukti_path" value="{{ $bukti }}">
+                            <input type="hidden" name="bank" value="{{ $bank }}">
+
+                            <div class="form mb-3">
                                 <div class="form">
                                     <div class="deskripsi">
                                         <label for="" style="font-weight: bold;">Deskripsi</label>
-                                        <textarea spellcheck="false" placeholder="Masukkan Deskripsi" required></textarea>
+                                        <textarea spellcheck="false" placeholder="Masukkan Deskripsi" name="description" required></textarea>
                                     </div>
                                 </div>
                             </div>
-
-
-
 
                             <div class="col-sm-12 p-0">
                                 <div class="card">
@@ -228,25 +249,24 @@
 
                                         <div class="container">
 
-                                            <input type="file" id="file" accept="image/*" hidden>
+                                            <input type="file" id="file" accept="image/*" name="poster" style="display: none">
                                             <div class="img-area" data-img="">
                                                 <i class='bx bxs-cloud-upload icon'></i>
                                                 <h3>Unggah Poster</h3>
                                                 <p>Pastikan file kurang dari <span>2MB</span></p>
                                             </div>
-                                            <button class="select-image"> Pilih Poster</button>
+                                            <button type="button" class="select-image"> Pilih Poster</button>
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
+
             </div>
-
-
-        </div>
+        </form>
     </div>
     <script>
         const textarea = document.querySelector("textarea");
@@ -293,5 +313,13 @@
                 alert("Image size more than 2MB");
             }
         })
+
+        function validateImage() {
+            if (inputFile.files.length <= 0) {
+                alert('Harap Pilih Poster Terlebih dahulu');
+                return false;
+            }
+            return true;
+        }
     </script>
 @endsection

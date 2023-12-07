@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('layouts-company.auth')
 @section('content')
     <div class="wrapper">
         <div class="section-authentication-cover">
@@ -9,6 +9,7 @@
                         class="col-12 col-xl-7 col-xxl-8 auth-cover-left align-items-center justify-content-center d-none d-xl-flex">
 
                         <div class="container shadow-none bg-transparent shadow-none rounded-0 mb-0">
+                            
                             <div class="card-body  text-center">
                                 <img src="{{ asset('/') }}assets/images/login-images/register-cover.svg" width="675"
                                     alt="" />

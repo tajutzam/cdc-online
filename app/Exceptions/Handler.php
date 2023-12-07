@@ -58,6 +58,7 @@ class Handler extends ExceptionHandler
                     'message' => $e->getMessage()
                 ], 400);
             }
+    
        
 
             if ($e instanceof NotFoundException) {
