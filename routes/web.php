@@ -63,6 +63,19 @@ Route::get('/admin/mitra', function () {
 })->name('vacancy-mitra');
 
 
+Route::get('/company/apply/next', function () {
+    return view('company.vacancy.apply-vacancy-next');
+})->name('vacancy-next');
+
+
+Route::get('/company/resetpassword', function () {
+    return view('company.auth.reset-password');
+})->name('reset-company');
+
+Route::get('/company/apply/end', function () {
+    return view('company.vacancy.apply-vacancy-end');
+})->name('vacancy-end');
+
 Route::get('/company/login', function () {
     return view('company.auth.login');
 })->name('login-company');
@@ -225,7 +238,6 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
 
 
     Route::get('/data/company', [MitraSubmissiosController::class, "mitra"])->name('company-data');
-
 });
 
 
@@ -236,7 +248,6 @@ Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () 
     Route::get('settings', function () {
         return view('company.settings');
     })->name('company-settings');
-
 });
 
 

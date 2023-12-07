@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-    @include('layouts.header')
+@include('layouts-company.header')
+
 <body>
     @yield('content')
-    @include('layouts.footer')
+    @include('layouts-company.footer')
 </body>
+
 </html>

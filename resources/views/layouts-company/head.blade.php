@@ -610,16 +610,23 @@
                     href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="{{ asset('/') }}assets/images/admin.png" class="user-img" alt="user avatar">
                     <div class="user-info">
-                        <p class="user-name mb-0">{{auth('mitra')->user()->name}}</p>
+                        <p class="user-name mb-0">{{ auth('mitra')->user()->name }}</p>
 
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
 
-                    <li class="text-center">
-                        <form action="{{ route('admin-logout', ['id' => 1]) }}" method="post">
+                    <li class="text-start">
+                        <form action="{{ route('login-company') }}" method="post">
                             <button href="" type="submit" class="btn btn-sm"> <i
                                     class="bx bx-arrow-back"></i>Logout</button>
+                        </form>
+                    </li>
+                    <li class="text-start">
+                        <form action="{{ route('reset-company') }}" method="post">
+                            <button href="" type="submit" class="btn btn-sm"> <i class="fas fa-cog"></i>
+                                Ganti
+                                Password</button>
                         </form>
                     </li>
                 </ul>
