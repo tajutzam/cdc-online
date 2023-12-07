@@ -141,7 +141,7 @@
                             </svg></i>Alumni</a>
                 </li>
 
-                <li style="margin-inline-start: 10%"> <a href="{{ route('manage-admin') }}"> <i><svg
+                <li style="margin-inline-start: 10%"> <a href="{{ route('manage-admin') }}"> <i><svg ,
                                 xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-person-lines-fill" viewBox="0 0 16 16">
                                 <path
@@ -204,7 +204,7 @@
                 </li>
         </li>
     </ul>
-    </li>
+
     <li>
         <a href="javascript:;" class="has-arrow">
             <div class="parent-icon"><i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"

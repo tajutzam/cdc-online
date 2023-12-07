@@ -20,7 +20,6 @@
             <th>F18c</th>
             <th>F18d</th>
             <th>F1201</th>
-            <th>F1202</th>
             <th>F14</th>
             <th>F15</th>
             <th>F301</th>
@@ -45,7 +44,6 @@
             <th>F7</th>
             <th>F7A</th>
             <th>F1001</th>
-            <th>F1002</th>
             <th>F1601</th>
             <th>F1602</th>
             <th>F1603</th>
@@ -109,7 +107,6 @@
                 <td>{{ $item['quisioner'][0]['furthe_study']['f18c'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['furthe_study']['f18d'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['furthe_study']['f1201'] ?? '' }}</td>
-                <td>{{ $item['quisioner'][0]['furthe_study']['f1202'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['furthe_study']['f14'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['furthe_study']['f15'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['startsearchjobs']['f301'] ?? '' }}</td>
@@ -150,7 +147,6 @@
                 <td>{{ $item['quisioner'][0]['companyapplied']['f7'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['companyapplied']['f7a'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['companyapplied']['f1001'] ?? '' }}</td>
-                <td>{{ $item['quisioner'][0]['companyapplied']['f1002'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['jobsuitability']['f1601'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['jobsuitability']['f1602'] ?? '' }}</td>
                 <td>{{ $item['quisioner'][0]['jobsuitability']['f1603'] ?? '' }}</td>

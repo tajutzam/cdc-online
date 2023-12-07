@@ -89,13 +89,13 @@
 
     </ul>
     {{-- <script>
-        $(document).ready(function() {
-            // Toggle submenus when clicking on items with the "has-arrow" class
-            $('.has-arrow').click(function() {
-                $(this).toggleClass('open');
-                $(this).next('ul').slideToggle();
-            });
-        });
-    </script> --}}
+           $(document).ready(function() {
+               // Toggle submenus when clicking on items with the "has-arrow" class
+               $('.has-arrow').click(function() {
+                   $(this).toggleClass('open');
+                   $(this).next('ul').slideToggle();
+               });
+           });
+       </script> --}}
     <!--end navigation-->
 </div>

@@ -1,10 +1,219 @@
 @extends('layouts-company.app')
 
 @section('content')
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <!-- Tambahkan link ke library Select2 -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <style>
+        /* Import Google Font - Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+
+
+
+        .img-area {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            max-height: 1000px;
+            background: var(--grey);
+            margin-bottom: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .img-area .icon {
+            font-size: 100px;
+        }
+
+        .img-area h3 {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .img-area p {
+            color: #999;
+        }
+
+        .img-area p span {
+            font-weight: 600;
+        }
+
+        .img-area img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: 100;
+        }
+
+        .img-area::before {
+            content: attr(data-img);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            color: #fff;
+            font-weight: 500;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: all .3s ease;
+            z-index: 200;
+        }
+
+        .img-area.active:hover::before {
+            opacity: 1;
+        }
+
+        .select-image {
+            display: block;
+            width: 100%;
+            padding: 16px 0;
+            border-radius: 15px;
+            background: var(--blue);
+            color: #fff;
+            font-weight: 500;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all .3s ease;
+        }
+
+        .select-image:hover {
+            background: var(--dark-blue);
+        }
+
+        ::selection {
+            color: #fff;
+            background: #4285f4;
+        }
+
+        .no-bullet {
+            list-style-type: none;
+        }
+
+        .select-btn li {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .select-btn {
+            height: 40px;
+
+            padding: 0 20px;
+            font-size: 17px;
+            background: #fff;
+            border-radius: 7px;
+            justify-content: space-between;
+            /* box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); */
+            border: 2px solid #e8e4e4;
+
+        }
+
+        .select-btn i {
+            font-size: 17px;
+            transition: transform 0.3s linear;
+        }
+
+        .wrapper.active .select-btn i {
+            transform: rotate(-180deg);
+        }
+
+        .content {
+            display: none;
+            padding: 20px;
+            margin-top: 15px;
+            background: #fff;
+            border-radius: 7px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .wrapper.active .content {
+            display: block;
+        }
+
+        .content .search {
+            position: relative;
+        }
+
+        .search i {
+            /* top: 50%; */
+            left: 15px;
+            color: #999;
+            font-size: 15px;
+            pointer-events: none;
+            transform: translateY(-50%);
+            position: absolute;
+        }
+
+        .search input {
+            height: 50px;
+            width: 100%;
+            outline: none;
+            font-size: 17px;
+            border-radius: 5px;
+            padding: 0 20px 0 43px;
+            border: 1px solid #B3B3B3;
+        }
+
+        .search input:focus {
+            padding-left: 42px;
+            border: 2px solid #4285f4;
+        }
+
+        .search input::placeholder {
+            color: #bfbfbf;
+        }
+
+        .content .options {
+            margin-top: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 7px;
+        }
+
+        .options::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        .options::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 25px;
+        }
+
+        .options::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 25px;
+        }
+
+        .options::-webkit-scrollbar-thumb:hover {
+            background: #b3b3b3;
+        }
+
+        .options li {
+            height: 50px;
+            padding: 0 13px;
+            font-size: 17px;
+        }
+
+        .options li:hover,
+        li.selected {
+            border-radius: 5px;
+            background: #f2f2f2;
+        }
+    </style>
     <div class="container-fluid">
 
         <div class="mt-4">
@@ -26,62 +235,164 @@
                 </div>
             </div>
         </div>
+        <div class="card">
+            <div class="card-body">
 
+                <div class="row" style="justify-items: end; text-align: end;">
+                    <div class="col">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            {{-- <button type="button" class="btn btn-primary">Left</button> --}}
+                            <a href="{{ route('vacancy-company-apply-next') }}"> <button type="button"
+                                    class="btn btn-primary">Selanjutnya</button></a>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <div class="row">
 
 
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <label for="selectExample">Pilih Opsi:</label>
-                        <select id="selectExample" class="form-control" data-live-search="true">
-                            <option value="1">Opsi 1</option>
-                            <option value="2">Opsi 2</option>
-                            <option value="3">Opsi 3</option>
-                            <!-- Tambahkan opsi lainnya sesuai kebutuhan -->
-                        </select>
+                        <form action="">
+                            <div class="form">
+                                <div class="form-group">
+                                    <div class="wrapper">
+                                        <label style="font-weight: bold" for="">Bank Tujuan</label>
+                                        <div class="select-btn pt-1 ps-3">
+
+                                            <span> Pilih Bank </span>
+                                            <i class="uil uil-angle-down"></i>
+                                        </div>
+                                        <div class="content">
+                                            <div class="search ">
+                                                <i class="mt-4"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                        height="16" fill="currentColor" class="bi bi-search"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                                    </svg></i>
+                                                <input spellcheck="false" type="text" placeholder="Cari Bank">
+                                            </div>
+                                            <ul class="options no-bullet"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-weight: bold" for="noRekening">No Rekening</label>
+                                    <input type="text" class="form-control" id="noRekening" placeholder="No Rekening"
+                                        style="background-color: #f0f0f0;">
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-weight: bold" for="tarif">Tarif</label>
+                                    <input type="text" class="form-control" id="tarif" placeholder="Tarif Layanan"
+                                        style="background-color: #f0f0f0;">
+                                </div>
+
+                            </div>
+
+
+
+                        </form>
                     </div>
                 </div>
             </div>
 
             <div class="col-sm-6">
                 <div class="card">
-
                     <div class="card-body">
-
+                        <div class="container">
+                            <input type="file" id="file" accept="image/*" hidden>
+                            <div class="img-area" data-img="">
+                                <i class='bx bxs-cloud-upload icon'></i>
+                                <h3>Unggah Bukti pembayaran</h3>
+                                <p>Pastikan file kurang dari <span>2MB</span></p>
+                            </div>
+                            <button class="select-image"> Pilih Bukti</button>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
     <script>
-        $(document).ready(function() {
-            // Inisialisasi Select2 pada elemen dengan id "selectExample"
-            $('#selectExample').select2();
-        });
-    </script>
+        const wrapper = document.querySelector(".wrapper"),
+            selectBtn = wrapper.querySelector(".select-btn"),
+            searchInp = wrapper.querySelector("input"),
+            options = wrapper.querySelector(".options");
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Inisialisasi Select2 pada elemen dengan id "selectExample"
-            var selectExample = document.getElementById('selectExample');
-            // Gunakan Select2 tanpa jQuery
-            var select2 = new Select2(selectExample, {
-                dropdownAutoWidth: true,
-                width: '100%',
-                dropdownParent: selectExample.parentElement,
-                matcher: function(params, data) {
-                    // Pencarian case-insensitive
-                    if ($.trim(params.term) === '') {
-                        return data;
-                    }
-                    if (data.text.toLowerCase().indexOf(params.term.toLowerCase()) > -1) {
-                        return data;
-                    }
-                    return null;
-                }
+        let countries = ["BRI", "Bank Mega", "BSI", "BCA"];
+
+        function addBank(selectedBank) {
+            options.innerHTML = "";
+            countries.forEach(bank => {
+                let isSelected = bank == selectedBank ? "selected" : "";
+                let li = `<li onclick="updateName(this)" class="${isSelected}">${bank}</li>`;
+                options.insertAdjacentHTML("beforeend", li);
             });
+        }
+        addBank();
+
+        function updateName(selectedLi) {
+            searchInp.value = "";
+            addBank(selectedLi.innerText);
+            wrapper.classList.remove("active");
+            selectBtn.firstElementChild.innerText = selectedLi.innerText;
+        }
+
+        searchInp.addEventListener("keyup", () => {
+            let arr = [];
+            let searchWord = searchInp.value.toLowerCase();
+            arr = countries.filter(data => {
+                return data.toLowerCase().startsWith(searchWord);
+            }).map(data => {
+                let isSelected = data == selectBtn.firstElementChild.innerText ? "selected" : "";
+                return `<li onclick="updateName(this)" class="${isSelected}">${data}</li>`;
+            }).join("");
+            options.innerHTML = arr ? arr : `<p style="margin-top: 10px;">Oops! bank not found</p>`;
         });
+
+        selectBtn.addEventListener("click", () => wrapper.classList.toggle("active"));
+    </script>
+    <script>
+        const selectImage = document.querySelector('.select-image');
+        const inputFile = document.querySelector('#file');
+        const imgArea = document.querySelector('.img-area');
+
+        selectImage.addEventListener('click', function() {
+            inputFile.click();
+        })
+
+        inputFile.addEventListener('change', function() {
+            const image = this.files[0]
+            if (image.size < 2000000) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const allImg = imgArea.querySelectorAll('img');
+                    allImg.forEach(item => item.remove());
+                    const imgUrl = reader.result;
+                    const img = document.createElement('img');
+                    img.src = imgUrl;
+                    imgArea.appendChild(img);
+                    imgArea.classList.add('active');
+                    imgArea.dataset.img = image.name;
+
+                    // Set z-index dynamically
+                    const zIndexValue = allImg.length + 1; // Make sure it's higher than existing images
+                    img.style.zIndex = zIndexValue;
+                    imgArea.style.zIndex = zIndexValue;
+                    imgArea.querySelector('::before').style.zIndex = zIndexValue -
+                        1; // Set pseudo-element z-index
+
+                }
+                reader.readAsDataURL(image);
+            } else {
+                alert("Image size more than 2MB");
+            }
+        })
     </script>
 @endsection

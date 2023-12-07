@@ -14,6 +14,9 @@
     <link href="{{ asset('/') }}assets/plugins/highcharts/css/highcharts.css" rel="stylesheet" />
     <link href="{{ asset('/') }}assets/plugins/highcharts/js/export-data.js" rel="stylesheet" />
     <link href="{{ asset('/') }}assets/plugins/highcharts/js/exporting.js" rel="stylesheet" />
+    <link href="{{ asset('/') }}assets/plugins/highcharts/css/highcharts.css" rel="stylesheet" />
+    <link href="{{ asset('/') }}assets/plugins/highcharts/js/export-data.js" rel="stylesheet" />
+    <link href="{{ asset('/') }}assets/plugins/highcharts/js/exporting.js" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('/css/trix.css') }}">
     <!-- loader-->
     <link href="{{ asset('/') }}assets/css/pace.min.css" rel="stylesheet" />

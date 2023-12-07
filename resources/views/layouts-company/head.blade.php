@@ -3,7 +3,13 @@
         <nav class="navbar navbar-expand gap-3">
             <div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
             </div>
+<header class="">
+    <div class="topbar d-flex align-items-center">
+        <nav class="navbar navbar-expand gap-3">
+            <div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
+            </div>
 
+            {{-- <div class="position-relative search-bar d-lg-block d-none" data-bs-toggle="modal"
             {{-- <div class="position-relative search-bar d-lg-block d-none" data-bs-toggle="modal"
                 data-bs-target="#SearchModal">
                 <input class="form-control px-5" disabled type="search" placeholder="Search">
@@ -12,6 +18,9 @@
             </div> --}}
 
 
+            <div class="top-menu ms-auto">
+                <ul class="navbar-nav align-items-center gap-1">
+                    {{-- <li class="nav-item mobile-search-icon d-flex d-lg-none" data-bs-toggle="modal"
             <div class="top-menu ms-auto">
                 <ul class="navbar-nav align-items-center gap-1">
                     {{-- <li class="nav-item mobile-search-icon d-flex d-lg-none" data-bs-toggle="modal"
@@ -26,7 +35,246 @@
 
                     <li class="nav-item dropdown dropdown-app">
                         {{-- <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown"
+                    <li class="nav-item dropdown dropdown-app">
+                        {{-- <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown"
                             href="javascript:;"><i class='bx bx-grid-alt'></i></a> --}}
+                        <div class="dropdown-menu dropdown-menu-end p-0">
+                            <div class="app-container p-2 my-2">
+                                <div class="row gx-0 gy-2 row-cols-3 justify-content-center p-2">
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/slack.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Slack</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/behance.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Behance</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/google-drive.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Dribble</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/outlook.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Outlook</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/github.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">GitHub</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/stack-overflow.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Stack</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/figma.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Stack</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/twitter.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Twitter</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/google-calendar.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Calendar</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/spotify.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Spotify</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/google-photos.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Photos</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/pinterest.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Photos</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/linkedin.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">linkedin</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/dribble.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Dribble</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/youtube.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">YouTube</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/google.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">News</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/envato.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Envato</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="javascript:;">
+                                            <div class="app-box text-center">
+                                                <div class="app-icon">
+                                                    <img src="{{ asset('/') }}assets/images/app/safari.png"
+                                                        width="30" alt="">
+                                                </div>
+                                                <div class="app-name">
+                                                    <p class="mb-0 mt-1">Safari</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
                         <div class="dropdown-menu dropdown-menu-end p-0">
                             <div class="app-container p-2 my-2">
                                 <div class="row gx-0 gy-2 row-cols-3 justify-content-center p-2">

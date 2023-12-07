@@ -58,6 +58,12 @@ use App\Http\Middleware\MitraMiddleware;
 
 
 
+
+
+
+
+
+
 Route::get('/admin/mitra', function () {
     return view('admin.vacancy.mitra-vacancy');
 })->name('vacancy-mitra');
@@ -248,6 +254,15 @@ Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () 
     Route::put("settings", [MitraSubmissiosController::class, "updateAccount"])->name('mitra-put');
     Route::put("resetpassword", [MitraSubmissiosController::class, "updatePassword"])->name('mitra-reset-password');
     Route::post("logout", [MitraSubmissiosController::class, "logout"])->name('mitra-logout');
+
+    Route::get('/company/apply/next/end', function () {
+        return view('company.vacancy.apply-vacancy-end');
+    })->name('vacancy-company-apply-end');
+
+
+    Route::get('/company/apply/next', function () {
+        return view('company.vacancy.apply-vacancy-next');
+    })->name('vacancy-company-apply-next');
 
 
 });

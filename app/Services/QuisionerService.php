@@ -190,7 +190,7 @@ class QuisionerService
                     'f8' => $request['status'],
                     'f504' => $request['is_less_6_months'],
                     'f502' => $request['pre_grad_employment_months'],
-                    'f505' => $request['monthly_income'],
+                    'f505' => intval($request['monthly_income']),
                     'f506' => $request['post_grad_months'],
                     'f5a1' => $request['code_province'],
                     'f5a2' => $request['code_regency'],
