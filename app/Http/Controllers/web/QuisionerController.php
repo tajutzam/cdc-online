@@ -57,7 +57,7 @@ class QuisionerController extends Controller
         }
         try {
             //code...
-            return Excel::download(new QuisionerAkreditasiExport($request->input('tahun')), "Akreditasi-Tahun Lulus-" . $request->input('tahun') . "." . $data['format']);
+            return Excel::download(new QuisionerAkreditasiExport($request->input('tahun')), "Tracer Study-Tahun Lulus -" . $request->input('tahun') . "." . $data['format']);
         } catch (\Throwable $th) {
             //throw $th;
             throw new WebException($th->getMessage());
