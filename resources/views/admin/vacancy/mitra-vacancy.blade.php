@@ -2,9 +2,8 @@
 
 
 @section('content')
-
     <style>
-        table tbody tr td img{
+        table tbody tr td img {
             height: 100px;
         }
     </style>
@@ -87,10 +86,18 @@
                             <td><img src="{{ $item['bukti'] }}" alt="bukti pembayaran"></td>
                             <td style="text-align: center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a href=""><button type="button"
-                                            class="btn btn-success me-2 mb-2">Setujui</button></a>
-                                    <a href=""> <button type="button" class="btn btn-danger">Tolak</button></a>
-
+                                    <form action="{{ route('vacancy-mitra-verify', ['id' => $item['id']]) }}" method="post"
+                                        class="p-2">
+                                        @method('put')
+                                        <input type="text" value="verified" hidden name="verified">
+                                        <button type="submit" class="btn btn-success">Setuju</button>
+                                    </form>
+                                    <form action="{{ route('vacancy-verify', ['id' => $item['id']]) }}" method="post"
+                                        class="p-2">
+                                        @method('put')
+                                        <input type="text" value="rejected" name="verified" hidden>
+                                        <button type="submit" class="btn btn-danger">Tolak</button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>

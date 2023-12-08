@@ -41,16 +41,17 @@ class PostController extends Controller
         ]);
     }
 
-    public function verivyMitraVacancy(){
+    public function verivyMitraVacancy()
+    {
         $data = $this->postService->findVerifyVacancyMitra();
         // dd($data);
 
-       
+
         // Extract the counts and dates from the $countsByDay array
         $dates = array_keys($data['count_by_day']);
         $counts_by_day = array_values($data['count_by_day']);
 
-    
+
 
         return view('admin.vacancy.mitra-vacancy', [
             'data' => $data['vacancy'],
@@ -114,9 +115,25 @@ class PostController extends Controller
             'id' => $id
         ];
         $response = $this->postService->updateVerified($data);
+        // dd($response);
         Alert::success('Success', 'Berhasil Memperbarui');
         return back();
     }
+
+
+    public function verifyOrRejectMitra(Request $request, $id)
+    {
+        $data = [
+            'verified' => $request->input('verified'),
+            'id' => $id
+        ];
+        $response = $this->postService->updateVerified($data, 'mitra');
+        // dd($response);
+        Alert::success('Success', 'Berhasil Memperbarui status lowonga');
+        return back();
+    }
+
+
 
 
     private function getDataFromJson($data): array

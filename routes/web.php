@@ -176,6 +176,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
         Route::get('/', [PostController::class, 'index'])->name('vacancy');
         Route::post('/store', [PostController::class, 'store'])->name('vacancy-store');
         Route::put('/{id}', [PostController::class, 'verifyOrReject'])->name('vacancy-verify');
+        Route::put("/mitra/{id}" , [PostController::class , "verifyOrRejectMitra"])->name('vacancy-mitra-verify');
         Route::get('/history', [PostController::class, 'history'])->name('history');
     });
     Route::prefix('berita')->group(function () {

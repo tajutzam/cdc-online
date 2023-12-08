@@ -745,6 +745,8 @@ class QuisionerService
         })->toArray();
 
 
+
+
         return $data;
     }
 
@@ -1235,7 +1237,7 @@ class QuisionerService
             $akreditasi = 1;
             switch ($value) {
                 case "Sangat Rendah":
-                    $akreditasi = 1;
+                    $akreditasi = 1; 
                     break;
                 case "Rendah":
                     $akreditasi = 2;
@@ -1562,7 +1564,7 @@ class QuisionerService
     {
         $result = $data;
         if ($data['f1601'] == 'Tidak sesuai') {
-            $result['f1601'] = 0;
+            $result['f1601'] = 0 . "Tidak";
         } else {
             $result['f1601'] = 1;
         }

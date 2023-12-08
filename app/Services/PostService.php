@@ -146,19 +146,23 @@ class PostService
     }
 
 
-    public function updateVerified($data)
+    public function updateVerified($data, $type = null)
     {
         DB::beginTransaction();
         $updated = $this->post->where('id', $data['id'])->update([
             'verified' => $data['verified']
         ]);
         if ($updated) {
-            $post = $this->post->where('id', $data['id'])->with('user')->first();
+            $post = $this->post->where('id', $data['id'])->with('user', 'mitra')->first();
             DB::commit();
-            if ($data['verified'] == 'verified') {
-                $this->notificationService->sendNotificationPost($post->user, "Selamat, Lowongan Anda Disetujui !", "Lowongan : " . $post->position . " di :" . $post->perusahaan, $post->id);
+            if (isset($type)) {
+                
             } else {
-                $this->notificationService->sendNotificationPost($post->user, "Mohon Maaf, Lowongan Anda Ditolak", "Pesan", $post->id);
+                if ($data['verified'] == 'verified') {
+                    $this->notificationService->sendNotificationPost($post->user, "Selamat, Lowongan Anda Disetujui !", "Lowongan : " . $post->position . " di :" . $post->perusahaan, $post->id);
+                } else {
+                    $this->notificationService->sendNotificationPost($post->user, "Mohon Maaf, Lowongan Anda Ditolak", "Pesan", $post->id);
+                }
             }
             return ResponseHelper::successResponse('Berhasil memperbarui Verifikasi', $updated, 200);
         }
@@ -428,7 +432,7 @@ class PostService
             'user' => $data['user'] ?? null,
             'admin' => $data['admin'] ?? null,
             'mitra' => $data['mitra'] ?? null,
-            'bukti' => $data['bukti'] == null ? null : url('/')."/bukti/".$data['bukti']
+            'bukti' => $data['bukti'] == null ? null : url('/') . "/bukti/" . $data['bukti']
         ];
     }
 
@@ -501,7 +505,7 @@ class PostService
             ->orderBy('verified', 'asc')
             ->get()
             ->toArray();
-       
+
 
         $endDate = Carbon::now(); // Current date and time
         $startDate = $endDate->copy()->startOfWeek(); // Start of the current week (Sunday)
