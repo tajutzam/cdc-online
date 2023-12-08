@@ -26,7 +26,7 @@ class NotificationService
         $this->user = new User();
 
         $serviceAccountPath = storage_path(env('FIREBASE_CREDENTIALS'));
-
+       
         $factory = (new Factory)
             ->withServiceAccount($serviceAccountPath);
 

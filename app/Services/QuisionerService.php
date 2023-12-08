@@ -1564,7 +1564,7 @@ class QuisionerService
     {
         $result = $data;
         if ($data['f1601'] == 'Tidak sesuai') {
-            $result['f1601'] = 0 . "Tidak";
+            $result['f1601'] = 0;
         } else {
             $result['f1601'] = 1;
         }

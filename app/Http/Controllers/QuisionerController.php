@@ -203,6 +203,7 @@ class QuisionerController extends Controller
             'other_reason_9' => ['required', 'string'],
             'other_reason_10' => ['required', 'string'],
         ];
+     
 
         $this->validateData($request->all(), $validations);
         $userId = $this->userService->extractUserId($request->bearerToken());
