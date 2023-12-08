@@ -186,7 +186,7 @@
                                     <div class="">
                                         <label for="" style="font-weight: bold;">Posisi</label>
                                         <input type="text" class="form-control" placeholder="Masukkan Posisi"
-                                            name="position">
+                                            name="position" value="{{ old('position') }}">
                                     </div>
 
                                 </div>
@@ -196,11 +196,13 @@
                                 <div class="form-row">
                                     <div class="col">
                                         <label style="font-weight: bold; " for="">Diunggah</label>
-                                        <input type="date" class="form-control" placeholder="" name="upload_at">
+                                        <input type="date" class="form-control" placeholder="" name="upload_at"
+                                            value="{{ old('upload_at') }}">
                                     </div>
                                     <div class="col">
                                         <label for="" style="font-weight: bold;">Kadaluwarsa</label>
-                                        <input type="date" class="form-control" placeholder="" name="expired_at">
+                                        <input type="date" class="form-control" placeholder="" name="expired_at"
+                                            value="{{ old('expired_at') }}">
                                     </div>
                                 </div>
                             </div>
@@ -210,7 +212,7 @@
                                     <div class="">
                                         <label for="" style="font-weight: bold;">Tautan</label>
                                         <input type="text" class="form-control" placeholder="Masukkan Tautan"
-                                            name="link">
+                                            name="link" value="{{ old('link') }}">
                                     </div>
                                 </div>
                             </div>
@@ -218,7 +220,7 @@
                             <div class="form mb-3">
                                 <label for="" style="font-weight: bold;">Tipe Pekerjaan</label>
                                 <select class="form-select" aria-label="Default select example" id="bankSelect"
-                                    name="type_jobs">
+                                    name="type_jobs" value="{{ old('type_jobs') }}">
                                     <option value="Pilih Bank" selected>Pilih Tipe Pekerjaan</option>
                                     <option value="Part Time"> Part Time</option>
                                     <option value="wiraswasta"> Wiraswasta</option>
@@ -235,7 +237,8 @@
                                 <div class="form">
                                     <div class="deskripsi">
                                         <label for="" style="font-weight: bold;">Deskripsi</label>
-                                        <textarea spellcheck="false" placeholder="Masukkan Deskripsi" name="description" required></textarea>
+                                        <textarea spellcheck="false" placeholder="Masukkan Deskripsi" name="description" required
+                                            value="{{ old('description') }}"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -249,7 +252,8 @@
 
                                         <div class="container">
 
-                                            <input type="file" id="file" accept="image/*" name="poster" style="display: none">
+                                            <input type="file" id="file" accept="image/*" name="poster"
+                                                style="display: none" value="{{ old('poster') }}">
                                             <div class="img-area" data-img="">
                                                 <i class='bx bxs-cloud-upload icon'></i>
                                                 <h3>Unggah Poster</h3>

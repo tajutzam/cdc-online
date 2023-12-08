@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
-                    <img src="{{ asset('/') }}assets/img/login-cv.svg" class="img-fluid" alt="" width="85%">
+                    <img src="{{ asset('/') }}assets/img/login-cv.svg" class="img-fluid" alt="" width="75%">
                 </div>
             </div>
         </div>
