@@ -617,7 +617,7 @@
                 <ul class="dropdown-menu dropdown-menu-end">
 
                     <li class="text-start">
-                        <form action="{{ route('login-company') }}" method="post">
+                        <form action="{{ route('mitra-logout') }}" method="post">
                             <button href="" type="submit" class="btn btn-sm"> <i
                                     class="bx bx-arrow-back"></i>Logout</button>
                         </form>

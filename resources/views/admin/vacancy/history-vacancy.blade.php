@@ -133,13 +133,16 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($data['active'] as $item)
+                                                {{-- @dd($item) --}}
                                                 <tr class="text-start">
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>
-                                                        @if ($item['user'] == null)
-                                                            {{ $item['admin']['name'] }}
-                                                        @else
+                                                        @if ($item['user'] != null)
                                                             {{ $item['user']['fullname'] }}
+                                                        @elseif($item['mitra'] != null)
+                                                            {{ $item['mitra']['name'] }}
+                                                        @else
+                                                            {{ $item['admin']['name'] }}
                                                         @endif
                                                     </td>
                                                     <td>{{ $item['company'] }}</td>
@@ -182,10 +185,12 @@
                                                 <tr class="text-start">
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>
-                                                        @if ($item['user'] == null)
-                                                            {{ $item['admin']['name'] }}
-                                                        @else
+                                                        @if ($item['user'] != null)
                                                             {{ $item['user']['fullname'] }}
+                                                        @elseif($item['mitra'] != null)
+                                                            {{ $item['mitra']['name'] }}
+                                                        @else
+                                                            {{ $item['admin']['name'] }}
                                                         @endif
                                                     </td>
                                                     <td>{{ $item['company'] }}</td>
@@ -198,8 +203,8 @@
                                                     </td>
                                                     <td>{{ $item['post_at'] }}</td>
                                                     <td>{{ $item['expired'] }}</td>
-                                                    <td><a href="{{ $item['link_apply'] }}"><i class="fas fa-link"></i></a>
-                                                    </td>
+                                                    <td><a href="{{ $item['link_apply'] }}"> <i
+                                                                class="fas fa-link"></i></a></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

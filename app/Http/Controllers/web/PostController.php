@@ -64,6 +64,7 @@ class PostController extends Controller
     public function history()
     {
         $data = $this->postService->findHistoryVacancy();
+        // dd($data);
         return view('admin.vacancy.history-vacancy', ['data' => $data]);
     }
     public function store(Request $request)

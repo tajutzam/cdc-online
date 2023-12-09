@@ -156,7 +156,7 @@ class PostService
             $post = $this->post->where('id', $data['id'])->with('user', 'mitra')->first();
             DB::commit();
             if (isset($type)) {
-                
+
             } else {
                 if ($data['verified'] == 'verified') {
                     $this->notificationService->sendNotificationPost($post->user, "Selamat, Lowongan Anda Disetujui !", "Lowongan : " . $post->position . " di :" . $post->perusahaan, $post->id);
@@ -174,21 +174,21 @@ class PostService
     {
         $now = Carbon::now(); // Mendapatkan tanggal saat ini menggunakan Carbon
 
-
         $expiredPosts = $this->post
             ->where('expired', '>', $now)
             ->where('verified', 'verified')
             ->where('user_id', '<>', $userId)
             ->orWhereNotNull('admin_id')
+            ->orWhereNotNull('mitra_id')
             ->with([
                 'comments' => function ($query) {
                     $query->with('user');
                 },
                 'user',
-                'admin'
+                'admin',
+                'mitra'
             ])
             ->paginate(10, ['*'], 'page', $page);
-
 
 
         $data = [
@@ -196,6 +196,7 @@ class PostService
             'total_item' => $expiredPosts->total()
         ];
         foreach ($expiredPosts as $index => $datum) {
+
             $tempPost = $this->castToResponse($datum);
             $comments = [];
             // dd($tempPost['comments']);
@@ -348,6 +349,13 @@ class PostService
         $uploader = null;
         if (isset($data->user)) {
             $uploader = $this->castToUserResponse($data->user);
+
+        } else if (isset($data->mitra)) {
+            $data->mitra->logo = url('/').'/mitra/logo/'.$data->mitra->logo;
+            unset($data->mitra->business_license);
+            unset($data->mitra->nib);
+            $uploader = $data->mitra;
+
         } else {
             $uploader = $data->admin;
         }
@@ -585,7 +593,7 @@ class PostService
     {
         $data = [];
         $dataActive = $this->post
-            ->with('user', 'admin')
+            ->with('user', 'admin', 'mitra')
             ->where(function ($query) {
                 $query->where('verified', 'verified')
                     ->where('expired', '>', Carbon::now());

@@ -257,12 +257,18 @@ Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () 
         return view('company.auth.reset-password');
     })->name('reset-company');
 
+    Route::post('/resetpassword', [MitraSubmissiosController::class , "updatePassword"])->name('mitra-reset-password');
+
     Route::get('/apply/end', [MitraSubmissiosController::class, "end"])->name('vacancy-end')->middleware(VacancyFirst::class);
     Route::post('/apply/end', [MitraSubmissiosController::class, "endPerfom"])->name('vacancy-end-post')->middleware(VacancyFirst::class);
 
     Route::get('settings', function () {
         return view('company.settings');
     })->name('company-settings');
+
+    Route::put('settings', [MitraSubmissiosController::class , "updateAccount"])->name('mitra-put');
+    Route::post('logout', [MitraSubmissiosController::class , "logout"])->name('mitra-logout');
+
 
 
 });

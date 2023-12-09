@@ -5,6 +5,8 @@
 <body>
     @yield('content')
     @include('layouts-company.footer')
+    @include('sweetalert::alert')
+
 </body>
 
 </html>

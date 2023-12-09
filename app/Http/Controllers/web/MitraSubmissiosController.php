@@ -6,6 +6,7 @@ use App\Exceptions\WebException;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\PaymentFirst;
 use App\Models\Bank;
+use App\Models\Post;
 use App\Services\MitraService;
 use App\Services\PostService;
 use Illuminate\Http\Request;
@@ -103,7 +104,9 @@ class MitraSubmissiosController extends Controller
 
     public function history()
     {
-        return view('company.vacancy.company-history');
+        $mitraId = auth('mitra')->user()->id;
+        $posts = Post::where('mitra_id', $mitraId)->get();
+        return view('company.vacancy.company-history', ['posts' => $posts]);
 
     }
 
@@ -139,7 +142,7 @@ class MitraSubmissiosController extends Controller
     public function logout()
     {
         auth('mitra')->logout();
-        return redirect("/company/login");
+        return redirect("");
     }
 
     public function applyToNext(Request $request)
@@ -180,7 +183,7 @@ class MitraSubmissiosController extends Controller
 
     public function nextPerfom(Request $request)
     {
-      
+
         $this->validate($request, [
             'poster' => 'required',
             'description' => 'required',

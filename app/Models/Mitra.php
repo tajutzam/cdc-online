@@ -14,6 +14,8 @@ class Mitra extends Authenticatable
 
     protected $table = 'mitra';
 
+    protected $hidden = ['password'];
+
     protected $fillable = [
         'logo',
         'name',
