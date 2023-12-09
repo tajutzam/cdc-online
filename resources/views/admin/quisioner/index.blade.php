@@ -237,8 +237,8 @@
                     <label for="tahun-level-excel" style="font-weight: bold"> Tahun Level Kuesioner</label> <br>
                     <label for="jenex">Jenis Export</label>
                     <select name="type" id="jenex" class="form-select form-select-sm mb-3">
-                        <option value="akademik">Akademik</option>
-                        <option value="laporan">Laporan</option>
+                        <option value="akademik">Tracer Study</option>
+                        <option value="laporan">Akreditasi</option>
                     </select>
 
                     <label for="tahun-level-excel">Pilih Tahun</label>

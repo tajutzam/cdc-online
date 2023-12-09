@@ -138,9 +138,7 @@ class QuisionerService
             }
         } else {
             throw new Exception("Gagal mengisi kuisioner", 500);
-
         }
-
     }
 
     public function updateQuisionerIdentity($request)
@@ -258,7 +256,6 @@ class QuisionerService
             }
         }
         throw new NotFoundException('qusioner level not found', 404);
-
     }
 
 
@@ -368,7 +365,6 @@ class QuisionerService
             throw new Exception('Gagal memperbarui kuisioner');
         }
         throw new Exception('Gagal mengisi kuisioner');
-
     }
 
 
@@ -414,7 +410,6 @@ class QuisionerService
             throw new Exception('Gagal memperbarui kuisioner');
         }
         throw new Exception('Ops ,  gagal mengisi kuisioner terjadi kesalahan');
-
     }
 
     public function addQuisionerCompanyApplied($request, $userId)
@@ -538,7 +533,6 @@ class QuisionerService
                 $query->with('howtofindjobs');
                 $query->with('companyapplied');
                 $query->with('jobsuitability');
-
             })
             ->with('educations')
             ->with('prodi')
@@ -633,7 +627,6 @@ class QuisionerService
                 $query->with('howtofindjobs');
                 $query->with('companyapplied');
                 $query->with('jobsuitability');
-
             })
             ->with('educations')
             ->with('prodi')
@@ -741,6 +734,17 @@ class QuisionerService
         $data = collect($users)->map(function ($user) {
             // Modify the items here
             $tempUser = $this->castToUserResponseFromArray($user);
+            $dataQuisioner = $tempUser['quisioner'][0];
+
+            $competence = $this->castComptenceLevelToLaporan($dataQuisioner['competence']);
+            $dataQuisioner['competence'] = $competence;
+            $dataQuisioner['studymethod'] = $this->castStudyMethodToLaporan($dataQuisioner['studymethod']);
+            $dataQuisioner['furthe_study'] = $this->castFurtheStudyLaporan($dataQuisioner['furthe_study']);
+            $dataQuisioner['startsearchjobs'] = $this->castStartSearchJobLaporan($dataQuisioner['startsearchjobs']);
+            $dataQuisioner['main'] = $this->castMainToLaporan($dataQuisioner['main']);
+            $dataQuisioner['companyapplied'] = $this->castCompanyAppliedLaporan($dataQuisioner['companyapplied']);
+            $dataQuisioner['jobsuitability'] = $this->castJobsuitabilityLaporan($dataQuisioner['jobsuitability']);
+            $tempUser['quisioner'][0] = $dataQuisioner;
             return $tempUser;
         })->toArray();
 
@@ -965,7 +969,6 @@ class QuisionerService
             //throw $th;
             throw new Exception($th->getMessage());
         }
-
     }
 
     public function updateStudyMethod($idStudyMethod, $data)
@@ -985,7 +988,6 @@ class QuisionerService
             //throw $th;
             throw new Exception($th->getMessage());
         }
-
     }
 
     public function updateJobsStreet($idJobsStreet, $data)
@@ -993,7 +995,6 @@ class QuisionerService
         $job = $this->startSearchJob->where('id', $idJobsStreet)->first();
         if (!isset($job)) {
             throw new NotFoundException("Ops, Quisioner Jobs Street Tidak Ditemukan");
-
         }
         try {
             //code...
@@ -1006,7 +1007,6 @@ class QuisionerService
             //throw $th;
             throw new Exception($th->getMessage());
         }
-
     }
 
     public function updateHowFindJob($idHowFindJob, $data)
@@ -1026,7 +1026,6 @@ class QuisionerService
             //throw $th;
             throw new Exception($th->getMessage());
         }
-
     }
 
     public function updateCompanyApplied($idCompanyApplied, $data)
@@ -1049,7 +1048,6 @@ class QuisionerService
             //throw $th;
             throw new Exception($th->getMessage());
         }
-
     }
 
     public function updateJobSuitability($idJobSuitability, $data)
@@ -1069,7 +1067,6 @@ class QuisionerService
         } catch (\Throwable $th) {
             //throw $th;
             throw new Exception($th->getMessage());
-
         }
     }
 
@@ -1222,7 +1219,7 @@ class QuisionerService
         })->toArray();
 
 
-   
+
 
         return $data;
     }
@@ -1237,7 +1234,7 @@ class QuisionerService
             $akreditasi = 1;
             switch ($value) {
                 case "Sangat Rendah":
-                    $akreditasi = 1; 
+                    $akreditasi = 1;
                     break;
                 case "Rendah":
                     $akreditasi = 2;
@@ -1260,6 +1257,36 @@ class QuisionerService
     }
 
 
+    private function castComptenceLevelToLaporan($data)
+    {
+        $result = [];
+        unset($data['id']);
+        foreach ($data as $key => $value) {
+            # code...
+            $akreditasi = "1";
+            switch ($value) {
+                case "Sangat Rendah":
+                    $akreditasi = "1-Sangat Rendah";
+                    break;
+                case "Rendah":
+                    $akreditasi = "2-Rendah";
+                    break;
+                case "Netral":
+                    $akreditasi = "3-Netral";
+                    break;
+                case "Tinggi":
+                    $akreditasi = "4-Tinggi";
+                    break;
+                case "Sangat Tinggi":
+                    $akreditasi = "5-Sangat Tinggi";
+                    break;
+                default:
+                    $akreditasi = "5-Sangat Tinggi";
+            }
+            $result[$key] = $akreditasi;
+        }
+        return $result;
+    }
     public function castStudyMethodToAkreditasi($data)
     {
         $result = [];
@@ -1290,8 +1317,36 @@ class QuisionerService
         }
         return $result;
     }
-
-
+    public function castStudyMethodToLaporan($data)
+    {
+        $result = [];
+        unset($data['id']);
+        foreach ($data as $key => $value) {
+            # code...
+            $akreditasi = "1";
+            switch ($value) {
+                case "Sangat Besar":
+                    $akreditasi = "1-Sangat Besar";
+                    break;
+                case "Besar":
+                    $akreditasi = "2-Besar";
+                    break;
+                case "Cukup Besar":
+                    $akreditasi = "3-Cukup Besar";
+                    break;
+                case "Kurang":
+                    $akreditasi = "4-Kurang";
+                    break;
+                case "Tidak Sama Sekali":
+                    $akreditasi = "5-Tidak Sama Sekali";
+                    break;
+                default:
+                    $akreditasi = "1-Sangat Besar";
+            }
+            $result[$key] = $akreditasi;
+        }
+        return $result;
+    }
     private function castFurtheStudyAkreditasi($data)
     {
         unset($data['id']);
@@ -1383,7 +1438,96 @@ class QuisionerService
         return $result;
     }
 
+    private function castFurtheStudyLaporan($data)
+    {
+        unset($data['id']);
+        $result = $data;
+        if ($data['f18a'] == 'Beasiswa') {
+            $result['f18a'] = "1-Beasiswa";
+        } else {
+            $result['f18a'] = "2-Biaya Sendiri";
+        }
 
+
+        switch ($data['f1201']) {
+            case 'Biaya Sendiri/Keluarga':
+                # code...
+                $result['f1201'] = "1-Biaya Sendiri/Keluarga";
+                break;
+            case 'Beasiswa ADIK':
+                # code...
+                $result['f1201'] = "2-Beasiswa ADIK";
+                break;
+            case 'Beasiswa BIDIKMISI':
+                # code...
+                $result['f1201'] = "3-Beasiswa BIDIKMISI";
+                break;
+            case 'Beasiswa PPA':
+                # code...
+                $result['f1201'] = "4-Beasiswa PPA";
+                break;
+            case 'Beasiswa AFIRMASI':
+                # code...
+                $result['f1201'] = "5-Beasiswa AFIRMASI";
+                break;
+            case 'Beasiswa Perusahaan/Swasta ':
+                # code...
+                $result['f1201'] = "6-Beasiswa Perusahaan/Swasta";
+                break;
+            case 'Lainnya, tuliskan':
+                # code...
+                $result['f1201'] = "7-Lainnya, tuliskan";
+                break;
+            default:
+                # code...
+                $result['f1201'] = "1-Biaya Sendiri/Keluarga";
+                break;
+        }
+
+
+        switch ($data['f14']) {
+            case "Sangat Erat":
+                $result['f14'] = "1-Sangat Erat";
+                break;
+            case "Erat":
+                $result['f14'] = "2-Erat";
+                break;
+            case "Cukup Erat":
+                $result['f14'] = "3-Cukup Erat";
+                break;
+            case "Kurang Erat":
+                $result['f14'] = "4-Kurang Erat";
+                break;
+            case "Tidak Sama Sekali":
+                $result['f14'] = "5-Tidak Sama Sekali";
+                break;
+            default:
+                $result['f14'] = "1-Sangat Erat";
+                break;
+        }
+
+
+
+        switch ($data['f15']) {
+            case "Setingkat Lebih Tinggi":
+                $result['f15'] = "1-Setingkat Lebih Tinggi";
+                break;
+            case "Tingkat yang Sama":
+                $result['f15'] = "2-Tingkat yang Sama";
+                break;
+            case "Setingkat Lebih Rendah":
+                $result['f15'] = "3-Setingkat Lebih Rendah";
+                break;
+            case "Tidak Perlu Pendidikan Tinggi":
+                $result['f15'] = "4-Tidak Perlu Pendidikan Tinggi";
+                break;
+            default:
+                $result['f15'] = "1-Setingkat Lebih Tinggi";
+                break;
+        }
+
+        return $result;
+    }
     private function castStartSearchJobAkreditasi($data)
     {
         $result = $data;
@@ -1408,6 +1552,30 @@ class QuisionerService
         return $result;
     }
 
+
+    private function castStartSearchJobLaporan($data)
+    {
+        $result = $data;
+        switch ($data['f301']) {
+            case 'Saya mencari kerja sebelum lulus':
+                # code...
+                $result['f301'] = "1-Saya mencari kerja sebelum lulus";
+                break;
+            case 'Saya mencari kerja sesudah wisuda':
+                # code...
+                $result['f301'] = "2-Saya mencari kerja sesudah wisuda";
+                break;
+            case 'Saya tidak mencari kerja':
+                # code...
+                $result['f301'] = "3-Saya tidak mencari kerja";
+                break;
+            default:
+                # code...
+                $result['f301'] = "1-Saya mencari kerja sebelum lulus";
+                break;
+        }
+        return $result;
+    }
     private function castMainToAkreditasi($data)
     {
         $result = $data;
@@ -1526,6 +1694,124 @@ class QuisionerService
         return $result;
     }
 
+
+    private function castMainToLaporan($data)
+    {
+        $result = $data;
+        switch ($data['f8']) {
+            case 'Bekerja (full time / part time)':
+                # code...
+                $result['f8'] = "1-Bekerja (full time/ part time)";
+                break;
+            case 'Belum memungkinkan bekerja':
+                # code...
+                $result['f8'] = "2-Belum memungkinkan bekerja";
+                break;
+            case 'Wiraswasta':
+                # code...
+                $result['f8'] = "3-Wiraswasta";
+                break;
+            case 'Melanjutkan Pendidikan':
+                # code...
+                $result['f8'] = "4-Melanjutkan Pendidikan";
+                break;
+            case 'Tidak kerja tetapi sedang mencari kerja':
+                # code...
+                $result['f8'] = "5-Tidak kerja tetapi sedang mencari kerja";
+                break;
+            default:
+                # code...
+                $result['f8'] = "1-Bekerja (full time/part time )";
+                break;
+        }
+
+        if ($data['f504'] = "Ya") {
+            $result['f504'] = "1-Ya";
+        } else {
+            $result['f504'] = "2-Tidak";
+        }
+
+        switch ($data['f1101']) {
+            case 'Intansi pemerintah':
+                # code...
+                $result['f1101'] = "1-Instansi";
+                break;
+            case 'BUMN/BUMD':
+                # code...
+                $result['f1101'] = "6-BUMN/BUMD";
+                break;
+            case 'Institusi/Organisasi Multilateral':
+                # code...
+                $result['f1101'] = "7-Institusi/Organisasi Multilateral";
+                break;
+            case 'Organisasi non-profit/Lembaga Swadaya Masyarakat':
+                # code...
+                $result['f1101'] = "2-Organisasi non-profit/Lembaga Swadaya Masyarakat";
+                break;
+            case 'Perusahaan swasta':
+                # code...
+                $result['f1101'] = "3-Perusahaan swasta";
+                break;
+            case 'Wiraswasta/perusahaan sendiri':
+                # code...
+                $result['f1101'] = "4-Wiraswasta/perusahaan sendiri";
+                break;
+            case 'Lainnya, Tuliskan':
+                # code...
+                $result['f1101'] = "Lainnya, Tuliskan";
+                break;
+            default:
+                # code...
+                $result['f1101'] = "5-Lainnya, Tuliskan";
+                break;
+        }
+
+        switch ($data['f5c']) {
+            case 'Founder':
+                # code...
+                $result['f5c'] = "1-Founder";
+                break;
+            case 'Co-Founder':
+                # code...
+                $result['f5c'] = "2-Co-Founder";
+                break;
+            case 'Staff':
+                # code...
+                $result['f5c'] = "3-Staff";
+                break;
+            case 'Freelance/Kerja Lepas':
+                # code...
+                $result['f5c'] = "4-Freelance/Kerja Lepas";
+                break;
+            default:
+                $result['f5c'] = "4-Freelance/Kerja Lepas";
+                # code...
+                break;
+        }
+
+
+        switch ($data['f5d']) {
+            case 'Lokal/wilayah/wiraswasta tidak berbadan hukum':
+                # code...
+                $result['f5d'] = "1-Lokal/wilayah/wiraswasta tidak berbadan hukum";
+                break;
+            case 'Nasional/wiraswasta berbadan hukum':
+                # code...
+                $result['f5d'] = "2-Nasional/wiraswasta berbadan hukum";
+                break;
+            case 'Multinasional/Internasional':
+                # code...
+                $result['f5d'] = '3-Multinasional/Internasional';
+                break;
+
+            default:
+                # code...
+                $result['f5d'] = "1-Lokal/wilayah/wiraswasta tidak berbadan hukum";
+                break;
+        }
+
+        return $result;
+    }
     private function castCompanyAppliedAkreditasi($data)
     {
         $result = $data;
@@ -1558,7 +1844,37 @@ class QuisionerService
         return $result;
     }
 
-
+    private function castCompanyAppliedLaporan($data)
+    {
+        $result = $data;
+        switch ($data['f1001']) {
+            case 'Tidak':
+                # code...
+                $result['f1001'] = "1-Tidak";
+                break;
+            case 'Tidak, tapi saya sedang menunggu hasil lamaran kerja':
+                # code...
+                $result['f1001'] = "2-Tidak, tapi saya sedang menunggu hasil lamaran kerja";
+                break;
+            case 'Ya, saya akan mulai bekerja dalam 2 minggu ke depan':
+                # code...
+                $result['f1001'] = "3-Ya, saya akan mulai bekerja dalam 2 minggu ke depan";
+                break;
+            case 'Ya, tapi saya belum pasti akan bekerja dalam 2 minggu ke depan':
+                # code...
+                $result['f1001'] = "4-Ya, tapi saya belum pasti akan bekerja dalam 2 minggu ke depan";
+                break;
+            case 'Lainya':
+                # code...
+                $result['f1001'] = "5-Lainnya";
+                break;
+            default:
+                # code...
+                $result['f1001'] = "5-Lainnya";
+                break;
+        }
+        return $result;
+    }
 
     private function castJobsuitabilityAkreditasi($data)
     {
@@ -1642,4 +1958,86 @@ class QuisionerService
         return $result;
     }
 
+
+    private function castJobsuitabilityLaporan($data)
+    {
+        $result = $data;
+        if ($data['f1601'] == 'Tidak sesuai') {
+            $result['f1601'] = "0-Tidak sesuai";
+        } else {
+            $result['f1601'] = "1-Pekerjaan saya sekarang sudah sesuai dengan pendidikan saya";
+        }
+
+        if ($data['f1602'] == 'Saya belum mendapatkan pekerjaan yang lebih sesuai') {
+            $result['f1602'] = "1-Saya belum mendapatkan pekerjaan yang lebih sesuai";
+        } else {
+            $result['f1602'] = "0-Pekerjaan saya sudah sesuai";
+        }
+        if ($data['f1603'] == 'Di pekerjaan ini saya memeroleh prospek karir yang baik') {
+            $result['f1603'] = "1-Di pekerjaan ini saya memeroleh prospek karir yang baik";
+        } else {
+            $result['f1603'] = "0- Pekerjaan saya sudah sesuai";
+        }
+
+        if ($data['f1604'] == 'Saya lebih suka bekerja di area pekerjaan yang tidak ada hubungannya dengan pendidikan saya') {
+            $result['f1604'] = "1-Saya lebih suka bekerja di area pekerjaan yang tidak ada hubungannya dengan pendidikan saya'";
+        } else {
+            $result['f1604'] = "0-Pekerjaan saya sudah sesuai";
+        }
+
+        if ($data['f1605'] == 'Saya dipromosikan ke posisi yang kurang berhubungan dengan pendidikan saya dibanding posisi sebelumnya') {
+            $result['f1605'] = "1-Saya dipromosikan ke posisi yang kurang berhubungan dengan pendidikan saya dibanding posisi sebelumnya";
+        } else {
+            $result['f1605'] = "0-Pekerjaan saya sudah sesuai";
+        }
+
+        if ($data['f1606'] == 'Saya dapat memeroleh pendapatan yang lebih tinggi di pekerjaan ini') {
+            $result['f1606'] = "1-Saya dapat memeroleh pendapatan yang lebih tinggi di pekerjaan ini";
+        } else {
+            $result['f1606'] = "0-Pekerjaan Saya Sudah Sesuai";
+        }
+
+        if ($data['f1607'] == 'Saya dapat memeroleh pendapatan yang lebih tinggi di pekerjaan ini') {
+            $result['f1607'] = "1-Saya dapat memeroleh pendapatan yang lebih tinggi di pekerjaan ini";
+        } else {
+            $result['f1607'] = "0-Pekerjaan Saya Sudah Sesuai";
+        }
+
+        if ($data['f1608'] == "Pekerjaan saya saat ini lebih menarik") {
+            $result['f1608'] = "1-Pekerjaan saya saat ini lebih menarik";
+        } else {
+            $result['f1608'] = "0-Pekerjaan Saya Sudah Sesuai";
+        }
+
+        if ($data['f1609'] == "Pekerjaan saya saat ini lebih memungkinkan saya mengambil pekerjaan tambahan/jadwal yang fleksibel, dll") {
+            $result['f1609'] = "1-Pekerjaan saya saat ini lebih memungkinkan saya mengambil pekerjaan tambahan/jadwal yang fleksibel, dll";
+        } else {
+            $result['f1609'] = "0-Pekerjaan Saya Sudah Sesuai";
+        }
+
+        if ($data['f1610'] == "Pekerjaan saya saat ini lokasinya lebih dekat dari rumah saya") {
+            $result['f1610'] = "1-Pekerjaan saya saat ini lokasinya lebih dekat dari rumah saya";
+        } else {
+            $result['f1610'] = "0-Pekerjaan Saya Sudah Sesuai";
+        }
+
+        if ($data['f1611'] == "Pekerjaan saya saat ini dapat lebih menjamin kebutuhan keluarga saya") {
+            $result['f1611'] = "1-Pekerjaan saya saat ini dapat lebih menjamin kebutuhan keluarga saya";
+        } else {
+            $result['f1611'] = "0-Pekerjaan Saya Sudah Sesuai";
+        }
+
+        if ($data['f1612'] == "Pada awal meniti karir ini, saya harus menerima pekerjaan yang tidak berhubungan dengan pendidikan saya") {
+            $result['f1612'] = "1-Pada awal meniti karir ini, saya harus menerima pekerjaan yang tidak berhubungan dengan pendidikan saya";
+        } else {
+            $result['f1612'] = "0-Pekerjaan Saya Sudah Sesuai";
+        }
+
+        if ($data['f1613'] == "Lainnya") {
+            $result['f1613'] = "1-Lainnya";
+        } else {
+            $result['f1613'] = "0-Pekerjaan Saya Sudah Sesuai";
+        }
+        return $result;
+    }
 }
