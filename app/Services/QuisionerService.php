@@ -744,13 +744,11 @@ class QuisionerService
             $dataQuisioner['main'] = $this->castMainToLaporan($dataQuisioner['main']);
             $dataQuisioner['companyapplied'] = $this->castCompanyAppliedLaporan($dataQuisioner['companyapplied']);
             $dataQuisioner['jobsuitability'] = $this->castJobsuitabilityLaporan($dataQuisioner['jobsuitability']);
+            $dataQuisioner['howtofindjobs'] = $this->castToHowToFindJob($dataQuisioner['howtofindjobs']);
+
             $tempUser['quisioner'][0] = $dataQuisioner;
             return $tempUser;
         })->toArray();
-
-
-
-
         return $data;
     }
 
@@ -2038,6 +2036,110 @@ class QuisionerService
         } else {
             $result['f1613'] = "0-Pekerjaan Saya Sudah Sesuai";
         }
+        return $result;
+    }
+
+
+    private function castToHowToFindJob($data)
+    {
+        $result = [];
+
+        if ($data['f401'] == 'Ya') {
+            $result['f401'] = "1-Ya";
+        } else {
+            $result['f401'] = "0-Tidak";
+        }
+
+        if ($data['f402'] == 'Ya') {
+            $result['f402'] = "1-Ya";
+        } else {
+            $result['f402'] = "0-Tidak";
+        }
+
+        if ($data['f403'] == 'Ya') {
+            $result['f403'] = "1-Ya";
+        } else {
+            $result['f403'] = "0-Tidak";
+        }
+
+        if ($data['f404'] == 'Ya') {
+            $result['f404'] = "1-Ya";
+        } else {
+            $result['f404'] = "0-Tidak";
+        }
+
+        if ($data['f405'] == 'Ya') {
+            $result['f405'] = "1-Ya";
+        } else {
+            $result['f405'] = "0-Tidak";
+        }
+
+        if ($data['f406'] == 'Ya') {
+            $result['f406'] = "1-Ya";
+        } else {
+            $result['f406'] = "0-Tidak";
+        }
+
+        if ($data['f407'] == 'Ya') {
+            $result['f407'] = "1-Ya";
+        } else {
+            $result['f407'] = "0-Tidak";
+        }
+
+        if ($data['f408'] == 'Ya') {
+            $result['f408'] = "1-Ya";
+        } else {
+            $result['f408'] = "0-Tidak";
+        }
+
+        if ($data['f409'] == 'Ya') {
+            $result['f409'] = "1-Ya";
+        } else {
+            $result['f409'] = "0-Tidak";
+        }
+
+        if ($data['f410'] == 'Ya') {
+            $result['f410'] = "1-Ya";
+        } else {
+            $result['f410'] = "0-Tidak";
+        }
+
+        if ($data['f411'] == 'Ya') {
+            $result['f411'] = "1-Ya";
+        } else {
+            $result['f411'] = "0-Tidak";
+        }
+
+        if ($data['f412'] == 'Ya') {
+            $result['f412'] = "1-Ya";
+        } else {
+            $result['f412'] = "0-Tidak";
+        }
+
+        if ($data['f413'] == 'Ya') {
+            $result['f413'] = "1-Ya";
+        } else {
+            $result['f413'] = "0-Tidak";
+        }
+
+        if ($data['f414'] == 'Ya') {
+            $result['f414'] = "1-Ya";
+        } else {
+            $result['f414'] = "0-Tidak";
+        }
+
+        if ($data['f415'] == 'Ya') {
+            $result['f415'] = "1-Ya";
+        } else {
+            $result['f415'] = "0-Tidak";
+        }
+
+        if ($data['f416'] == 'Ya') {
+            $result['f416'] = "1-Ya";
+        } else {
+            $result['f416'] = "0-Tidak";
+        }
+
         return $result;
     }
 }

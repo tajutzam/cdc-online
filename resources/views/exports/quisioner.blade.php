@@ -1,96 +1,107 @@
 <table>
     <thead>
         <tr>
-            <th>kdptimsmh</th>
-            <th>kdpstmsmh</th>
-            <th>nimhsmsmh</th>
-            <th>nmmhsmsmh</th>
-            <th>telpomsmh</th>
-            <th>emailmsmh</th>
-            <th>tahun_lulus</th>
-            <th>nik</th>
-            <th>npwp</th>
-            <th>f8</th>
-            <th>f504</th>
-            <th>f502</th>
-            <th>f505</th>
-            <th>f506</th>
-            <th>f5a1</th>
-            <th>f5a2</th>
-            <th>f1101</th>
-            <th>f1102</th>
-            <th>f5b</th>
-            <th>f5c</th>
-            <th>f5d</th>
-            <th>f18a</th>
-            <th>f18b</th>
-            <th>f18c</th>
-            <th>f18d</th>
-            <th>f1201</th>
-            <th>f1202</th>
-            <th>f14</th>
-            <th>f15</th>
-            <th>f1761</th>
-            <th>f1762</th>
-            <th>f1763</th>
-            <th>f1764</th>
-            <th>f1765</th>
-            <th>f1766</th>
-            <th>f1767</th>
-            <th>f1768</th>
-            <th>f1769</th>
-            <th>f1770</th>
-            <th>f1771</th>
-            <th>f1772</th>
-            <th>f1773</th>
-            <th>f1774</th>
-            <th>f21</th>
-            <th>f22</th>
-            <th>f23</th>
-            <th>f24</th>
-            <th>f25</th>
-            <th>f26</th>
-            <th>f27</th>
-            <th>f301</th>
-            <th>f302</th>
-            <th>f303</th>
-            <th>f401</th>
-            <th>f402</th>
-            <th>f403</th>
-            <th>f404</th>
-            <th>f405</th>
-            <th>f406</th>
-            <th>f407</th>
-            <th>f408</th>
-            <th>f409</th>
-            <th>f410</th>
-            <th>f411</th>
-            <th>f412</th>
-            <th>f413</th>
-            <th>f414</th>
-            <th>f415</th>
-            <th>f416</th>
-            <th>f6</th>
-            <th>f7</th>
-            <th>f7a</th>
-            <th>f1001</th>
-            <th>f1002</th>
-            <th>f1601</th>
-            <th>f1602</th>
-            <th>f1603</th>
-            <th>f1604</th>
-            <th>f1605</th>
-            <th>f1606</th>
-            <th>f1607</th>
-            <th>f1608</th>
-            <th>f1609</th>
-            <th>f1610</th>
-            <th>f1611</th>
-            <th>f1612</th>
-            <th>f1613</th>
-            <th>f1614</th>
+            <th> Kode Perguruan Tinggi / kdptimsmh</th>
+            <th> Kode Program Studi / kdpstmsmh</th>
+            <th> NIM / nimhsmsmh (Gunakan Huruf Besar) </th>
+            <th> Nama Lengkap / nmmhsmsmh (Gunakan Huruf Besar)</th>
+            <th> Nomor Telepon/HP (Whatsapp) / telpomsmh</th>
+            <th> Alamat Email / emailmsmh</th>
+            <th> Tahun Lulus / tahun_lulus</th>
+            <th> NIK / nik (Nomor Induk Kependudukan/No KTP)</th>
+            <th>NPWP / npwp (Nomor Pokok Wajib Pajak)</th>
+            <th>1. Jelaskan status Anda saat ini? f8</th>
+            <th>2. Berapa bulan anda mendapatkan pekerjaan SEBELUM LULUS? f502</th>
+            <th>3. Apakah Anda telah mendapatkan pekerjaan &lt;= 6 bulan / termasuk bekerja sebelum lulus? f504</th>
+            <th>4. Berapa rata-rata pendapatan Anda per bulan ? f505</th>
+            <th>5. Berapa bulan Anda MENDAPATKAN PEKERJAAN SETELAH LULUS? f506</th>
+            <th>6. Dimana lokasi provinsi tempat Anda bekerja? f5a1</th>
+            <th>7. Dimana lokasi kabupaten/kota tempat Anda bekerja? f5a2</th>
+            <th>8. Apa jenis perusahaan/instansi/institusi tempat anda bekerja sekarang? f1101</th>
+            <th>9. Apa nama perusahaan/kantor tempat Anda bekerja? f5b</th>
+            <th>10. Bila Anda berwiraswasta, apa posisi/jabatan Anda saat ini ? f5c</th>
+            <th>11. Apa tingkatan tempat kerja Anda? f5d</th>
+            <th>12. Sumber biaya Studi Lanjut Anda? f18a</th>
+            <th>13. Nama Perguruan Tinggi Studi Lanjut Anda? f18b</th>
+            <th>14. Nama Program Studi Studi Lanjut Anda? f18c</th>
+            <th>15. Tanggal Masuk Awal Studi Lanjut Anda? f18d</th>
+            <th>16. Sebutkan sumberdana dalam pembiayaan kuliah? (bukan ketika Studi Lanjut) f1201</th>
+            <th>17. Seberapa erat hubungan bidang studi dengan pekerjaan Anda? f14</th>
+            <th>18. Tingkat pendidikan apa yang paling tepat/sesuai untuk pekerjaan anda saat ini? f15</th>
+            <th>19. Pada tingkat mana kompetensi ETIKA anda kuasai pada SAAT LULUS? f1761</th>
+            <th>20. Pada tingkat mana kompetensi ETIKA anda kuasai pada SAAT INI? f1762</th>
+            <th>21. Pada tingkat mana kompetensi KEAHLIAN BERDASARKAN BIDANG ILMU anda kuasai pada SAAT LULUS? f1763
+            </th>
+            <th>22. Pada tingkat mana kompetensi KEAHLIAN BERDASARKAN BIDANG ILMU anda kuasai pada SAAT INI? f1764</th>
+            <th>23. Pada tingkat mana kompetensi BAHASA INGGRIS anda kuasai pada SAAT LULUS? f1765</th>
+            <th>24. Pada tingkat mana kompetensi BAHASA INGGRIS anda kuasai pada SAAT INI? f1766</th>
+            <th>25. Pada tingkat mana kompetensi TEKNOLOGI INFORMASI anda kuasai pada SAAT LULUS? f1767</th>
+            <th>26. Pada tingkat mana kompetensi TEKNOLOGI INFORMASI anda kuasai pada SAAT INI? f1768</th>
+            <th>27. Pada tingkat mana kompetensi KOMUNIKASI anda kuasai pada SAAT LULUS? f1769</th>
+            <th>28. Pada tingkat mana kompetensi KOMUNIKASI anda kuasai pada SAAT INI? f1770</th>
+            <th>29. Pada tingkat mana kompetensi KERJA SAMA TIM anda kuasai pada SAAT LULUS? f1771</th>
+            <th>30. Pada tingkat mana kompetensi KERJA SAMA TIM anda kuasai pada SAAT INI? f1772</th>
+            <th>31. Pada tingkat mana kompetensi PENGEMBANGAN DIRI anda kuasai pada SAAT LULUS? f1773</th>
+            <th>32. Pada tingkat mana kompetensi PENGEMBANGAN DIRI anda kuasai pada SAAT INI? f1774</th>
+            <th>33. Perkuliahan (f21)</th>
+            <th>34. Demonstrasi (f22)</th>
+            <th>35. Partisipasi dalam proyek riset (f23)</th>
+            <th>36. Magang (f24)</th>
+            <th>37. Praktikum (f25)</th>
+            <th>38. Kerja Lapangan (f26)</th>
+            <th>39. Diskusi (f27)</th>
+            <th>40. Kapan anda mulai mencari pekerjaan? f301</th>
+            <th>41. Saya mencari pekerjaan, Kira-kira ....... bulan SEBELUM lulus (f302)</th>
+            <th>42. Saya mencari pekerjaan, Kira-kira ....... bulan SETELAH wisuda (f303)</th>
+            <th>43. Melalui iklan di koran/majalah, brosur ? (f401)</th>
+            <th>44. Melamar ke perusahaan tanpa mengetahui lowongan yang ada (f402)</th>
+            <th>45. Pergi ke bursa/pameran kerja (f403)</th>
+            <th>46. Mencari lewat internet/iklan online/milis (f404)</th>
+            <th>47. Dihubungi oleh perusahaan (f405)</th>
+            <th>48. Menghubungi Kemenakertrans (f406)</th>
+            <th>49. Menghubungi agen tenaga kerja komersial/swasta (f407)</th>
+            <th>50. Memperoleh informasi dari pusat/kantor pengembangan karir fakultas/universitas (f408)</th>
+            <th>51. Menghubungi kantor kemahasiswaan/hubungan alumni (f409)</th>
+            <th>52. Membangun jejaring (network) sejak masih kuliah (f410)</th>
+            <th>53. Melalui relasi (misalnya dosen, orang tua, saudara, teman, Ikatan Alumni dll.) (f411)</th>
+            <th>54. Membangun bisnis sendiri (f412)</th>
+            <th>55. Melalui penempatan kerja atau magang (f413)</th>
+            <th>56. Bekerja di tempat yang sama dengan tempat kerja semasa kuliah (f414)</th>
+            <th>57. Lainnya (f415)</th>
+            <th>58. Berapa perusahaan/instansi/institusi yang sudah anda lamar (lewat surat atau e-mail) sebelum anda
+                memperoleh pekerjaan pertama? f6</th>
+            <th>59. Berapa banyak perusahaan/instansi/institusi yang merespons lamaran Anda? f7</th>
+            <th>60. Berapa banyak perusahaan/instansi/institusi ? f7a</th>
+            <th>61. Apakah Anda aktif mencari pekerjaan dalam 4 minggu terakhir? Pilihlah satu jawaban (f1001)</th>
+            <th>62. Apakah pekerjaan anda saat ini tidak sesuai dengan pendidikan anda ? f1601</th>
+            <th>63. Apakah pekerjaan anda saat ini tidak sesuai dengan pendidikan anda ? f1602</th>
+            <th>64. Jika pekerjaan anda saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya? f1603
+            </th>
+            <th>65. Jika pekerjaan anda saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya? f1604
+            </th>
+            <th>66. Jika pekerjaan anda saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya? f1605
+            </th>
+            <th>67. Jika pekerjaan anda saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya? f1606
+            </th>
+            <th>68. Jika pekerjaan anda saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya? f1607
+            </th>
+            <th>69. Jika pekerjaan anda saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya? f1608
+            </th>
+            <th>70. Jika pekerjaan anda saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya? f1609
+            </th>
+            <th>71. Jika pekerjaan anda saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya? f1610
+            </th>
+            <th>72. Jika pekerjaan anda saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya? f1611
+            </th>
+            <th>73. Jika pekerjaan anda saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya? f1612
+            </th>
+            <th>74. Jika pekerjaan anda saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya? Selain
+                pilihan dijawaban soal diatas (f1613)</th>
+            <th>75. Jika pekerjaan anda saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya? Selain
+                pilihan dijawaban soal diatas, Tuliskan (f1614)</th>
             <th style="background-color: salmon">Level</th>
             <th style="background-color: salmon">ID User</th>
+
         </tr>
     </thead>
     <tbody>
