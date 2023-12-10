@@ -13,6 +13,7 @@ use App\Http\Controllers\QuisionerController;
 use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\StudyProgramPublicController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\web\AdminProdiController;
 use App\Http\Controllers\web\NewsController;
 use App\Http\Controllers\web\NotificationsController;
 use App\Http\Controllers\WhatshappController;
@@ -190,6 +191,9 @@ Route::get("user/card", [UserController::class, "card"]);
 
 Route::get("regency", [RegencyController::class, "findAll"]);
 Route::get("province", [ProvinceController::class, "findAll"]);
+
+
+Route::put("/admin-prodi" , [AdminProdiController::class , "updateHakAkses"]);
 
 
 // documentations

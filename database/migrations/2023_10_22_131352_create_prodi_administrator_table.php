@@ -22,6 +22,7 @@ class CreateProdiAdministratorTable extends Migration
             $table->string('password');
             $table->integer('prodi_id');
             $table->foreign('prodi_id')->references('id')->on('quis_identitas_prodi');
+            $table->boolean('can_download')->default(false);
             $table->timestamps();
         });
     }

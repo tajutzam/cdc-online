@@ -95,9 +95,14 @@
                                             <td>
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" role="switch"
-                                                        id="flexSwitchCheckDefault" onchange="updateLabel()">
-                                                    <label class="form-check-label" for="flexSwitchCheckDefault"
-                                                        id="statusLabel"> </label>
+                                                        id="flexSwitchCheck_{{ $item['id'] }}"
+                                                        onchange="updateStatus('{{ $item['id'] }}')"
+                                                        {{ $item['can_download'] ? 'checked' : '' }}>
+                                                    <label class="form-check-label"
+                                                        for="flexSwitchCheck_{{ $item['id'] }}"
+                                                        id="statusLabel_{{ $item['id'] }}">
+                                                        {{ $item['can_download'] ? 'Aktif' : 'Tidak Aktif' }}
+                                                    </label>
                                                 </div>
                                             </td>
                                             <td>
@@ -201,15 +206,37 @@
         });
     </script>
     <script>
-        function updateLabel() {
-            var checkbox = document.getElementById("flexSwitchCheckDefault");
-            var label = document.getElementById("statusLabel");
+        function updateStatus(id) {
+            const checkbox = document.getElementById(`flexSwitchCheck_${id}`);
+            const statusLabel = document.getElementById(`statusLabel_${id}`);
 
-            if (checkbox.checked) {
-                label.innerHTML = "Aktif";
-            } else {
-                label.innerHTML = "Tidak Aktif";
-            }
+            var raw = JSON.stringify({
+                "id": id
+            });
+            // Send a PUT request to your API endpoint
+            fetch(`/api/admin-prodi`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // Add any other headers you may need, such as authorization headers
+                    },
+                    body: raw,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Update the label text based on the response
+                    if (data.status) {
+                        statusLabel.textContent = data.data.can_download ? 'Aktif' : 'Tidak Aktif';
+                        alert('Sukses Memperbarui Akses Export')
+                    } else {
+                        alert('Gagal Memperbarui Akses Export')
+                    }
+                })
+                .catch(error => {
+                    alert("Error : ", error);
+                    console.error('Error:', error);
+                    // Handle errors if needed
+                });
         }
     </script>
 @endsection

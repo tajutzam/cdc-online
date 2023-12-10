@@ -14,8 +14,10 @@ use App\Models\HowFindJob;
 use App\Models\Identity;
 use App\Models\JobSuitability;
 use App\Models\MainSection;
+use App\Models\Province;
 use App\Models\QuisionerLevel;
 use App\Models\QuisionerProdi;
+use App\Models\Regency;
 use App\Models\StartSearchJob;
 use App\Models\StudyMethod;
 use App\Models\User;
@@ -175,6 +177,15 @@ class QuisionerService
     public function addQuisionerMain($request, $userId)
     {
         DB::beginTransaction();
+
+
+        $regency = Regency::find($request['code_regency']);
+        $province = Province::find($request['code_province']);
+
+        if(!isset($province) || !isset($regency)){
+            throw new BadRequestException("Kode wilayah tidak sesuai");
+        }
+
         //code...
         $quisionerLevel = $this->findQuisionerLevelByUserId($userId);
 
@@ -2040,13 +2051,106 @@ class QuisionerService
     }
 
 
-    private function castToHowToFindJob($data){
+    private function castToHowToFindJob($data)
+    {
         $result = [];
-        if($result['f302'] == 'Ya'){
-            $result['f302'] = "1-Ya";
+
+        if ($data['f401'] == 'Ya') {
+            $result['f401'] = "1-Ya";
+        } else {
+            $result['f401'] = "0-Tidak";
+        }
+
+        if ($data['f402'] == 'Ya') {
+            $result['f402'] = "1-Ya";
+        } else {
+            $result['f402'] = "0-Tidak";
+        }
+
+        if ($data['f403'] == 'Ya') {
+            $result['f403'] = "1-Ya";
+        } else {
+            $result['f403'] = "0-Tidak";
+        }
+
+        if ($data['f404'] == 'Ya') {
+            $result['f404'] = "1-Ya";
+        } else {
+            $result['f404'] = "0-Tidak";
+        }
+
+        if ($data['f405'] == 'Ya') {
+            $result['f405'] = "1-Ya";
+        } else {
+            $result['f405'] = "0-Tidak";
+        }
+
+        if ($data['f406'] == 'Ya') {
+            $result['f406'] = "1-Ya";
+        } else {
+            $result['f406'] = "0-Tidak";
+        }
+
+        if ($data['f407'] == 'Ya') {
+            $result['f407'] = "1-Ya";
+        } else {
+            $result['f407'] = "0-Tidak";
+        }
+
+        if ($data['f408'] == 'Ya') {
+            $result['f408'] = "1-Ya";
+        } else {
+            $result['f408'] = "0-Tidak";
+        }
+
+        if ($data['f409'] == 'Ya') {
+            $result['f409'] = "1-Ya";
+        } else {
+            $result['f409'] = "0-Tidak";
+        }
+
+        if ($data['f410'] == 'Ya') {
+            $result['f410'] = "1-Ya";
+        } else {
+            $result['f410'] = "0-Tidak";
+        }
+
+        if ($data['f411'] == 'Ya') {
+            $result['f411'] = "1-Ya";
+        } else {
+            $result['f411'] = "0-Tidak";
+        }
+
+        if ($data['f412'] == 'Ya') {
+            $result['f412'] = "1-Ya";
+        } else {
+            $result['f412'] = "0-Tidak";
+        }
+
+        if ($data['f413'] == 'Ya') {
+            $result['f413'] = "1-Ya";
+        } else {
+            $result['f413'] = "0-Tidak";
+        }
+
+        if ($data['f414'] == 'Ya') {
+            $result['f414'] = "1-Ya";
+        } else {
+            $result['f414'] = "0-Tidak";
+        }
+
+        if ($data['f415'] == 'Ya') {
+            $result['f415'] = "1-Ya";
+        } else {
+            $result['f415'] = "0-Tidak";
+        }
+
+        if ($data['f416'] == 'Ya') {
+            $result['f416'] = "1-Ya";
+        } else {
+            $result['f416'] = "0-Tidak";
         }
 
         return $result;
     }
-
 }

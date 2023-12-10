@@ -18,7 +18,8 @@ class ProdiAdministrator extends Authenticatable
         'nik',
         'address',
         'password',
-        'prodi_id'
+        'prodi_id',
+        'can_download'
     ];
 
 

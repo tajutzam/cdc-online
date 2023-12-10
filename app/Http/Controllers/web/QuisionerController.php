@@ -49,7 +49,7 @@ class QuisionerController extends Controller
         if ($request->input('type') == 'laporan') {
             try {
                 //code...
-                return Excel::download(new QuisionerExport($request->input('tahun')), "laporan-Tahun Lulus-" . $request->input('tahun') . "." . $data['format']);
+                return Excel::download(new QuisionerExport($request->input('tahun')), "Akreditasi -Tahun Lulus-" . $request->input('tahun') . "." . $data['format']);
             } catch (\Throwable $th) {
                 //throw $th;
                 throw new WebException($th->getMessage());

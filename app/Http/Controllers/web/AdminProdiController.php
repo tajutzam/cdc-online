@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\web;
 
+use App\Exceptions\BadRequestException;
+use App\Exceptions\NotFoundException;
+use App\Helper\ResponseHelper;
 use App\Http\Controllers\Controller;
+use App\Models\ProdiAdministrator;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AdminProdiController extends Controller
 {
@@ -64,6 +69,25 @@ class AdminProdiController extends Controller
         return view('prodi.settings-admin');
     }
 
+
+    public function updateHakAkses(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            throw new BadRequestException($validator->errors()->first());
+        }
+        $adminProdiId = $request->input('id');
+        $prodiAdmin = ProdiAdministrator::find($adminProdiId);
+        if (isset($prodiAdmin)) {
+            $canDownload = $prodiAdmin->can_download;
+            $prodiAdmin->can_download = !$canDownload;
+            $prodiAdmin->save();
+            return ResponseHelper::successResponse("Sukses update", $prodiAdmin, 200);
+        }
+        throw new NotFoundException('admin prodi notfound');
+    }
 
 
 
