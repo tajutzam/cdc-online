@@ -744,13 +744,11 @@ class QuisionerService
             $dataQuisioner['main'] = $this->castMainToLaporan($dataQuisioner['main']);
             $dataQuisioner['companyapplied'] = $this->castCompanyAppliedLaporan($dataQuisioner['companyapplied']);
             $dataQuisioner['jobsuitability'] = $this->castJobsuitabilityLaporan($dataQuisioner['jobsuitability']);
+            $dataQuisioner['howtofindjobs'] = $this->castToHowToFindJob($dataQuisioner['howtofindjobs']);
+
             $tempUser['quisioner'][0] = $dataQuisioner;
             return $tempUser;
         })->toArray();
-
-
-
-
         return $data;
     }
 
@@ -2040,4 +2038,15 @@ class QuisionerService
         }
         return $result;
     }
+
+
+    private function castToHowToFindJob($data){
+        $result = [];
+        if($result['f302'] == 'Ya'){
+            $result['f302'] = "1-Ya";
+        }
+
+        return $result;
+    }
+
 }
