@@ -237,39 +237,114 @@
                                                     "properties": {
                                                         "id": {
                                                             "type": "string",
-                                                            "example": "bd492dd4-6281-41eb-9988-cf554356ccc2"
+                                                            "example": "3965a5b7-1b4c-4c45-976a-619ab94d8112"
                                                         },
                                                         "user_id": {
                                                             "type": "string",
-                                                            "example": "96a8a118-868f-43e7-93ec-0965ea36b4f6"
+                                                            "format": "nullable"
                                                         },
                                                         "link_apply": {
                                                             "type": "string",
-                                                            "example": "https://chat.openai.com/"
+                                                            "example": "https://www.youtube.com/watch?v=EsZbWAqU8xY&list=RDCMUCrrfJ_8kX6YyXE7F3pDJzEw&start_radio=1"
                                                         },
                                                         "image": {
                                                             "type": "string",
-                                                            "example": "http://localhost:8000/users/post/1699520933.png"
+                                                            "example": "http://localhost:8000/users/post/1702264918.jpg"
                                                         },
                                                         "description": {
                                                             "type": "string",
-                                                            "example": "kerja sampingan enak dan oke"
+                                                            "example": "Yoruasimadi"
                                                         },
                                                         "company": {
                                                             "type": "string",
-                                                            "example": "polije"
+                                                            "example": "GOTO"
                                                         },
                                                         "position": {
                                                             "type": "string",
-                                                            "example": "backend developer"
+                                                            "example": "Backend developer"
                                                         },
                                                         "expired": {
                                                             "type": "string",
-                                                            "example": "2023-12-30 00:00:00"
+                                                            "example": "2023-12-13 10:21:00"
                                                         },
                                                         "post_at": {
                                                             "type": "string",
-                                                            "example": "2023-11-08 14:42:09"
+                                                            "example": "2023-12-10 20:03:14"
+                                                        },
+                                                        "can_comment": {
+                                                            "type": "integer",
+                                                            "format": "int32",
+                                                            "example": "0"
+                                                        },
+                                                        "verified": {
+                                                            "type": "string",
+                                                            "example": "verified"
+                                                        },
+                                                        "comments": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": { }
+                                                            },
+                                                            "example": []
+                                                        },
+                                                        "type_jobs": {
+                                                            "type": "string",
+                                                            "example": "Purnawaktu"
+                                                        },
+                                                        "uploader": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "foto": {
+                                                                    "type": "string",
+                                                                    "example": "http://localhost:8000/assets/images/admin.png"
+                                                                },
+                                                                "fullname": {
+                                                                    "type": "string",
+                                                                    "example": "admin-1"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "1": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "example": "8b78ba0c-9173-4c5d-b795-e7d534f2924b"
+                                                        },
+                                                        "user_id": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "link_apply": {
+                                                            "type": "string",
+                                                            "example": "https://getbootstrap.com/docs/5.3/forms/select/"
+                                                        },
+                                                        "image": {
+                                                            "type": "string",
+                                                            "example": "http://localhost:8000/users/post/1702265114.jpeg"
+                                                        },
+                                                        "description": {
+                                                            "type": "string",
+                                                            "example": "asdasdasd"
+                                                        },
+                                                        "company": {
+                                                            "type": "string",
+                                                            "example": "Sunrise Computer"
+                                                        },
+                                                        "position": {
+                                                            "type": "string",
+                                                            "example": "software developer"
+                                                        },
+                                                        "expired": {
+                                                            "type": "string",
+                                                            "example": "2023-12-15 00:00:00"
+                                                        },
+                                                        "post_at": {
+                                                            "type": "string",
+                                                            "example": "2023-12-11 00:00:00"
                                                         },
                                                         "can_comment": {
                                                             "type": "integer",
@@ -284,7 +359,82 @@
                                                             "type": "array",
                                                             "items": {
                                                                 "type": "object",
-                                                                "properties": {}
+                                                                "properties": { }
+                                                            },
+                                                            "example": []
+                                                        },
+                                                        "type_jobs": {
+                                                            "type": "string",
+                                                            "example": "https://getbootstrap.com/docs/5.3/forms/select/"
+                                                        },
+                                                        "uploader": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "foto": {
+                                                                    "type": "string",
+                                                                    "example": "http://localhost:8000/mitra/logo/1702264965.png"
+                                                                },
+                                                                "fullname": {
+                                                                    "type": "string",
+                                                                    "example": "Sunrise Computer"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "2": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "example": "f301cd94-5ae9-43ca-b2c4-9db550838737"
+                                                        },
+                                                        "user_id": {
+                                                            "type": "string",
+                                                            "example": "0e21477c-1b9e-4536-9cef-88d7117523a0"
+                                                        },
+                                                        "link_apply": {
+                                                            "type": "string",
+                                                            "example": "https://chat.openai.com/"
+                                                        },
+                                                        "image": {
+                                                            "type": "string",
+                                                            "example": "http://localhost:8000/users/post/1702265396.jpg"
+                                                        },
+                                                        "description": {
+                                                            "type": "string",
+                                                            "example": "Mengembangkan aplikasi CDC Online"
+                                                        },
+                                                        "company": {
+                                                            "type": "string",
+                                                            "example": "Teaching Feactory"
+                                                        },
+                                                        "position": {
+                                                            "type": "string",
+                                                            "example": "Backend Developer , Frontend Developer"
+                                                        },
+                                                        "expired": {
+                                                            "type": "string",
+                                                            "example": "2023-12-30 00:00:00"
+                                                        },
+                                                        "post_at": {
+                                                            "type": "string",
+                                                            "example": "2023-12-10 20:03:14"
+                                                        },
+                                                        "can_comment": {
+                                                            "type": "integer",
+                                                            "format": "int32",
+                                                            "example": "1"
+                                                        },
+                                                        "verified": {
+                                                            "type": "string",
+                                                            "example": "verified"
+                                                        },
+                                                        "comments": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": { }
                                                             },
                                                             "example": []
                                                         },
@@ -295,78 +445,13 @@
                                                         "uploader": {
                                                             "type": "object",
                                                             "properties": {
-                                                                "id": {
+                                                                "foto": {
                                                                     "type": "string",
-                                                                    "example": "96a8a118-868f-43e7-93ec-0965ea36b4f6"
+                                                                    "example": "default.png"
                                                                 },
                                                                 "fullname": {
                                                                     "type": "string",
-                                                                    "example": "Nama Lengkap Anda"
-                                                                },
-                                                                "email": {
-                                                                    "type": "string",
-                                                                    "example": "safiraput66@gmail.com"
-                                                                },
-                                                                "nik": {
-                                                                    "type": "string",
-                                                                    "example": "***"
-                                                                },
-                                                                "no_telp": {
-                                                                    "type": "string",
-                                                                    "example": "***"
-                                                                },
-                                                                "foto": {
-                                                                    "type": "string",
-                                                                    "example": "http://localhost:8000/users/foto.png"
-                                                                },
-                                                                "ttl": {
-                                                                    "type": "string",
-                                                                    "example": "Tempat Tanggal Lahir Anda"
-                                                                },
-                                                                "alamat": {
-                                                                    "type": "string",
-                                                                    "example": "Alamat Anda"
-                                                                },
-                                                                "about": {
-                                                                    "type": "string",
-                                                                    "example": "Tentang Anda"
-                                                                },
-                                                                "gender": {
-                                                                    "type": "string",
-                                                                    "example": "male"
-                                                                },
-                                                                "level": {
-                                                                    "type": "string",
-                                                                    "example": "user"
-                                                                },
-                                                                "linkedin": {
-                                                                    "type": "string",
-                                                                    "example": "Link LinkedIn Anda"
-                                                                },
-                                                                "facebook": {
-                                                                    "type": "string",
-                                                                    "format": "nullable"
-                                                                },
-                                                                "instagram": {
-                                                                    "type": "string",
-                                                                    "example": "Akun Instagram Anda"
-                                                                },
-                                                                "twiter": {
-                                                                    "type": "string",
-                                                                    "format": "nullable"
-                                                                },
-                                                                "account_status": {
-                                                                    "type": "integer",
-                                                                    "format": "int32",
-                                                                    "example": "1"
-                                                                },
-                                                                "latitude": {
-                                                                    "type": "string",
-                                                                    "format": "nullable"
-                                                                },
-                                                                "longtitude": {
-                                                                    "type": "string",
-                                                                    "format": "nullable"
+                                                                    "example": "Mohammad tajut zamzami"
                                                                 }
                                                             }
                                                         }
@@ -380,7 +465,7 @@
                                                 "total_item": {
                                                     "type": "integer",
                                                     "format": "int32",
-                                                    "example": "1"
+                                                    "example": "3"
                                                 }
                                             }
                                         },
@@ -510,146 +595,246 @@
                                         "data": {
                                             "type": "object",
                                             "properties": {
-                                                "id": {
-                                                    "type": "string",
-                                                    "example": "bbefbdfe-9bf3-495b-a1b3-258da2eeb506"
-                                                },
-                                                "user_id": {
-                                                    "type": "string",
-                                                    "example": "eafcc2b5-f801-4997-ad23-8a46078b42e5"
-                                                },
-                                                "link_apply": {
-                                                    "type": "string",
-                                                    "example": "https://chat.openai.com/"
-                                                },
-                                                "image": {
-                                                    "type": "string",
-                                                    "example": "http://localhost:8000/users/post/1699693579.png"
-                                                },
-                                                "description": {
-                                                    "type": "string",
-                                                    "example": "kerja sampingan enak dan oke"
-                                                },
-                                                "company": {
-                                                    "type": "string",
-                                                    "example": "polije"
-                                                },
-                                                "position": {
-                                                    "type": "string",
-                                                    "example": "frontend"
-                                                },
-                                                "expired": {
-                                                    "type": "string",
-                                                    "example": "2023-12-30 00:00:00"
-                                                },
-                                                "post_at": {
-                                                    "type": "string",
-                                                    "example": "2023-11-08 14:42:09"
-                                                },
-                                                "can_comment": {
-                                                    "type": "integer",
-                                                    "format": "int32",
-                                                    "example": "1"
-                                                },
-                                                "verified": {
-                                                    "type": "string",
-                                                    "example": "verified"
-                                                },
-                                                "comments": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "properties": {}
-                                                    },
-                                                    "example": []
-                                                },
-                                                "type_jobs": {
-                                                    "type": "string",
-                                                    "example": "Purnawaktu"
-                                                },
-                                                "uploader": {
+                                                "0": {
                                                     "type": "object",
                                                     "properties": {
                                                         "id": {
                                                             "type": "string",
-                                                            "example": "eafcc2b5-f801-4997-ad23-8a46078b42e5"
+                                                            "example": "3965a5b7-1b4c-4c45-976a-619ab94d8112"
                                                         },
-                                                        "fullname": {
-                                                            "type": "string",
-                                                            "example": "Nama Lengkap Anda"
-                                                        },
-                                                        "email": {
-                                                            "type": "string",
-                                                            "example": "test@gmail.com"
-                                                        },
-                                                        "nik": {
-                                                            "type": "string",
-                                                            "example": "***"
-                                                        },
-                                                        "no_telp": {
-                                                            "type": "string",
-                                                            "example": "***"
-                                                        },
-                                                        "foto": {
-                                                            "type": "string",
-                                                            "example": "http://localhost:8000/users/foto.png"
-                                                        },
-                                                        "ttl": {
-                                                            "type": "string",
-                                                            "example": "Tempat Tanggal Lahir Anda"
-                                                        },
-                                                        "alamat": {
-                                                            "type": "string",
-                                                            "example": "Alamat Anda"
-                                                        },
-                                                        "about": {
-                                                            "type": "string",
-                                                            "example": "Tentang Anda"
-                                                        },
-                                                        "gender": {
-                                                            "type": "string",
-                                                            "example": "male"
-                                                        },
-                                                        "level": {
-                                                            "type": "string",
-                                                            "example": "user"
-                                                        },
-                                                        "linkedin": {
-                                                            "type": "string",
-                                                            "example": "Link LinkedIn Anda"
-                                                        },
-                                                        "facebook": {
+                                                        "user_id": {
                                                             "type": "string",
                                                             "format": "nullable"
                                                         },
-                                                        "instagram": {
+                                                        "link_apply": {
                                                             "type": "string",
-                                                            "example": "Akun Instagram Anda"
+                                                            "example": "https://www.youtube.com/watch?v=EsZbWAqU8xY&list=RDCMUCrrfJ_8kX6YyXE7F3pDJzEw&start_radio=1"
                                                         },
-                                                        "twiter": {
+                                                        "image": {
+                                                            "type": "string",
+                                                            "example": "http://localhost:8000/users/post/1702264918.jpg"
+                                                        },
+                                                        "description": {
+                                                            "type": "string",
+                                                            "example": "Yoruasimadi"
+                                                        },
+                                                        "company": {
+                                                            "type": "string",
+                                                            "example": "GOTO"
+                                                        },
+                                                        "position": {
+                                                            "type": "string",
+                                                            "example": "Backend developer"
+                                                        },
+                                                        "expired": {
+                                                            "type": "string",
+                                                            "example": "2023-12-13 10:21:00"
+                                                        },
+                                                        "post_at": {
+                                                            "type": "string",
+                                                            "example": "2023-12-10 20:03:14"
+                                                        },
+                                                        "can_comment": {
+                                                            "type": "integer",
+                                                            "format": "int32",
+                                                            "example": "0"
+                                                        },
+                                                        "verified": {
+                                                            "type": "string",
+                                                            "example": "verified"
+                                                        },
+                                                        "comments": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": { }
+                                                            },
+                                                            "example": []
+                                                        },
+                                                        "type_jobs": {
+                                                            "type": "string",
+                                                            "example": "Purnawaktu"
+                                                        },
+                                                        "uploader": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "foto": {
+                                                                    "type": "string",
+                                                                    "example": "http://localhost:8000/assets/images/admin.png"
+                                                                },
+                                                                "fullname": {
+                                                                    "type": "string",
+                                                                    "example": "admin-1"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "1": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "example": "8b78ba0c-9173-4c5d-b795-e7d534f2924b"
+                                                        },
+                                                        "user_id": {
                                                             "type": "string",
                                                             "format": "nullable"
                                                         },
-                                                        "account_status": {
+                                                        "link_apply": {
+                                                            "type": "string",
+                                                            "example": "https://getbootstrap.com/docs/5.3/forms/select/"
+                                                        },
+                                                        "image": {
+                                                            "type": "string",
+                                                            "example": "http://localhost:8000/users/post/1702265114.jpeg"
+                                                        },
+                                                        "description": {
+                                                            "type": "string",
+                                                            "example": "asdasdasd"
+                                                        },
+                                                        "company": {
+                                                            "type": "string",
+                                                            "example": "Sunrise Computer"
+                                                        },
+                                                        "position": {
+                                                            "type": "string",
+                                                            "example": "software developer"
+                                                        },
+                                                        "expired": {
+                                                            "type": "string",
+                                                            "example": "2023-12-15 00:00:00"
+                                                        },
+                                                        "post_at": {
+                                                            "type": "string",
+                                                            "example": "2023-12-11 00:00:00"
+                                                        },
+                                                        "can_comment": {
                                                             "type": "integer",
                                                             "format": "int32",
                                                             "example": "1"
                                                         },
-                                                        "latitude": {
+                                                        "verified": {
                                                             "type": "string",
-                                                            "format": "nullable"
+                                                            "example": "verified"
                                                         },
-                                                        "longtitude": {
+                                                        "comments": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": { }
+                                                            },
+                                                            "example": []
+                                                        },
+                                                        "type_jobs": {
                                                             "type": "string",
-                                                            "format": "nullable"
+                                                            "example": "https://getbootstrap.com/docs/5.3/forms/select/"
+                                                        },
+                                                        "uploader": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "foto": {
+                                                                    "type": "string",
+                                                                    "example": "http://localhost:8000/mitra/logo/1702264965.png"
+                                                                },
+                                                                "fullname": {
+                                                                    "type": "string",
+                                                                    "example": "Sunrise Computer"
+                                                                }
+                                                            }
                                                         }
                                                     }
+                                                },
+                                                "2": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "example": "f301cd94-5ae9-43ca-b2c4-9db550838737"
+                                                        },
+                                                        "user_id": {
+                                                            "type": "string",
+                                                            "example": "0e21477c-1b9e-4536-9cef-88d7117523a0"
+                                                        },
+                                                        "link_apply": {
+                                                            "type": "string",
+                                                            "example": "https://chat.openai.com/"
+                                                        },
+                                                        "image": {
+                                                            "type": "string",
+                                                            "example": "http://localhost:8000/users/post/1702265396.jpg"
+                                                        },
+                                                        "description": {
+                                                            "type": "string",
+                                                            "example": "Mengembangkan aplikasi CDC Online"
+                                                        },
+                                                        "company": {
+                                                            "type": "string",
+                                                            "example": "Teaching Feactory"
+                                                        },
+                                                        "position": {
+                                                            "type": "string",
+                                                            "example": "Backend Developer , Frontend Developer"
+                                                        },
+                                                        "expired": {
+                                                            "type": "string",
+                                                            "example": "2023-12-30 00:00:00"
+                                                        },
+                                                        "post_at": {
+                                                            "type": "string",
+                                                            "example": "2023-12-10 20:03:14"
+                                                        },
+                                                        "can_comment": {
+                                                            "type": "integer",
+                                                            "format": "int32",
+                                                            "example": "1"
+                                                        },
+                                                        "verified": {
+                                                            "type": "string",
+                                                            "example": "verified"
+                                                        },
+                                                        "comments": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": { }
+                                                            },
+                                                            "example": []
+                                                        },
+                                                        "type_jobs": {
+                                                            "type": "string",
+                                                            "example": "Purnawaktu"
+                                                        },
+                                                        "uploader": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "foto": {
+                                                                    "type": "string",
+                                                                    "example": "default.png"
+                                                                },
+                                                                "fullname": {
+                                                                    "type": "string",
+                                                                    "example": "Mohammad tajut zamzami"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "total_page": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "1"
+                                                },
+                                                "total_item": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "3"
                                                 }
                                             }
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Success fetch data"
+                                            "example": "Sukses Fetch Data"
                                         },
                                         "code": {
                                             "type": "integer",

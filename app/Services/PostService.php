@@ -346,18 +346,23 @@ class PostService
             $value['user'] = $userComment;
             array_push($dataComments, $value);
         }
-        $uploader = null;
+        $uploader = [
+            'foto' => '',
+            'fullname' => ''
+        ];
         if (isset($data->user)) {
-            $uploader = $this->castToUserResponse($data->user);
+            $uploader['foto'] = $data->user->foto;
+            $uploader['fullname'] = $data->user->fullname;
 
         } else if (isset($data->mitra)) {
-            $data->mitra->logo = url('/').'/mitra/logo/'.$data->mitra->logo;
-            unset($data->mitra->business_license);
-            unset($data->mitra->nib);
-            $uploader = $data->mitra;
+            $image = url('/') . '/mitra/logo/' . $data->mitra->logo;
+            $uploader['foto'] = $image;
+    
+            $uploader['fullname'] = $data->mitra->name;
 
         } else {
-            $uploader = $data->admin;
+            $uploader['foto'] = url('/')."/assets/images/admin.png";
+            $uploader['fullname'] = $data->admin->name;
         }
         return [
             'id' => $data->id,
