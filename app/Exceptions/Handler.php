@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->renderable(function (Throwable $e) {
+        $this->renderable(function (Throwable $e, $request) {
             if ($e instanceof BadRequestException) {
                 DB::rollBack();
                 return response()->json([
@@ -102,12 +102,19 @@ class Handler extends ExceptionHandler
                 return back()->withErrors($e->validator)->withInput();
             }
             DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'code' => 500,
-                'data' => null,
-                'message' => $e->getMessage()
-            ], 500);
-        },);
+            return $request->expectsJson()
+                ? $this->jsonResponse($e->getMessage(), 500)
+                : response()->view('errors.500', ["message" => $e->getMessage()], 500);
+        }, );
+    }
+
+    protected function jsonResponse($message, $statusCode)
+    {
+        return response()->json([
+            'status' => false,
+            'code' => $statusCode,
+            'data' => null,
+            'message' => $message
+        ], $statusCode);
     }
 }

@@ -213,8 +213,7 @@
                                         <th style=" width: 70px">Tipe Pekerjaan</th>
                                         <td>:</td>
                                         <td>{{ $data['type_jobs'] }}</td>
-                                        <input type="text" value="{{ $data['link'] }}" name="type_jobs" hidden>
-
+                                        <input type="text" value="{{ $data['type_jobs'] }}" name="type_jobs" hidden>
                                     </tr>
 
                                     <tr>

@@ -176,10 +176,14 @@ class PostService
 
         $expiredPosts = $this->post
             ->where('expired', '>', $now)
-            ->where('verified', 'verified')
+            ->where(function ($query) use ($userId) {
+                $query->where('verified', 'verified');
+            })
             ->where('user_id', '<>', $userId)
-            ->orWhereNotNull('admin_id')
-            ->orWhereNotNull('mitra_id')
+            ->orWhere(function ($query) {
+                $query->orWhereNotNull('admin_id')
+                    ->orWhereNotNull('mitra_id');
+            })
             ->with([
                 'comments' => function ($query) {
                     $query->with('user');
@@ -189,6 +193,7 @@ class PostService
                 'mitra'
             ])
             ->paginate(10, ['*'], 'page', $page);
+
 
 
         $data = [
@@ -351,17 +356,17 @@ class PostService
             'fullname' => ''
         ];
         if (isset($data->user)) {
-            $uploader['foto'] = $data->user->foto;
+            $uploader['foto'] = url('/') . '/users/' . $data->user->foto;
             $uploader['fullname'] = $data->user->fullname;
 
         } else if (isset($data->mitra)) {
             $image = url('/') . '/mitra/logo/' . $data->mitra->logo;
             $uploader['foto'] = $image;
-    
+
             $uploader['fullname'] = $data->mitra->name;
 
         } else {
-            $uploader['foto'] = url('/')."/assets/images/admin.png";
+            $uploader['foto'] = url('/') . "/assets/images/admin.png";
             $uploader['fullname'] = $data->admin->name;
         }
         return [

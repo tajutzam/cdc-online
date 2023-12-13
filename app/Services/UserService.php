@@ -299,8 +299,8 @@ class UserService
             ->whereHas('educations', function ($educationQuery) {
                 $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
             })->whereHas('prodi', function ($prodiQuery) use ($kodeProdi) {
-            $prodiQuery->where('id', $kodeProdi); // Gunakan nilai $kodeProdi dari parameter
-        })
+                $prodiQuery->where('id', $kodeProdi); // Gunakan nilai $kodeProdi dari parameter
+            })
             ->groupBy('account_status')
             ->get();
 
@@ -909,10 +909,21 @@ class UserService
     {
 
         $userId = $this->extractUserId($token);
-        $user = $this->userModel->where('id', $userId)->first();
+        $user = $this->userModel->where('id', $userId)
+            ->with(['educations' => function ($query) {
+                $query->orderBy('created_at', 'asc');
+            }])
+            ->first();
 
-        if (isset($user)) {
-            return $user->account_status;
+        if ($user) {
+            // Ambil educations yang pertama kali diinsert
+            $firstEducation = $user->educations->first();
+            $graduated = $firstEducation->tahun_lulus;
+            if ($graduated == date('Y') - 5) {
+                return true;
+            } else {
+                return $user->account_status;
+            }
         } else {
             throw new NotFoundException('ops , Nampaknya user yang kamu cari tidak ditemukan');
         }
@@ -1296,7 +1307,7 @@ class UserService
             ])
             ->where('id', $userId)
             ->first();
-               
+
         $response = $this->castToUserResponseFromArray($user);
         if (isset($user['educations'][0])) {
             $response['educations'] = $user['educations'][0]->toArray();

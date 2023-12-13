@@ -131,7 +131,7 @@ class QuisionerService
             if (isset($quisionerIsCreated)) {
                 Db::commit();
                 $data = $this->quisionerLevel->find($quisionerIsCreated->id);
-                $response = $this->quisionerLevelToResponse($data->toArray(), $quisionerIsCreated->id);
+                $response = $this->quisionerLevelToResponse($data->toArray(), $isCreated->id);
                 return $this->successResponse([
                     'quis_terjawab' => $response
                 ], 201, 'Berhasil mengisi quisioner identitas');
@@ -146,9 +146,9 @@ class QuisionerService
     public function updateQuisionerIdentity($request)
     {
         $identity = $this->identity->where('id', $request['id'])->first();
+
         if (isset($identity)) {
             unset($request['id']);
-
             try {
                 //code...
                 $isUpdate = $identity->update([

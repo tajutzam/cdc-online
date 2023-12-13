@@ -14,7 +14,7 @@
                       <li><a href="{{ route('/') }}">Fitur</a></li>
                       <li><a href="{{ route('blog') }}">Berita</a></li>
                       <li><a href="{{ route('/') }}">Kontak</a></li>
-                      <li><a class="getstarted scrollto" href="{{ route('/') }}">Unduh Sekarang</a></li>
+                      <li><a class="" href="{{ route('/') }}">Unduh Sekarang</a></li>
                   </ul>
                   <i class="bi bi-list mobile-nav-toggle"></i>
               </nav><!-- .navbar -->
