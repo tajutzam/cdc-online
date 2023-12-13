@@ -614,11 +614,11 @@
                         <p class="designattion mb-0">role : {{ Auth::guard('admin')->user()->role }}</p>
                     </div>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end">
+                <ul class="dropdown-menu dropdown-menu-end"; ">
 
                     <li class="text-center">
                         <form action="{{ route('admin-logout', ['id' => 1]) }}" method="post">
-                            <button href="" type="submit" class="btn btn-sm"> <i
+                            <button href="" type="submit" class="btn"> <i
                                     class="bx bx-arrow-back"></i>Logout</button>
                         </form>
                     </li>

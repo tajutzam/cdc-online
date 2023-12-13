@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+    <style>
+        #mapid {
+            height: 500px;
+            z-index: 1;
+            /* Set a z-index for the map */
+        }
+    </style>
     <div class="container-fluid shadow-none bg-transparent">
         <div class="row">
             <div class="col-sm-12">
@@ -125,7 +132,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+
                                     @foreach ($topSalary as $item)
                                         <tr>
                                             <td>
@@ -340,46 +347,32 @@
         // Initialize the map
         var mymap = L.map('mapid').setView([-8.159953, 113.723081], 5);
 
-        // var customIcon = L.icon({
-        //     iconUrl: 'custom-icon.png',
-        //     iconSize: [20, 20], // Size of the icon
-        //     iconAnchor: [20, 40], // Point of the icon which will correspond to marker's location
-        //     popupAnchor: [0, -40] // Point from which the popup should open relative to the iconAnchor
-        // });
-
-        // Add the tile layer (a base map)
-
-
         // Add the tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
         }).addTo(mymap);
 
-
-
         var users = {!! json_encode($users) !!}
         console.log(users);
         users.forEach(element => {
-
-            // console.log(element);
             if (element.latitude != null) {
                 var customIcon = L.icon({
                     iconUrl: `{{ url('/') }}/assets/images/pin.png`,
                     iconSize: [40, 40],
                     iconAnchor: [20, 40],
                     popupAnchor: [0, -40],
-                    html: '<img class="rounded-circle" width="46" height="46"    src="{{ url('/') }}/users/' +
-                        element
-                        .foto + '"/>'
+                    html: '<img class="rounded-circle" width="46" height="46" src="{{ url('/') }}/users/' +
+                        element.foto + '"/>'
                 });
 
-                L.marker([element.latitude, element.longtitude], {
-                    icon: customIcon
+                // Set z-index for the marker
+                var marker = L.marker([element.latitude, element.longtitude], {
+                    icon: customIcon,
+                    zIndexOffset: 1000 // Adjust this value as needed
                 }).addTo(mymap).bindPopup(
                     `${element.fullname} <br> ${element.prodi.nama_prodi} <br> ${element.educations[0].tahun_masuk}`
                 );
             }
         });
-        // Add a marker with the custom icon
     </script>
 @endsection
