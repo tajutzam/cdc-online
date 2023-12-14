@@ -39,6 +39,7 @@ use App\Http\Middleware\IsProdiAdministratorMiddleware;
 use App\Http\Controllers\web\ManageProdiAdminController;
 use App\Http\Controllers\web\AuthController as WebAuthController;
 use App\Http\Controllers\web\BankController;
+use App\Http\Controllers\web\DataPayController;
 use App\Http\Controllers\web\MitraSubmissiosController;
 use App\Http\Controllers\web\ProvinceController;
 use App\Http\Controllers\web\RegencyController;
@@ -65,7 +66,9 @@ use App\Http\Middleware\VacancyFirst;
 
 
 
-
+// Route::get('/admin/pay', function () {
+//     return view('admin.nominalpay');
+// })->name('nominalpay');
 
 
 
@@ -166,7 +169,9 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::put('/bank-account', [BankController::class, "update"])->name('rekening-put');
 
 
-
+    Route::get('/nominal', [DataPayController::class, "adminDataPay"])->name('nominalpay');
+    Route::post('/nominal', [DataPayController::class, "store"])->name('pay-post');
+    Route::put('/nominal', [DataPayController::class, "update"])->name('pay-put');
 
     // Route::get('/trix', 'TrixController@index');
     // Route::post('/upload', 'TrixController@upload');
@@ -176,7 +181,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
         Route::get('/', [PostController::class, 'index'])->name('vacancy');
         Route::post('/store', [PostController::class, 'store'])->name('vacancy-store');
         Route::put('/{id}', [PostController::class, 'verifyOrReject'])->name('vacancy-verify');
-        Route::put("/mitra/{id}" , [PostController::class , "verifyOrRejectMitra"])->name('vacancy-mitra-verify');
+        Route::put("/mitra/{id}", [PostController::class, "verifyOrRejectMitra"])->name('vacancy-mitra-verify');
         Route::get('/history', [PostController::class, 'history'])->name('history');
     });
     Route::prefix('berita')->group(function () {
@@ -238,8 +243,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::get('/data/company', [MitraSubmissiosController::class, "mitra"])->name('company-data');
 
 
-    Route::get('/mitra', [PostController::class , "verivyMitraVacancy"])->name('vacancy-mitra');
-
+    Route::get('/mitra', [PostController::class, "verivyMitraVacancy"])->name('vacancy-mitra');
 });
 
 
@@ -257,7 +261,7 @@ Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () 
         return view('company.auth.reset-password');
     })->name('reset-company');
 
-    Route::post('/resetpassword', [MitraSubmissiosController::class , "updatePassword"])->name('mitra-reset-password');
+    Route::post('/resetpassword', [MitraSubmissiosController::class, "updatePassword"])->name('mitra-reset-password');
 
     Route::get('/apply/end', [MitraSubmissiosController::class, "end"])->name('vacancy-end')->middleware(VacancyFirst::class);
     Route::post('/apply/end', [MitraSubmissiosController::class, "endPerfom"])->name('vacancy-end-post')->middleware(VacancyFirst::class);
@@ -266,11 +270,8 @@ Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () 
         return view('company.settings');
     })->name('company-settings');
 
-    Route::put('settings', [MitraSubmissiosController::class , "updateAccount"])->name('mitra-put');
-    Route::post('logout', [MitraSubmissiosController::class , "logout"])->name('mitra-logout');
-
-
-
+    Route::put('settings', [MitraSubmissiosController::class, "updateAccount"])->name('mitra-put');
+    Route::post('logout', [MitraSubmissiosController::class, "logout"])->name('mitra-logout');
 });
 
 

@@ -24,7 +24,7 @@
                                     </svg>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Data Rekening</li>
+                            <li class="breadcrumb-item active" aria-current="page">Data Paket</li>
                         </ol>
                     </nav>
                 </div>
@@ -36,9 +36,9 @@
                     <div class="row justify-content-start">
                         <div class="col">
 
-                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#add-admin" type=""><i class="fas fa-plus"></i>Tambah
-                                Rekening</button>
+                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#add-pay"
+                                type=""><i class="fas fa-plus"></i>Tambah
+                                Paket</button>
 
                         </div>
                     </div>
@@ -54,8 +54,8 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Rekening</th>
-                                        <th>Tipe Bank</th>
+                                        <th>Paket</th>
+                                        <th>Nominal Pembayaran</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -64,21 +64,20 @@
                                     @foreach ($data as $item)
                                         <tr class="text-start">
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->va_number }}</td>
+                                            <td>{{ $item->post_package }}</td>
 
                                             </td>
-                                            <td>{{ $item->bank }}</td>
+                                            <td>{{ $item->pay_nominal }}</td>
                                             <td>
                                                 <div class="row text-center">
                                                     <div class="col-12">
                                                         {{-- <a href="" class="" data-bs-target="#delete" data-id=""
                                                         data-bs-toggle="modal"><i class="fa-solid fa-trash"
                                                             style="color: #ff0f27;"></i></a> --}}
-                                                        <a href="#" class="edit-btn" data-bs-target="#edit-rekening"
+                                                        <a href="#" class="edit-btn" data-bs-target="#edit-pay"
                                                             data-toggle="modal" data-id="{{ $item->id }}"
-                                                            data-va-number="{{ $item->va_number }}"
-                                                            data-nominal="{{ $item->nominal }}"
-                                                            data-bank="{{ $item->bank }}">
+                                                            data-va-number="{{ $item->post_package }}"
+                                                            data-nominal="{{ $item->pay_nominal }}">
                                                             <i class="fa-solid fa-pen-to-square" style="color:#005eff;"></i>
                                                         </a>
                                                     </div>
@@ -95,25 +94,25 @@
         </div>
     </div>
 
-    <x-modal-small id="edit-rekening" footer="footer" title="title" body="body">
-        <x-slot name="title">Edit Rekening</x-slot>
-        <x-slot name="id">edit-rekening</x-slot>
+    <x-modal-small id="edit-pay" footer="footer" title="title" body="body">
+        <x-slot name="title">Edit Paket</x-slot>
+        <x-slot name="id">edit-pay</x-slot>
         <x-slot name="body">
 
-            <form action="{{ route('rekening-put') }}" method="post">
+            <form action="{{ route('pay-put') }}" method="post">
                 @method('put')
                 @csrf
                 <input type="text" id="id_payment" hidden name="id">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control form-control-sm" required id="va_number"
-                        name="va_number"></input>
-                    <label for="va_number">No Rekening</label>
+                    <input type="text" class="form-control form-control-sm" required id="post_package"
+                        name="post_package"></input>
+                    <label for="post_package">Paket Postingan</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control form-control-sm" required id="bank"
-                        name="bank"></input>
-                    <label for="bank">Tipe Bank</label>
+                    <input type="text" class="form-control form-control-sm" required id="pay_nominal"
+                        name="pay_nominal"></input>
+                    <label for="pay_nominal">Nominal Pembayaran</label>
                 </div>
 
                 <div class="row justify-content-end">
@@ -125,24 +124,24 @@
         </x-slot>
     </x-modal-small>
 
-    <x-modal-small id="add-admin" footer="footer" title="title" body="body">
-        <x-slot name="title">Tambah Rekening</x-slot>
-        <x-slot name="id">add-admin</x-slot>
+    <x-modal-small id="add-pay" footer="footer" title="title" body="body">
+        <x-slot name="title">Tambah Paket</x-slot>
+        <x-slot name="id">add-pay</x-slot>
         <x-slot name="body">
 
-            <form action="{{ route('rekening-post') }}" method="post">
+            <form action="{{ route('pay-post') }}" method="post">
                 @method('post')
                 @csrf
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control form-control-sm" required id="floatingTextarea"
-                        name="va_number"></input>
-                    <label for="floatingTextarea">No Rekening</label>
+                        name="post_package"></input>
+                    <label for="floatingTextarea">Nama Paket</label>
                 </div>
 
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control form-control-sm" required id="floatingTextarea"
-                        name="bank"></input>
-                    <label for="floatingTextarea">Tipe Bank</label>
+                        name="pay_nominal"></input>
+                    <label for="floatingTextarea">Nominal Pembayaran</label>
                 </div>
 
                 <div class="row justify-content-end">
@@ -154,7 +153,7 @@
         </x-slot>
     </x-modal-small>
     <x-modal-small id="delete" footer="footer" title="title" body="body">
-        <x-slot name="title">Hapus Rekening</x-slot>
+        <x-slot name="title">Hapus Paket</x-slot>
 
         <x-slot name="body">
             <div class="mb-3" style="text-align: start;  font-size: 16px; ">Apakah anda yakin ingin menghapus Data ini
@@ -175,11 +174,10 @@
     <script>
         $(document).ready(function() {
             $('.edit-btn').on('click', function() {
-                $('#va_number').val($(this).data('va-number'));
+                $('#post_package').val($(this).data('post-package'));
                 $('#id_payment').val($(this).data('id'));
-                $('#nominal').val($(this).data('nominal'));
-                $('#bank').val($(this).data('bank'));
-                $('#edit-rekening').modal('show');
+                $('#pay_nominal').val($(this).data('pay_nominal'));
+                $('#edit-pay').modal('show');
             });
         });
     </script>
