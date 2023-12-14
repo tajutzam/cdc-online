@@ -290,6 +290,24 @@
 
                             <div class="form mb-3">
                                 <div class="form">
+                                    <label for="" style="font-weight: bold;">Paket Layanan</label>
+                                    <div class="select-paket">
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option value="Paket 1">
+                                                Pilih Paket
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form mb-3">
+                                        <div class="form">
+                                            <div class="">
+                                                <label for="" style="font-weight: bold;">Harga</label>
+                                                <input style="background-color: #E7E7E7;" type="text"
+                                                    class="form-control" placeholder="Harga Layanan" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <label for="" style="font-weight: bold;">Tipe Bank</label>
                                     <div class="banksearch">
 
@@ -318,15 +336,7 @@
 
                                 </div>
                             </div>
-                            <div class="form mb-3">
-                                <div class="form">
-                                    <div class="">
-                                        <label for="" style="font-weight: bold;">Harga</label>
-                                        <input style="background-color: #E7E7E7;" type="text" class="form-control"
-                                            placeholder="Harga Layanan" readonly id="nominal">
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
