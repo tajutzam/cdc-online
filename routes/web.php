@@ -39,6 +39,7 @@ use App\Http\Middleware\IsProdiAdministratorMiddleware;
 use App\Http\Controllers\web\ManageProdiAdminController;
 use App\Http\Controllers\web\AuthController as WebAuthController;
 use App\Http\Controllers\web\BankController;
+use App\Http\Controllers\web\DataPayController;
 use App\Http\Controllers\web\MitraSubmissiosController;
 use App\Http\Controllers\web\ProvinceController;
 use App\Http\Controllers\web\RegencyController;
@@ -65,9 +66,9 @@ use App\Http\Middleware\VacancyFirst;
 
 
 
-Route::get('/admin/pay', function () {
-    return view('admin.nominalpay');
-})->name('nominalpay');
+// Route::get('/admin/pay', function () {
+//     return view('admin.nominalpay');
+// })->name('nominalpay');
 
 
 
@@ -168,7 +169,9 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::put('/bank-account', [BankController::class, "update"])->name('rekening-put');
 
 
-
+    Route::get('/nominal', [DataPayController::class, "adminDataPay"])->name('nominalpay');
+    Route::post('/nominal', [DataPayController::class, "store"])->name('pay-post');
+    Route::put('/nominal', [DataPayController::class, "update"])->name('pay-put');
 
     // Route::get('/trix', 'TrixController@index');
     // Route::post('/upload', 'TrixController@upload');

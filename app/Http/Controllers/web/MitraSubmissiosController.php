@@ -107,7 +107,6 @@ class MitraSubmissiosController extends Controller
         $mitraId = auth('mitra')->user()->id;
         $posts = Post::where('mitra_id', $mitraId)->get();
         return view('company.vacancy.company-history', ['posts' => $posts]);
-
     }
 
     public function updateAccount(Request $request)
@@ -255,5 +254,4 @@ class MitraSubmissiosController extends Controller
             return redirect("/company/history");
         }
     }
-
 }
