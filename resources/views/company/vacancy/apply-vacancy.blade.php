@@ -298,6 +298,14 @@
                                             </option>
                                         </select>
                                     </div>
+                                    {{-- ini dipakai --}}
+                                    {{-- @if ($item->type == 'information')
+                                        <span class="badge badge-warning">Informasi</span>
+                                    @elseif ($item->type == 'vacancy')
+                                        <span class="badge badge-info">Lowongan</span>
+                                    @elseif ($item->type == 'information+vacancy')
+                                        <span class="badge badge-primary">Informasi dan Lowongan</span>
+                                    @endif --}}
 
                                     <div class="form mb-3">
                                         <div class="form">
@@ -309,7 +317,7 @@
                                         </div>
                                     </div>
                                     <label for="" style="font-weight: bold;">Tipe Bank</label>
-                                    <div class="banksearch">
+                                    <div class="banksearch mb-3">
 
                                         {{-- <div class="select-btn">
                                                 <span>Pilih Bank</span>

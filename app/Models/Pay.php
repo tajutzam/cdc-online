@@ -12,6 +12,6 @@ class Pay extends Model
 
 
     protected $fillable = [
-        'post_package', 'pay_nominal'
+        'post_package', 'pay_nominal', 'exp_date'
     ];
 }

@@ -178,7 +178,11 @@
 
 
                 <div class="col-sm-12">
+
                     <div class="card">
+                        <div class="card-header">
+                            <label class="fw-bold" for="">Pengajuan Lowongan</label>
+                        </div>
                         <div class="card-body">
 
                             <div class="form mb-3">
@@ -269,6 +273,64 @@
                     </div>
                 </div>
 
+
+                <div class="col-sm-12">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <label class="fw-bold" for="">Pengajuan Informasi</label>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="form mb-3">
+                                <div class="form">
+                                    <div class="">
+                                        <label for="" style="font-weight: bold;">Judul</label>
+                                        <input type="text" class="form-control" placeholder="Masukkan Judul"
+                                            name="Judul" value="">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="bukti_path" value="{{ $bukti }}">
+                            <input type="hidden" name="bank" value="{{ $bank }}">
+
+                            <div class="form mb-3">
+                                <div class="form">
+                                    <div class="deskripsi">
+                                        <label for="" style="font-weight: bold;">Deskripsi</label>
+                                        <textarea spellcheck="false" placeholder="Masukkan Deskripsi" name="description" required
+                                            value="{{ old('description') }}"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 p-0">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Poster</h5>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="container">
+
+                                            <input type="file" id="file" accept="image/*" name="poster"
+                                                style="display: none" value="{{ old('poster') }}">
+                                            <div class="img-area" data-img="">
+                                                <i class='bx bxs-cloud-upload icon'></i>
+                                                <h3>Unggah Poster</h3>
+                                                <p>Pastikan file kurang dari <span>2MB</span></p>
+                                            </div>
+                                            <button type="button" class="select-image"> Pilih Poster</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>

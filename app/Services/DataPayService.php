@@ -45,7 +45,6 @@ class DataPayService
 
     public function delete($id)
     {
-        $pay = $this->findById($id);
-        $pay->delete();
+        Pay::destroy($id);
     }
 }

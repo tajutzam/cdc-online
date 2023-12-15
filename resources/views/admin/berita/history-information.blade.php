@@ -1,0 +1,132 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="container-fluid">
+        <div class="mt-4">
+            <div class="col p-0">
+                <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0" style="background-color: white">
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><svg
+                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-easel2-fill"
+                                        viewBox="0 0 16 16>
+                        <path
+                            d="M8.447.276a.5.5
+                                        0 0 0-.894 0L7.19 1H2.5A1.5 1.5 0 0 0 1 2.5V10h14V2.5A1.5 1.5 0 0 0 13.5
+                                        1H8.809z" />
+                                    <path fill-rule="evenodd"
+                                        d="M.5 11a.5.5 0 0 0 0 1h2.86l-.845 3.379a.5.5 0 0 0 .97.242L3.89 14h8.22l.405 1.621a.5.5 0 0 0 .97-.242L12.64 12h2.86a.5.5 0 0 0 0-1zm3.64 2 .25-1h7.22l.25 1z" />
+                                    </svg></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Verifikasi Informasi Mitra</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search input -->
+        <div class="mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control" id="searchInput" placeholder="&#xF002; Search...">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+
+        <div class="row ps-3 pe-3 justify-content-start gap-5">
+            <!-- First Card -->
+            <div class="col-md-4 mb-4 p-0">
+                <div class="card p-0  ms-0 m-1 ">
+                    <img src="" class="card-img-top" alt="..."
+                        onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg'">
+                    <div class="card-body">
+                        <h5 class="card-title">Title</h5>
+                        <p class="card-text" id="shortDescription">Short description (first 30 words)</p>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fullInfoModal">
+                            View Full Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4 p-0" id="noResultsCard" style="display: none;">
+                <div class="card p-0 ms-0 m-1">
+                    <div class="card-body">
+                        <h5 class="card-title">Data tidak ditemukan</h5>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="fullInfoModal" tabindex="-1" role="dialog" aria-labelledby="fullInfoModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="fullInfoModalLabel">Full Information</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Perusahaan:</strong> Company Name</p>
+                        <p><strong>Judul:</strong> Title</p>
+                        <p><strong>Deskripsi:</strong> Full description here...</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ... (previous HTML code) ... -->
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const cardDeck = document.getElementById("cardDeck");
+                const noResultsMessage = "Data tidak ditemukan";
+
+                function getShortDescription(fullDescription) {
+                    const words = fullDescription.split(' ');
+                    const shortDescription = words.slice(0, 30).join(' ');
+                    return shortDescription + '...';
+                }
+
+                const searchInput = document.getElementById("searchInput");
+
+                searchInput.addEventListener("input", function() {
+                    const searchTerm = searchInput.value.toLowerCase();
+                    const cards = cardDeck.getElementsByClassName("card");
+                    let resultsFound = false;
+
+                    for (const card of cards) {
+                        const cardTitle = card.querySelector(".card-title").innerText.toLowerCase();
+                        if (cardTitle.includes(searchTerm)) {
+                            card.style.display = "block";
+                            resultsFound = true;
+                        } else {
+                            card.style.display = "none";
+                        }
+                    }
+
+                    if (!resultsFound) {
+                        const noResultsCard = document.getElementById("noResultsCard");
+                        if (noResultsCard) {
+                            noResultsCard.style.display = searchTerm ? "block" : "none";
+                        }
+                    }
+                });
+            });
+        </script>
+
+    </div>
+@endsection

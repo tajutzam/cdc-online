@@ -9,6 +9,7 @@ use App\Models\Bank;
 use App\Models\Post;
 use App\Services\MitraService;
 use App\Services\PostService;
+use App\Services\DataPayService;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -99,6 +100,7 @@ class MitraSubmissiosController extends Controller
     public function apply()
     {
         $banks = Bank::all();
+        // $pays = Pays::all();
         return view('company.vacancy.apply-vacancy', ['banks' => $banks]);
     }
 

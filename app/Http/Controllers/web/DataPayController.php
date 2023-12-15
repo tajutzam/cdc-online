@@ -28,10 +28,14 @@ class DataPayController extends Controller
         $this->validate($request, [
             'post_package' => 'required|unique:pays,post_package',
             'pay_nominal' => 'required',
+            'type' => 'required',
+            'exp_date' => 'required',
 
         ], [
             'post_package.required' => 'Paket Tidak Boleh Kosong',
-            'pay_nominal' => 'Nominal tidak boleh kosong'
+            'pay_nominal' => 'Nominal tidak boleh kosong',
+            'type' => 'Mohon pilih data anda',
+            'exp_date' => 'Pilih masa berlaku layanan'
         ]);
 
         $this->payService->store($request->all());
@@ -44,11 +48,15 @@ class DataPayController extends Controller
         $this->validate($request, [
             'id' => 'required',
             'post_package' => 'required',
+            'type' => 'required',
             'pay_nominal' => 'required',
+            'exp_date' => 'required',
 
         ], [
             'post_package.required' => 'Paket tidak boleh kosong',
             'pay_nominal.required' => 'Nominal tidak Boleh Kosong tidak boleh kosong',
+            'type.required' => 'Mohoh pilih data anda',
+            'exp_date.required' => 'Pilih Masa berlaku lowongan anda',
         ]);
 
         $data = $request->all();
@@ -57,5 +65,13 @@ class DataPayController extends Controller
         Alert::success("Sukses", "Berhasil Memperbarui Paket Postingan");
         return back();
     }
+
+    public function delete($id)
+    {
+        $this->payService->delete($id);
+        Alert::success("Sukses", "Berhasil Menghapus Paket Postingan");
+        return back();
+    }
+
     //
 }
