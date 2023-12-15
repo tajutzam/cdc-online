@@ -914,10 +914,12 @@ class UserService
                 $query->orderBy('created_at', 'asc');
             }])
             ->first();
-
         if ($user) {
             // Ambil educations yang pertama kali diinsert
             $firstEducation = $user->educations->first();
+            if (!isset($firstEducation)) {
+                return $user->account_status;
+            }
             $graduated = $firstEducation->tahun_lulus;
             if ($graduated == date('Y') - 5) {
                 return true;

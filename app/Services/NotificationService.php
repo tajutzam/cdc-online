@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Exceptions\WebException;
 use App\Models\Notifications;
+use App\Models\QuisionerLevel;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,7 @@ class NotificationService
         $this->user = new User();
 
         $serviceAccountPath = storage_path(env('FIREBASE_CREDENTIALS'));
-       
+
         $factory = (new Factory)
             ->withServiceAccount($serviceAccountPath);
 
@@ -64,7 +65,6 @@ class NotificationService
             })
             ->select('id')
             ->get()->toArray();
-        
 
         $dataUser = $this->user->with([
             'quisioner_level' => function ($query) {
@@ -73,6 +73,7 @@ class NotificationService
             'prodi',
             'educations'
         ])->whereIn('id', $userId)->whereNotNull('fcm_token')
+            ->where('required_to_fill', true)
             ->where(function ($query) {
                 $query->orWhereDoesntHave('quisioner_level')
                     ->orWhereHas('quisioner_level', function ($subquery) {
@@ -81,7 +82,6 @@ class NotificationService
             })
             ->get()
             ->toArray();
-      
 
         foreach ($dataUser as $key => $value) {
             # code...
@@ -102,12 +102,61 @@ class NotificationService
         return $dataUser;
     }
 
-    public function sendNotificationQuisioner($data)
+    public function findAllUpdateNotification()
     {
 
+        $data = QuisionerLevel::select('user_id', DB::raw('MAX(id) as max_id'))
+            ->where('expired', '<', Carbon::now())
+            ->where('not_fillable_again', true)
+            ->groupBy('user_id')
+            ->get();
+
+        // Retrieve the full records based on the maximum id for each user
+        $records = QuisionerLevel::whereIn('id', $data->pluck('max_id')->toArray())
+            ->where('expired', '<', Carbon::now())
+            ->get();
+        foreach ($records as $key => $value) {
+            # code...
+            $user = User::where('id', $value->user_id)->first();
+            $user->account_status = 0;
+            $user->required_to_fill = 1;
+            $user->save();
+            Db::commit();
+            try {
+                $messageBody = 'Silahkan mengisi Quisioner untuk memperbarui status akun kamu ya';
+
+                $message = CloudMessage::new()
+                    ->withTarget('token', $user->fcm_token) // Replace with the recipient's FCM token
+                    ->withNotification([
+                        'title' => 'Quisioner',
+                        'body' => $messageBody,
+                    ])
+                    ->withData(['type' => 'quisioner']);
+
+                $this->messaging->send($message);
+                $created = $this->notifications->create(
+                    [
+                        'type' => 'quisioner',
+                        'user_id' => $value->id,
+                        'message' => $messageBody,
+                        'id_body' => null
+                    ]
+                );
+                return true;
+            } catch (\Throwable $th) {
+                //throw $th;
+                // throw new WebException($th->getMessage());
+            }
+        }
+
+    }
+
+
+
+    public function sendNotificationQuisioner($data)
+    {
         Db::beginTransaction();
         foreach ($data as $key => $value) {
-
             $user = $this->user->where('id', $value->id)->first();
             # code...
             if (isset($value->fcm_token)) {

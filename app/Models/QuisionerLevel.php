@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Uuids;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,7 +25,8 @@ class QuisionerLevel extends Model
         'company_applied_section',
         'job_suitability_section',
         'level',
-        'expired'
+        'expired',
+        'not_fillable_again'
     ];
 
     protected $primaryKey = 'id';
@@ -81,6 +83,27 @@ class QuisionerLevel extends Model
     }
 
     // QuisionerLevel.php (Model)
+    public function scopeAllColumnsFilledAndExpired($query)
+    {
+        $columnsToCheck = [
+            'identitas_section',
+            'main_section',
+            'furthe_study_section',
+            'competent_level_section',
+            'study_method_section',
+            'jobs_street_section',
+            'how_find_jobs_section',
+            'company_applied_section',
+            'job_suitability_section',
+            'id',
+            'user_id'
+        ];
+
+        foreach ($columnsToCheck as $column) {
+            $query->whereNotNull($column);
+        }
+        return $query->where('expired', '<', Carbon::now())->where('not_fillable_again', true)->groupBy('user_id');
+    }
 
 
 

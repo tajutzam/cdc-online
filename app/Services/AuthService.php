@@ -151,12 +151,11 @@ class AuthService
         $graduateYear = $request['tahun_lulus'];
         $fiveYearsAgo = Carbon::now()->subYears(5)->year;
         $isActive = false;
-        $required_to_fill = false;
-        if ($fiveYearsAgo > $graduateYear) {
+        $required_to_fill = true;
+        if ($fiveYearsAgo >= $graduateYear) {
             $isActive = true;
-            $required_to_fill = true;
+            $required_to_fill = false;
         }
-
         $gender = null;
         $jenisKelaminReference = $referenceAlumni->jenis_kelamin;
 

@@ -78,7 +78,7 @@ class QuisionerService
         $quisionerLevel = $this->quisionerLevel->where('user_id', $userId)->orderBy('created_at', 'desc')->first();
         $prodi = $this->quisionerProdi->where('id', $request['kode_prodi'])->first();
 
-        if ($user->account_status && $user->required_to_fill == false) {
+        if ($user->account_status && $user->required_to_fill == true) {
             throw new BadRequestException('kamu tidak bisa mengisi quisioner , akun kamu sudah terverifikasi');
         }
 

@@ -74,7 +74,7 @@ class PostService
         }
         $isCreated = $this->post->create(
             [
-                'image' => $fileName,
+                    'image' => $fileName,
                 'link_apply' => $request['link_apply'],
                 'description' => $request['description'],
                 'company' => $request['company'],

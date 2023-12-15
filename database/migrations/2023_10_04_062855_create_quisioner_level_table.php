@@ -18,7 +18,7 @@ class CreateQuisionerLevelTable extends Migration
             $table->foreignUuid('user_id')->references('id')->on('users');
 
             $table->enum('level', ["0", "6", "12"]);
-
+            $table->boolean('not_fillable_again')->default(false);
             $table->foreignUuid('identitas_section')->nullable()->references('id')->on('quis_identitas')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignUuid('main_section')->nullable()->references('id')->on('quis_main')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignUuid('furthe_study_section')->nullable()->references('id')->on('furthe_study')->cascadeOnDelete()->cascadeOnUpdate();
