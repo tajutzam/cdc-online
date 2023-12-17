@@ -17,6 +17,8 @@ class CreatePaysTable extends Migration
             $table->uuid('id')->primary();
             $table->string('post_package');
             $table->string('pay_nominal');
+            $table->integer('exp_date');
+            $table->enum('type', ['information', 'vacancy', 'information+vacancy']);
             $table->timestamps();
         });
     }

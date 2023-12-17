@@ -83,7 +83,18 @@ Route::get('/company/register', function () {
 })->name('register');
 
 
+Route::get('/admin/informasi', function () {
+    return view('admin.verify-information');
+})->name('verify-information');
 
+
+Route::get('/company/riwayat/informasi', function () {
+    return view('company.vacancy.information-company-history');
+})->name('information-company-history');
+
+Route::get('/admin/riwayat/informasi', function () {
+    return view('admin.berita.history-information');
+})->name('history-information');
 
 
 
@@ -174,6 +185,9 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::get('/nominal', [DataPayController::class, "adminDataPay"])->name('nominalpay');
     Route::post('/nominal', [DataPayController::class, "store"])->name('pay-post');
     Route::put('/nominal', [DataPayController::class, "update"])->name('pay-put');
+    Route::delete('/nominal/{id}', [DataPayController::class, "delete"])->name('pay-delete');
+
+
 
     // Route::get('/trix', 'TrixController@index');
     // Route::post('/upload', 'TrixController@upload');

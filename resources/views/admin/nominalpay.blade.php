@@ -55,6 +55,8 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Paket</th>
+                                        <th>Tipe</th>
+                                        <th>Masa Berlaku</th>
                                         <th>Nominal Pembayaran</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -65,26 +67,41 @@
                                         <tr class="text-start">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->post_package }}</td>
-
+                                            <td>
+                                                @if ($item->type == 'information')
+                                                    <span class="badge badge-warning">Informasi</span>
+                                                @elseif ($item->type == 'vacancy')
+                                                    <span class="badge badge-info">Lowongan</span>
+                                                @elseif ($item->type == 'information+vacancy')
+                                                    <span class="badge badge-primary">Informasi dan Lowongan</span>
+                                                @endif
                                             </td>
+                                            <td>{{ $item->exp_date }} Hari</td>
                                             <td>{{ $item->pay_nominal }}</td>
                                             <td>
                                                 <div class="row text-center">
-                                                    <div class="col-12">
-                                                        {{-- <a href="" class="" data-bs-target="#delete" data-id=""
-                                                        data-bs-toggle="modal"><i class="fa-solid fa-trash"
-                                                            style="color: #ff0f27;"></i></a> --}}
+                                                    <div class="col-6">
                                                         <a href="#" class="edit-btn" data-bs-target="#edit-pay"
                                                             data-toggle="modal" data-id="{{ $item->id }}"
-                                                            data-va-number="{{ $item->post_package }}"
-                                                            data-nominal="{{ $item->pay_nominal }}">
+                                                            data-post-package="{{ $item->post_package }}"
+                                                            data-exp-date="{{ $item->exp_date }}"
+                                                            data-type="{{ $item->type }}"
+                                                            data-pay-nominal="{{ $item->pay_nominal }}">
                                                             <i class="fa-solid fa-pen-to-square" style="color:#005eff;"></i>
                                                         </a>
+
                                                     </div>
+
+                                                    <div class="col-6">
+                                                        <a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete-pay" data-id="{{ $item->id }}">
+                                                            <i class="fa-solid fa-trash" style="color: #ff0f27;"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
-
                                 </tbody>
                             </table>
                         </div>
@@ -92,6 +109,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
     <x-modal-small id="edit-pay" footer="footer" title="title" body="body">
@@ -102,16 +120,47 @@
             <form action="{{ route('pay-put') }}" method="post">
                 @method('put')
                 @csrf
-                <input type="text" id="id_payment" hidden name="id">
+                <input type="hidden" id="id_payment" name="id">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control form-control-sm" required id="post_package"
-                        name="post_package"></input>
+                        name="post_package" value="{{ old('post_package') }}">
                     <label for="post_package">Paket Postingan</label>
                 </div>
-
+                <fieldset class="form-group">
+                    <div class="row">
+                        <legend class="col-form-label col-sm-2 pt-0">Tipe</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input name="type" class="form-check-input" type="radio" id="gridRadios1"
+                                    value="vacancy">
+                                <label class="form-check-label" for="gridRadios1">
+                                    Lowongan
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input name="type" class="form-check-input" type="radio" id="gridRadios2"
+                                    value="information">
+                                <label class="form-check-label" for="gridRadios2">
+                                    Informasi
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input name="type" class="form-check-input" type="radio" id="gridRadios3"
+                                    value="information+vacancy">
+                                <label class="form-check-label" for="gridRadios3">
+                                    Informasi dan Lowongan
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control form-control-sm" required id="exp_date" name="exp_date">
+                    <label for="floatingTextarea">Jumlah Hari</label>
+                </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control form-control-sm" required id="pay_nominal"
-                        name="pay_nominal"></input>
+                        name="pay_nominal" value="{{ old('pay_nominal') }}">
                     <label for="pay_nominal">Nominal Pembayaran</label>
                 </div>
 
@@ -124,23 +173,51 @@
         </x-slot>
     </x-modal-small>
 
+
     <x-modal-small id="add-pay" footer="footer" title="title" body="body">
         <x-slot name="title">Tambah Paket</x-slot>
         <x-slot name="id">add-pay</x-slot>
         <x-slot name="body">
 
             <form action="{{ route('pay-post') }}" method="post">
-                @method('post')
                 @csrf
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control form-control-sm" required id="floatingTextarea"
-                        name="post_package"></input>
+                        name="post_package">
                     <label for="floatingTextarea">Nama Paket</label>
                 </div>
 
+                <fieldset class="form-group">
+                    <div class="row">
+                        <legend class="col-form-label col-sm-2 pt-0">Tipe</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input name="type" class="form-check-input" type="radio" id="gridRadios1"
+                                    value="vacancy" checked>
+                                <label class="form-check-label" for="gridRadios1">Lowongan</label>
+                            </div>
+                            <div class="form-check">
+                                <input name="type" class="form-check-input" type="radio" id="gridRadios2"
+                                    value="information">
+                                <label class="form-check-label" for="gridRadios2">Informasi</label>
+                            </div>
+                            <div class="form-check">
+                                <input name="type" class="form-check-input" type="radio" id="gridRadios3"
+                                    value="information+vacancy">
+                                <label class="form-check-label" for="gridRadios3">Informasi dan Lowongan</label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control form-control-sm" required id="floatingTextarea"
+                        name="exp_date">
+                    <label for="floatingTextarea">Jumlah Hari</label>
+                </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control form-control-sm" required id="floatingTextarea"
-                        name="pay_nominal"></input>
+                        name="pay_nominal">
                     <label for="floatingTextarea">Nominal Pembayaran</label>
                 </div>
 
@@ -152,14 +229,18 @@
             </form>
         </x-slot>
     </x-modal-small>
-    <x-modal-small id="delete" footer="footer" title="title" body="body">
+    <x-modal-small id="delete-pay" footer="footer" title="title" body="body">
         <x-slot name="title">Hapus Paket</x-slot>
 
         <x-slot name="body">
-            <div class="mb-3" style="text-align: start;  font-size: 16px; ">Apakah anda yakin ingin menghapus Data ini
-                ? </div>
-            <form action="" method="post">
-                <input type="text" hidden id="" name="id">
+            <div class="mb-3" style="text-align: start; font-size: 16px;">Apakah anda yakin ingin menghapus Data ini?
+            </div>
+            <form action="{{ route('pay-delete', ['id' => '__ID__']) }}" method="post" id="deleteForm">
+                @csrf
+                @method('delete')
+                <input type="hidden" id="deleteId" name="id">
+
+                <!-- Other form fields if needed -->
 
                 <div class="row justify-content-end">
                     <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
@@ -171,13 +252,45 @@
     </x-modal-small>
 
 
+
+
     <script>
         $(document).ready(function() {
             $('.edit-btn').on('click', function() {
                 $('#post_package').val($(this).data('post-package'));
+                $('#exp_date').val($(this).data('exp-date'));
                 $('#id_payment').val($(this).data('id'));
-                $('#pay_nominal').val($(this).data('pay_nominal'));
+                $('#pay_nominal').val($(this).data('pay-nominal'));
                 $('#edit-pay').modal('show');
+                // Replace $selectedType with the actual value you want to pre-select
+                var selectedType = $(this).data('type');
+
+
+                // Use jQuery to find the radio button with the corresponding value and set it as checked
+                $('input[name="type"]').filter('[value="' + selectedType + '"]').prop('checked', true);
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var deleteModal = new bootstrap.Modal(document.getElementById('delete-pay'));
+
+            $('#delete-pay').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+
+                // Set the id in the modal form
+                $('#deleteId').val(id);
+
+                // Set the action attribute dynamically
+                var deleteFormAction = $('#deleteForm').attr('action');
+                deleteFormAction = deleteFormAction.replace('__ID__', id);
+                $('#deleteForm').attr('action', deleteFormAction);
+            });
+
+            // Optional: If you want to close the modal on form submission
+            $('#deleteForm').submit(function() {
+                deleteModal.hide();
             });
         });
     </script>

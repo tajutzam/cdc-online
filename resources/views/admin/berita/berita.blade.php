@@ -21,7 +21,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div>
-                                <p class="mb-0 text-secondary">Total Informasi</p>
+                                <p class="mb-0 text-secondary">Total Berita</p>
                                 <h4 class="my-1">{{ $total['total'] }}</h4>
                             </div>
                             <div class="widgets-icons bg-light-warning text-warning ms-auto"><svg
@@ -49,7 +49,7 @@
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i
                                             class="bx bx-home-alt"></i></a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">Informasi</li>
+                                <li class="breadcrumb-item active" aria-current="page">Berita</li>
                             </ol>
                         </nav>
                     </div>
@@ -62,7 +62,7 @@
                 <div class="row ps-3">
                     <button class="btn btn-outline-primary btn-sm mb-3 w-auto m-3" data-bs-toggle="modal"
                         data-bs-target="#add-news"><i class="fas fa-plus"></i> Tambah
-                        Informasi</button>
+                        Berita</button>
 
                 </div>
             </div>
@@ -140,7 +140,7 @@
 
 
     <x-modal-large id="add-news" footer="footer" title="title" body="body">
-        <x-slot name="title">Tambah Informasi</x-slot>
+        <x-slot name="title">Tambah Berita</x-slot>
         <x-slot name="id">add-news</x-slot>
         <x-slot name="body">
             <form action="{{ route('berita-post') }}" method="post" enctype="multipart/form-data">
@@ -172,7 +172,7 @@
     </x-modal-large>
 
     <x-modal-small id="delete-news" footer="footer" title="title" body="body">
-        <x-slot name="title">Hapus Informasi</x-slot>
+        <x-slot name="title">Hapus Berita</x-slot>
         <x-slot name="id">delete-news</x-slot>
         <x-slot name="body">
             <h5 class="mb-3">Apakah anda yakin ingin menghapus data ini ? </h5>
@@ -190,7 +190,7 @@
     </x-modal-small>
 
     <x-modal-large id="update-news" footer="footer" title="title" body="body">
-        <x-slot name="title">Update Informasi</x-slot>
+        <x-slot name="title">Update Berita</x-slot>
         <x-slot name="id">update-news</x-slot>
         <x-slot name="body">
             <form action="{{ route('berita-update') }}" method="POST" enctype="multipart/form-data">
