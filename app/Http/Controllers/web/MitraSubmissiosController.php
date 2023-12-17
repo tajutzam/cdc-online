@@ -45,7 +45,7 @@ class MitraSubmissiosController extends Controller
             'name' => 'required',
             'nib' => 'required|unique:mitra_submissions,nib',
             'business_license' => 'required|max:2048', // 'max' is in kilobytes, so 2048 KB is 2MB
-            'logo' => 'required|max:1024', // 'max' is in kilobytes, so 1024 KB is 1MB
+            'logo' => 'required|max:2048', // 'max' is in kilobytes, so 1024 KB is 1MB
             'address' => 'required',
             'email' => 'required|email|unique:mitra_submissions,email|unique:mitra,email',
             'password' => 'required',
