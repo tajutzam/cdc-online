@@ -98,6 +98,15 @@ class AuthService
             if (isset($data)) {
                 $isMatch = Hash::check($password, $data->password);
                 if ($isMatch) {
+                    if (!$data->email_verivied) {
+                        $response = [
+                            "status" => false,
+                            "message" => "Gagal login , akun anda belum di aktifasi",
+                            "code" => 400,
+                            "data" => null
+                        ];
+                        return response($response, 400, ['Content-type' => 'application/json']);
+                    }
                     $token = $this->createNewToken($data->id);
                     $response = [
                         "status" => true,

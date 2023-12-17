@@ -138,6 +138,8 @@ Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group
     }
 );
 Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () {
+
+    
     Route::get('login', [AdminController::class, 'login'])->withoutMiddleware(IsAdminMiddleware::class)->middleware(AllowUnauthenticated::class);
 
     Route::post('login', [WebAuthController::class, 'loginAdmin'])->name('admin-login')->middleware(AllowUnauthenticated::class)->withoutMiddleware(IsAdminMiddleware::class);
