@@ -100,7 +100,7 @@ class MitraSubmissiosController extends Controller
     public function apply()
     {
         $banks = Bank::all();
-        // $pays = Pays::all();
+        $pays = Pays::all();
         return view('company.vacancy.apply-vacancy', ['banks' => $banks]);
     }
 
