@@ -100,7 +100,7 @@ Route::post("/company/register", [MitraSubmissiosController::class, "register"])
 
 
 Route::get('/', [LandingPageController::class, "index"])->name('/');
-Route::post("/questions", [QuisionerController::class, "store"])->name('asking');
+Route::post("/questions", [QuestionsController::class, "store"])->name('asking');
 Route::get('/landing-page/blog', [NewsController::class, 'findAllBlog'])->name('blog');
 
 Route::get('/landing-page/single-blog/{id}', [LandingPageController::class, 'findById'])->name('blog-single');
