@@ -4,6 +4,8 @@
 namespace App\Services;
 
 use App\Mail\EmailVeriviedMail;
+use App\Mail\InformationAcceptMail;
+use App\Mail\InformationMitraRejectedMail;
 use App\Mail\MitraMail;
 use App\Mail\MitraRejected;
 use App\Mail\RecoveryPasswordMail;
@@ -80,6 +82,14 @@ class EmailService
         }else{
             Mail::to($to)->send(new MitraRejected());
         }
+    }
+
+    public function sendMailMitraInformationAccpet($mitra){
+        Mail::to($mitra->email)->send(new InformationAcceptMail($mitra));
+    }
+
+    public function sendMailMitraInformationReject($mitra , $alasan){
+        Mail::to($mitra->email)->send(new InformationMitraRejectedMail($mitra , $alasan));
     }
 
 

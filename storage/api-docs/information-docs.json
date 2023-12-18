@@ -1,0 +1,179 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Informations   DOCUMENTATIONS",
+        "version": "1.0",
+        "contact": {
+            "email": "mohammadtajutzamzami07@gmail.com",
+            "name": "Mohammad Tajut Zamzami",
+            "url": "https://github.com/tajutzam"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
+    "paths": {
+        "/informations": {
+            "get": {
+                "tags": ["Informations"],
+                "description": "get all informatiosn verified and still active",
+                "responses": {
+                    "200": {
+                        "description": "success fetch data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "7e4791dc-8727-49d7-949d-f790541ce02a"
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Test judul"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "test deskripsi"
+                                                    },
+                                                    "poster": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:8000/mitra/information/5687731.png"
+                                                    },
+                                                    "bukti": {
+                                                        "type": "string",
+                                                        "example": "3522990.png"
+                                                    },
+                                                    "expired": {
+                                                        "type": "string",
+                                                        "example": "2023-12-28 20:40:15"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "verified"
+                                                    },
+                                                    "pay_id": {
+                                                        "type": "string",
+                                                        "example": "dcbc98b8-59f1-4a42-af84-3b00500d70d0"
+                                                    },
+                                                    "bank_id": {
+                                                        "type": "string",
+                                                        "example": "7daa4f16-7d10-411c-9aa5-e3df55100eca"
+                                                    },
+                                                    "mitra_id": {
+                                                        "type": "string",
+                                                        "example": "67997ba3-bcb4-475f-9570-5208f90bcc46"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2023-12-18T12:38:45.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2023-12-18T13:40:15.000000Z"
+                                                    },
+                                                    "mitra": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "67997ba3-bcb4-475f-9570-5208f90bcc46"
+                                                            },
+                                                            "logo": {
+                                                                "type": "string",
+                                                                "example": "http://localhost:8000/mitra/logo/default.jpg"
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "test mitra"
+                                                            },
+                                                            "nib": {
+                                                                "type": "string",
+                                                                "example": "101212"
+                                                            },
+                                                            "business_license": {
+                                                                "type": "string",
+                                                                "example": "12312.pdf"
+                                                            },
+                                                            "phone": {
+                                                                "type": "string",
+                                                                "example": "085607185972"
+                                                            },
+                                                            "address": {
+                                                                "type": "string",
+                                                                "example": "bwi"
+                                                            },
+                                                            "email": {
+                                                                "type": "string",
+                                                                "example": "mohammadtajutzamzami07@gmail.com"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "example": "2023-12-18T12:35:37.000000Z"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "example": "2023-12-18T12:35:37.000000Z"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "example": [
+                                                {
+                                                    "id": "7e4791dc-8727-49d7-949d-f790541ce02a",
+                                                    "title": "Test judul",
+                                                    "description": "test deskripsi",
+                                                    "poster": "http://localhost:8000/mitra/information/5687731.png",
+                                                    "bukti": "3522990.png",
+                                                    "expired": "2023-12-28 20:40:15",
+                                                    "status": "verified",
+                                                    "pay_id": "dcbc98b8-59f1-4a42-af84-3b00500d70d0",
+                                                    "bank_id": "7daa4f16-7d10-411c-9aa5-e3df55100eca",
+                                                    "mitra_id": "67997ba3-bcb4-475f-9570-5208f90bcc46",
+                                                    "created_at": "2023-12-18T12:38:45.000000Z",
+                                                    "updated_at": "2023-12-18T13:40:15.000000Z",
+                                                    "mitra": {
+                                                        "id": "67997ba3-bcb4-475f-9570-5208f90bcc46",
+                                                        "logo": "http://localhost:8000/mitra/logo/default.jpg",
+                                                        "name": "test mitra",
+                                                        "nib": "101212",
+                                                        "business_license": "12312.pdf",
+                                                        "phone": "085607185972",
+                                                        "address": "bwi",
+                                                        "email": "mohammadtajutzamzami07@gmail.com",
+                                                        "created_at": "2023-12-18T12:35:37.000000Z",
+                                                        "updated_at": "2023-12-18T12:35:37.000000Z"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success fetch data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

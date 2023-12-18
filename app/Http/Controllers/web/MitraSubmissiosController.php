@@ -24,6 +24,7 @@ class MitraSubmissiosController extends Controller
     private MitraService $service;
     private PostService $postService;
 
+
     private InformationSubmissionService $informationSubmissionService;
 
     public function __construct()
@@ -347,6 +348,13 @@ class MitraSubmissiosController extends Controller
         Alert::success('Sukses Menambahkan Informasi');
         return redirect('company/riwayat/informasi');
 
+    }
+
+
+    public function historyInformation()
+    {
+        $data = $this->informationSubmissionService->findAll();
+        return view('company.vacancy.information-company-history', ['data' => $data]);
     }
 
 }

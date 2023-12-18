@@ -23,6 +23,9 @@ class TokenMiddleware
         // handle check token on heaeders
         $token = $request->header('Authorization');
         // dd($token);
+        if (!isset($token)) {
+            throw new UnauthorizedException('ops your token is not valid please login');
+        }
         if (Str::startsWith($token, 'Bearer ')) {
             $newToken = Str::after($token, 'Bearer '); // get token without bearer
             $user = User::where('token', $newToken)->first();

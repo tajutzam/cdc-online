@@ -84,12 +84,9 @@ Route::get('/company/register', function () {
 })->name('register');
 
 
-Route::get('/admin/informasi', [InformationSubmissionController::class , 'index'])->name('verify-information');
+Route::get('/admin/informasi', [InformationSubmissionController::class, 'index'])->name('verify-information');
 
 
-Route::get('/company/riwayat/informasi', function () {
-    return view('company.vacancy.information-company-history');
-})->name('information-company-history');
 
 Route::get('/admin/riwayat/informasi', function () {
     return view('admin.berita.history-information');
@@ -253,6 +250,9 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::post('/verify/company/accpet', [MitraSubmissiosController::class, "accept"])->name('company-accept');
     Route::post('/verify/company/reject', [MitraSubmissiosController::class, "reject"])->name('company-reject');
 
+    Route::post('verify/company/information', [InformationSubmissionController::class, 'accept'])->name('information-accept');
+    Route::post('verify/company/information/reject', [InformationSubmissionController::class, 'reject'])->name('information-reject');
+
 
 
     Route::get('/data/company', [MitraSubmissiosController::class, "mitra"])->name('company-data');
@@ -291,6 +291,8 @@ Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () 
 
     Route::put('settings', [MitraSubmissiosController::class, "updateAccount"])->name('mitra-put');
     Route::post('logout', [MitraSubmissiosController::class, "logout"])->name('mitra-logout');
+
+    Route::get('/riwayat/informasi', [MitraSubmissiosController::class, "historyInformation"])->name('information-company-history');
 });
 
 

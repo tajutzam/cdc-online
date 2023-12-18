@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class InformationSubmission extends Model
 {
-    use HasFactory,Uuids;
-    protected $table = 'information_submissions';
+    use HasFactory, Uuids;
+    protected $table = 'informations';
     protected $primaryKey = 'id';
 
     protected $fillable = [
@@ -20,7 +20,9 @@ class InformationSubmission extends Model
         'pay_id',
         'bank_id',
         'mitra_id',
-        'bukti'
+        'bukti',
+        'status',
+        'expired'
     ];
 
     public function pay()

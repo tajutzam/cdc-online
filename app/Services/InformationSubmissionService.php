@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Exceptions\WebException;
 use App\Models\InformationSubmission;
+use Carbon\Carbon;
 
 class InformationSubmissionService
 {
@@ -35,14 +37,48 @@ class InformationSubmissionService
     }
 
 
-    public function findAll()
+    public function findAllWaiting()
     {
-        return $this->model->with('pay', 'bank','mitra')->get()->collect()->map(function ($data) {
+        return $this->model->with('pay', 'bank', 'mitra')->where('status', 'waiting')->get()->collect()->map(function ($data) {
             $data['bukti'] = url('/') . '/mitra/bukti/' . $data['bukti'];
             $data['poster'] = url('/') . '/mitra/information/' . $data['poster'];
             return $data;
         })->toArray();
     }
 
+    public function findAll()
+    {
+        return $this->model->with('pay', 'bank', 'mitra')->get()->collect()->map(function ($data) {
+            $data['bukti'] = url('/') . '/mitra/bukti/' . $data['bukti'];
+            $data['poster'] = url('/') . '/mitra/information/' . $data['poster'];
+            return $data;
+        })->toArray();
+    }
 
+    public function updateStatus($request)
+    {
+        $model = $this->model->where('id', $request['id'])->first();
+        if (!isset($model)) {
+            throw new WebException('ops information tidak ditemukan');
+        }
+        try {
+            //code..
+            $model->update([
+                'status' => $request['status'],
+                'expired' => $request['expired']
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw new WebException($th->getMessage());
+        }
+    }
+
+    public function findAllAPI()
+    {
+        return $this->model->with('mitra')->where('expired', '>', Carbon::now())->where('status', 'verified')->get()->collect()->map(function ($data) {
+            $data['poster'] = url('/') . '/mitra/information/' . $data['poster'];
+            $data['mitra']['logo'] = url('/') . "/mitra/logo/" . $data['mitra']['logo'];
+            return $data;
+        })->toArray();
+    }
 }

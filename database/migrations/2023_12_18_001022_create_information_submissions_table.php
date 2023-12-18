@@ -13,12 +13,14 @@ class CreateInformationSubmissionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('information_submissions', function (Blueprint $table) {
+        Schema::create('informations', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->text('title');
             $table->text('description');
             $table->string('poster');
             $table->string('bukti');
+            $table->timestamp('expired')->nullable();
+            $table->enum('status' , ['verified' , 'rejected' , 'waiting'])->default('waiting');
             $table->foreignUuid('pay_id')->references('id')->on('pays')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignUuid('bank_id')->references('id')->on('banks')->cascadeOnDelete()->cascadeOnUpdate(); 
             $table->foreignUuid('mitra_id')->references('id')->on('mitra')->cascadeOnDelete()->cascadeOnUpdate();
@@ -32,6 +34,6 @@ class CreateInformationSubmissionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('information_submissions');
+        Schema::dropIfExists('informations');
     }
 }

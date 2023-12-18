@@ -54,27 +54,28 @@
                 </thead>
                 <tbody>
 
-                    <tr>
-                        <td>1</td>
+                    @foreach ($data as $item)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
 
-                        <td>Judul</td>
-                        <td>Deskripsi</td>
-                        <td>
-                            <img src="" alt="" style="height: 100px; "
-                                onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg'">
-                        </td>
-                        <td><img src="" alt="bukti pembayaran"></td>
-                        <td style="text-align: center">
-                            {{-- @if ($item->verified == 'waiting')
-                                <span class="badge badge-info">Menunggu Persetujuan</span>
-                            @elseif($item->verified == 'verified')
-                                <span class="badge badge-success">Disetujui</span>
-                            @elseif($item->verified == 'rejected')
-                                <span class="badge badge-danger">Ditolak</span>
-                            @endif --}}
-                        </td>
-                    </tr>
-
+                            <td>{{ $item['title'] }}</td>
+                            <td>{{ $item['description'] }}</td>
+                            <td>
+                                <img src="{{ $item['poster'] }}" alt="" style="height: 100px; "
+                                    onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg'">
+                            </td>
+                            <td><img src="{{ $item['bukti'] }}" alt="bukti pembayaran"></td>
+                            <td style="text-align: center">
+                                @if ($item['status'] == 'waiting')
+                                    <span class="badge badge-info">Menunggu Persetujuan</span>
+                                @elseif($item['status'] == 'verified')
+                                    <span class="badge badge-success">Disetujui</span>
+                                @elseif($item['status'] == 'rejected')
+                                    <span class="badge badge-danger">Ditolak</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

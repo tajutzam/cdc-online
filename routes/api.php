@@ -4,6 +4,7 @@ use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\EducationController;
+use App\Http\Controllers\InformationSubmissionController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\NewsController as ApiNewsController;
 use App\Http\Controllers\NotificationsController as ControllersNotificationsController;
@@ -192,8 +193,10 @@ Route::get("user/card", [UserController::class, "card"]);
 Route::get("regency", [RegencyController::class, "findAll"]);
 Route::get("province", [ProvinceController::class, "findAll"]);
 
+Route::get("informations", [InformationSubmissionController::class, 'findAllAPI'])->middleware(TokenMiddleware::class);
 
-Route::put("/admin-prodi" , [AdminProdiController::class , "updateHakAkses"]);
+
+Route::put("/admin-prodi", [AdminProdiController::class, "updateHakAkses"]);
 
 
 // documentations

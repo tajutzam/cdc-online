@@ -11,7 +11,7 @@
     <div class="container-fluid">
 
         <div class="card">
-            
+
         </div>
 
         <div class="mt-4">
@@ -60,25 +60,30 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item['mitra']['name'] }}</td>
-                            <td>{{$item['title']}}</td>
+                            <td>{{ $item['title'] }}</td>
                             <td style=" white-space: nowrap; overflow: hidden; text-overflow: ellipsis;max-width: 10em;">
-                                {{$item['description']}}</td>
+                                {{ $item['description'] }}</td>
                             <td>
-                                <img src="{{$item['poster']}}" alt="poster" style="height: 100px; "
+                                <img src="{{ $item['poster'] }}" alt="poster" style="height: 100px; "
                                     onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg'">
                             </td>
-
-                            <td><img src="{{$item['bukti']}}" alt="bukti pembayaran"></td>
+                            <td><img src="{{ $item['bukti'] }}" alt="bukti pembayaran"></td>
                             <td style="text-align: center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <form action="" method="post" class="p-2">
-                                        <input type="text" value="verified" hidden name="verified">
+                                    <form action="{{ route('information-accept') }}" method="post" class="p-2">
+                                        <input type="text" value="verified" hidden name="status">
+                                        <input type="text" value="{{ $item['mitra']['id'] }}" hidden name="mitra_id">
+                                        <input type="text" value="{{ $item['id'] }}" hidden name="id">
+                                        <input type="text" value="{{ $item['pay']['exp_date'] }}" hidden name="pay_day">
                                         <button type="submit" class="btn btn-success">Setuju</button>
                                     </form>
-                                    <form action="" method="post" class="p-2">
-                                        <input type="text" value="rejected" name="verified" hidden>
-                                        <button type="submit" class="btn btn-danger">Tolak</button>
-                                    </form>
+                                    <div class="p-2">
+                                        <button href="#" class="reject-btn btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#reject" data-id="{{ $item['id'] }}"
+                                            data-mitra-id="{{ $item['mitra']['id'] }}">
+                                            Tolak
+                                        </button>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -88,4 +93,42 @@
             </table>
         </div>
     </div>
+
+    <x-modal-medium id="reject" footer="footer" title="title" body="body">
+        <x-slot name="title">Tolak Pengajuan Informasi</x-slot>
+
+        <x-slot name="body">
+            <form action="{{ route('information-reject') }}" method="post">
+                <input type="text" hidden id="" name="id">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="bukti tidak sesuai"
+                        name="alasan" required>
+                    <input type="text" name="id" id="id_information" hidden>
+                    <input type="text" name="mitra_id" id="id_mitra" hidden>
+                    <input type="text" name="status" value="rejected" id="id_mitra" hidden>
+
+
+                    <label for="floatingInput">Alasan Penolakan</label>
+                </div>
+                <div class="row justify-content-end">
+                    <button class="col-3 btn btn-outline-danger btn-sm" type="reset"
+                        data-bs-dismiss="modal">Batal</button>
+                    <button class="col-3 btn btn-outline-primary btn-sm mx-4" type="submit">Kirim</button>
+                </div>
+            </form>
+        </x-slot>
+    </x-modal-medium>
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.reject-btn', function() {
+                var id = $(this).data('id');
+                var mitra_id = $(this).data('mitra-id');
+
+
+                $('#id_information').val(id);
+                $('#id_mitra').val(mitra_id);
+
+            })
+        });
+    </script>
 @endsection
