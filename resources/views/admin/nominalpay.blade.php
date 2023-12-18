@@ -144,13 +144,6 @@
                                     Informasi
                                 </label>
                             </div>
-                            <div class="form-check">
-                                <input name="type" class="form-check-input" type="radio" id="gridRadios3"
-                                    value="information+vacancy">
-                                <label class="form-check-label" for="gridRadios3">
-                                    Informasi dan Lowongan
-                                </label>
-                            </div>
                         </div>
                     </div>
                 </fieldset>
@@ -172,7 +165,6 @@
             </form>
         </x-slot>
     </x-modal-small>
-
 
     <x-modal-small id="add-pay" footer="footer" title="title" body="body">
         <x-slot name="title">Tambah Paket</x-slot>
@@ -200,11 +192,6 @@
                                 <input name="type" class="form-check-input" type="radio" id="gridRadios2"
                                     value="information">
                                 <label class="form-check-label" for="gridRadios2">Informasi</label>
-                            </div>
-                            <div class="form-check">
-                                <input name="type" class="form-check-input" type="radio" id="gridRadios3"
-                                    value="information+vacancy">
-                                <label class="form-check-label" for="gridRadios3">Informasi dan Lowongan</label>
                             </div>
                         </div>
                     </div>

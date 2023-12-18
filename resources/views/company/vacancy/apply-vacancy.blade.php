@@ -292,37 +292,35 @@
                                 <div class="form">
                                     <label for="" style="font-weight: bold;">Paket Layanan</label>
                                     <div class="select-paket">
-                                        <select class="form-select" aria-label="Default select example">
-                                            <option value="Paket 1">
+                                        <select id="paket" class="form-select" aria-label="Default select example"
+                                            onchange="onChangePaket()" name="paket">
+                                            <option>
                                                 Pilih Paket
                                             </option>
+                                            @foreach ($pakets as $item)
+                                                <option value="{{ $item['id'] }}">{{ $item['post_package'] }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     {{-- ini dipakai --}}
-                                    {{-- @if ($item->type == 'information')
-                                        <span class="badge badge-warning">Informasi</span>
-                                    @elseif ($item->type == 'vacancy')
-                                        <span class="badge badge-info">Lowongan</span>
-                                    @elseif ($item->type == 'information+vacancy')
-                                        <span class="badge badge-primary">Informasi dan Lowongan</span>
-                                    @endif --}}
+
+                                    <span id="tipe-paket" class="badge mt-3 d-none"></span>
+                                    <input type="text" name="tipe" id="tipe-input" hidden>
+                                    <input type="text" name="days" id="days" hidden>
 
                                     <div class="form mb-3">
                                         <div class="form">
                                             <div class="">
                                                 <label for="" style="font-weight: bold;">Harga</label>
                                                 <input style="background-color: #E7E7E7;" type="text"
-                                                    class="form-control" placeholder="Harga Layanan" readonly>
+                                                    class="form-control" placeholder="Harga Layanan" readonly
+                                                    id="harga">
                                             </div>
                                         </div>
                                     </div>
                                     <label for="" style="font-weight: bold;">Tipe Bank</label>
                                     <div class="banksearch mb-3">
 
-                                        {{-- <div class="select-btn">
-                                                <span>Pilih Bank</span>
-                                                <i class="uil uil-angle-down"></i>
-                                            </div> --}}
                                         <select class="form-select" aria-label="Default select example" id="bankSelect"
                                             onchange="updateNoRekening()" name="bank">
                                             <option value="Pilih Bank" selected>Pilih Bank</option>
@@ -334,6 +332,43 @@
                                 </div>
                             </div>
 
+
+                            <script>
+                                function onChangePaket() {
+                                    var paket = document.getElementById('paket').value;
+                                    var paketData = {!! json_encode($pakets) !!};
+                                    var harga = document.getElementById('harga');
+                                    var typeBadge = document.getElementById('tipe-paket');
+                                    var inputType = document.getElementById('tipe-input');
+                                    var days = document.getElementById('days');
+                                    if (paket == 'Pilih Paket') {
+                                        harga.value = '';
+                                        typeBadge.classList.add('d-none');
+                                        inputType.value = '';
+                                        days.value = null;
+                                    } else {
+                                        var selectedPay = paketData.find(function(bank) {
+                                            return bank.id == paket;
+                                        });
+                                        harga.value = selectedPay.pay_nominal;
+                                        inputType.value = selectedPay.type;
+
+                                        days.value = selectedPay.exp_date;
+                                        typeBadge.textContent = selectedPay.type.charAt(0).toUpperCase() + selectedPay.type.slice(1);
+                                        typeBadge.classList.remove('d-none');
+                                        // Add or remove classes based on the selectedPay.type
+                                        typeBadge.className = 'badge'; // Resetting the classes
+                                        if (selectedPay.type == 'information') {
+                                            typeBadge.classList.add('badge-warning');
+                                        } else if (selectedPay.type == 'vacancy') {
+                                            typeBadge.classList.add('badge-info');
+                                        } else if (selectedPay.type == 'information+vacancy') {
+                                            typeBadge.classList.add('badge-primary');
+                                        }
+                                    }
+                                }
+                            </script>
+
                             <div class="form mb-3">
                                 <div class="form">
                                     <div class="">
@@ -344,7 +379,6 @@
 
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

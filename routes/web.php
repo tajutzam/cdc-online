@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\AlumniController;
+use App\Http\Controllers\InformationSubmissionController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Middleware\IsAdminMiddleware;
 
@@ -150,7 +151,7 @@ Route::prefix('prodi')->middleware(IsProdiAdministratorMiddleware::class)->group
 );
 Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () {
 
-    
+
     Route::get('login', [AdminController::class, 'login'])->withoutMiddleware(IsAdminMiddleware::class)->middleware(AllowUnauthenticated::class);
 
     Route::post('login', [WebAuthController::class, 'loginAdmin'])->name('admin-login')->middleware(AllowUnauthenticated::class)->withoutMiddleware(IsAdminMiddleware::class);
@@ -282,6 +283,9 @@ Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () 
     Route::get('/apply/end', [MitraSubmissiosController::class, "end"])->name('vacancy-end')->middleware(VacancyFirst::class);
     Route::post('/apply/end', [MitraSubmissiosController::class, "endPerfom"])->name('vacancy-end-post')->middleware(VacancyFirst::class);
 
+    Route::post("/apply/information", [InformationSubmissionController::class, 'store'])->name('information-submissions-post');
+    Route::post("/apply/next/information", [MitraSubmissiosController::class, 'nextPerfomInformation'])->name('information-next-perform');
+
     Route::get('settings', function () {
         return view('company.settings');
     })->name('company-settings');
@@ -293,7 +297,9 @@ Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () 
 
 Route::post("resend", [WebAuthController::class, "resendEmail"])->name('resend');
 Route::get("resend", [WebAuthController::class, "resendView"])->name('success-resend');
-
+Route::get('privacy-policy' , function(){
+    return view('privacy-policy');
+});
 
 Route::get('/info', function () {
     echo phpinfo();

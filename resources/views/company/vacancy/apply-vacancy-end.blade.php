@@ -168,118 +168,237 @@
                 </div>
             </div>
         </div>
-        <form action="{{ route('vacancy-end-post') }}" method="post" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-sm-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Rincian</h5>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-hover" style="border-radius: 7px">
+        @if ($tipe == 'vacancy')
+            <form action="{{ route('vacancy-end-post') }}" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Rincian</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover" style="border-radius: 7px">
 
-                                <tbody>
-                                    <tr>
-                                        <th style=" width: 70px">Posisi</th>
-                                        <td>:</td>
+                                    <tbody>
+                                        <tr>
+                                            <th style=" width: 70px">Posisi</th>
+                                            <td>:</td>
 
-                                        <td>Sekretaris</td>
-                                        <input type="text" value="{{ $data['position'] }}" hidden name="position">
-                                    </tr>
-                                    <tr>
+                                            <td>Sekretaris</td>
+                                            <input type="text" value="{{ $data['position'] }}" hidden name="position">
+                                        </tr>
+                                        <tr>
 
-                                        <th style=" width: 70px">Diunggah</th>
-                                        <td>:</td>
-                                        <td>{{ $data['upload_at'] }}</td>
-                                        <input type="date" value="{{ $data['upload_at'] }}" hidden name="upload_at">
-                                    </tr>
-                                    <tr>
+                                            <th style=" width: 70px">Diunggah</th>
+                                            <td>:</td>
+                                            <td>{{ $data['upload_at'] }}</td>
+                                            <input type="date" value="{{ $data['upload_at'] }}" hidden name="upload_at">
+                                        </tr>
+                                        <tr>
 
-                                        <th style=" width: 70px">Kadaluwarsa</th>
-                                        <td>:</td>
-                                        <td>{{ $data['expired_at'] }}</td>
-                                        <input type="date" value="{{ $data['expired_at'] }}" hidden name="expired">
+                                            <th style=" width: 70px">Kadaluwarsa</th>
+                                            <td>:</td>
+                                            <td>{{ $data['expired_at'] }}</td>
+                                            <input type="date" value="{{ $data['expired_at'] }}" hidden name="expired">
 
-                                    </tr>
-                                    <tr>
-                                        <th style=" width: 70px">Tautan</th>
-                                        <td>:</td>
-                                        <td><a href="{{ $data['link'] }}">{{ $data['link'] }}</a></td>
-                                        <input type="text" value="{{ $data['link'] }}" name="link_apply" hidden>
+                                        </tr>
+                                        <tr>
+                                            <th style=" width: 70px">Tautan</th>
+                                            <td>:</td>
+                                            <td><a href="{{ $data['link'] }}">{{ $data['link'] }}</a></td>
+                                            <input type="text" value="{{ $data['link'] }}" name="link_apply" hidden>
 
-                                    </tr>
+                                        </tr>
 
-                                    <tr>
-                                        <th style=" width: 70px">Tipe Pekerjaan</th>
-                                        <td>:</td>
-                                        <td>{{ $data['type_jobs'] }}</td>
-                                        <input type="text" value="{{ $data['type_jobs'] }}" name="type_jobs" hidden>
-                                    </tr>
+                                        <tr>
+                                            <th style=" width: 70px">Tipe Pekerjaan</th>
+                                            <td>:</td>
+                                            <td>{{ $data['type_jobs'] }}</td>
+                                            <input type="text" value="{{ $data['type_jobs'] }}" name="type_jobs" hidden>
+                                        </tr>
 
-                                    <tr>
-                                        <th style=" width: 70px">Deskripsi</th>
-                                        <td>:</td>
-                                        <td>
-                                            {{ $data['description'] }}
-                                            <input type="text" value="{{ $data['description'] }}" name="description"
-                                                hidden>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Poster</h5>
-                        </div>
-                        <div class="card-body">
-
-                            {{-- @dd($data) --}}
-                            <div class="container">
-
-                                <div class="img-area" data-img="">
-                                    <img src="{{ url('/') . '/mitra/vacancy-temp/' . $data['poster'] }}" alt="Poster"
-                                        onclick="openFileInput()" id="previewImage">
-                                    <input type="file" id="file" accept="image/*" onchange="updateImage()"
-                                        name="poster" hidden>
-                                    <input type="file" id="bukti" name="bukti" hidden>
-                                    <img src="{{ url('/') . '/mitra/bukti/temp/' . $data['bukti_path'] }}" alt="sas"
-                                        id="buktiPreview" hidden>
-                                </div>
-
+                                        <tr>
+                                            <th style=" width: 70px">Deskripsi</th>
+                                            <td>:</td>
+                                            <td>
+                                                {{ $data['description'] }}
+                                                <input type="text" value="{{ $data['description'] }}" name="description"
+                                                    hidden>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-
                     </div>
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Poster</h5>
+                            </div>
+                            <div class="card-body">
+
+                                {{-- @dd($data) --}}
+                                <div class="container">
+
+                                    <div class="img-area" data-img="">
+                                        <img src="{{ url('/') . '/mitra/vacancy-temp/' . $data['poster'] }}" alt="Poster"
+                                            onclick="openFileInput()" id="previewImage">
+                                        <input type="file" id="file" accept="image/*" onchange="updateImage()"
+                                            name="poster" hidden>
+                                        <input type="file" id="bukti" name="bukti" hidden>
+                                        <img src="{{ url('/') . '/mitra/bukti/temp/' . $data['bukti_path'] }}"
+                                            alt="sas" id="buktiPreview" hidden>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    {{-- @dd($data) --}}
                 </div>
 
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
 
-                {{-- @dd($data) --}}
-            </div>
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div class="row" style="justify-items: end; text-align: end;">
-                                <div class="col">
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        {{-- <button type="button" class="btn btn-primary">Left</button> --}}
-                                        <button type="submit" class="btn btn-success"> <i class="fas fa-check"></i>
-                                            Konfirmasi</button>
+                                <div class="row" style="justify-items: end; text-align: end;">
+                                    <div class="col">
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            {{-- <button type="button" class="btn btn-primary">Left</button> --}}
+                                            <button type="submit" class="btn btn-success"> <i class="fas fa-check"></i>
+                                                Konfirmasi</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                    </div>
+                </div>
+            </form>
+        @else
+            <form action="{{ route('vacancy-end-post') }}" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Rincian</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover" style="border-radius: 7px">
+
+                                    <tbody>
+                                        <tr>
+                                            <th style=" width: 70px">Posisi</th>
+                                            <td>:</td>
+
+                                            <td>Sekretaris</td>
+                                            <input type="text" value="{{ $data['position'] }}" hidden
+                                                name="position">
+                                        </tr>
+                                        <tr>
+
+                                            <th style=" width: 70px">Diunggah</th>
+                                            <td>:</td>
+                                            <td>{{ $data['upload_at'] }}</td>
+                                            <input type="date" value="{{ $data['upload_at'] }}" hidden
+                                                name="upload_at">
+                                        </tr>
+                                        <tr>
+
+                                            <th style=" width: 70px">Kadaluwarsa</th>
+                                            <td>:</td>
+                                            <td>{{ $data['expired_at'] }}</td>
+                                            <input type="date" value="{{ $data['expired_at'] }}" hidden
+                                                name="expired">
+
+                                        </tr>
+                                        <tr>
+                                            <th style=" width: 70px">Tautan</th>
+                                            <td>:</td>
+                                            <td><a href="{{ $data['link'] }}">{{ $data['link'] }}</a></td>
+                                            <input type="text" value="{{ $data['link'] }}" name="link_apply" hidden>
+
+                                        </tr>
+
+                                        <tr>
+                                            <th style=" width: 70px">Tipe Pekerjaan</th>
+                                            <td>:</td>
+                                            <td>{{ $data['type_jobs'] }}</td>
+                                            <input type="text" value="{{ $data['type_jobs'] }}" name="type_jobs"
+                                                hidden>
+                                        </tr>
+
+                                        <tr>
+                                            <th style=" width: 70px">Deskripsi</th>
+                                            <td>:</td>
+                                            <td>
+                                                {{ $data['description'] }}
+                                                <input type="text" value="{{ $data['description'] }}"
+                                                    name="description" hidden>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Poster</h5>
+                            </div>
+                            <div class="card-body">
+
+                                {{-- @dd($data) --}}
+                                <div class="container">
+
+                                    <div class="img-area" data-img="">
+                                        <img src="{{ url('/') . '/mitra/vacancy-temp/' . $data['poster'] }}"
+                                            alt="Poster" onclick="openFileInput()" id="previewImage">
+                                        <input type="file" id="file" accept="image/*" onchange="updateImage()"
+                                            name="poster" hidden>
+                                        <input type="file" id="bukti" name="bukti" hidden>
+                                        <img src="{{ url('/') . '/mitra/bukti/temp/' . $data['bukti_path'] }}"
+                                            alt="sas" id="buktiPreview" hidden>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
 
+
+                    {{-- @dd($data) --}}
                 </div>
-            </div>
-        </form>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="row" style="justify-items: end; text-align: end;">
+                                    <div class="col">
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            {{-- <button type="button" class="btn btn-primary">Left</button> --}}
+                                            <button type="submit" class="btn btn-success"> <i class="fas fa-check"></i>
+                                                Konfirmasi</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        @endif
     </div>
     <script>
         // document.getElementById('file').value = 

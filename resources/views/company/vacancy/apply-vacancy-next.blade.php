@@ -126,6 +126,7 @@
             width: 0px;
         }
     </style>
+
     <div class="container-fluid">
         @if ($errors->any())
             <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
@@ -151,7 +152,7 @@
                 </div>
             </div>
         </div>
-        <form action="{{ route('vacancy-next-post') }}" method="post" enctype="multipart/form-data"
+        <form action="{{ $tipe == 'vacancy' ? route('vacancy-next-post') : route('information-next-perform') }}" method="post" enctype="multipart/form-data"
             onsubmit="return validateImage()">
             <div class="card">
                 <div class="card-body">
@@ -177,160 +178,161 @@
             <div class="row">
 
 
-                <div class="col-sm-12">
+                @if ($tipe == 'information')
+                    <div class="col-sm-12">
 
-                    <div class="card">
-                        <div class="card-header">
-                            <label class="fw-bold" for="">Pengajuan Lowongan</label>
-                        </div>
-                        <div class="card-body">
-
-                            <div class="form mb-3">
-                                <div class="form">
-                                    <div class="">
-                                        <label for="" style="font-weight: bold;">Posisi</label>
-                                        <input type="text" class="form-control" placeholder="Masukkan Posisi"
-                                            name="position" value="{{ old('position') }}">
-                                    </div>
-
-                                </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <label class="fw-bold" for="">Pengajuan Informasi</label>
                             </div>
+                            <div class="card-body">
 
-                            <div class="form mb-3">
-                                <div class="form-row">
-                                    <div class="col">
-                                        <label style="font-weight: bold; " for="">Diunggah</label>
-                                        <input type="date" class="form-control" placeholder="" name="upload_at"
-                                            value="{{ old('upload_at') }}">
-                                    </div>
-                                    <div class="col">
-                                        <label for="" style="font-weight: bold;">Kadaluwarsa</label>
-                                        <input type="date" class="form-control" placeholder="" name="expired_at"
-                                            value="{{ old('expired_at') }}">
+                                <div class="form mb-3">
+                                    <div class="form">
+                                        <div class="">
+                                            <label for="" style="font-weight: bold;">Judul</label>
+                                            <input type="text" class="form-control" placeholder="Masukkan Judul"
+                                                name="Judul" value="">
+                                        </div>
+
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form mb-3">
-                                <div class="form">
-                                    <div class="">
-                                        <label for="" style="font-weight: bold;">Tautan</label>
-                                        <input type="text" class="form-control" placeholder="Masukkan Tautan"
-                                            name="link" value="{{ old('link') }}">
-                                    </div>
-                                </div>
-                            </div>
+                                <input type="hidden" name="bukti_path" value="{{ $bukti }}">
+                                <input type="hidden" name="bank" value="{{ $bank }}">
 
-                            <div class="form mb-3">
-                                <label for="" style="font-weight: bold;">Tipe Pekerjaan</label>
-                                <select class="form-select" aria-label="Default select example" id="bankSelect"
-                                    name="type_jobs" value="{{ old('type_jobs') }}">
-                                    <option value="Pilih Bank" selected>Pilih Tipe Pekerjaan</option>
-                                    <option value="Part Time"> Part Time</option>
-                                    <option value="wiraswasta"> Wiraswasta</option>
-                                    <option value="fulltime"> Fulltime</option>
-                                    <option value="karyawan"> Karyawan</option>
-                                    <option value="magang"> Magang</option>
-                                </select>
-                            </div>
-
-                            <input type="hidden" name="bukti_path" value="{{ $bukti }}">
-                            <input type="hidden" name="bank" value="{{ $bank }}">
-
-                            <div class="form mb-3">
-                                <div class="form">
-                                    <div class="deskripsi">
-                                        <label for="" style="font-weight: bold;">Deskripsi</label>
-                                        <textarea spellcheck="false" placeholder="Masukkan Deskripsi" name="description" required
-                                            value="{{ old('description') }}"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-12 p-0">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>Poster</h5>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <div class="container">
-
-                                            <input type="file" id="file" accept="image/*" name="poster"
-                                                style="display: none" value="{{ old('poster') }}">
-                                            <div class="img-area" data-img="">
-                                                <i class='bx bxs-cloud-upload icon'></i>
-                                                <h3>Unggah Poster</h3>
-                                                <p>Pastikan file kurang dari <span>2MB</span></p>
-                                            </div>
-                                            <button type="button" class="select-image"> Pilih Poster</button>
+                                <div class="form mb-3">
+                                    <div class="form">
+                                        <div class="deskripsi">
+                                            <label for="" style="font-weight: bold;">Deskripsi</label>
+                                            <textarea spellcheck="false" placeholder="Masukkan Deskripsi" name="description" required
+                                                value="{{ old('description') }}"></textarea>
                                         </div>
                                     </div>
+                                </div>
 
+                                <div class="col-sm-12 p-0">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Poster</h5>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <div class="container">
+
+                                                <input type="file" id="file" accept="image/*" name="poster"
+                                                    style="display: none" value="{{ old('poster') }}">
+                                                <div class="img-area" data-img="">
+                                                    <i class='bx bxs-cloud-upload icon'></i>
+                                                    <h3>Unggah Poster</h3>
+                                                    <p>Pastikan file kurang dari <span>2MB</span></p>
+                                                </div>
+                                                <button type="button" class="select-image"> Pilih Poster</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @elseif($tipe == 'vacancy')
+                    <div class="col-sm-12">
 
-
-                <div class="col-sm-12">
-
-                    <div class="card">
-                        <div class="card-header">
-                            <label class="fw-bold" for="">Pengajuan Informasi</label>
-                        </div>
-                        <div class="card-body">
-
-                            <div class="form mb-3">
-                                <div class="form">
-                                    <div class="">
-                                        <label for="" style="font-weight: bold;">Judul</label>
-                                        <input type="text" class="form-control" placeholder="Masukkan Judul"
-                                            name="Judul" value="">
-                                    </div>
-
-                                </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <label class="fw-bold" for="">Pengajuan Lowongan</label>
                             </div>
+                            <div class="card-body">
 
-                            <input type="hidden" name="bukti_path" value="{{ $bukti }}">
-                            <input type="hidden" name="bank" value="{{ $bank }}">
+                                <div class="form mb-3">
+                                    <div class="form">
+                                        <div class="">
+                                            <label for="" style="font-weight: bold;">Posisi</label>
+                                            <input type="text" class="form-control" placeholder="Masukkan Posisi"
+                                                name="position" value="{{ old('position') }}">
+                                        </div>
 
-                            <div class="form mb-3">
-                                <div class="form">
-                                    <div class="deskripsi">
-                                        <label for="" style="font-weight: bold;">Deskripsi</label>
-                                        <textarea spellcheck="false" placeholder="Masukkan Deskripsi" name="description" required
-                                            value="{{ old('description') }}"></textarea>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-sm-12 p-0">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>Poster</h5>
-                                    </div>
-                                    <div class="card-body">
+                                <div class="form mb-3">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <label style="font-weight: bold; " for="">Diunggah</label>
+                                            <input type="date" class="form-control" placeholder="" name="upload_at"
+                                                value="{{ \Carbon\Carbon::now()->toDateString() }}" readonly>
 
-                                        <div class="container">
-
-                                            <input type="file" id="file" accept="image/*" name="poster"
-                                                style="display: none" value="{{ old('poster') }}">
-                                            <div class="img-area" data-img="">
-                                                <i class='bx bxs-cloud-upload icon'></i>
-                                                <h3>Unggah Poster</h3>
-                                                <p>Pastikan file kurang dari <span>2MB</span></p>
-                                            </div>
-                                            <button type="button" class="select-image"> Pilih Poster</button>
+                                        </div>
+                                        <div class="col">
+                                            <label for="" style="font-weight: bold;">Kadaluwarsa</label>
+                                            <input type="date" class="form-control" placeholder="" name="expired_at"
+                                                value="{{ old('expired_at', $expired) }}">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form mb-3">
+                                    <div class="form">
+                                        <div class="">
+                                            <label for="" style="font-weight: bold;">Tautan</label>
+                                            <input type="text" class="form-control" placeholder="Masukkan Tautan"
+                                                name="link" value="{{ old('link') }}">
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <div class="form mb-3">
+                                    <label for="" style="font-weight: bold;">Tipe Pekerjaan</label>
+                                    <select class="form-select" aria-label="Default select example" id="bankSelect"
+                                        name="type_jobs" value="{{ old('type_jobs') }}">
+                                        <option value="Pilih Bank" selected>Pilih Tipe Pekerjaan</option>
+                                        <option value="Part Time"> Part Time</option>
+                                        <option value="wiraswasta"> Wiraswasta</option>
+                                        <option value="fulltime"> Fulltime</option>
+                                        <option value="karyawan"> Karyawan</option>
+                                        <option value="magang"> Magang</option>
+                                    </select>
+                                </div>
+
+                                <input type="hidden" name="bukti_path" value="{{ $bukti }}">
+                                <input type="hidden" name="bank" value="{{ $bank }}">
+                                <input type="text" value="information" name="type" hidden>
+
+                                <div class="form mb-3">
+                                    <div class="form">
+                                        <div class="deskripsi">
+                                            <label for="" style="font-weight: bold;">Deskripsi</label>
+                                            <textarea spellcheck="false" placeholder="Masukkan Deskripsi" name="description" required
+                                                value="{{ old('description') }}"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 p-0">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Poster</h5>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <div class="container">
+
+                                                <input type="file" id="file" accept="image/*" name="poster"
+                                                    style="display: none" value="{{ old('poster') }}">
+                                                <div class="img-area" data-img="">
+                                                    <i class='bx bxs-cloud-upload icon'></i>
+                                                    <h3>Unggah Poster</h3>
+                                                    <p>Pastikan file kurang dari <span>2MB</span></p>
+                                                </div>
+                                                <button type="button" class="select-image"> Pilih Poster</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
         </form>
     </div>

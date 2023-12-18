@@ -25,6 +25,7 @@ class DataPayController extends Controller
 
     public function store(Request $request)
     {
+        
         $this->validate($request, [
             'post_package' => 'required|unique:pays,post_package',
             'pay_nominal' => 'required',

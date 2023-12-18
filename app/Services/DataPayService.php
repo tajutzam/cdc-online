@@ -18,6 +18,7 @@ class DataPayService
 
     public function store($request)
     {
+        
         Pay::create($request);
     }
 

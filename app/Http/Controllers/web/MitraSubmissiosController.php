@@ -10,6 +10,7 @@ use App\Models\Post;
 use App\Services\MitraService;
 use App\Services\PostService;
 use App\Services\DataPayService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -100,8 +101,10 @@ class MitraSubmissiosController extends Controller
     public function apply()
     {
         $banks = Bank::all();
+        $service = new DataPayService();
+        $pays = $service->findAll();
         // $pays = Pays::all();
-        return view('company.vacancy.apply-vacancy', ['banks' => $banks]);
+        return view('company.vacancy.apply-vacancy', ['banks' => $banks, 'pakets' => $pays]);
     }
 
     public function history()
@@ -148,12 +151,13 @@ class MitraSubmissiosController extends Controller
 
     public function applyToNext(Request $request)
     {
+
         $this->validate($request, [
             'bukti' => 'required|max:2048',
-
         ]);
         // Handle file upload
         if ($request->hasFile('bukti')) {
+
             $image = $request->file('bukti');
             $fileName = time() . "." . $image->getClientOriginalExtension();
             $folder = "mitra/bukti/temp";
@@ -165,9 +169,13 @@ class MitraSubmissiosController extends Controller
 
         $request->session()->put('bukti_path', $fileName);
         $request->session()->put('bank', $request->input('bank'));
+        $request->session()->put('paket', $request->input('paket'));
+        $request->session()->put('tipe', $request->input('tipe'));
+        $expired = Carbon::now()->addDays($request->input('days'))->toDateString();
 
-        // dd($data);
-        // Redirect to the next page with the data
+        $request->session()->put('expired', $expired);
+
+
         return redirect('/company/apply/next');
     }
 
@@ -177,12 +185,17 @@ class MitraSubmissiosController extends Controller
         // $this->middleware(PaymentFirst::class );
         $bukti = session('bukti_path');
         $bank = session('bank');
+        // $this->middleware(PaymentFirst::class );
+        $paket = session('paket');
+        $tipe = session('tipe');
+        $expired = session('expired');
 
-        return view('company.vacancy.apply-vacancy-next', ['bukti' => $bukti, 'bank' => $bank]);
+
+        return view('company.vacancy.apply-vacancy-next', ['bukti' => $bukti, 'bank' => $bank, 'tipe' => $tipe, 'paket' => $paket, 'expired' => $expired]);
     }
 
 
-    public function nextPerfom(Request $request)
+    public function nextPerfom(Request $request) // for vacancy
     {
 
         $this->validate($request, [
@@ -205,7 +218,21 @@ class MitraSubmissiosController extends Controller
         $requestData = $request->all();
         $requestData['poster'] = $fileName;
         $request->session()->put('data', $requestData);
+        $request->session()->put('tipe', $request->input('type'));
         return redirect('company/apply/end');
+    }
+
+
+    public function nextPerfomInformation(Request $request)
+    {
+        dd($request->all());
+        $this->validate($request, [
+            'poster' => 'required',
+            'description' => 'required',
+            'title' => 'required',
+            'bank_id' => 'required',
+            'pay_id' => 'required|url',
+        ]);
     }
 
     public function end()

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaysTable extends Migration
+class CreateInformationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreatePaysTable extends Migration
      */
     public function up()
     {
-        Schema::create('pays', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('post_package');
-            $table->string('pay_nominal');
-            $table->integer('exp_date');
-            $table->enum('type', ['information', 'vacancy']);
+        Schema::create('informations', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ class CreatePaysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pays');
+        Schema::dropIfExists('informations');
     }
 }
