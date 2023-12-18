@@ -15,7 +15,8 @@
                     <li><a class="nav-link scrollto" href="#features">Fitur</a></li>
                     <li><a href="{{ route('blog') }}">Berita</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Kontak</a></li>
-                    <li><a class="get" href="{{ route('login-company') }}">Pasang Lowongan</a></li>
+                    <li><a class="getstarted scrollto" style="background-color: #e8d019"
+                            href="{{ route('login-company') }}">Pasang Lowongan</a></li>
                     <li><a class="getstarted scrollto" href="#hero">Unduh Sekarang</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>

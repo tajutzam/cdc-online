@@ -6,12 +6,12 @@ use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Bank extends Model
+class Pay extends Model
 {
     use HasFactory, Uuids;
 
 
     protected $fillable = [
-        'va_number', 'bank'
+        'post_package', 'pay_nominal', 'exp_date'
     ];
 }

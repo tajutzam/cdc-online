@@ -622,6 +622,8 @@
                                     class="bx bx-arrow-back"></i>Logout</button>
                         </form>
                     </li>
+                    <hr style=" border: 1px solid #000; 
+            margin: 10px 0;">
                     <li class="text-start">
                         <form action="{{ route('reset-company') }}" method="post">
                             <button href="" type="submit" class="btn btn-sm"> <i class="fas fa-cog"></i>

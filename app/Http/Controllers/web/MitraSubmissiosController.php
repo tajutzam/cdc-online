@@ -9,6 +9,7 @@ use App\Models\Bank;
 use App\Models\Post;
 use App\Services\MitraService;
 use App\Services\PostService;
+use App\Services\DataPayService;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -99,6 +100,7 @@ class MitraSubmissiosController extends Controller
     public function apply()
     {
         $banks = Bank::all();
+        $pays = Pays::all();
         return view('company.vacancy.apply-vacancy', ['banks' => $banks]);
     }
 
@@ -107,7 +109,6 @@ class MitraSubmissiosController extends Controller
         $mitraId = auth('mitra')->user()->id;
         $posts = Post::where('mitra_id', $mitraId)->get();
         return view('company.vacancy.company-history', ['posts' => $posts]);
-
     }
 
     public function updateAccount(Request $request)
@@ -255,5 +256,4 @@ class MitraSubmissiosController extends Controller
             return redirect("/company/history");
         }
     }
-
 }

@@ -28,7 +28,7 @@ class BankController extends Controller
         $this->validate($request, [
             'va_number' => 'required|unique:banks,va_number',
             'bank' => 'required',
-            'nominal' => 'required'
+
         ], [
             'va_number.required' => 'nomor rekening tidak boleh kosong',
             'bank.required' => 'Tipe bank tidak boleh kosong',
@@ -46,7 +46,7 @@ class BankController extends Controller
             'id' => 'required',
             'va_number' => 'required',
             'bank' => 'required',
-            'nominal' => 'required'
+
         ], [
             'va_number.required' => 'nomor rekening tidak boleh kosong',
             'bank.required' => 'Tipe bank tidak boleh kosong',

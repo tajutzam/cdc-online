@@ -290,8 +290,34 @@
 
                             <div class="form mb-3">
                                 <div class="form">
+                                    <label for="" style="font-weight: bold;">Paket Layanan</label>
+                                    <div class="select-paket">
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option value="Paket 1">
+                                                Pilih Paket
+                                            </option>
+                                        </select>
+                                    </div>
+                                    {{-- ini dipakai --}}
+                                    {{-- @if ($item->type == 'information')
+                                        <span class="badge badge-warning">Informasi</span>
+                                    @elseif ($item->type == 'vacancy')
+                                        <span class="badge badge-info">Lowongan</span>
+                                    @elseif ($item->type == 'information+vacancy')
+                                        <span class="badge badge-primary">Informasi dan Lowongan</span>
+                                    @endif --}}
+
+                                    <div class="form mb-3">
+                                        <div class="form">
+                                            <div class="">
+                                                <label for="" style="font-weight: bold;">Harga</label>
+                                                <input style="background-color: #E7E7E7;" type="text"
+                                                    class="form-control" placeholder="Harga Layanan" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <label for="" style="font-weight: bold;">Tipe Bank</label>
-                                    <div class="banksearch">
+                                    <div class="banksearch mb-3">
 
                                         {{-- <div class="select-btn">
                                                 <span>Pilih Bank</span>
@@ -318,15 +344,7 @@
 
                                 </div>
                             </div>
-                            <div class="form mb-3">
-                                <div class="form">
-                                    <div class="">
-                                        <label for="" style="font-weight: bold;">Harga</label>
-                                        <input style="background-color: #E7E7E7;" type="text" class="form-control"
-                                            placeholder="Harga Layanan" readonly id="nominal">
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>

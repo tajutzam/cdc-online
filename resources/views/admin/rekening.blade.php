@@ -55,7 +55,6 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Rekening</th>
-                                        <th>Nominal Pembayaran</th>
                                         <th>Tipe Bank</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -66,7 +65,7 @@
                                         <tr class="text-start">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->va_number }}</td>
-                                            <td style="text-align: center">Rp.{{ number_format($item->nominal, 2) }}
+
                                             </td>
                                             <td>{{ $item->bank }}</td>
                                             <td>
@@ -110,11 +109,7 @@
                         name="va_number"></input>
                     <label for="va_number">No Rekening</label>
                 </div>
-                <div class="form-floating mb-3">
-                    <input type="number" class="form-control form-control-sm" required id="nominal"
-                        name="nominal"></input>
-                    <label for="nominal">Nominal Pembayaran</label>
-                </div>
+
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control form-control-sm" required id="bank"
                         name="bank"></input>
@@ -143,11 +138,7 @@
                         name="va_number"></input>
                     <label for="floatingTextarea">No Rekening</label>
                 </div>
-                <div class="form-floating mb-3">
-                    <input type="number" class="form-control form-control-sm" required id="floatingTextarea"
-                        name="nominal"></input>
-                    <label for="floatingTextarea">Nominal Pembayaran</label>
-                </div>
+
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control form-control-sm" required id="floatingTextarea"
                         name="bank"></input>
