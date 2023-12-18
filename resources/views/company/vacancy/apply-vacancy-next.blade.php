@@ -386,7 +386,7 @@
                                         <div class="col">
                                             <label for="" style="font-weight: bold;">Kadaluwarsa</label>
                                             <input type="date" class="form-control" placeholder="" name="expired_at"
-                                                value="{{ old('expired_at', $expired) }}">
+                                                value="{{ old('expired_at', $expired) }}" readonly>
                                         </div>
                                     </div>
                                 </div>

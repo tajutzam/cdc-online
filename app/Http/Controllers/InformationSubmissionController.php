@@ -59,5 +59,11 @@ class InformationSubmissionController extends Controller
         return ResponseHelper::successResponse('success fetch data', $data, 200);
     }
 
+    public function information()
+    {
+        $data = $this->service->findAllVerifiedNotExpired();
+        return view('admin.berita.history-information', compact('data'));
+    }
+
 
 }

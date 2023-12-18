@@ -20,7 +20,7 @@
                                     </svg></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Verifikasi Informasi Mitra</li>
+                            <li class="breadcrumb-item active" aria-current="page">Data Informasi Mitra</li>
                         </ol>
                     </nav>
                 </div>
@@ -28,31 +28,35 @@
         </div>
 
         <!-- Search input -->
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <div class="input-group">
                 <input type="text" class="form-control" id="searchInput" placeholder="&#xF002; Search...">
                 <button class="btn btn-outline-secondary" type="button">
                     <i class="fas fa-search"></i>
                 </button>
             </div>
-        </div>
+        </div> --}}
 
 
         <div class="row ps-3 pe-3 justify-content-start gap-5">
             <!-- First Card -->
-            <div class="col-md-4 mb-4 p-0">
-                <div class="card p-0  ms-0 m-1 ">
-                    <img src="" class="card-img-top" alt="..."
-                        onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg'">
-                    <div class="card-body">
-                        <h5 class="card-title">Title</h5>
-                        <p class="card-text" id="shortDescription">Short description (first 30 words)</p>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fullInfoModal">
-                            View Full Info
-                        </button>
+            @foreach ($data as $item)
+                <div class="col-md-4 mb-4 p-0">
+                    <div class="card p-0  ms-0 m-1 ">
+                        <img src="{{ $item['poster'] }}" class="card-img-top" alt="..."
+                            onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg'">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $item['title'] }}</h5>
+                            <p class="card-text" id="shortDescription">{{ $item['description'] }}</p>
+                            <button type="button" class="detail-btn btn btn-primary" data-toggle="modal"
+                                data-target="#fullInfoModal" data-mitra="{{ $item['mitra']['name'] }}"
+                                data-title ="{{ $item['title'] }}" data-description="{{ $item['description'] }}">
+                                View Full Info
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
 
             <div class="col-md-4 mb-4 p-0" id="noResultsCard" style="display: none;">
                 <div class="card p-0 ms-0 m-1">
@@ -77,9 +81,9 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p><strong>Perusahaan:</strong> Company Name</p>
-                        <p><strong>Judul:</strong> Title</p>
-                        <p><strong>Deskripsi:</strong> Full description here...</p>
+                        <p><strong>Perusahaan:</strong> <span id="perusahaan"></span></p>
+                        <p><strong>Judul:</strong> <span id="title"></span></p>
+                        <p><strong>Deskripsi:</strong> <span id="description"></span></p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -125,6 +129,16 @@
                         }
                     }
                 });
+            });
+
+
+            $(document).ready(function() {
+                $(document).on('click', '.detail-btn', function() {
+                 
+                    $('#perusahaan').text($(this).data('mitra'));
+                    $('#title').text($(this).data('title'));
+                    $('#description').text($(this).data('description'));
+                })
             });
         </script>
 

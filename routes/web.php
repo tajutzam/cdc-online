@@ -88,9 +88,7 @@ Route::get('/admin/informasi', [InformationSubmissionController::class, 'index']
 
 
 
-Route::get('/admin/riwayat/informasi', function () {
-    return view('admin.berita.history-information');
-})->name('history-information');
+
 
 
 
@@ -259,6 +257,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
 
 
     Route::get('/mitra', [PostController::class, "verivyMitraVacancy"])->name('vacancy-mitra');
+    Route::get('/riwayat/informasi', [InformationSubmissionController::class, 'information'])->name('history-information');
 });
 
 

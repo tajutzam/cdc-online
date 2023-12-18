@@ -46,6 +46,23 @@ class InformationSubmissionService
         })->toArray();
     }
 
+    public function findAllVerifiedNotExpired()
+    {
+        return $this->model
+            ->with('pay', 'bank', 'mitra')
+            ->where('status', 'verified')
+            ->whereDate('expired', '>', now())
+            ->get()
+            ->collect()
+            ->map(function ($data) {
+                $data['bukti'] = url('/') . '/mitra/bukti/' . $data['bukti'];
+                $data['poster'] = url('/') . '/mitra/information/' . $data['poster'];
+                return $data;
+            })
+            ->toArray();
+
+    }
+
     public function findAll()
     {
         return $this->model->with('pay', 'bank', 'mitra')->get()->collect()->map(function ($data) {

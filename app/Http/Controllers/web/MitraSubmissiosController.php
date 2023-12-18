@@ -227,9 +227,9 @@ class MitraSubmissiosController extends Controller
 
         $requestData['poster'] = $fileName;
         $request->session()->put('data', $requestData);
-        $request->session()->put('tipe', $request->input('type'));
+        $request->session()->put('tipe', 'vacancy');
         $request->session()->put('days', $request->input('days'));
-        dd($requestData);
+     
 
         return redirect('company/apply/end');
     }

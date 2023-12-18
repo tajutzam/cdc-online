@@ -18,8 +18,8 @@ class MitraSeeder extends Seeder
         //
         Mitra::create([
             'logo' => 'default.jpg', // Replace with the actual path to your logo file
-            'name' => 'test mitra',
-            'nib' => '101212',
+            'name' => 'Mitra Kehidupan',
+            'nib' => '10121212312',
             'business_license' => '12312.pdf',
             'phone' => '085607185972',
             'address' => 'bwi',
