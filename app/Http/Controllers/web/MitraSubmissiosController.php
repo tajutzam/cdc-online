@@ -6,11 +6,14 @@ use App\Exceptions\WebException;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\PaymentFirst;
 use App\Models\Bank;
+use App\Models\InformationSubmission;
 use App\Models\Post;
 use App\Services\MitraService;
 use App\Services\PostService;
 use App\Services\DataPayService;
+use App\Services\InformationSubmissionService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -21,10 +24,13 @@ class MitraSubmissiosController extends Controller
     private MitraService $service;
     private PostService $postService;
 
+    private InformationSubmissionService $informationSubmissionService;
+
     public function __construct()
     {
         $this->service = new MitraService();
         $this->postService = new PostService();
+        $this->informationSubmissionService = new InformationSubmissionService();
     }
 
     public function index()
@@ -172,7 +178,7 @@ class MitraSubmissiosController extends Controller
         $request->session()->put('paket', $request->input('paket'));
         $request->session()->put('tipe', $request->input('tipe'));
         $expired = Carbon::now()->addDays($request->input('days'))->toDateString();
-
+        $request->session()->put('days', $request->input('days'));
         $request->session()->put('expired', $expired);
 
 
@@ -189,9 +195,10 @@ class MitraSubmissiosController extends Controller
         $paket = session('paket');
         $tipe = session('tipe');
         $expired = session('expired');
+        $days = session("days");
 
 
-        return view('company.vacancy.apply-vacancy-next', ['bukti' => $bukti, 'bank' => $bank, 'tipe' => $tipe, 'paket' => $paket, 'expired' => $expired]);
+        return view('company.vacancy.apply-vacancy-next', ['bukti' => $bukti, 'bank' => $bank, 'tipe' => $tipe, 'paket' => $paket, 'expired' => $expired, 'days' => $days]);
     }
 
 
@@ -216,30 +223,51 @@ class MitraSubmissiosController extends Controller
             $fileName = null;
         }
         $requestData = $request->all();
+
         $requestData['poster'] = $fileName;
         $request->session()->put('data', $requestData);
         $request->session()->put('tipe', $request->input('type'));
+        $request->session()->put('days', $request->input('days'));
+        dd($requestData);
+
         return redirect('company/apply/end');
     }
 
 
     public function nextPerfomInformation(Request $request)
     {
-        dd($request->all());
+
         $this->validate($request, [
             'poster' => 'required',
             'description' => 'required',
             'title' => 'required',
             'bank_id' => 'required',
-            'pay_id' => 'required|url',
+            'pay_id' => 'required',
         ]);
+        $folderPath = 'mitra/information';
+        $image = $request->file('poster');
+        $filename = rand(1000000, 9999999) . "." . $image->getClientOriginalExtension();
+        $image->move($folderPath, $filename);
+        $paket = session('paket');
+        $data = $request->all();
+        $data['poster'] = $filename;
+        $request->session()->put('tipe', 'information');
+        $request->session()->put('days', $request->input('days'));
+        $request->session()->put('poster', $filename);
+        $request->session()->put('data', $data);
+        return redirect('company/apply/end');
     }
 
     public function end()
     {
         $data = session('data');
+        $days = session('days');
+        $poster = session('poster');
+        $tipe = session('tipe');
+
+
         // session()->forget('data');
-        return view('company.vacancy.apply-vacancy-end', ['data' => $data]);
+        return view('company.vacancy.apply-vacancy-end', ['data' => $data, 'days' => $days, 'poster' => $poster, 'tipe' => $tipe]);
     }
 
     public function endPerfom(Request $request)
@@ -283,4 +311,42 @@ class MitraSubmissiosController extends Controller
             return redirect("/company/history");
         }
     }
+
+
+    public function endInformationPerform(Request $request)
+    {
+
+        if (File::exists('mitra/information/' . $request->input('oldPoster'))) {
+            File::delete('mitra/information/' . $request->input('oldPoster'));
+        }
+
+
+
+
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+            'poster' => 'max:2048',
+            'bukti' => 'required'
+        ]);
+        $poster = $request->file('poster');
+        $folderPath = 'mitra/information';
+        $filename = rand(1000000, 9999999) . "." . $poster->getClientOriginalExtension();
+        $poster->move($folderPath, $filename);
+
+        $bukti = $request->file('bukti');
+        $folderPathBukti = 'mitra/bukti';
+        $filenameBukti = rand(1000000, 9999999) . "." . $bukti->getClientOriginalExtension();
+        $bukti->move($folderPathBukti, $filenameBukti);
+
+        $data = $request->except(['bukti', 'poster']);
+        $data['bukti'] = $filenameBukti;
+        $data['poster'] = $filename;
+
+        $this->informationSubmissionService->store($data);
+        Alert::success('Sukses Menambahkan Informasi');
+        return redirect('company/riwayat/informasi');
+
+    }
+
 }

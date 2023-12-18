@@ -84,9 +84,7 @@ Route::get('/company/register', function () {
 })->name('register');
 
 
-Route::get('/admin/informasi', function () {
-    return view('admin.verify-information');
-})->name('verify-information');
+Route::get('/admin/informasi', [InformationSubmissionController::class , 'index'])->name('verify-information');
 
 
 Route::get('/company/riwayat/informasi', function () {
@@ -282,6 +280,7 @@ Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () 
 
     Route::get('/apply/end', [MitraSubmissiosController::class, "end"])->name('vacancy-end')->middleware(VacancyFirst::class);
     Route::post('/apply/end', [MitraSubmissiosController::class, "endPerfom"])->name('vacancy-end-post')->middleware(VacancyFirst::class);
+    Route::post("/apply/information/end", [MitraSubmissiosController::class, 'endInformationPerform'])->name('end-information');
 
     Route::post("/apply/information", [InformationSubmissionController::class, 'store'])->name('information-submissions-post');
     Route::post("/apply/next/information", [MitraSubmissiosController::class, 'nextPerfomInformation'])->name('information-next-perform');
@@ -297,7 +296,7 @@ Route::prefix("company")->middleware(MitraMiddleware::class)->group(function () 
 
 Route::post("resend", [WebAuthController::class, "resendEmail"])->name('resend');
 Route::get("resend", [WebAuthController::class, "resendView"])->name('success-resend');
-Route::get('privacy-policy' , function(){
+Route::get('privacy-policy', function () {
     return view('privacy-policy');
 });
 

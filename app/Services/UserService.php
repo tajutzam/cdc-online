@@ -470,7 +470,7 @@ class UserService
             "nik" => $user->visible_nik == 1 ? $user->nik : "***",
             "no_telp" => $user->visible_no_telp == 1 ? $user->no_telp : "***",
             "foto" => $url,
-            'ttl' => $user->ttl,
+            'ttl' => $user->visible_ttl == 1 ? $user->ttl : '***',
             'alamat' => $user->visible_alamat == 1 ? $user->alamat : "***",
             "about" => $user->about,
             "gender" => $user->gender == 'male' ? "Laki-Laki" : "Perempuan",

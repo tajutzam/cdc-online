@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\InformationSubmissionService;
 use Illuminate\Http\Request;
 
 class InformationSubmissionController extends Controller
 {
     //
-
-
-    public function store(Request $request)
+    private InformationSubmissionService $service;
+    public function __construct()
     {
-        $data = $request->all();
+        $this->service = new InformationSubmissionService();
+    }
+
+    public function index()
+    {
+        $data = $this->service->findAll();
+
+        return view('admin.verify-information', compact('data'));
     }
 
 }

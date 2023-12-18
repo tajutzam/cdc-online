@@ -21,7 +21,26 @@
             flex-direction: column;
         }
 
+        .img-area-info {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            max-height: 1000px;
+            background: var(--grey);
+            margin-bottom: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
         .img-area .icon {
+            font-size: 100px;
+        }
+
+        .img-area-info .icon {
             font-size: 100px;
         }
 
@@ -31,7 +50,17 @@
             margin-bottom: 6px;
         }
 
+        .img-area-info h3 {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
         .img-area p {
+            color: #999;
+        }
+
+        .img-area-info p {
             color: #999;
         }
 
@@ -39,7 +68,22 @@
             font-weight: 600;
         }
 
+        .img-area-info p span {
+            font-weight: 600;
+        }
+
         .img-area img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: 100;
+        }
+
+        .img-area-info img {
             position: absolute;
             top: 0;
             left: 0;
@@ -70,7 +114,44 @@
             z-index: 200;
         }
 
+        .img-area-info::before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+            /* Set initial z-index for pseudo-element */
+        }
+
+        .img-area-info::before {
+            content: attr(data-img);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            color: #fff;
+            font-weight: 500;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: all .3s ease;
+            z-index: 200;
+        }
+
         .img-area.active:hover::before {
+            opacity: 1;
+        }
+
+        .img-area-info.active:hover::before {
             opacity: 1;
         }
 
@@ -88,7 +169,25 @@
             transition: all .3s ease;
         }
 
+        .select-image-info {
+            display: block;
+            width: 100%;
+            padding: 16px 0;
+            border-radius: 15px;
+            background: var(--blue);
+            color: #fff;
+            font-weight: 500;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all .3s ease;
+        }
+
         .select-image:hover {
+            background: var(--dark-blue);
+        }
+
+        .select-image-info:hover {
             background: var(--dark-blue);
         }
 
@@ -113,13 +212,32 @@
             border: 1px solid #bfbfbf;
         }
 
+
+        .deskripsi-info textarea {
+            width: 100%;
+            resize: none;
+            height: 59px;
+            outline: none;
+
+            padding: 15px;
+            font-size: 16px;
+
+            border-radius: 5px;
+            max-height: 330px;
+            caret-color: #4671EA;
+            border: 1px solid #bfbfbf;
+        }
+
+
         textarea::placeholder {
             color: #b3b3b3;
         }
 
         textarea:is(:focus, :valid) {
             padding: 14px;
-            border: 2px solid #b3b3b3;
+            border: 1px solid #54BBFF;
+            /* Border solid dengan warna tertentu */
+            box-shadow: 0 0 10px 1px #128DF2;
         }
 
         textarea::-webkit-scrollbar {
@@ -177,7 +295,6 @@
             </div>
             <div class="row">
 
-
                 @if ($tipe == 'information')
                     <div class="col-sm-12">
 
@@ -192,14 +309,16 @@
                                         <div class="">
                                             <label for="" style="font-weight: bold;">Judul</label>
                                             <input type="text" class="form-control" placeholder="Masukkan Judul"
-                                                name="Judul" value="">
+                                                name="title" value="">
                                         </div>
 
                                     </div>
                                 </div>
 
                                 <input type="hidden" name="bukti_path" value="{{ $bukti }}">
-                                <input type="hidden" name="bank" value="{{ $bank }}">
+                                <input type="hidden" name="bank_id" value="{{ $bank }}">
+                                <input type="text" name="days" value="{{$days}}" hidden>
+                                <input type="text" name="pay_id" value="{{$paket}}" hidden>
 
                                 <div class="form mb-3">
                                     <div class="form">
@@ -352,10 +471,14 @@
 
         selectImage.addEventListener('click', function() {
             inputFile.click();
-        })
+        });
 
         inputFile.addEventListener('change', function() {
-            const image = this.files[0]
+            handleImageChange(inputFile, imgArea);
+        });
+
+        function handleImageChange(inputFile, imgArea) {
+            const image = inputFile.files[0];
             if (image.size < 2000000) {
                 const reader = new FileReader();
                 reader.onload = () => {
@@ -369,21 +492,44 @@
                     imgArea.dataset.img = image.name;
 
                     // Set z-index dynamically
-                    const zIndexValue = allImg.length + 1; // Make sure it's higher than existing images
+                    const zIndexValue = allImg.length + 1;
                     img.style.zIndex = zIndexValue;
                     imgArea.style.zIndex = zIndexValue;
-                    imgArea.querySelector('::before').style.zIndex = zIndexValue -
-                        1; // Set pseudo-element z-index
-
-                }
+                };
                 reader.readAsDataURL(image);
             } else {
-                alert("Image size more than 2MB");
+                alert('Image size more than 2MB');
             }
-        })
+        }
 
         function validateImage() {
+            const inputFile = document.querySelector('#file');
+            const imgArea = document.querySelector('.img-area');
             if (inputFile.files.length <= 0) {
+                alert('Harap Pilih Poster Terlebih dahulu');
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+    <script>
+        const selectImageInfo = document.querySelector('.select-image-info');
+        const inputFileInfo = document.querySelector('#file-info');
+        const imgAreaInfo = document.querySelector('.img-area-info');
+
+        selectImageInfo.addEventListener('click', function() {
+            inputFileInfo.click();
+        });
+
+        inputFileInfo.addEventListener('change', function() {
+            handleImageChange(inputFileInfo, imgAreaInfo);
+        });
+
+        function validateImageInfo() {
+            const inputFileInfo = document.querySelector('#file-info');
+            const imgAreaInfo = document.querySelector('.img-area-info');
+            if (inputFileInfo.files.length <= 0) {
                 alert('Harap Pilih Poster Terlebih dahulu');
                 return false;
             }

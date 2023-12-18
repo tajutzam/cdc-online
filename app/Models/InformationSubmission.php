@@ -20,6 +20,7 @@ class InformationSubmission extends Model
         'pay_id',
         'bank_id',
         'mitra_id',
+        'bukti'
     ];
 
     public function pay()

@@ -18,6 +18,7 @@ class CreateInformationSubmissionsTable extends Migration
             $table->text('title');
             $table->text('description');
             $table->string('poster');
+            $table->string('bukti');
             $table->foreignUuid('pay_id')->references('id')->on('pays')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignUuid('bank_id')->references('id')->on('banks')->cascadeOnDelete()->cascadeOnUpdate(); 
             $table->foreignUuid('mitra_id')->references('id')->on('mitra')->cascadeOnDelete()->cascadeOnUpdate();

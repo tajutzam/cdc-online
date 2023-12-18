@@ -15,24 +15,34 @@ class InformationSubmissionService
     }
 
 
-    public function store($request, $image)
+    public function store($request)
     {
-        $buktiPath = 'bukti/';
+
         try {
-            //code...
-            $filename = rand(1000000, 99999999) . $image->getClientOriginalExtension();
-            $image->move($buktiPath, $filename);
             $this->model->create([
-                'poster' => $filename,
+                'bukti' => $request['bukti'],
+                'poster' => $request['poster'],
                 'title' => $request['title'],
                 'mitra_id' => auth('mitra')->user()->id,
-                'bank_id' => $request['bank'],
-                'pay_id' => $request['pay']
+                'description' => $request['description'],
+                'bank_id' => $request['bank_id'],
+                'pay_id' => $request['pay_id']
             ]);
         } catch (\Throwable $th) {
             //throw $th;
             throw new \App\Exceptions\BadRequestException($th->getMessage());
         }
     }
+
+
+    public function findAll()
+    {
+        return $this->model->with('pay', 'bank','mitra')->get()->collect()->map(function ($data) {
+            $data['bukti'] = url('/') . '/mitra/bukti/' . $data['bukti'];
+            $data['poster'] = url('/') . '/mitra/information/' . $data['poster'];
+            return $data;
+        })->toArray();
+    }
+
 
 }

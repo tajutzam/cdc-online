@@ -146,7 +146,14 @@
                                     </svg></i></a>
                             </li>
 
-                            <li class="breadcrumb-item active" aria-current="page">Pengajuan Lowongan</li>
+                            <li class="breadcrumb-item active" aria-current="page">
+
+                                @if ($tipe == 'vacancy')
+                                    Pengajuan Lowongan
+                                @else
+                                    Pengajuan informasi
+                                @endif
+                            </li>
                         </ol>
                     </nav>
                 </div>
@@ -257,8 +264,6 @@
                         </div>
                     </div>
 
-
-                    {{-- @dd($data) --}}
                 </div>
 
                 <div class="row">
@@ -282,72 +287,46 @@
                 </div>
             </form>
         @else
-            <form action="{{ route('vacancy-end-post') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('end-information') }}" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-sm-8">
                         <div class="card">
                             <div class="card-header">
-                                <h5>Rincian</h5>
+                                <h5>Rincian Informasi</h5>
                             </div>
                             <div class="card-body">
                                 <table class="table table-hover" style="border-radius: 7px">
 
                                     <tbody>
                                         <tr>
-                                            <th style=" width: 70px">Posisi</th>
+                                            <th style=" width: 70px">Judul</th>
                                             <td>:</td>
 
-                                            <td>Sekretaris</td>
-                                            <input type="text" value="{{ $data['position'] }}" hidden
-                                                name="position">
+                                            <td>{{ $data['title'] }}</td>
+                                            <input type="text" value="{{$data['title']}}" hidden name="title">
                                         </tr>
                                         <tr>
-
-                                            <th style=" width: 70px">Diunggah</th>
+                                            <th style=" width: 70px">Masa Kadaluwarsa</th>
                                             <td>:</td>
-                                            <td>{{ $data['upload_at'] }}</td>
-                                            <input type="date" value="{{ $data['upload_at'] }}" hidden
-                                                name="upload_at">
+                                            <td>{{ $data['days'] }} Hari</td>
+                                            <input type="number" value="{{$data['days']}}" hidden name="daysExpired">
                                         </tr>
-                                        <tr>
-
-                                            <th style=" width: 70px">Kadaluwarsa</th>
-                                            <td>:</td>
-                                            <td>{{ $data['expired_at'] }}</td>
-                                            <input type="date" value="{{ $data['expired_at'] }}" hidden
-                                                name="expired">
-
-                                        </tr>
-                                        <tr>
-                                            <th style=" width: 70px">Tautan</th>
-                                            <td>:</td>
-                                            <td><a href="{{ $data['link'] }}">{{ $data['link'] }}</a></td>
-                                            <input type="text" value="{{ $data['link'] }}" name="link_apply" hidden>
-
-                                        </tr>
-
-                                        <tr>
-                                            <th style=" width: 70px">Tipe Pekerjaan</th>
-                                            <td>:</td>
-                                            <td>{{ $data['type_jobs'] }}</td>
-                                            <input type="text" value="{{ $data['type_jobs'] }}" name="type_jobs"
-                                                hidden>
-                                        </tr>
+                                        <input type="text" value="{{$data['poster']}}" name="oldPoster">
+                                        <input type="text" value="{{$data['pay_id']}}" name="pay_id">
+                                        <input type="text" value="{{$data['bank_id']}}" name="bank_id">
 
                                         <tr>
                                             <th style=" width: 70px">Deskripsi</th>
                                             <td>:</td>
-                                            <td>
-                                                {{ $data['description'] }}
-                                                <input type="text" value="{{ $data['description'] }}"
-                                                    name="description" hidden>
-                                            </td>
+                                            <td>{{ $data['description'] }}</td>
+                                            <input type="text" value="{{$data['description']}}" name="description" hidden>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-sm-4">
                         <div class="card">
                             <div class="card-header">
@@ -359,7 +338,7 @@
                                 <div class="container">
 
                                     <div class="img-area" data-img="">
-                                        <img src="{{ url('/') . '/mitra/vacancy-temp/' . $data['poster'] }}"
+                                        <img src="{{ url('/') . '/mitra/information/' . $data['poster'] }}"
                                             alt="Poster" onclick="openFileInput()" id="previewImage">
                                         <input type="file" id="file" accept="image/*" onchange="updateImage()"
                                             name="poster" hidden>
@@ -373,8 +352,6 @@
 
                         </div>
                     </div>
-
-
                     {{-- @dd($data) --}}
                 </div>
 

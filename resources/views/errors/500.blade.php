@@ -23,10 +23,10 @@
                             <p>{{ $message }}
                             </p>
 
-                            <div class="mt-5"> <a href="javascript:;" class="btn btn-lg px-md-5 rounded-5"
+                            <div class="mt-5"> <a href="{{url('/')}}" class="btn btn-lg px-md-5 rounded-5"
                                     style="background: linear-gradient(to right, #0771BD, #2EA3F8); color: white; ">Go
                                     Home</a>
-                                <a href="javascript:;"
+                                <a href="{{url()->previous()}}"
                                     class="btn btn-outline-dark btn-lg ms-3 px-md-5 rounded-5">Back</a>
                             </div>
                         </div>

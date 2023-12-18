@@ -116,9 +116,7 @@ class AuthService
                             "token" => $token
                         ]
                     ];
-
                     return response($response, 200, ['Content-type' => 'application/json']);
-
                 } else {
                     $response = [
                         "status" => false,

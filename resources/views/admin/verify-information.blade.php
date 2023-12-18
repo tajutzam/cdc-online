@@ -10,6 +10,9 @@
 
     <div class="container-fluid">
 
+        <div class="card">
+            
+        </div>
 
         <div class="mt-4">
             <div class="col p-0">
@@ -53,31 +56,33 @@
                 </thead>
                 <tbody>
 
-                    <tr>
-                        <td>1</td>
-                        <td>Tefa</td>
-                        <td>Title</td>
-                        <td style=" white-space: nowrap; overflow: hidden; text-overflow: ellipsis;max-width: 10em;">
-                            Deskripsi</td>
-                        <td>
-                            <img src="" alt="" style="height: 100px; "
-                                onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg'">
-                        </td>
+                    @foreach ($data as $item)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item['mitra']['name'] }}</td>
+                            <td>{{$item['title']}}</td>
+                            <td style=" white-space: nowrap; overflow: hidden; text-overflow: ellipsis;max-width: 10em;">
+                                {{$item['description']}}</td>
+                            <td>
+                                <img src="{{$item['poster']}}" alt="poster" style="height: 100px; "
+                                    onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg'">
+                            </td>
 
-                        <td><img src="" alt="bukti pembayaran"></td>
-                        <td style="text-align: center">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <form action="" method="post" class="p-2">
-                                    <input type="text" value="verified" hidden name="verified">
-                                    <button type="submit" class="btn btn-success">Setuju</button>
-                                </form>
-                                <form action="" method="post" class="p-2">
-                                    <input type="text" value="rejected" name="verified" hidden>
-                                    <button type="submit" class="btn btn-danger">Tolak</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                            <td><img src="{{$item['bukti']}}" alt="bukti pembayaran"></td>
+                            <td style="text-align: center">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <form action="" method="post" class="p-2">
+                                        <input type="text" value="verified" hidden name="verified">
+                                        <button type="submit" class="btn btn-success">Setuju</button>
+                                    </form>
+                                    <form action="" method="post" class="p-2">
+                                        <input type="text" value="rejected" name="verified" hidden>
+                                        <button type="submit" class="btn btn-danger">Tolak</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
 
                 </tbody>
             </table>
