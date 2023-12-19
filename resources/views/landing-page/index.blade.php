@@ -628,8 +628,8 @@
                             <div class="col-md-6">
                                 <div class="info-box">
                                     <h3>Dikembangkan Oleh :</h3>
-                                    <img style="width: 100px;" src="{{ asset('/') }}assets/img/jtinova.png"
-                                        alt="">
+                                   <a href="https://jtinova.polije.ac.id/" target="_blank"> <img style="width: 100px;" src="{{ asset('/') }}assets/img/jtinova.png"
+                                    alt=""></a>
                                 </div>
                             </div>
                         </div>
