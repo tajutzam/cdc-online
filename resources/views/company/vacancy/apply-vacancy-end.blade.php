@@ -311,9 +311,9 @@
                                             <td>{{ $data['days'] }} Hari</td>
                                             <input type="number" value="{{$data['days']}}" hidden name="daysExpired">
                                         </tr>
-                                        <input type="text" value="{{$data['poster']}}" name="oldPoster">
-                                        <input type="text" value="{{$data['pay_id']}}" name="pay_id">
-                                        <input type="text" value="{{$data['bank_id']}}" name="bank_id">
+                                        <input type="text" value="{{$data['poster']}}" name="oldPoster" hidden>
+                                        <input type="text" value="{{$data['pay_id']}}" name="pay_id" hidden>
+                                        <input type="text" value="{{$data['bank_id']}}" name="bank_id" hidden>
 
                                         <tr>
                                             <th style=" width: 70px">Deskripsi</th>
