@@ -40,12 +40,12 @@
             <!-- First Card -->
             @foreach ($data as $item)
                 <div class="col-md-4 mb-4 p-0">
-                    <div class="card p-0  ms-0 m-1 ">
+                    <div class="card p-0 ms-0 m-1" data-original-description="{{ $item['description'] }}">
                         <img src="{{ $item['poster'] }}" class="card-img-top" alt="..."
                             onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/nullsquare.jpg'">
                         <div class="card-body">
                             <h5 class="card-title">{{ $item['title'] }}</h5>
-                            <p class="card-text" id="shortDescription">{{ $item['description'] }}</p>
+                            <p class="card-text" id="shortDescription">{{ Str::limit($item['description'], 30) }}</p>
                             <button type="button" class="detail-btn btn btn-primary" data-toggle="modal"
                                 data-target="#fullInfoModal" data-mitra="{{ $item['mitra']['name'] }}"
                                 data-title ="{{ $item['title'] }}" data-description="{{ $item['description'] }}">
@@ -55,6 +55,7 @@
                     </div>
                 </div>
             @endforeach
+
 
             <div class="col-md-4 mb-4 p-0" id="noResultsCard" style="display: none;">
                 <div class="card p-0 ms-0 m-1">
@@ -93,43 +94,6 @@
         <!-- ... (previous HTML code) ... -->
 
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const cardDeck = document.getElementById("cardDeck");
-                const noResultsMessage = "Data tidak ditemukan";
-
-                function getShortDescription(fullDescription) {
-                    const words = fullDescription.split(' ');
-                    const shortDescription = words.slice(0, 30).join(' ');
-                    return shortDescription + '...';
-                }
-
-                const searchInput = document.getElementById("searchInput");
-
-                searchInput.addEventListener("input", function() {
-                    const searchTerm = searchInput.value.toLowerCase();
-                    const cards = cardDeck.getElementsByClassName("card");
-                    let resultsFound = false;
-
-                    for (const card of cards) {
-                        const cardTitle = card.querySelector(".card-title").innerText.toLowerCase();
-                        if (cardTitle.includes(searchTerm)) {
-                            card.style.display = "block";
-                            resultsFound = true;
-                        } else {
-                            card.style.display = "none";
-                        }
-                    }
-
-                    if (!resultsFound) {
-                        const noResultsCard = document.getElementById("noResultsCard");
-                        if (noResultsCard) {
-                            noResultsCard.style.display = searchTerm ? "block" : "none";
-                        }
-                    }
-                });
-            });
-
-
             $(document).ready(function() {
                 $(document).on('click', '.detail-btn', function() {
 
