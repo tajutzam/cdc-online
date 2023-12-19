@@ -353,7 +353,7 @@ class MitraSubmissiosController extends Controller
 
     public function historyInformation()
     {
-        $data = $this->informationSubmissionService->findAll();
+        $data = $this->informationSubmissionService->findAll(auth('mitra')->user()->id);
         return view('company.vacancy.information-company-history', ['data' => $data]);
     }
 

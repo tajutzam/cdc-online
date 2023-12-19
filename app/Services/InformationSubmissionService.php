@@ -63,9 +63,9 @@ class InformationSubmissionService
 
     }
 
-    public function findAll()
+    public function findAll($idMitra)
     {
-        return $this->model->with('pay', 'bank', 'mitra')->get()->collect()->map(function ($data) {
+        return $this->model->with('pay', 'bank', 'mitra')->where('mitra_id' , $idMitra)->get()->collect()->map(function ($data) {
             $data['bukti'] = url('/') . '/mitra/bukti/' . $data['bukti'];
             $data['poster'] = url('/') . '/mitra/information/' . $data['poster'];
             return $data;

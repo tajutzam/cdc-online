@@ -57,6 +57,7 @@
                                                 <label for="inputSuratIzin" class="form-label">Surat Izin Usaha</label>
                                                 <input type="file" class="form-control" id="inputSuratIzin"
                                                     placeholder="" name="business_license" accept=".pdf">
+                                                <span class="mt-2 " style="color: red"><i>Upload File Berupa .pdf</i></span>
 
                                             </div>
                                             <div class="col-12">

@@ -62,8 +62,8 @@ class NewsController extends Controller
     {
 
         $rules = [
-            'title' => 'required|max:100',
-            'description' => 'required',
+            'title' => 'required|max:1000',
+            'description' => 'required|max:10000',
             'image' => 'required|max:3072|mimes:jpeg,png,jpg',
         ];
 
@@ -93,7 +93,7 @@ class NewsController extends Controller
         $rules = [];
         if (isset($image)) {
             $rules = [
-                'title' => 'required|max:100',
+                'title' => 'required|max:1000',
                 'description' => 'required|max:10000',
                 'image-update' => 'required|max:3072|mimes:jpeg,png,jpg',
                 'id' => 'required'

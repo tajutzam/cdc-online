@@ -108,14 +108,8 @@ Route::get('/landing-page/single-blog/{id}', [LandingPageController::class, 'fin
 Route::get('/landing-page/portofolio', function () {
     return view('landing-page.portofolio-details');
 })->name('portofolio-details');
-
-
-
-
-
 Route::get('/forgotpassword/{token}', [WebAuthController::class, "recovery"])->name('forgotpassword');
 Route::put("/forgotpassword/{token}", [WebAuthController::class, 'updatePassword'])->name('forgotpassword-put');
-
 Route::get('/succeschange', function () {
     return view('admin.auth.successchange');
 })->name('successchange');
@@ -180,13 +174,9 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     Route::post('/nominal', [DataPayController::class, "store"])->name('pay-post');
     Route::put('/nominal', [DataPayController::class, "update"])->name('pay-put');
     Route::delete('/nominal/{id}', [DataPayController::class, "delete"])->name('pay-delete');
-
-
-
     // Route::get('/trix', 'TrixController@index');
     // Route::post('/upload', 'TrixController@upload');
     // Route::post('/store', 'TrixController@store');
-
     Route::prefix('vacancy')->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('vacancy');
         Route::post('/store', [PostController::class, 'store'])->name('vacancy-store');
@@ -196,7 +186,9 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
     });
     Route::prefix('berita')->group(function () {
         Route::get('', [NewsController::class, 'index'])->name('berita');
-        Route::post('', [NewsController::class, 'store'])->name('berita-post');
+        Route::post('', [NewsController::class, 'st
+        
+        ore'])->name('berita-post');
         Route::put('', [NewsController::class, 'update'])->name('berita-update');
         Route::delete('', [NewsController::class, 'delete'])->name('berita-delete');
     });
