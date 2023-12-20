@@ -2,6 +2,12 @@
     @extends('layouts-company.app')
 
 @section('content')
+    <!-- Include Trix CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/trix@1.3.1/dist/trix.css">
+
+    <!-- Include Trix JS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/trix@1.3.1/dist/trix.js"></script>
+
     <style>
         /* Import Google Font - Poppins */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
@@ -270,8 +276,8 @@
                 </div>
             </div>
         </div>
-        <form action="{{ $tipe == 'vacancy' ? route('vacancy-next-post') : route('information-next-perform') }}" method="post" enctype="multipart/form-data"
-            onsubmit="return validateImage()">
+        <form action="{{ $tipe == 'vacancy' ? route('vacancy-next-post') : route('information-next-perform') }}"
+            method="post" enctype="multipart/form-data" onsubmit="return validateImage()">
             <div class="card">
                 <div class="card-body">
 
@@ -317,16 +323,18 @@
 
                                 <input type="hidden" name="bukti_path" value="{{ $bukti }}">
                                 <input type="hidden" name="bank_id" value="{{ $bank }}">
-                                <input type="text" name="days" value="{{$days}}" hidden>
-                                <input type="text" name="pay_id" value="{{$paket}}" hidden>
+                                <input type="text" name="days" value="{{ $days }}" hidden>
+                                <input type="text" name="pay_id" value="{{ $paket }}" hidden>
 
                                 <div class="form mb-3">
                                     <div class="form">
                                         <div class="deskripsi">
                                             <label for="" style="font-weight: bold;">Deskripsi</label>
-                                            <textarea spellcheck="false" placeholder="Masukkan Deskripsi" name="description" required
-                                                value="{{ old('description') }}"></textarea>
+                                            <input id="trix-editor" type="hidden" name="description"
+                                                value="{{ old('description') }}">
+                                            <trix-editor input="trix-editor"></trix-editor>
                                         </div>
+
                                     </div>
                                 </div>
 
