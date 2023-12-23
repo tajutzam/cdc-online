@@ -84,7 +84,7 @@ class PostService
                 'user_id' => null,
                 'admin_id' => $adminId,
                 'verified' => 'verified',
-                'can_comment' => $isCanComment
+                'can_comment' => true
             ]
         );
         if (isset($isCreated)) {
