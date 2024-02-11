@@ -1,4 +1,4 @@
-<? // database/migrations/yyyy_mm_dd_create_paket_kuesioner_table.php
+<?php // database/migrations/yyyy_mm_dd_create_paket_kuesioner_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -8,7 +8,7 @@ class CreatePaketKuesionerTable extends Migration
 {
     public function up()
     {
-        Schema::create('paket_kuesioner', function (Blueprint $table) {
+        Schema::create('paket_kuesioners', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
             $table->enum('tipe', ['Tracer Study', 'Survey Khusus']);
@@ -20,6 +20,6 @@ class CreatePaketKuesionerTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('paket_kuesioner');
+        Schema::dropIfExists('paket_kuesioners');
     }
 }
