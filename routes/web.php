@@ -65,9 +65,9 @@ Route::post('/paket_kuesioner', [PaketKuesionerController::class, 'store'])->nam
 Route::get('/paket_kuesioner/{id}/edit', [PaketKuesionerController::class, 'edit'])->name('paket_kuesioner.edit');
 Route::put('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'update'])->name('paket_kuesioner.update');
 Route::delete('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'destroy'])->name('paket_kuesioner.destroy');
-// Route::get('/admin/pay', function () {
-//     return view('admin.nominalpay');
-// })->name('nominalpay');
+Route::get('/paket_kuesioner/view', function () {
+    return view('admin.paket_kuesioner.view');
+})->name('paket_kuesioner.view');
 
 
 

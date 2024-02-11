@@ -61,6 +61,11 @@
                                                 <div class="d-flex justify-content-center">
                                                     <a href="{{ route('paket_kuesioner.edit', $paketKuesioner->id) }}"
                                                         class="btn btn-primary me-2">Edit</a>
+                                                    <a href="{{ route('paket_kuesioner.view') }}">
+                                                        <div class="btn btn-info me-2">
+                                                            Lihat
+                                                        </div>
+                                                    </a>
                                                     <form
                                                         action="{{ route('paket_kuesioner.destroy', $paketKuesioner->id) }}"
                                                         method="POST">
@@ -68,6 +73,7 @@
                                                         @method('DELETE')
                                                         <button class="btn btn-danger" type="submit">Hapus</button>
                                                     </form>
+
                                                 </div>
                                             </td>
                                         </tr>
