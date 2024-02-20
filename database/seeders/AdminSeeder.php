@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder
         Admin::create([
             'name' => 'admin-1',
             'password' => Hash::make('rahasia'),
-            'alamat' => 'banyuwangi',
+            'alamat' => 'Jakarta',
             'email' => 'admin@gmail.com',
             'npwp' => '12312k123123',
             'role' => 'admin'
@@ -27,7 +27,7 @@ class AdminSeeder extends Seeder
         Admin::create([
             'name' => 'prodi-1',
             'password' => Hash::make('rahasia'),
-            'alamat' => 'banyuwangi',
+            'alamat' => 'Banyuwangi',
             'email' => 'prodi@gmail.com',
             'npwp' => '12312k123123',
             'role' => 'prodi'
