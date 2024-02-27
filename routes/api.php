@@ -93,6 +93,8 @@ Route::post("/auth/recovery", [AuthController::class, "recovery"]);
 Route::get("/user/verivication/email", [AuthController::class, "updateEmailVerified"])->withoutMiddleware(VeriviedMiddleware::class);
 
 
+
+
 // prodi
 Route::get("/prodi", [StudyProgramPublicController::class, "findAll"]);
 

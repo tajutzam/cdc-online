@@ -20,8 +20,11 @@ class DatabaseSeeder extends Seeder
             ProvinceSeeder::class,
             RegencySeeder::class,
             AdminSeeder::class,
-            MitraSeeder::class
+            MitraSeeder::class,
+            PaketKuesionerSeeder::class,
+            PaketKuesionerDetailSeeder::class,
+            QuesionerTypeSeeder::class,
+            OptionJawabanSeeder::class
         ]);
-
     }
 }

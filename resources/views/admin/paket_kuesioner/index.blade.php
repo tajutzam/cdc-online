@@ -56,23 +56,22 @@
                                         <tr>
                                             <td>{{ $paketKuesioner->judul }}</td>
                                             <td>{{ $paketKuesioner->tipe }}</td>
-                                            <td>{{ $paketKuesioner->tanggal_dibuat }}</td>
+                                            <td>{{ $paketKuesioner->created_at->format('Y M d') }}</td>
+
                                             <td>
                                                 <div class="d-flex justify-content-center">
                                                     <a href="{{ route('paket_kuesioner.edit', $paketKuesioner->id) }}"
                                                         class="btn btn-primary me-2">Edit</a>
-                                                    <a href="{{ route('paket_kuesioner.view') }}">
+                                                    <a href="{{ route('paket_kuesioner.view', $paketKuesioner->id) }}">
                                                         <div class="btn btn-info me-2">
                                                             Lihat
                                                         </div>
                                                     </a>
-                                                    <form
-                                                        action="{{ route('paket_kuesioner.destroy', $paketKuesioner->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger" type="submit">Hapus</button>
-                                                    </form>
+
+                                                    <a href="{{ route('paket_kuesioner.destroy', $paketKuesioner->id) }}"
+                                                        class="btn btn-danger" type="submit"
+                                                        data-confirm-delete="true">Hapus</a>
+
 
                                                 </div>
                                             </td>

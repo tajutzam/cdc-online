@@ -19,7 +19,8 @@
                                     </svg>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Paket Kuesioner</li>
+                            <li class="breadcrumb-item active" aria-current="page">Data Kuesioner</li>
+                            <li class="breadcrumb-item active" aria-current="page">Edit</li>
                         </ol>
                     </nav>
                 </div>
@@ -71,22 +72,27 @@
                                 style="{{ $paketKuesioner->tipe == 'Survey Khusus' ? 'display:block;' : 'display:none;' }}">
                                 <div class="mb-3">
                                     <label for="program_studi" class="form-label">Program Studi:</label>
-                                    <select class="form-select" name="program_studi" id="program_studi">
-                                        <option value="Manajemen Informatika"
-                                            {{ $paketKuesioner->program_studi == 'Manajemen Informatika' ? 'selected' : '' }}>
-                                            Manajemen Informatika</option>
-                                        <option value="Psikologi"
-                                            {{ $paketKuesioner->program_studi == 'Psikologi' ? 'selected' : '' }}>Psikologi
-                                        </option>
+                                    <select class="form-select" name="id_quis_identitas_prodi" id="program_studi">
+                                        @foreach ($prodi as $p)
+                                            @if (isset($paketKuesioner->prodi->nama_prodi))
+                                                <option value="{{ $p->id }}"
+                                                    {{ $p->nama_prodi == $paketKuesioner->prodi->nama_prodi ? 'selected' : '' }}>
+                                                    {{ $p->nama_prodi }}</option>
+                                            @else
+                                                <option selected disabled>Pilih Program Studi</option>
+                                                <option value="{{ $p->id }}">
+                                                    {{ $p->nama_prodi }}</option>
+                                            @endif
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <label for="tanggal_dibuat" class="form-label">Tanggal Paket Dibuat:</label>
                                 <input type="date" class="form-control" name="tanggal_dibuat"
                                     value="{{ $paketKuesioner->tanggal_dibuat }}" required>
-                            </div>
+                            </div> --}}
 
                             <!-- Submit and Cancel Buttons with Bootstrap Styling -->
                             <button type="submit" class="btn btn-primary">Perbarui Paket Kuesioner</button>

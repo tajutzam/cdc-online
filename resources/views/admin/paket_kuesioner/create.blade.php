@@ -17,7 +17,8 @@
                                     </svg>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Paket Kuesioner</li>
+                            <li class="breadcrumb-item active" aria-current="page">Data Kuesioner</li>
+                            <li class="breadcrumb-item active" aria-current="page">Create</li>
                         </ol>
                     </nav>
                 </div>
@@ -56,16 +57,19 @@
 
                             <div id="programStudiField" style="display: none;" class="mb-3">
                                 <label for="program_studi" class="form-label">Program Studi:</label>
-                                <select class="form-select" name="program_studi" id="program_studi">
-                                    <option value="Manajemen Informatika">Manajemen Informatika</option>
-                                    <option value="Psikologi">Psikologi</option>
+                                <select class="form-control" class="js-example-basic-single" name="id_quis_identitas_prodi"
+                                    id="program_studi">
+                                    <option selected disabled>Pilih Program Studi</option>
+                                    @foreach ($prodi as $p)
+                                        <option value="{{ $p->id }}">{{ $p->nama_prodi }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
-                            <div class="mb-3">
+                            {{-- <div class="mb-3 d-none">
                                 <label for="tanggal_dibuat" class="form-label">Tanggal Paket Dibuat:</label>
                                 <input type="date" class="form-control" name="tanggal_dibuat" required>
-                            </div>
+                            </div> --}}
 
                             <button type="submit" class="btn btn-primary">Buat Paket Kuesioner</button>
                         </form>

@@ -12,9 +12,10 @@ class CreatePaketKuesionerTable extends Migration
             $table->id();
             $table->string('judul');
             $table->enum('tipe', ['Tracer Study', 'Survey Khusus']);
-            $table->date('tanggal_dibuat');
-            $table->string('program_studi')->nullable(); // Tambahkan kolom program studi
-            $table->timestamps();
+            // $table->date('tanggal_dibuat');
+            $table->integer('id_quis_identitas_prodi')->nullable();
+            $table->foreign('id_quis_identitas_prodi')->references('id')->on('quis_identitas_prodi'); // Tambahkan kolom program studi
+            $table->nullableTimestamps();
         });
     }
 

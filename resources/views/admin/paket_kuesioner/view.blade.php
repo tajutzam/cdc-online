@@ -18,7 +18,8 @@
                                     </svg>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Detail Kuesioner</li>
+                            <li class="breadcrumb-item active" aria-current="page">Data Kuesioner</li>
+                            <li class="breadcrumb-item active" aria-current="page">Detail</li>
                         </ol>
                     </nav>
                 </div>
@@ -48,11 +49,11 @@
                         </div>
                         <div class="col-9 text-start">
                             <span style="font-weight: bold; font-size: 15px">
-                                Program Kuesioner Mahasiswa Semester Akhir
+                                {{ $data->judul }}
                             </span>
                             <br>
                             <span style="font-weight: bold; font-size: 15px">
-                                Tracer Study
+                                {{ $data->tipe }}
                             </span>
                         </div>
                     </div>
@@ -156,16 +157,29 @@
                         <div class="mb-3">
                             <label for="tipeJawaban" class="form-label">Tipe Jawaban</label>
                             <select class="form-select" id="tipeJawaban" name="tipeJawaban" required>
-                                <option value="input_angka">Input Angka</option>
+                                <option disabled selected value="#">Pilih Tipe Pertanyaan</option>
+                                @foreach ($quiz_type as $type)
+                                    <option value="{{ $type->value }}">{{ $type->display_value }}</option>
+                                @endforeach
                                 <!-- Add other options as needed -->
                             </select>
                         </div>
+                        {{-- Tambah Option --}}
+                        <div class="mb-3" id="optionInput">
+
+                        </div>
+                        <div class="mb-3 d-none" id="buttonTambah">
+                            <a href="#" class="btn btn-secondary col-md">
+                                <span class="fa-solid fa-plus"></span>Tambah Option
+                            </a>
+                        </div>
+                        {{-- Tambah Option --}}
                         <div class="form-check text-end">
                             <input type="checkbox" class="form-check-input" id="requiredCheckbox"
                                 name="requiredCheckbox">
                             <label class="form-check-label" for="requiredCheckbox">Required</label>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-2">Simpan</button>
+                        <button type="submit" class="btn btn-primary mt-2" id="createPertanyaan">Simpan</button>
                     </form>
                 </div>
             </div>
@@ -191,4 +205,5 @@
             });
         });
     </script>
+    <script src="{{ asset('assets/js/quesioner.js') }}"></script>
 @endsection

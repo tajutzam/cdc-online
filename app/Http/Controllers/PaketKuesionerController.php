@@ -5,18 +5,35 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PaketKuesioner;
+use App\Models\QuesionerType;
+use App\Models\QuisionerProdi;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PaketKuesionerController extends Controller
 {
+
+    function __construct()
+    {
+        $this->paketKuesioner = new PaketKuesioner();
+    }
+
     public function index()
     {
         $paketKuesioners = PaketKuesioner::all();
+
+        if (session('success')) {
+            toast(session('success'), 'success');
+        } elseif (session('error')) {
+            alert('Gagal', 'Paket Gagal Disimpan', 'error');
+        }
+        confirmDelete("Delete Paket!", "Apakah anda yakin?");
         return view('admin.paket_kuesioner.index', compact('paketKuesioners'));
     }
 
     public function create()
     {
-        return view('admin.paket_kuesioner.create');
+        $prodi =  QuisionerProdi::all();
+        return view('admin.paket_kuesioner.create', compact('prodi'))->with("success", "Data berhasil ditambahakan");
     }
 
     public function store(Request $request)
@@ -24,19 +41,21 @@ class PaketKuesionerController extends Controller
         $validatedData = $request->validate([
             'judul' => 'required',
             'tipe' => 'required|in:Tracer Study,Survey Khusus',
-            'tanggal_dibuat' => 'required|date',
-            'program_studi' => $request->input('tipe') == 'Survey Khusus' ? 'required' : '',
+            // 'tanggal_dibuat' => 'required|date',
+            'id_quis_identitas_prodi' => $request->input('tipe') == 'Survey Khusus' ? 'required' : '',
         ]);
 
-        PaketKuesioner::create($validatedData);
-
-        return redirect()->route('paket_kuesioner.index')->with('success', 'Paket Kuesioner berhasil dibuat');
+        if (PaketKuesioner::create($validatedData)) {
+            return redirect()->route('paket_kuesioner.index')->with('success', 'Paket Kuesioner berhasil dibuat');
+        }
+        return redirect()->route('paket_kuesioner.index')->with('error', 'paket gagal dibuat');
     }
 
     public function edit($id)
     {
         $paketKuesioner = PaketKuesioner::findOrFail($id);
-        return view('admin.paket_kuesioner.edit', compact('paketKuesioner'));
+        $prodi =  QuisionerProdi::all();
+        return view('admin.paket_kuesioner.edit', compact(['paketKuesioner', 'prodi']));
     }
 
     public function update(Request $request, $id)
@@ -44,8 +63,8 @@ class PaketKuesionerController extends Controller
         $validatedData = $request->validate([
             'judul' => 'required',
             'tipe' => 'required|in:Tracer Study,Survey Khusus',
-            'tanggal_dibuat' => 'required|date',
-            'program_studi' => $request->input('tipe') == 'Survey Khusus' ? 'required' : '',
+            // 'tanggal_dibuat' => 'required|date',
+            'id_quis_identitas_prodi' => $request->input('tipe') == 'Survey Khusus' ? 'required' : '',
         ]);
 
         $paketKuesioner = PaketKuesioner::findOrFail($id);
@@ -60,5 +79,12 @@ class PaketKuesionerController extends Controller
         $paketKuesioner->delete();
 
         return redirect()->route('paket_kuesioner.index')->with('success', 'Paket Kuesioner berhasil dihapus');
+    }
+
+    function detailKuesioner($id)
+    {
+        $quiz_type = QuesionerType::all();
+        $data = PaketKuesioner::where('id', '=', $id)->first();
+        return view('admin.paket_kuesioner.view', compact('data', 'quiz_type'));
     }
 }
