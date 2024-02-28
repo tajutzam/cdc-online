@@ -61,6 +61,9 @@ use App\Http\Controllers\PaketQuesionerDetailController;
 */
 
 // PAKET KUESIONER
+Route::get('/paket_kuesioner/test', function () {
+    return view('admin.paket_kuesioner.test-form');
+})->name('test-form');
 Route::get('/paket_kuesioner', [PaketKuesionerController::class, 'index'])->name('paket_kuesioner.index');
 Route::get('/paket_kuesioner/create', [PaketKuesionerController::class, 'create'])->name('paket_kuesioner.create');
 Route::post('/paket_kuesioner', [PaketKuesionerController::class, 'store'])->name('paket_kuesioner.store');

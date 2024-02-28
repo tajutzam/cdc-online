@@ -64,7 +64,8 @@
                                 Tambah Pertanyaan
                             </button>
                             <div class="btn btn-warning">
-                                Test Form
+                                <a href="{{ route('test-form') }}" style="color:white; text-decoration: none;"> Test
+                                    Form</a>
                             </div>
                         </div>
                     </div>
