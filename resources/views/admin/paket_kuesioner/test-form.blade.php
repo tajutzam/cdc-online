@@ -34,17 +34,11 @@
                                 <input type="url" class="form-control" id="url-input" name="url-input">
                             </div>
 
-                            {{-- Date Input --}}
                             <div class="form-group">
-                                <label for="date-input">Date Input</label>
-                                <input type="date" class="form-control" id="date-input" name="date-input">
+                                <label for="datetime-input">Date and Time Input:</label>
+                                <input type="datetime-local" id="datetime-input" name="datetime_input" class="form-control">
                             </div>
 
-                            {{-- Time Input --}}
-                            <div class="form-group">
-                                <label for="time-input">Time Input</label>
-                                <input type="time" class="form-control" id="time-input" name="time-input">
-                            </div>
 
                             {{-- Date Only Input --}}
                             <div class="form-group">
