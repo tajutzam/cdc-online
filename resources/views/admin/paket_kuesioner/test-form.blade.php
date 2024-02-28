@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-header bg-primary">
                         <div class="h5" style="color: white"> <i class="fas fa-eye"></i> Test Form</div>
