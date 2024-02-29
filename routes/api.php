@@ -132,6 +132,12 @@ Route::post("/user/quisioner/jobsuitability", [QuisionerController::class, 'addQ
 Route::put("/user/quisioner/jobsuitability", [QuisionerController::class, 'updatejobSuitability']);
 
 Route::get("/user/quisioner/check", [QuisionerController::class, 'showUpdateQuisionerLevel']);
+
+
+
+
+
+
 Route::post("/user/logout", [UserController::class, "logout"]);
 Route::post("/user/post", [PostController::class, 'addPost'])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 Route::get("/user/post", [PostController::class, 'getAllPost'])->middleware([TokenMiddleware::class]);

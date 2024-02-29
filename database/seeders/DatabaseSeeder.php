@@ -21,10 +21,9 @@ class DatabaseSeeder extends Seeder
             RegencySeeder::class,
             AdminSeeder::class,
             MitraSeeder::class,
-            PaketKuesionerSeeder::class,
-            PaketKuesionerDetailSeeder::class,
             QuesionerTypeSeeder::class,
-            OptionJawabanSeeder::class
+            PaketKuesionerSeeder::class,
+            PaketKuesionerDetailSeeder::class
         ]);
     }
 }

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OptionJawaban;
 use App\Models\PaketKuesioner;
+use App\Models\PaketQuesionerDetail;
 use App\Models\QuesionerType;
+use Doctrine\DBAL\Result;
 use Illuminate\Http\Request;
 
 class PaketQuesionerDetailController extends Controller
@@ -13,9 +16,12 @@ class PaketQuesionerDetailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $data = PaketQuesionerDetail::with('tipe')->where("id_paket_quesioners", $id)->orderBy('index', 'ASC')
+            ->get();
+        $lastIndex = $data->last();
+        return response()->json([$data, $lastIndex], 200);
     }
 
     /**
@@ -36,7 +42,28 @@ class PaketQuesionerDetailController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $PaketQuesionerFailed = 0;
+        try {
+            PaketQuesionerDetail::create([
+                'kode_pertanyaan' => $request->items["kodePertanyaan"],
+                'pertanyaan' => $request->items["pertanyaan"],
+                'tipe_id' => (int) $request->items["tipeJawaban"],
+                'id_paket_quesioners' => (int) $request->items["id_paket_quesioners"],
+                'is_required' => $request->items["isRequired"],
+                'options' => isset($request->items["optionInput"]) ? json_encode($request->items["optionInput"]) : null,
+                'index' => $request->items["index"],
+            ]);
+        } catch (\Throwable $th) {
+            $PaketQuesionerFailed++;
+        }
+
+        return response()->json([
+            "status" => 200,
+            "message" => "Insert telah selesai!",
+            "error" => [
+                "OptionJawaban" => $PaketQuesionerFailed
+            ]
+        ], 200);
     }
 
     /**
@@ -50,6 +77,28 @@ class PaketQuesionerDetailController extends Controller
         //
     }
 
+    public function update_index(Request $request)
+    {
+        $failurCount = 0;
+
+        foreach ($request->items as  $item) {
+            try {
+                PaketQuesionerDetail::where('id', $item['id'])->update([
+                    "index" => $item['index']
+                ]);
+            } catch (\Throwable $th) {
+                $failurCount++;
+            }
+        }
+
+
+        return response()->json([
+            "status" => 200,
+            "message" => "Data selesai di Update!",
+            "failure" => $failurCount,
+        ], 200);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -58,7 +107,9 @@ class PaketQuesionerDetailController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = PaketQuesionerDetail::with(['tipe'])->where("id", $id)->first();
+
+        return response()->json($data, 200);
     }
 
     /**
@@ -70,7 +121,18 @@ class PaketQuesionerDetailController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        PaketQuesionerDetail::where("id", $id)->update([
+            "kode_pertanyaan" => $request->items["kodePertanyaan"],
+            "pertanyaan" => $request->items["pertanyaan"],
+            "tipe_id" => $request->items["tipeJawaban"],
+            "is_required" => $request->items["isRequired"],
+            "options" => isset($request->items["optionInput"]) ? json_encode($request->items["optionInput"]) : null
+        ]);
+
+        return response()->json([
+            "status" => 200,
+            "message" => "Update data telah selesai!",
+        ], 200);
     }
 
     /**
@@ -81,6 +143,11 @@ class PaketQuesionerDetailController extends Controller
      */
     public function destroy($id)
     {
-        //
+        PaketQuesionerDetail::where("id", $id)->delete();
+
+        return response()->json([
+            "status" => 200,
+            "message" => "Data berhasil Di Hapus!!"
+        ], 200);
     }
 }

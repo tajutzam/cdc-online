@@ -17,23 +17,12 @@ class CreatePaketQuesionerDetailsTable extends Migration
             $table->id();
             $table->string('kode_pertanyaan');
             $table->string('pertanyaan');
-            $table->string('jawaban')->nullable();
-            $table->enum('tipe', [
-                "text",
-                "number",
-                "email",
-                "url",
-                "datetime-local",
-                "date",
-                "time",
-                "select",
-                "select_jurusan",
-                "select_prodi",
-                "select_epsbed",
-                "checkbox"
-            ]);
+            $table->bigInteger('tipe_id')->unsigned();
+            $table->foreign("tipe_id")->references("id")->on("quesioner_types")->onDelete('cascade');
             $table->bigInteger('id_paket_quesioners')->unsigned();
             $table->foreign('id_paket_quesioners')->references('id')->on('paket_kuesioners')->onDelete('cascade');
+            $table->string("is_required")->default(0)->nullable();
+            $table->json("options")->nullable();
             $table->integer('index')->default(1);
             $table->nullableTimestamps();
         });

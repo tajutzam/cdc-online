@@ -9,6 +9,8 @@ use App\Models\QuesionerType;
 use App\Models\QuisionerProdi;
 use RealRashid\SweetAlert\Facades\Alert;
 
+use function Symfony\Component\Cache\Traits\auth;
+
 class PaketKuesionerController extends Controller
 {
 

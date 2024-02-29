@@ -74,7 +74,13 @@ Route::delete('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'destro
 
 Route::get('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'detailKuesioner'])->name('paket_kuesioner.view');
 
+Route::get('paket_kuesioner_detail/{id}', [PaketQuesionerDetailController::class, 'index'])->name('paket_kuesioner_detail.index');
+Route::post('paket_kuesioner_detail/update-index', [PaketQuesionerDetailController::class, 'update_index'])->name('paket_kuesioner_detail.update_index');
+
 Route::resource('paket_kuesioner_detail', PaketQuesionerDetailController::class);
+
+// PAKET KUESIONER
+
 
 
 Route::get('/company/login', function () {
