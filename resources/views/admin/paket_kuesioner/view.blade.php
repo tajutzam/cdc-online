@@ -128,6 +128,8 @@
                             <input type="checkbox" class="form-check-input" id="requiredCheckbox" name="requiredCheckbox">
                             <label class="form-check-label" for="requiredCheckbox">Required</label>
                         </div>
+                        <button type="submit" class="btn btn-secondary d-none mt-2"
+                            id="duplicatePertanyaan">Duplicate</button>
                         <button type="submit" class="btn btn-primary mt-2" id="createPertanyaan">Simpan</button>
                         <button type="submit" class="btn btn-warning d-none mt-2" id="updatePertanyaan">Update</button>
                     </form>

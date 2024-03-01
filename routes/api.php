@@ -10,6 +10,7 @@ use App\Http\Controllers\NewsController as ApiNewsController;
 use App\Http\Controllers\NotificationsController as ControllersNotificationsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\QuesionerApiController;
 use App\Http\Controllers\QuisionerController;
 use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\StudyProgramPublicController;
@@ -206,6 +207,8 @@ Route::get("informations", [InformationSubmissionController::class, 'findAllAPI'
 
 Route::put("/admin-prodi", [AdminProdiController::class, "updateHakAkses"]);
 
+
+Route::resource("/paket_kuesioner", QuesionerApiController::class);
 
 // documentations
 Route::get('/api/documentation', function () {

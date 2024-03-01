@@ -24,6 +24,8 @@ $("#tambahPertanyaanBtn").on("click", function () {
     $("#tambahPertanyaanModalLabel").text("Tambah Pertanyaan");
     $("#createPertanyaan").removeClass("d-none");
     $("#updatePertanyaan").addClass("d-none");
+    $("#duplicatePertanyaan").addClass("d-none");
+
     ResetFormPertanyaan();
 });
 
@@ -64,7 +66,7 @@ function InitializeSortable() {
                     console.log("loading..");
                 },
                 success: function (response) {
-                    console.log(response);
+                    // console.log(response);
                     getData();
                 },
                 error: function (xhr, status, error) {
@@ -105,7 +107,48 @@ function InitializeSortable() {
                     console.log("loading..");
                 },
                 success: function (response) {
-                    console.log(response);
+                    // console.log(response);
+                    getData();
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                },
+            });
+        },
+        onAdd: function (evt) {
+            // update ketika digese dengna ajax
+            var id_paket_quesioner_detile = $("#card").attr("item_id");
+            var item = evt.item; // elemen yang digeser
+            var newIndex = evt.newIndex; // index baru elemen yang digeser
+            var oldIndex = evt.oldIndex; // index lama elemen yang digeser
+
+            var items = [];
+            document
+                .querySelectorAll("#container > .row")
+                .forEach(function (item, index) {
+                    items.push({
+                        id: item.getAttribute("item_id"),
+                        content: item.textContent.trim(),
+                        index: index + 1,
+                    });
+                });
+            var csrfToken = $('meta[name="csrf-token"]').attr("content");
+
+            $.ajax({
+                type: "POST",
+                url: "/paket_kuesioner_detail/update-index",
+                data: {
+                    items: items,
+                },
+                dataType: "json",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                beforeSend: function () {
+                    console.log("loading..");
+                },
+                success: function (response) {
+                    // console.log(response);
                     getData();
                 },
                 error: function (xhr, status, error) {
@@ -209,7 +252,11 @@ function cardPertanyaan(id, pertanyaan, tipe, order_index) {
                         </div>
                         <div class="row">
                             <div class="col-12 text-end">
-                                <div class="btn btn-info">
+                                <div class="btn btn-info"onclick="duplicateDetail('` +
+        id +
+        `','` +
+        order_index +
+        `')" >
                                     Duplikat
                                 </div>
      
@@ -322,6 +369,7 @@ function updateDetail(id, order_index) {
     $("#tambahPertanyaanModalLabel").text("Edit Pertanyaan");
     $("#createPertanyaan").addClass("d-none");
     $("#updatePertanyaan").removeClass("d-none");
+    $("#duplicatePertanyaan").addClass("d-none");
 
     $.ajax({
         type: "GET",
@@ -411,7 +459,7 @@ function updateQuestion(data) {
             console.log("loading..");
         },
         success: function (response) {
-            console.log(response);
+            // console.log(response);
             getData();
         },
         error: function (xhr, status, error) {
@@ -446,6 +494,145 @@ function deleteDetail(id) {
     });
 }
 
+function duplicateDetail(id, order_index) {
+    index_update = order_index;
+    ResetFormPertanyaan();
+    getData();
+    $("#tambahPertanyaanModal").modal("show");
+    $("#tambahPertanyaanModalLabel").text("Duplicate Pertanyaan");
+    $("#createPertanyaan").addClass("d-none");
+    $("#updatePertanyaan").addClass("d-none");
+    $("#duplicatePertanyaan").removeClass("d-none");
+
+    $.ajax({
+        type: "GET",
+        url: "/paket_kuesioner_detail/" + id + "/edit",
+        dataType: "json",
+        success: function (response) {
+            // console.log(response);
+            $("#id_item").val(response["id"]);
+            $("#kodePertanyaan").val(response["kode_pertanyaan"]);
+            $("#pertanyaan").val(response["pertanyaan"] + "- Copy");
+            $("#tipeJawaban").val(response["tipe"]["id"]);
+            $("#requiredCheckbox").prop(
+                "checked",
+                response["is_required"] == "1" ? true : false
+            );
+            if (
+                $("#tipeJawaban").val() == "8" ||
+                $("#tipeJawaban").val() == "12"
+            ) {
+                fillEditForm(JSON.parse(response["options"]));
+                $("#buttonTambah").removeClass("d-none");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        },
+    });
+}
+
+$("#duplicatePertanyaan").click(function (e) {
+    var kodePertanyaan = $("#kodePertanyaan").val();
+    var pertanyaan = $("#pertanyaan").val();
+    var tipeJawaban = $("#tipeJawaban").val();
+    var optionInput = $('input[type="text"]#optionInput')
+        .map(function () {
+            return $(this).val();
+        })
+        .get();
+    var isRequired = $("#requiredCheckbox").is(":checked") ? 1 : 0;
+    var data = {
+        kodePertanyaan: kodePertanyaan,
+        pertanyaan: pertanyaan,
+        tipeJawaban: tipeJawaban,
+        id_paket_quesioners: parseInt(paket_id),
+        isRequired: isRequired,
+        index: parseInt(index_update),
+        optionInput: optionInput,
+    };
+    duplicateQuesionerAndOrderIndex(data, index_update);
+    // console.log(JSON.stringify(data));
+});
+
+function duplicateQuesionerAndOrderIndex(data, beforeIndex) {
+    $.ajax({
+        type: "POST",
+        url: "/paket_kuesioner_detail",
+        data: { items: data },
+        dataType: "json",
+        headers: {
+            "X-CSRF-TOKEN": csrfToken,
+        },
+        beforeSend: function () {
+            console.log("loading..");
+        },
+        success: function (response) {
+            //get data masukkan ke elemnt
+            // console.log(response["newId"]);
+
+            var id = response["newId"];
+            var pertanyaan = response["data"][0]["pertanyaan"];
+            var tipe = response["data"][0]["tipe"]["display_value"];
+            var order_index = parseInt(beforeIndex) + 1;
+
+            $("div.row[index='" + beforeIndex + "']").after(
+                cardPertanyaan(id, pertanyaan, tipe, order_index)
+            );
+            // getData();
+            // InitializeSortable();
+            updateIndexDuplicate(id, order_index);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        },
+    });
+}
+
+function updateIndexDuplicate(id, order_index) {
+    var items = [];
+    var no = 0;
+
+    document
+        .querySelectorAll("#container > .row")
+        .forEach(function (item, index) {
+            no++;
+            var itemId = item.getAttribute("item_id");
+            var newIndex = itemId + 1;
+
+            items.push({
+                id: itemId,
+                content: item.textContent.trim(),
+                index: no,
+            });
+        });
+
+    // console.log(items);
+    var csrfToken = $('meta[name="csrf-token"]').attr("content");
+
+    $.ajax({
+        type: "POST",
+        url: "/paket_kuesioner_detail/update-index",
+        data: {
+            items: items,
+        },
+        dataType: "json",
+        headers: {
+            "X-CSRF-TOKEN": csrfToken,
+        },
+        beforeSend: function () {
+            console.log("loading..");
+        },
+        success: function (response) {
+            // console.log(response);
+            getData();
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        },
+    });
+}
+
 function updateIndex() {
     var items = [];
     document
@@ -473,7 +660,7 @@ function updateIndex() {
             console.log("loading..");
         },
         success: function (response) {
-            console.log(response);
+            // console.log(response);
             getData();
         },
         error: function (xhr, status, error) {

@@ -42,27 +42,26 @@ class PaketQuesionerDetailController extends Controller
      */
     public function store(Request $request)
     {
-        $PaketQuesionerFailed = 0;
-        try {
-            PaketQuesionerDetail::create([
-                'kode_pertanyaan' => $request->items["kodePertanyaan"],
-                'pertanyaan' => $request->items["pertanyaan"],
-                'tipe_id' => (int) $request->items["tipeJawaban"],
-                'id_paket_quesioners' => (int) $request->items["id_paket_quesioners"],
-                'is_required' => $request->items["isRequired"],
-                'options' => isset($request->items["optionInput"]) ? json_encode($request->items["optionInput"]) : null,
-                'index' => $request->items["index"],
-            ]);
-        } catch (\Throwable $th) {
-            $PaketQuesionerFailed++;
-        }
+
+        $detail = PaketQuesionerDetail::create([
+            'kode_pertanyaan' => $request->items["kodePertanyaan"],
+            'pertanyaan' => $request->items["pertanyaan"],
+            'tipe_id' => (int) $request->items["tipeJawaban"],
+            'id_paket_quesioners' => (int) $request->items["id_paket_quesioners"],
+            'is_required' => $request->items["isRequired"],
+            'options' => isset($request->items["optionInput"]) ? json_encode($request->items["optionInput"]) : null,
+            'index' => $request->items["index"],
+        ]);
+
+        $id = $detail->id;
+
+        $data = PaketQuesionerDetail::with('tipe')->where("id", $id)->get();
 
         return response()->json([
             "status" => 200,
             "message" => "Insert telah selesai!",
-            "error" => [
-                "OptionJawaban" => $PaketQuesionerFailed
-            ]
+            "data" => $data,
+            "newId" => $id
         ], 200);
     }
 
@@ -82,9 +81,10 @@ class PaketQuesionerDetailController extends Controller
         $failurCount = 0;
 
         foreach ($request->items as  $item) {
+
             try {
                 PaketQuesionerDetail::where('id', $item['id'])->update([
-                    "index" => $item['index']
+                    "index" => $item["index"]
                 ]);
             } catch (\Throwable $th) {
                 $failurCount++;
