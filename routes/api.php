@@ -208,7 +208,7 @@ Route::get("informations", [InformationSubmissionController::class, 'findAllAPI'
 Route::put("/admin-prodi", [AdminProdiController::class, "updateHakAkses"]);
 
 
-Route::resource("/paket_kuesioner", QuesionerApiController::class);
+Route::resource("/kuesioner", QuesionerApiController::class)->middleware(TokenMiddleware::class);
 
 // documentations
 Route::get('/api/documentation', function () {

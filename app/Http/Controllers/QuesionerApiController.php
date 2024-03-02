@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helper\ResponseHelper;
+use App\Models\PaketKuesioner;
 use Illuminate\Http\Request;
 
 class QuesionerApiController extends Controller

@@ -49,5 +49,21 @@ class UserSeeder extends Seeder
             'kode_prodi' => 79402,
             'nim' => 'e41212336'
         ]);
+        User::create([
+            "email" => "fasihullisan091966@gmail.com",
+            "password" => Hash::make("rahasia"),
+            "fullname" => "Ach. Fasihul Lisan",
+            "nik" => "0643267544645",
+            "no_telp" => "085336076077",
+            "foto" => "foto.png",
+            "linkedin" => "linkedin.com/fasihll",
+            'level' => 'user',
+            "alamat" => 'Jawa Timur , Bangkalan',
+            'gender' => 'male',
+            'about' => "Saya third choice",
+            'email_verivied' => 1,
+            'kode_prodi' => 79402,
+            'nim' => 'e41211994'
+        ]);
     }
 }
