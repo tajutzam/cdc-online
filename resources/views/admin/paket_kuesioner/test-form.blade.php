@@ -6,77 +6,117 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header bg-primary">
-                        <div class="h5" style="color: white"> <i class="fas fa-eye"></i> Test Form</div>
+                        <div class="h5" style="color: white"> <i class="fas fa-eye"></i> Test Form | {{ $data[0]->judul }}
+                        </div>
                     </div>
                     <div class="card-body">
-                        <form>
-                            {{-- Text Input --}}
-                            <div class="form-group">
-                                <label for="text-input">Text Input</label>
-                                <input type="text" class="form-control" id="text-input" name="text-input">
-                            </div>
+                        <form action="{{ route('paket_kuesioner_detail.create') }}" method="POST">
+                            @csrf
+                            @method('POST')
+                            <input type="hidden" name="user_id" value="{{ Auth::guard('admin')->user()->id }}">
+                            <input type="hidden" name="id_paket_kuesioner" value="{{ $data[0]->id }}">
+                            <input type="hidden" name="id_paket_quesioner_detail"
+                                value="{{ $data[0]->id_quis_identitas_prodi }}">
+                            @foreach ($data[0]->detail as $d)
+                                @switch($d->tipe->value)
+                                    @case('select_jurusan')
+                                        <div class="form-group">
+                                            <label for="{{ $d->kode_pertanyaan }}">{{ $d->pertanyaan }}</label>
+                                            <select class="form-control" id="{{ $d->kode_pertanyaan }}"
+                                                name="{{ $d->kode_pertanyaan }}">
+                                                <option value="" selected disabled> Pilih Jurusan..</option>
+                                                @foreach ($jurusan as $j)
+                                                    <option value="{{ $j->id }}">{{ $j->nama_jurusan }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has($d->kode_pertanyaan))
+                                                <span
+                                                    class="text-danger text-left">{{ $errors->first($d->kode_pertanyaan) }}</span>
+                                            @endif
+                                        </div>
+                                    @break
 
-                            {{-- Number Input --}}
-                            <div class="form-group">
-                                <label for="number-input">Number Input</label>
-                                <input type="number" class="form-control" id="number-input" name="number-input">
-                            </div>
+                                    @case('select_prodi')
+                                        <div class="form-group">
+                                            <label for="{{ $d->kode_pertanyaan }}">{{ $d->pertanyaan }}</label>
+                                            <select class="form-control" id="{{ $d->kode_pertanyaan }}"
+                                                name="{{ $d->kode_pertanyaan }}">
+                                                <option value="" selected disabled> Pilih Program Studi..</option>
+                                                @foreach ($prodi as $p)
+                                                    <option value="{{ $p->nama_prodi }}">{{ $p->nama_prodi }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has($d->kode_pertanyaan))
+                                                <span
+                                                    class="text-danger text-left">{{ $errors->first($d->kode_pertanyaan) }}</span>
+                                            @endif
+                                        </div>
+                                    @break
 
-                            {{-- Email Input --}}
-                            <div class="form-group">
-                                <label for="email-input">Email Input</label>
-                                <input type="email" class="form-control" id="email-input" name="email-input">
-                            </div>
+                                    @case('select_epsbed')
+                                        <div class="form-group">
+                                            <label for="{{ $d->kode_pertanyaan }}">{{ $d->pertanyaan }}</label>
+                                            <select class="form-control" id="{{ $d->kode_pertanyaan }}"
+                                                name="{{ $d->kode_pertanyaan }}">
+                                                <option value="" selected disabled> Pilih Kode Prodi..</option>
+                                                @foreach ($prodi as $p)
+                                                    <option value="{{ $p->id }}">{{ $p->id }}-{{ $p->nama_prodi }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has($d->kode_pertanyaan))
+                                                <span
+                                                    class="text-danger text-left">{{ $errors->first($d->kode_pertanyaan) }}</span>
+                                            @endif
+                                        </div>
+                                    @break
 
-                            {{-- URL Input --}}
-                            <div class="form-group">
-                                <label for="url-input">URL Input</label>
-                                <input type="url" class="form-control" id="url-input" name="url-input">
-                            </div>
+                                    @case('select')
+                                        <div class="form-group">
+                                            <label for="{{ $d->kode_pertanyaan }}">{{ $d->pertanyaan }}</label>
+                                            <select class="form-control" id="{{ $d->kode_pertanyaan }}"
+                                                name="{{ $d->kode_pertanyaan }}">
+                                                <option value="" selected disabled> Pilih Jawaban..</option>
+                                                @foreach (json_decode($d->options) as $o)
+                                                    <option value="{{ $o }}">{{ $o }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has($d->kode_pertanyaan))
+                                                <span
+                                                    class="text-danger text-left">{{ $errors->first($d->kode_pertanyaan) }}</span>
+                                            @endif
+                                        </div>
+                                    @break
 
-                            <div class="form-group">
-                                <label for="datetime-input">Date and Time Input:</label>
-                                <input type="datetime-local" id="datetime-input" name="datetime_input" class="form-control">
-                            </div>
+                                    @case('checkbox')
+                                        <div class="form-group">
+                                            <label>{{ $d->pertanyaan }}</label>
+                                            @foreach (json_decode($d->options) as $o)
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="{{ $d->kode_pertanyaan }}"
+                                                        name="{{ $d->kode_pertanyaan }}[]" value="{{ $o }}">
+                                                    <label class="form-check-label" for="checkbox-a">{{ $o }}</label>
+                                                </div>
+                                            @endforeach
+                                            @if ($errors->has($d->kode_pertanyaan))
+                                                <span
+                                                    class="text-danger text-left">{{ $errors->first($d->kode_pertanyaan) }}</span>
+                                            @endif
+                                        </div>
+                                    @break
 
-
-                            {{-- Date Only Input --}}
-                            <div class="form-group">
-                                <label for="date-only-input">Date Only Input</label>
-                                <input type="date" class="form-control" id="date-only-input" name="date-only-input">
-                            </div>
-
-                            {{-- Time Only Input --}}
-                            <div class="form-group">
-                                <label for="time-only-input">Time Only Input</label>
-                                <input type="time" class="form-control" id="time-only-input" name="time-only-input">
-                            </div>
-
-                            {{-- Dropdown Input --}}
-                            <div class="form-group">
-                                <label for="dropdown-input">Dropdown Input</label>
-                                <select class="form-control" id="dropdown-input" name="dropdown-input">
-                                    <option value="option1">Option 1</option>
-                                    <option value="option2">Option 2</option>
-                                    <option value="option3">Option 3</option>
-                                </select>
-                            </div>
-
-                            {{-- Checkbox Inputs --}}
-                            <div class="form-group">
-                                <label>Checkbox Inputs</label>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="checkbox-a" name="checkbox-a">
-                                    <label class="form-check-label" for="checkbox-a">Checkbox A</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="checkbox-b" name="checkbox-b">
-                                    <label class="form-check-label" for="checkbox-b">Checkbox B</label>
-                                </div>
-                            </div>
-
+                                    @default
+                                        <label for="{{ $d->kode_pertanyaan }}">{{ $d->pertanyaan }}</label>
+                                        <input type="{{ $d->tipe->value }}" class="form-control" id="{{ $d->kode_pertanyaan }}"
+                                            name="{{ $d->kode_pertanyaan }}">
+                                        @if ($errors->has($d->kode_pertanyaan))
+                                            <span class="text-danger text-left">{{ $errors->first($d->kode_pertanyaan) }}</span>
+                                        @endif
+                                @endswitch
+                            @endforeach
                             {{-- Submit Button --}}
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary mt-3">Submit</button>
                         </form>
                     </div>
                 </div>

@@ -67,7 +67,8 @@
                                 Tambah Pertanyaan
                             </button>
                             <div class="btn btn-warning">
-                                <a href="{{ route('test-form') }}" style="color:white; text-decoration: none;"> Test
+                                <a href="{{ route('test_form', $data->id) }}" style="color:white; text-decoration: none;">
+                                    Test
                                     Form</a>
                             </div>
                         </div>

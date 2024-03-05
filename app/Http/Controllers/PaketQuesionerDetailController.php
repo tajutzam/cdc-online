@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\OptionJawaban;
 use App\Models\PaketKuesioner;
 use App\Models\PaketQuesionerDetail;
+use App\Models\QuesionerJurusan;
 use App\Models\QuesionerType;
+use App\Models\QuisionerIdentitas;
+use App\Models\QuisionerProdi;
 use Doctrine\DBAL\Result;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class PaketQuesionerDetailController extends Controller
 {
@@ -29,9 +33,22 @@ class PaketQuesionerDetailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $data = PaketKuesioner::with(["prodi", "detail.tipe"])->where("id", $request->id_paket_kuesioner)->get();
+
+        $validationData = [];
+        foreach ($data[0]->detail as $res) {
+            $validationData[$res->kode_pertanyaan] = $res->is_required == "1" ? "required" : "";
+        }
+
+        $messages = [
+            'required' => 'This field is required.',
+        ];
+
+        $request->validate($validationData, $messages);
+
+        return "Berhasil";
     }
 
     /**
@@ -73,7 +90,10 @@ class PaketQuesionerDetailController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = PaketKuesioner::with(["prodi", "detail.tipe"])->where("id", $id)->get();
+        $prodi = QuisionerProdi::all();
+        $jurusan = QuesionerJurusan::all();
+        return view('admin.paket_kuesioner.test-form', compact(['data', 'prodi', 'jurusan']));
     }
 
     public function update_index(Request $request)

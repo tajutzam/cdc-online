@@ -48,6 +48,9 @@ use App\Http\Middleware\MitraMiddleware;
 use App\Http\Middleware\VacancyFirst;
 use App\Http\Controllers\PaketKuesionerController;
 use App\Http\Controllers\PaketQuesionerDetailController;
+use App\Models\PaketKuesioner;
+use PhpParser\Node\Stmt\Echo_;
+use Symfony\Component\HttpFoundation\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,25 +64,24 @@ use App\Http\Controllers\PaketQuesionerDetailController;
 */
 
 // PAKET KUESIONER
-Route::get('/paket_kuesioner/test', function () {
-    return view('admin.paket_kuesioner.test-form');
-})->name('test-form');
+
 Route::get('/paket_kuesioner', [PaketKuesionerController::class, 'index'])->name('paket_kuesioner.index');
 Route::get('/paket_kuesioner/create', [PaketKuesionerController::class, 'create'])->name('paket_kuesioner.create');
 Route::post('/paket_kuesioner', [PaketKuesionerController::class, 'store'])->name('paket_kuesioner.store');
 Route::get('/paket_kuesioner/{id}/edit', [PaketKuesionerController::class, 'edit'])->name('paket_kuesioner.edit');
 Route::put('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'update'])->name('paket_kuesioner.update');
 Route::delete('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'destroy'])->name('paket_kuesioner.destroy');
-
-
 Route::get('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'detailKuesioner'])->name('paket_kuesioner.view');
 
+
+// PAKET KUESIONER DETAIL
 Route::get('paket_kuesioner_detail/{id}', [PaketQuesionerDetailController::class, 'index'])->name('paket_kuesioner_detail.index');
+Route::get('paket_kuesioner_detail/{id}/test_form', [PaketQuesionerDetailController::class, 'show'])->name('test_form');
 Route::post('paket_kuesioner_detail/update-index', [PaketQuesionerDetailController::class, 'update_index'])->name('paket_kuesioner_detail.update_index');
 
-Route::resource('paket_kuesioner_detail', PaketQuesionerDetailController::class);
+Route::post('paket_kuesioner_detail/create', [PaketQuesionerDetailController::class, 'create']);
 
-// PAKET KUESIONER
+Route::resource('paket_kuesioner_detail', PaketQuesionerDetailController::class);
 
 
 
