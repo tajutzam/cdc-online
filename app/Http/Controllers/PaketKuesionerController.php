@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PaketKuesioner;
+use App\Models\PaketQuesionerDetail;
 use App\Models\QuesionerType;
 use App\Models\QuisionerProdi;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -21,7 +22,7 @@ class PaketKuesionerController extends Controller
 
     public function index()
     {
-        $paketKuesioners = PaketKuesioner::all();
+        $paketKuesioners = PaketKuesioner::orderBy('id', 'desc')->get();
 
         if (session('success')) {
             toast(session('success'), 'success');
@@ -88,5 +89,50 @@ class PaketKuesionerController extends Controller
         $quiz_type = QuesionerType::all();
         $data = PaketKuesioner::where('id', '=', $id)->first();
         return view('admin.paket_kuesioner.view', compact('data', 'quiz_type'));
+    }
+
+    public function changeStatus($id_paket, $status)
+    {
+        PaketKuesioner::where('id', $id_paket)->update([
+            'status' => $status
+        ]);
+
+        return redirect()->route('paket_kuesioner.index')->with('success', 'Status Telah Di Perbarui!');
+    }
+
+    public function duplicateData($id_paket)
+    {
+        $data = PaketKuesioner::with(["prodi", "detail.tipe"])->where("id", $id_paket)->first();
+        $paket =  PaketKuesioner::create([
+            'judul' => $data->judul . "-copy",
+            'tipe' => $data->tipe,
+            'id_quis_identitas_prodi' => $data->id_quis_identitas_prodi,
+            'status' => $data->status
+        ]);
+
+        $newId_paket = $paket->id;
+
+        $error = 0;
+        try {
+            foreach ($data->detail as $d) {
+                PaketQuesionerDetail::create([
+                    'kode_pertanyaan' => $d->kode_pertanyaan,
+                    'pertanyaan' => $d->pertanyaan,
+                    'tipe_id' => $d->tipe_id,
+                    'id_paket_quesioners' => $newId_paket,
+                    'is_required' => $d->is_required,
+                    'options' => $d->options,
+                    'index' => $d->index
+                ]);
+            }
+        } catch (\Throwable $th) {
+            $error++;
+        }
+
+        if ($error > 1) {
+            return redirect()->route('paket_kuesioner.index')->with('error', 'Data Gagal Di Duplikat!');
+        } else {
+            return redirect()->route('paket_kuesioner.index')->with('success', 'Data Berhasil Di Duplikat!');
+        }
     }
 }

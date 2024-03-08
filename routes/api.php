@@ -207,10 +207,16 @@ Route::get("informations", [InformationSubmissionController::class, 'findAllAPI'
 
 Route::put("/admin-prodi", [AdminProdiController::class, "updateHakAkses"]);
 
-Route::get("/kuesioner/jurusan", [QuesionerApiController::class, 'getJurusan'])->name('kuesioner.getJurusan')->middleware(TokenMiddleware::class);
-Route::get("/kuesioner/prodi", [QuesionerApiController::class, 'getProdi'])->name('kuesioner.getProdi')->middleware(TokenMiddleware::class);
+//kuesioner
+Route::get("/jurusan", [QuesionerApiController::class, 'getJurusan'])->name('kuesioner.getJurusan')->middleware(TokenMiddleware::class);
+Route::get("/prodi", [QuesionerApiController::class, 'getProdi'])->name('kuesioner.getProdi')->middleware(TokenMiddleware::class);
+Route::get("/kuesioner/tracer-study", [QuesionerApiController::class, 'getTracerStudy'])->name('kuesioner.getTracerStudy')->middleware(TokenMiddleware::class);
+Route::get("/kuesioner/survey-khusus/{id_prodi}", [QuesionerApiController::class, 'getSurveyKhususByProdi'])->name('kuesioner.getSurveyKhususByProdi')->middleware(TokenMiddleware::class);
+Route::get("/kuesioner/detail/{id_paket_quesioners}", [QuesionerApiController::class, 'getDetailById'])->name('kuesioner.getPaketById')->middleware(TokenMiddleware::class);
 
-Route::resource("/kuesioner", QuesionerApiController::class)->middleware(TokenMiddleware::class);
+
+
+
 
 
 // documentations

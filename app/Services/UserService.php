@@ -47,7 +47,7 @@ class UserService
         $data = $this->userModel->with('jobs', 'educations', 'followers')->where('token', $token)->get()->toArray();
         $responsePojo = [];
 
-        $user = $this->userModel->where('token', $token)->first();
+        $user = $this->userModel->with('prodi')->where('token', $token)->first();
 
         $userPojo = $this->castToUserResponse($user);
         foreach ($data as $key => $value) {
@@ -480,6 +480,7 @@ class UserService
             "instagram" => $user->instagram,
             'twiter' => $user->twiter,
             'account_status' => $user->account_status,
+            'prodi' => $user->prodi->id,
             "latitude" => $user->latitude,
             "longtitude" => $user->longtitude,
             'state_quisioner' => $user->state_quisioner

@@ -72,6 +72,8 @@ Route::get('/paket_kuesioner/{id}/edit', [PaketKuesionerController::class, 'edit
 Route::put('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'update'])->name('paket_kuesioner.update');
 Route::delete('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'destroy'])->name('paket_kuesioner.destroy');
 Route::get('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'detailKuesioner'])->name('paket_kuesioner.view');
+Route::get('/paket_kuesioner/changeStatus/{id_paket_kuesioner}/{status}', [PaketKuesionerController::class, 'changeStatus'])->name('paket_kuesioner.changeStatus');
+Route::get('/paket_kuesioner/duplicateData/{id_paket_kuesioner}', [PaketKuesionerController::class, 'duplicateData'])->name('paket_kuesioner.duplicateData');
 
 
 // PAKET KUESIONER DETAIL
