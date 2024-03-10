@@ -79,7 +79,6 @@
                                                     {{ $p->nama_prodi == $paketKuesioner->prodi->nama_prodi ? 'selected' : '' }}>
                                                     {{ $p->nama_prodi }}</option>
                                             @else
-                                                <option selected disabled>Pilih Program Studi</option>
                                                 <option value="{{ $p->id }}">
                                                     {{ $p->nama_prodi }}</option>
                                             @endif

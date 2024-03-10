@@ -32,6 +32,12 @@ class QuisionerController extends Controller
 
         $data = $this->quisionerService->findAllQuisionerUser($request->get('tahun'), $request->get('bulan'));
 
+        if (session('success')) {
+            toast(session('success'), 'success');
+        } elseif (session('error')) {
+            alert('Gagal', 'Paket Gagal Disimpan', 'error');
+        }
+
         return view('admin.quisioner.index', ['data' => $data]);
     }
 

@@ -27,7 +27,7 @@ class PaketKuesionerController extends Controller
         if (session('success')) {
             toast(session('success'), 'success');
         } elseif (session('error')) {
-            alert('Gagal', 'Paket Gagal Disimpan', 'error');
+            alert('Gagal', session('error'), 'error');
         }
         confirmDelete("Delete Paket!", "Apakah anda yakin?");
         return view('admin.paket_kuesioner.index', compact('paketKuesioners'));
@@ -63,15 +63,25 @@ class PaketKuesionerController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'judul' => 'required',
             'tipe' => 'required|in:Tracer Study,Survey Khusus',
             // 'tanggal_dibuat' => 'required|date',
             'id_quis_identitas_prodi' => $request->input('tipe') == 'Survey Khusus' ? 'required' : '',
         ]);
 
+        $data = [];
+
+        $data['judul'] = $request->judul;
+        $data['tipe'] = $request->tipe;
+        if ($request->input('tipe') == 'Survey Khusus') {
+            $data['id_quis_identitas_prodi'] = $request->id_quis_identitas_prodi;
+        } else {
+            $data['id_quis_identitas_prodi'] = null;
+        }
+
         $paketKuesioner = PaketKuesioner::findOrFail($id);
-        $paketKuesioner->update($validatedData);
+        $paketKuesioner->update($data);
 
         return redirect()->route('paket_kuesioner.index')->with('success', 'Paket Kuesioner berhasil diperbarui');
     }

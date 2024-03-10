@@ -213,6 +213,9 @@ Route::get("/prodi", [QuesionerApiController::class, 'getProdi'])->name('kuesion
 Route::get("/kuesioner/tracer-study", [QuesionerApiController::class, 'getTracerStudy'])->name('kuesioner.getTracerStudy')->middleware(TokenMiddleware::class);
 Route::get("/kuesioner/survey-khusus/{id_prodi}", [QuesionerApiController::class, 'getSurveyKhususByProdi'])->name('kuesioner.getSurveyKhususByProdi')->middleware(TokenMiddleware::class);
 Route::get("/kuesioner/detail/{id_paket_quesioners}", [QuesionerApiController::class, 'getDetailById'])->name('kuesioner.getPaketById')->middleware(TokenMiddleware::class);
+Route::post("/kuesioner", [QuesionerApiController::class, 'store'])->name('kuesioner.store')->middleware(TokenMiddleware::class);
+
+Route::get("/kuesioner/cek-status-user/{user_id}/{id_paket_kuesioner}", [QuesionerApiController::class, 'cekStatusKuesionerUser'])->name('kuesioner.cekStatusKuesionerUser')->middleware(TokenMiddleware::class);
 
 
 

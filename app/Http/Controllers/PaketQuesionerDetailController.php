@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\OptionJawaban;
 use App\Models\PaketKuesioner;
 use App\Models\PaketQuesionerDetail;
+use App\Models\QuesionerAnswer;
+use App\Models\QuesionerAnswerDetail;
 use App\Models\QuesionerJurusan;
 use App\Models\QuesionerType;
 use App\Models\QuisionerIdentitas;
@@ -41,14 +43,35 @@ class PaketQuesionerDetailController extends Controller
         foreach ($data[0]->detail as $res) {
             $validationData[$res->kode_pertanyaan] = $res->is_required == "1" ? "required" : "";
         }
-
         $messages = [
-            'required' => 'This field is required.',
+            'required' => 'This :attribute field is required.',
         ];
+
 
         $request->validate($validationData, $messages);
 
-        return "Berhasil";
+        $detail = QuesionerAnswerDetail::create([
+            "user_id" => $request->user_id,
+            "id_paket_kuesioner" => $request->id_paket_kuesioner,
+        ]);
+
+        $detail_id = $detail->id;
+
+        try {
+            foreach ($data[0]->detail as $res) {
+                $id_paket_quesioner_detail = $res->id;
+                $kode_pertanyaan = $res->kode_pertanyaan;
+                QuesionerAnswer::create([
+                    "quesioner_answer_detail_id" => $detail_id,
+                    "id_paket_quesioner_detail" => $id_paket_quesioner_detail,
+                    "answer_value" => json_encode($request->$kode_pertanyaan),
+                ]);
+            }
+            return redirect()->route('quisioner-index')->with('success', 'Jawaban telah tersimpan!!');
+        } catch (\Throwable $th) {
+            return redirect()->route('paket_kuesioner.index')->withInput()->with('error', $th->getMessage());
+        }
+        // return $request;
     }
 
     /**

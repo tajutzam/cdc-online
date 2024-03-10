@@ -62,7 +62,7 @@ class UserSeeder extends Seeder
             'gender' => 'male',
             'about' => "Saya third choice",
             'email_verivied' => 1,
-            'kode_prodi' => 79402,
+            'kode_prodi' => 55301,
             'nim' => 'e41211994'
         ]);
     }

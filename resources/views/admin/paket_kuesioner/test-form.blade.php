@@ -13,7 +13,8 @@
                         <form action="{{ route('paket_kuesioner_detail.create') }}" method="POST">
                             @csrf
                             @method('POST')
-                            <input type="hidden" name="user_id" value="{{ Auth::guard('admin')->user()->id }}">
+                            {{-- <input type="hidden" name="user_id" value="{{ Auth::guard('admin')->user()->id }}"> --}}
+                            <input type="hidden" name="user_id" value="f217f260-b91f-463b-a6f8-0b96e45bcedf">
                             <input type="hidden" name="id_paket_kuesioner" value="{{ $data[0]->id }}">
                             <input type="hidden" name="id_paket_quesioner_detail"
                                 value="{{ $data[0]->id_quis_identitas_prodi }}">

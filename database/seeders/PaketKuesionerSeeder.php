@@ -21,8 +21,7 @@ class PaketKuesionerSeeder extends Seeder
 
         PaketKuesioner::create([
             'judul' => 'Quesioner Test',
-            'tipe' => 'Tracer Study',
-            'id_quis_identitas_prodi' => $prodi->id,
+            'tipe' => 'Tracer Study'
         ]);
     }
 }
