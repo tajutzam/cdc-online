@@ -26,8 +26,8 @@ class QuesionerApiController extends Controller
     }
     public function getDetailById($id_paket)
     {
-        $data = PaketQuesionerDetail::with("tipe")->where('id_paket_quesioners', $id_paket)->paginate(5);
-        return ResponseHelper::successResponse('success fetch data', $data, 200);
+        $data = PaketQuesionerDetail::with("tipe")->where('id_paket_quesioners', $id_paket)->simplePaginate(5);
+        return ResponseHelper::successResponse('success fetch data', $data->items(), 200);
     }
 
     public function getJurusan()
