@@ -11,6 +11,7 @@ use App\Models\QuesionerJurusan;
 use App\Models\QuisionerProdi;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class QuesionerApiController extends Controller
 {
@@ -55,16 +56,21 @@ class QuesionerApiController extends Controller
             'required' => 'This :attribute field is required.',
         ];
 
-        $request->validate($validationData, $messages);
+        $validator = Validator::make($request->all(), $validationData, $messages);
 
-        $detail = QuesionerAnswerDetail::create([
-            "user_id" => $request->user_id,
-            "id_paket_kuesioner" => $request->id_paket_kuesioner,
-        ]);
+        if ($validator->fails()) {
+            return ResponseHelper::errorResponse('Validation Error', $validator->errors()->all(), 422);
+        }
 
-        $detail_id = $detail->id;
 
         try {
+            $detail = QuesionerAnswerDetail::create([
+                "user_id" => $request->user_id,
+                "id_paket_kuesioner" => $request->id_paket_kuesioner,
+            ]);
+
+            $detail_id = $detail->id;
+
             foreach ($data[0]->detail as $res) {
                 $id_paket_quesioner_detail = $res->id;
                 $kode_pertanyaan = $res->kode_pertanyaan;
@@ -76,7 +82,7 @@ class QuesionerApiController extends Controller
             }
             return ResponseHelper::successResponse('Success submited quesioner', "", 200);
         } catch (\Throwable $th) {
-            return ResponseHelper::successResponse('Failed submited quesioner', $th->getMessage(), 200);
+            return ResponseHelper::successResponse('Failed submited quesioner', $th->message(), 200);
         }
     }
 
