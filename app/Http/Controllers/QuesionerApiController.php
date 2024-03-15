@@ -11,6 +11,7 @@ use App\Models\QuesionerJurusan;
 use App\Models\QuisionerProdi;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class QuesionerApiController extends Controller
@@ -19,6 +20,14 @@ class QuesionerApiController extends Controller
     {
         $data = PaketKuesioner::where('tipe', 'Tracer Study')->get();
         return ResponseHelper::successResponse('success fetch data', $data, 200);
+    }
+    public function getKodeKuesioner()
+    {
+        $data = DB::table('paket_quesioner_details')->select('id', 'kode_pertanyaan')->get();
+        return response()->json([
+            'message' => 'Berhasil get kode kuesioner',
+            'data' => $data
+        ], 200);
     }
     public function getSurveyKhususByProdi($id_prodi)
     {
@@ -82,7 +91,7 @@ class QuesionerApiController extends Controller
             }
             return ResponseHelper::successResponse('Success submited quesioner', "", 200);
         } catch (\Throwable $th) {
-            return ResponseHelper::successResponse('Failed submited quesioner', $th->message(), 200);
+            return ResponseHelper::successResponse('Failed submited quesioner', $th->getMessage(), 200);
         }
     }
 
