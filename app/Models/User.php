@@ -90,7 +90,6 @@ class User extends Authenticatable
     public function followed()
     {
         return $this->hasMany(Followed::class, 'folowed_id');
-
     }
 
     public function post()
@@ -161,13 +160,10 @@ class User extends Authenticatable
     public function quisioner_level()
     {
         return $this->hasMany(QuisionerLevel::class, "user_id");
-
     }
 
     public function notifications()
     {
         return $this->hasMany(Notifications::class, "user_id");
     }
-
-
 }
