@@ -62,7 +62,7 @@ class QuesionerApiController extends Controller
             $validationData[$res->kode_pertanyaan] = $res->is_required == "1" ? "required" : "";
         }
         $messages = [
-            'required' => 'This :attribute field is required.',
+            'required' => 'Field :attribute Wajib Di Isi',
         ];
 
         $validator = Validator::make($request->all(), $validationData, $messages);
