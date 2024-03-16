@@ -57,18 +57,47 @@ class QuesionerApiController extends Controller
     {
         $data = PaketKuesioner::with(["prodi", "detail.tipe"])->where("id", $request->id_paket_kuesioner)->get();
 
+        // $validationData = [];
+        // foreach ($data[0]->detail as $res) {
+        //     $validationData[$res->kode_pertanyaan] = $res->is_required == "1" ? "required" : "";
+        // }
+
+        // $messages = [
+        //     'required' => 'Field :attribute Wajib Di Isi',
+        // ];
+
+        // $validator = Validator::make($request->all(), $validationData, $messages);
+
+        // if ($validator->fails()) {
+        //     return ResponseHelper::errorResponse('Validation Error', $validator->errors()->all(), 422);
+        // }
+
         $validationData = [];
         foreach ($data[0]->detail as $res) {
-            $validationData[$res->kode_pertanyaan] = $res->is_required == "1" ? "required" : "";
+            $question = PaketQuesionerDetail::where('kode_pertanyaan', $res->kode_pertanyaan)->first();
+            if ($question) {
+                $validationData[$res->kode_pertanyaan] = $res->is_required == "1" ? "required" : "";
+            } else {
+            }
         }
+
         $messages = [
-            'required' => 'Field :attribute Wajib Di Isi',
+            'required' => 'Pertanyaan :attribute Wajib Di Isi',
         ];
 
         $validator = Validator::make($request->all(), $validationData, $messages);
 
         if ($validator->fails()) {
-            return ResponseHelper::errorResponse('Validation Error', $validator->errors()->all(), 422);
+            $errorMessages = [];
+            foreach ($validator->errors()->keys() as $key) {
+                $question = PaketQuesionerDetail::where('kode_pertanyaan', $key)->first();
+                if ($question) {
+                    $errorMessages[] = "Pertanyaan : {$question->pertanyaan} , Wajib Di Isi";
+                } else {
+                    $errorMessages[] = "Pertanyaan : $key , Wajib Di Isi";
+                }
+            }
+            return ResponseHelper::errorResponse('Validation Error', $errorMessages, 422);
         }
 
 
