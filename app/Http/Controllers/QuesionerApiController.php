@@ -12,6 +12,7 @@ use App\Models\QuesionerJurusan;
 use App\Models\QuisionerProdi;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class QuesionerApiController extends Controller
@@ -20,6 +21,14 @@ class QuesionerApiController extends Controller
     {
         $data = PaketKuesioner::where('tipe', 'Tracer Study')->get();
         return ResponseHelper::successResponse('success fetch data', $data, 200);
+    }
+    public function getKodeKuesioner()
+    {
+        $data = DB::table('paket_quesioner_details')->select('id', 'kode_pertanyaan')->get();
+        return response()->json([
+            'message' => 'Berhasil get kode kuesioner',
+            'data' => $data
+        ], 200);
     }
     public function getSurveyKhususByProdi($id_prodi)
     {
@@ -49,18 +58,47 @@ class QuesionerApiController extends Controller
     {
         $data = PaketKuesioner::with(["prodi", "detail.tipe"])->where("id", $request->id_paket_kuesioner)->get();
 
+        // $validationData = [];
+        // foreach ($data[0]->detail as $res) {
+        //     $validationData[$res->kode_pertanyaan] = $res->is_required == "1" ? "required" : "";
+        // }
+
+        // $messages = [
+        //     'required' => 'Field :attribute Wajib Di Isi',
+        // ];
+
+        // $validator = Validator::make($request->all(), $validationData, $messages);
+
+        // if ($validator->fails()) {
+        //     return ResponseHelper::errorResponse('Validation Error', $validator->errors()->all(), 422);
+        // }
+
         $validationData = [];
         foreach ($data[0]->detail as $res) {
-            $validationData[$res->kode_pertanyaan] = $res->is_required == "1" ? "required" : "";
+            $question = PaketQuesionerDetail::where('kode_pertanyaan', $res->kode_pertanyaan)->first();
+            if ($question) {
+                $validationData[$res->kode_pertanyaan] = $res->is_required == "1" ? "required" : "";
+            } else {
+            }
         }
+
         $messages = [
-            'required' => 'Field :attribute Wajib Di Isi',
+            'required' => 'Pertanyaan :attribute Wajib Di Isi',
         ];
 
         $validator = Validator::make($request->all(), $validationData, $messages);
 
         if ($validator->fails()) {
-            return ResponseHelper::errorResponse('Validation Error', $validator->errors()->all(), 422);
+            $errorMessages = [];
+            foreach ($validator->errors()->keys() as $key) {
+                $question = PaketQuesionerDetail::where('kode_pertanyaan', $key)->first();
+                if ($question) {
+                    $errorMessages[] = "Pertanyaan : {$question->pertanyaan} , Wajib Di Isi";
+                } else {
+                    $errorMessages[] = "Pertanyaan : $key , Wajib Di Isi";
+                }
+            }
+            return ResponseHelper::errorResponse('Validation Error', $errorMessages, 422);
         }
 
 
@@ -99,7 +137,7 @@ class QuesionerApiController extends Controller
             }
             return ResponseHelper::successResponse('Success submited quesioner', "", 200);
         } catch (\Throwable $th) {
-            return ResponseHelper::successResponse('Failed submited quesioner', $th->message(), 200);
+            return ResponseHelper::successResponse('Failed submited quesioner', $th->getMessage(), 200);
         }
     }
 

@@ -216,6 +216,7 @@ Route::get("/kuesioner/detail/{id_paket_quesioners}", [QuesionerApiController::c
 Route::post("/kuesioner", [QuesionerApiController::class, 'store'])->name('kuesioner.store')->middleware(TokenMiddleware::class);
 
 Route::get("/kuesioner/cek-status-user/{user_id}/{id_paket_kuesioner}", [QuesionerApiController::class, 'cekStatusKuesionerUser'])->name('kuesioner.cekStatusKuesionerUser')->middleware(TokenMiddleware::class);
+Route::get("/get-kode-kuesioner", [QuesionerApiController::class, 'getKodeKuesioner'])->name('kuesioner.getKode')->middleware(TokenMiddleware::class);
 
 Route::get("/prodi_jurusan/{id_jurusan}", [QuesionerApiController::class, 'prodiJurusan'])->name('kuesioner.prodiJurusan')->middleware(TokenMiddleware::class);
 
