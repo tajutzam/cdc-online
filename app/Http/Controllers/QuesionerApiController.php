@@ -22,9 +22,9 @@ class QuesionerApiController extends Controller
         $data = PaketKuesioner::where('tipe', 'Tracer Study')->get();
         return ResponseHelper::successResponse('success fetch data', $data, 200);
     }
-    public function getKodeKuesioner()
+    public function getKodeKuesioner($id)
     {
-        $data = DB::table('paket_quesioner_details')->select('id', 'kode_pertanyaan')->get();
+        $data = DB::table('paket_quesioner_details')->select('id', 'kode_pertanyaan')->where('id_paket_quesioners', $id)->get();
         return response()->json([
             'message' => 'Berhasil get kode kuesioner',
             'data' => $data
@@ -113,7 +113,7 @@ class QuesionerApiController extends Controller
                 ->first();
 
             $count = "";
-            if (isset($latestDetail)) {
+            if (isset ($latestDetail)) {
                 if ($latestDetail->level == "6") {
                     $count = "12";
                 } else {
