@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helper\ResponseHelper;
+use App\Models\Jurusan_detail;
 use App\Models\PaketKuesioner;
 use App\Models\PaketQuesionerDetail;
 use App\Models\QuesionerAnswer;
@@ -64,9 +65,25 @@ class QuesionerApiController extends Controller
 
 
         try {
+            $latestDetail = QuesionerAnswerDetail::where('user_id', $request->user_id)
+                ->orderBy('id', 'desc')
+                ->first();
+
+            $count = "";
+            if (isset($latestDetail)) {
+                if ($latestDetail->level == "6") {
+                    $count = "12";
+                } else {
+                    $count = "6";
+                }
+            } else {
+                $count = "0";
+            }
+
             $detail = QuesionerAnswerDetail::create([
                 "user_id" => $request->user_id,
                 "id_paket_kuesioner" => $request->id_paket_kuesioner,
+                "level" => $count
             ]);
 
             $detail_id = $detail->id;
@@ -152,5 +169,22 @@ class QuesionerApiController extends Controller
                 ], 200);
             }
         }
+    }
+
+    function prodiJurusan($id_jurusan)
+    {
+        $jurusan = QuesionerJurusan::with('detail.prodi')
+            ->where('id', $id_jurusan)
+            ->first();
+
+        $data = [];
+        $index = 0;
+        foreach ($jurusan->detail as $detail) {
+            $data[$index]['id'] = $detail->prodi[0]->id;
+            $data[$index]['nama_prodi'] = $detail->prodi[0]->nama_prodi;
+            $index++;
+        }
+
+        return ResponseHelper::successResponse('Success submited quesioner', $data, 200);
     }
 }

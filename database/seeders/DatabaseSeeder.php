@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             QuesionerTypeSeeder::class,
             PaketKuesionerSeeder::class,
             PaketKuesionerDetailSeeder::class,
-            QuesionerJurusanSeeder::class
+            QuesionerJurusanSeeder::class,
+            JurusanDetailSeeder::class
         ]);
     }
 }

@@ -112,7 +112,5 @@ class QuisProdiSeeder extends Seeder
             'id' => 54101,
             "nama_prodi" => "Magister Terapan Agribisnis"
         ]);
-
-
     }
 }

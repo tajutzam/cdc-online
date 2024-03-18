@@ -19,6 +19,7 @@ class CreateQuesionerAnswerDetailsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('id_paket_kuesioner');
             $table->foreign('id_paket_kuesioner')->references('id')->on('paket_kuesioners');
+            $table->string('level')->default("0");
             $table->nullableTimestamps();
         });
     }

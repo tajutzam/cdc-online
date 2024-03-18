@@ -20,7 +20,13 @@ class PaketKuesionerSeeder extends Seeder
         $prodi = QuisionerProdi::where('id', '55301')->first();
 
         PaketKuesioner::create([
-            'judul' => 'Quesioner Test',
+            'judul' => 'Quesioner khusus',
+            'tipe' => 'Survey Khusus',
+            'id_quis_identitas_prodi' => 55301
+        ]);
+
+        PaketKuesioner::create([
+            'judul' => 'Tracer Study Polije',
             'tipe' => 'Tracer Study'
         ]);
     }

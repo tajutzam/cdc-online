@@ -233,7 +233,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
 
     Route::prefix('quisioner')->group(function () {
         Route::get('', [QuisionerController::class, 'index'])->name('quisioner-index');
-        Route::get("/detail/{level}/{userId}", [QuisionerController::class, 'detailQuisioner'])->name('detail-quisioner');
+        Route::get("/detail/{quesioner_answer_detail_id}", [QuisionerController::class, 'detailQuisioner'])->name('detail-quisioner');
         Route::post("export", [QuisionerController::class, "export"])->name('export');
         Route::post("import", [QuisionerController::class, 'import'])->name('import');
         Route::post("export-pdf", [QuisionerController::class, "exportPdf"])->name('export-pdf');

@@ -217,6 +217,8 @@ Route::post("/kuesioner", [QuesionerApiController::class, 'store'])->name('kuesi
 
 Route::get("/kuesioner/cek-status-user/{user_id}/{id_paket_kuesioner}", [QuesionerApiController::class, 'cekStatusKuesionerUser'])->name('kuesioner.cekStatusKuesionerUser')->middleware(TokenMiddleware::class);
 
+Route::get("/prodi_jurusan/{id_jurusan}", [QuesionerApiController::class, 'prodiJurusan'])->name('kuesioner.prodiJurusan')->middleware(TokenMiddleware::class);
+
 
 
 
