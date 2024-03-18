@@ -108,12 +108,15 @@
                                     @break
 
                                     @default
-                                        <label for="{{ $d->kode_pertanyaan }}">{{ $d->pertanyaan }}</label>
-                                        <input type="{{ $d->tipe->value }}" class="form-control" id="{{ $d->kode_pertanyaan }}"
-                                            name="{{ $d->kode_pertanyaan }}">
-                                        @if ($errors->has($d->kode_pertanyaan))
-                                            <span class="text-danger text-left">{{ $errors->first($d->kode_pertanyaan) }}</span>
-                                        @endif
+                                        <div class="form-group">
+                                            <label for="{{ $d->kode_pertanyaan }}">{{ $d->pertanyaan }}</label>
+                                            <input type="{{ $d->tipe->value }}" class="form-control"
+                                                id="{{ $d->kode_pertanyaan }}" name="{{ $d->kode_pertanyaan }}">
+                                            @if ($errors->has($d->kode_pertanyaan))
+                                                <span
+                                                    class="text-danger text-left">{{ $errors->first($d->kode_pertanyaan) }}</span>
+                                            @endif
+                                        </div>
                                 @endswitch
                             @endforeach
                             {{-- Submit Button --}}
