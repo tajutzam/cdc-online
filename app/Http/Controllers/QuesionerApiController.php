@@ -53,6 +53,12 @@ class QuesionerApiController extends Controller
         return ResponseHelper::successResponse('success fetch data', $data, 200);
     }
 
+    public function getProdiById($id)
+    {
+        $data = QuisionerProdi::where('id', $id)->first();
+        return ResponseHelper::successResponse('success fetch data', $data, 200);
+    }
+
 
     public function store(Request $request)
     {
@@ -78,8 +84,7 @@ class QuesionerApiController extends Controller
             $question = PaketQuesionerDetail::where('kode_pertanyaan', $res->kode_pertanyaan)->first();
             if ($question) {
                 $validationData[$res->kode_pertanyaan] = $res->is_required == "1" ? "required" : "";
-            } else {
-            }
+            } else { }
         }
 
         $messages = [

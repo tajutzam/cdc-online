@@ -210,6 +210,7 @@ Route::put("/admin-prodi", [AdminProdiController::class, "updateHakAkses"]);
 //kuesioner
 Route::get("/jurusan", [QuesionerApiController::class, 'getJurusan'])->name('kuesioner.getJurusan')->middleware(TokenMiddleware::class);
 Route::get("/prodi", [QuesionerApiController::class, 'getProdi'])->name('kuesioner.getProdi')->middleware(TokenMiddleware::class);
+Route::get("/prodi/{id}", [QuesionerApiController::class, 'getProdiById'])->name('kuesioner.getProdiById')->middleware(TokenMiddleware::class);
 Route::get("/kuesioner/tracer-study", [QuesionerApiController::class, 'getTracerStudy'])->name('kuesioner.getTracerStudy')->middleware(TokenMiddleware::class);
 Route::get("/kuesioner/survey-khusus/{id_prodi}", [QuesionerApiController::class, 'getSurveyKhususByProdi'])->name('kuesioner.getSurveyKhususByProdi')->middleware(TokenMiddleware::class);
 Route::get("/kuesioner/detail/{id_paket_quesioners}", [QuesionerApiController::class, 'getDetailById'])->name('kuesioner.getPaketById')->middleware(TokenMiddleware::class);
