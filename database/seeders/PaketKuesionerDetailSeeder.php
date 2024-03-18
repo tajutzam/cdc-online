@@ -225,5 +225,105 @@ class PaketKuesionerDetailSeeder extends Seeder
             ]),
             'index' => 15,
         ]);
+        PaketQuesionerDetail::create([
+            'kode_pertanyaan' => 'f5a2',
+            'pertanyaan' => 'Dimana lokasi kabupaten/kota tempat Anda bekerja?',
+            'tipe_id' => 8,
+            'id_paket_quesioners' => 2,
+            'is_required' => 1,
+            'options' => json_encode([
+                "010100 - Kab. Kepulauan Seribu",
+                "016000 - Kota Jakarta Pusat",
+            ]),
+            'index' => 16,
+        ]);
+        PaketQuesionerDetail::create([
+            'kode_pertanyaan' => 'f1101',
+            'pertanyaan' => 'Apa jenis perusahaan/instansi/institusi tempat anda bekerja sekarang?',
+            'tipe_id' => 8,
+            'id_paket_quesioners' => 2,
+            'is_required' => 1,
+            'options' => json_encode([
+                "1 - Instansi pemerintah",
+                "2 - Organisasi non-profit/Lembaga Swadaya Masyarakat",
+                "3 - Perusahaan swasta",
+                "4 - Wiraswasta/perusahaan sendiri",
+                "6 - BUMN/BUMD",
+                "7 - Institusi/Organisasi Multilateral",
+                "5 - Lainnya",
+            ]),
+            'index' => 17,
+        ]);
+        PaketQuesionerDetail::create([
+            'kode_pertanyaan' => 'f5b',
+            'pertanyaan' => 'Apa nama perusahaan/kantor tempat Anda bekerja?',
+            'tipe_id' => 1,
+            'id_paket_quesioners' => 2,
+            'is_required' => 1,
+            'index' => 18,
+        ]);
+        PaketQuesionerDetail::create([
+            'kode_pertanyaan' => 'f5c',
+            'pertanyaan' => 'Bila Anda berwiraswasta, apa posisi/jabatan Anda saat ini ?',
+            'tipe_id' => 8,
+            'id_paket_quesioners' => 2,
+            'is_required' => 1,
+            'options' => json_encode([
+                "1 - Founder",
+                "2 - Co-Founder",
+                "3 - Staff",
+                "4 - Frelance Kerja Lepas",
+            ]),
+            'index' => 19,
+        ]);
+        PaketQuesionerDetail::create([
+            'kode_pertanyaan' => 'f5d',
+            'pertanyaan' => 'Apa tingkatan tempat kerja Anda?',
+            'tipe_id' => 8,
+            'id_paket_quesioners' => 2,
+            'is_required' => 1,
+            'options' => json_encode([
+                "1 - Lokal/wilayah/wiraswasta tidak berbadan hukum",
+                "2 - Nasional/wiraswasta berbadan hukum",
+                "3 - Multinasional/Internasional",
+            ]),
+            'index' => 21,
+        ]);
+        PaketQuesionerDetail::create([
+            'kode_pertanyaan' => 'f18a',
+            'pertanyaan' => 'Sumber biaya Studi Lanjut Anda?',
+            'tipe_id' => 8,
+            'id_paket_quesioners' => 2,
+            'is_required' => 1,
+            'options' => json_encode([
+                "Biaya Sendiri",
+                "Bea Siswa",
+            ]),
+            'index' => 22,
+        ]);
+        PaketQuesionerDetail::create([
+            'kode_pertanyaan' => 'f18b',
+            'pertanyaan' => 'Nama Perguruan Tinggi Studi Lanjut Anda?',
+            'tipe_id' => 1,
+            'id_paket_quesioners' => 2,
+            'is_required' => 1,
+            'index' => 23,
+        ]);
+        PaketQuesionerDetail::create([
+            'kode_pertanyaan' => 'f18c',
+            'pertanyaan' => 'Nama Program Studi Studi Lanjut Anda?',
+            'tipe_id' => 1,
+            'id_paket_quesioners' => 2,
+            'is_required' => 1,
+            'index' => 23,
+        ]);
+        PaketQuesionerDetail::create([
+            'kode_pertanyaan' => 'f18d',
+            'pertanyaan' => 'Tanggal Masuk Awal Studi Lanjut Anda?',
+            'tipe_id' => 5,
+            'id_paket_quesioners' => 2,
+            'is_required' => 1,
+            'index' => 23,
+        ]);
     }
 }

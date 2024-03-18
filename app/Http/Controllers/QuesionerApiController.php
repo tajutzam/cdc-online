@@ -55,7 +55,7 @@ class QuesionerApiController extends Controller
 
     public function getProdiById($id)
     {
-        $data = QuisionerProdi::where('id', $id)->first();
+        $data = QuisionerProdi::where('id', $id)->get();
         return ResponseHelper::successResponse('success fetch data', $data, 200);
     }
 
@@ -113,7 +113,7 @@ class QuesionerApiController extends Controller
                 ->first();
 
             $count = "";
-            if (isset ($latestDetail)) {
+            if (isset($latestDetail)) {
                 if ($latestDetail->level == "6") {
                     $count = "12";
                 } else {
