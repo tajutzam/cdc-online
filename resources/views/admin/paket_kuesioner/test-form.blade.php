@@ -1,15 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header bg-primary">
                         <div class="h5" style="color: white"> <i class="fas fa-eye"></i> Test Form | {{ $data[0]->judul }}
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body px-5">
                         <form action="{{ route('paket_kuesioner_detail.create') }}" method="POST">
                             @csrf
                             @method('POST')
@@ -21,9 +24,10 @@
                             @foreach ($data[0]->detail as $d)
                                 @switch($d->tipe->value)
                                     @case('select_jurusan')
-                                        <div class="form-group">
-                                            <label for="{{ $d->kode_pertanyaan }}">{{ $d->pertanyaan }}</label>
-                                            <select class="form-control" id="{{ $d->kode_pertanyaan }}"
+                                        <div class="form-group" class="font-weight-bold">
+                                            <label for="{{ $d->kode_pertanyaan }}"
+                                                class="font-weight-bold">{{ $d->pertanyaan }}</label>
+                                            <select class="form-control select-2" id="{{ $d->kode_pertanyaan }}"
                                                 name="{{ $d->kode_pertanyaan }}">
                                                 <option value="" selected disabled> Pilih Jurusan..</option>
                                                 @foreach ($jurusan as $j)
@@ -39,9 +43,10 @@
                                     @break
 
                                     @case('select_prodi')
-                                        <div class="form-group">
-                                            <label for="{{ $d->kode_pertanyaan }}">{{ $d->pertanyaan }}</label>
-                                            <select class="form-control" id="{{ $d->kode_pertanyaan }}"
+                                        <div class="form-group" class="font-weight-bold">
+                                            <label for="{{ $d->kode_pertanyaan }}"
+                                                class="font-weight-bold">{{ $d->pertanyaan }}</label>
+                                            <select class="form-control select-2" id="{{ $d->kode_pertanyaan }}"
                                                 name="{{ $d->kode_pertanyaan }}">
                                                 <option value="" selected disabled> Pilih Program Studi..</option>
                                                 @foreach ($prodi as $p)
@@ -57,8 +62,9 @@
 
                                     @case('select_epsbed')
                                         <div class="form-group">
-                                            <label for="{{ $d->kode_pertanyaan }}">{{ $d->pertanyaan }}</label>
-                                            <select class="form-control" id="{{ $d->kode_pertanyaan }}"
+                                            <label for="{{ $d->kode_pertanyaan }}"
+                                                class="font-weight-bold">{{ $d->pertanyaan }}</label>
+                                            <select class="form-control select-2" id="{{ $d->kode_pertanyaan }}"
                                                 name="{{ $d->kode_pertanyaan }}">
                                                 <option value="" selected disabled> Pilih Kode Prodi..</option>
                                                 @foreach ($prodi as $p)
@@ -75,8 +81,9 @@
 
                                     @case('select')
                                         <div class="form-group">
-                                            <label for="{{ $d->kode_pertanyaan }}">{{ $d->pertanyaan }}</label>
-                                            <select class="form-control" id="{{ $d->kode_pertanyaan }}"
+                                            <label for="{{ $d->kode_pertanyaan }}"
+                                                class="font-weight-bold">{{ $d->pertanyaan }}</label>
+                                            <select class="form-control select-2" id="{{ $d->kode_pertanyaan }}"
                                                 name="{{ $d->kode_pertanyaan }}">
                                                 <option value="" selected disabled> Pilih Jawaban..</option>
                                                 @foreach (json_decode($d->options) as $o)
@@ -92,7 +99,7 @@
 
                                     @case('checkbox')
                                         <div class="form-group">
-                                            <label>{{ $d->pertanyaan }}</label>
+                                            <label class="font-weight-bold">{{ $d->pertanyaan }}</label>
                                             @foreach (json_decode($d->options) as $o)
                                                 <div class="form-check">
                                                     <input type="checkbox" class="form-check-input" id="{{ $d->kode_pertanyaan }}"
@@ -109,7 +116,8 @@
 
                                     @default
                                         <div class="form-group">
-                                            <label for="{{ $d->kode_pertanyaan }}">{{ $d->pertanyaan }}</label>
+                                            <label for="{{ $d->kode_pertanyaan }}"
+                                                class="font-weight-bold">{{ $d->pertanyaan }}</label>
                                             <input type="{{ $d->tipe->value }}" class="form-control"
                                                 id="{{ $d->kode_pertanyaan }}" name="{{ $d->kode_pertanyaan }}">
                                             @if ($errors->has($d->kode_pertanyaan))
@@ -127,4 +135,9 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('.select-2').select2();
+        });
+    </script>
 @endsection
