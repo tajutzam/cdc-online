@@ -54,7 +54,7 @@ function InitializeSortable() {
 
             $.ajax({
                 type: "POST",
-                url: "/paket_kuesioner_detail/update-index",
+                url: "/admin/paket_kuesioner_detail/update-index",
                 data: {
                     items: items,
                 },
@@ -95,7 +95,7 @@ function InitializeSortable() {
 
             $.ajax({
                 type: "POST",
-                url: "/paket_kuesioner_detail/update-index",
+                url: "/admin/paket_kuesioner_detail/update-index",
                 data: {
                     items: items,
                 },
@@ -136,7 +136,7 @@ function InitializeSortable() {
 
             $.ajax({
                 type: "POST",
-                url: "/paket_kuesioner_detail/update-index",
+                url: "/admin/paket_kuesioner_detail/update-index",
                 data: {
                     items: items,
                 },
@@ -290,7 +290,7 @@ function hideLoader() {
 function getData() {
     $.ajax({
         type: "GET",
-        url: "/paket_kuesioner_detail/" + paket_id,
+        url: "/admin/paket_kuesioner_detail/" + paket_id,
         dataType: "json",
         success: function (response) {
             hideLoader();
@@ -341,7 +341,7 @@ function createQuesioner(data) {
     var index = lastIndex + 1;
     $.ajax({
         type: "POST",
-        url: "/paket_kuesioner_detail",
+        url: "/admin/paket_kuesioner_detail",
         data: { items: data },
         dataType: "json",
         headers: {
@@ -373,7 +373,7 @@ function updateDetail(id, order_index) {
 
     $.ajax({
         type: "GET",
-        url: "/paket_kuesioner_detail/" + id + "/edit",
+        url: "/admin/paket_kuesioner_detail/" + id + "/edit",
         dataType: "json",
         success: function (response) {
             // console.log(response);
@@ -449,7 +449,7 @@ function updateQuestion(data) {
     // console.log(data);
     $.ajax({
         type: "PUT",
-        url: "/paket_kuesioner_detail/" + data.id,
+        url: "/admin/paket_kuesioner_detail/" + data.id,
         data: { items: data },
         dataType: "json",
         headers: {
@@ -471,7 +471,7 @@ function updateQuestion(data) {
 function deleteDetail(id) {
     $.ajax({
         type: "DELETE",
-        url: "/paket_kuesioner_detail/" + id,
+        url: "/admin/paket_kuesioner_detail/" + id,
         dataType: "json",
         headers: {
             "X-CSRF-TOKEN": csrfToken,
@@ -506,7 +506,7 @@ function duplicateDetail(id, order_index) {
 
     $.ajax({
         type: "GET",
-        url: "/paket_kuesioner_detail/" + id + "/edit",
+        url: "/admin/paket_kuesioner_detail/" + id + "/edit",
         dataType: "json",
         success: function (response) {
             // console.log(response);
@@ -558,7 +558,7 @@ $("#duplicatePertanyaan").click(function (e) {
 function duplicateQuesionerAndOrderIndex(data, beforeIndex) {
     $.ajax({
         type: "POST",
-        url: "/paket_kuesioner_detail",
+        url: "/admin/paket_kuesioner_detail",
         data: { items: data },
         dataType: "json",
         headers: {
@@ -612,7 +612,7 @@ function updateIndexDuplicate(id, order_index) {
 
     $.ajax({
         type: "POST",
-        url: "/paket_kuesioner_detail/update-index",
+        url: "/admin/paket_kuesioner_detail/update-index",
         data: {
             items: items,
         },
@@ -648,7 +648,7 @@ function updateIndex() {
 
     $.ajax({
         type: "POST",
-        url: "/paket_kuesioner_detail/update-index",
+        url: "/admin/paket_kuesioner_detail/update-index",
         data: {
             items: items,
         },
