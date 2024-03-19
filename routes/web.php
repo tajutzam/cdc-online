@@ -63,28 +63,6 @@ use Symfony\Component\HttpFoundation\Request;
 |
 */
 
-// PAKET KUESIONER
-
-Route::get('/paket_kuesioner', [PaketKuesionerController::class, 'index'])->name('paket_kuesioner.index');
-Route::get('/paket_kuesioner/create', [PaketKuesionerController::class, 'create'])->name('paket_kuesioner.create');
-Route::post('/paket_kuesioner', [PaketKuesionerController::class, 'store'])->name('paket_kuesioner.store');
-Route::get('/paket_kuesioner/{id}/edit', [PaketKuesionerController::class, 'edit'])->name('paket_kuesioner.edit');
-Route::put('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'update'])->name('paket_kuesioner.update');
-Route::delete('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'destroy'])->name('paket_kuesioner.destroy');
-Route::get('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'detailKuesioner'])->name('paket_kuesioner.view');
-Route::get('/paket_kuesioner/changeStatus/{id_paket_kuesioner}/{status}', [PaketKuesionerController::class, 'changeStatus'])->name('paket_kuesioner.changeStatus');
-Route::get('/paket_kuesioner/duplicateData/{id_paket_kuesioner}', [PaketKuesionerController::class, 'duplicateData'])->name('paket_kuesioner.duplicateData');
-
-
-// PAKET KUESIONER DETAIL
-Route::get('paket_kuesioner_detail/{id}', [PaketQuesionerDetailController::class, 'index'])->name('paket_kuesioner_detail.index');
-Route::get('paket_kuesioner_detail/{id}/test_form', [PaketQuesionerDetailController::class, 'show'])->name('test_form');
-Route::post('paket_kuesioner_detail/update-index', [PaketQuesionerDetailController::class, 'update_index'])->name('paket_kuesioner_detail.update_index');
-
-Route::post('paket_kuesioner_detail/create', [PaketQuesionerDetailController::class, 'create']);
-
-Route::resource('paket_kuesioner_detail', PaketQuesionerDetailController::class);
-
 
 
 Route::get('/company/login', function () {
@@ -791,6 +769,30 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
 
     Route::get('/mitra', [PostController::class, "verivyMitraVacancy"])->name('vacancy-mitra');
     Route::get('/riwayat/informasi', [InformationSubmissionController::class, 'information'])->name('history-information');
+
+
+
+    // PAKET KUESIONER
+
+    Route::get('/paket_kuesioner', [PaketKuesionerController::class, 'index'])->name('paket_kuesioner.index');
+    Route::get('/paket_kuesioner/create', [PaketKuesionerController::class, 'create'])->name('paket_kuesioner.create');
+    Route::post('/paket_kuesioner', [PaketKuesionerController::class, 'store'])->name('paket_kuesioner.store');
+    Route::get('/paket_kuesioner/{id}/edit', [PaketKuesionerController::class, 'edit'])->name('paket_kuesioner.edit');
+    Route::put('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'update'])->name('paket_kuesioner.update');
+    Route::delete('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'destroy'])->name('paket_kuesioner.destroy');
+    Route::get('/paket_kuesioner/{id}', [PaketKuesionerController::class, 'detailKuesioner'])->name('paket_kuesioner.view');
+    Route::get('/paket_kuesioner/changeStatus/{id_paket_kuesioner}/{status}', [PaketKuesionerController::class, 'changeStatus'])->name('paket_kuesioner.changeStatus');
+    Route::get('/paket_kuesioner/duplicateData/{id_paket_kuesioner}', [PaketKuesionerController::class, 'duplicateData'])->name('paket_kuesioner.duplicateData');
+
+
+    // PAKET KUESIONER DETAIL
+    Route::get('paket_kuesioner_detail/{id}', [PaketQuesionerDetailController::class, 'index'])->name('paket_kuesioner_detail.index');
+    Route::get('paket_kuesioner_detail/{id}/test_form', [PaketQuesionerDetailController::class, 'show'])->name('test_form');
+    Route::post('paket_kuesioner_detail/update-index', [PaketQuesionerDetailController::class, 'update_index'])->name('paket_kuesioner_detail.update_index');
+
+    Route::post('paket_kuesioner_detail/create', [PaketQuesionerDetailController::class, 'create']);
+
+    Route::resource('paket_kuesioner_detail', PaketQuesionerDetailController::class);
 });
 
 
