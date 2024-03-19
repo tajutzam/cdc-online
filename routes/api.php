@@ -10,6 +10,7 @@ use App\Http\Controllers\NewsController as ApiNewsController;
 use App\Http\Controllers\NotificationsController as ControllersNotificationsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\QuesionerApiController;
 use App\Http\Controllers\QuisionerController;
 use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\StudyProgramPublicController;
@@ -93,6 +94,8 @@ Route::post("/auth/recovery", [AuthController::class, "recovery"]);
 Route::get("/user/verivication/email", [AuthController::class, "updateEmailVerified"])->withoutMiddleware(VeriviedMiddleware::class);
 
 
+
+
 // prodi
 Route::get("/prodi", [StudyProgramPublicController::class, "findAll"]);
 
@@ -130,6 +133,12 @@ Route::post("/user/quisioner/jobsuitability", [QuisionerController::class, 'addQ
 Route::put("/user/quisioner/jobsuitability", [QuisionerController::class, 'updatejobSuitability']);
 
 Route::get("/user/quisioner/check", [QuisionerController::class, 'showUpdateQuisionerLevel']);
+
+
+
+
+
+
 Route::post("/user/logout", [UserController::class, "logout"]);
 Route::post("/user/post", [PostController::class, 'addPost'])->middleware([TokenMiddleware::class, VeriviedMiddleware::class]);
 Route::get("/user/post", [PostController::class, 'getAllPost'])->middleware([TokenMiddleware::class]);
@@ -197,6 +206,24 @@ Route::get("informations", [InformationSubmissionController::class, 'findAllAPI'
 
 
 Route::put("/admin-prodi", [AdminProdiController::class, "updateHakAkses"]);
+
+//kuesioner
+Route::get("/jurusan", [QuesionerApiController::class, 'getJurusan'])->name('kuesioner.getJurusan')->middleware(TokenMiddleware::class);
+Route::get("/prodi", [QuesionerApiController::class, 'getProdi'])->name('kuesioner.getProdi')->middleware(TokenMiddleware::class);
+Route::get("/prodi/{id}", [QuesionerApiController::class, 'getProdiById'])->name('kuesioner.getProdiById')->middleware(TokenMiddleware::class);
+Route::get("/kuesioner/tracer-study", [QuesionerApiController::class, 'getTracerStudy'])->name('kuesioner.getTracerStudy')->middleware(TokenMiddleware::class);
+Route::get("/kuesioner/survey-khusus/{id_prodi}", [QuesionerApiController::class, 'getSurveyKhususByProdi'])->name('kuesioner.getSurveyKhususByProdi')->middleware(TokenMiddleware::class);
+Route::get("/kuesioner/detail/{id_paket_quesioners}", [QuesionerApiController::class, 'getDetailById'])->name('kuesioner.getPaketById')->middleware(TokenMiddleware::class);
+Route::post("/kuesioner", [QuesionerApiController::class, 'store'])->name('kuesioner.store')->middleware(TokenMiddleware::class);
+
+Route::get("/kuesioner/cek-status-user/{user_id}/{id_paket_kuesioner}", [QuesionerApiController::class, 'cekStatusKuesionerUser'])->name('kuesioner.cekStatusKuesionerUser')->middleware(TokenMiddleware::class);
+Route::get("/get-kode-kuesioner/{id}", [QuesionerApiController::class, 'getKodeKuesioner'])->name('kuesioner.getKode')->middleware(TokenMiddleware::class);
+
+Route::get("/prodi_jurusan/{id_jurusan}", [QuesionerApiController::class, 'prodiJurusan'])->name('kuesioner.prodiJurusan')->middleware(TokenMiddleware::class);
+
+
+
+
 
 
 // documentations

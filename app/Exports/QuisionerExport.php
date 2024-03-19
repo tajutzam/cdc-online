@@ -10,44 +10,56 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 
 
-class QuisionerExport implements FromView
+class QuisionerExport implements FromCollection
 {
 
 
 
     private QuisionerService $quisionerService;
     private $tahun;
+    private $type;
+    // private $kodeProdi;
 
-    private $kodeProdi;
 
-
-    public function __construct($tahun, $kodeProdi = null)
+    public function __construct($tahun, $type)
     {
         $this->quisionerService = new QuisionerService();
         $this->tahun = $tahun;
-        $this->kodeProdi = $kodeProdi;
+        $this->type = $type;
+        // $this->kodeProdi = $kodeProdi;
     }
 
-
-
-    public function view(): View
+    public function collection()
     {
-
-        // dd($this->kodeProdi);
-        $userQuisioner = $this->quisionerService->exrportToExcel($this->tahun, $this->kodeProdi);
+        $userQuisioner = $this->quisionerService->exrportToExcel($this->tahun, $this->type);
 
         if (sizeof($userQuisioner) == 0) {
             $message = "Ops , quisioner dengan " . $this->tahun . " tidak ditemukan";
             throw new WebException($message);
         }
-        
-        return view('exports.quisioner', [
-            'data' => $userQuisioner
-        ]);
+        return collect($userQuisioner);
     }
 
-    public function headings(): array
-    {
-        return ['NIM'];
-    }
+
+
+    // public function view(): View
+    // {
+
+    //     // dd($this->kodeProdi);
+    //     $userQuisioner = $this->quisionerService->exrportToExcel($this->tahun, $this->type);
+
+    //     if (sizeof($userQuisioner) == 0) {
+    //         $message = "Ops , quisioner dengan " . $this->tahun . " tidak ditemukan";
+    //         throw new WebException($message);
+    //     }
+        
+    //     return view('exports.quisioner', [
+    //         'data' => $userQuisioner
+    //     ]);
+    // }
+
+    // public function headings(): array
+    // {
+    //     return ['NIM'];
+    // }
 }

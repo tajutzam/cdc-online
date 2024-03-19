@@ -8,6 +8,8 @@ use App\Exports\QuisionerExport;
 use App\Exports\QuisionerPdfExport;
 use App\Http\Controllers\Controller;
 use App\Imports\QuisionerImport;
+use App\Models\QuesionerAnswer;
+use App\Models\QuesionerAnswerDetail;
 use App\Services\QuisionerService;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -32,6 +34,12 @@ class QuisionerController extends Controller
 
         $data = $this->quisionerService->findAllQuisionerUser($request->get('tahun'), $request->get('bulan'));
 
+        if (session('success')) {
+            toast(session('success'), 'success');
+        } elseif (session('error')) {
+            alert('Gagal', 'Paket Gagal Disimpan', 'error');
+        }
+
         return view('admin.quisioner.index', ['data' => $data]);
     }
 
@@ -46,22 +54,21 @@ class QuisionerController extends Controller
             'required' => ':attribute Dibutuhkan.',
         ];
         $data = $this->validate($request, $rules, $customMessages);
-        if ($request->input('type') == 'laporan') {
             try {
                 //code...
-                return Excel::download(new QuisionerExport($request->input('tahun')), "Akreditasi -Tahun Lulus-" . $request->input('tahun') . "." . $data['format']);
+                return Excel::download(new QuisionerExport($request->input('tahun'), $request->input('type')), "CDC-Tahun Lulus-" . $request->input('tahun') . "." . $data['format']);
             } catch (\Throwable $th) {
                 //throw $th;
                 throw new WebException($th->getMessage());
             }
-        }
-        try {
-            //code...
-            return Excel::download(new QuisionerAkreditasiExport($request->input('tahun')), "Tracer Study-Tahun Lulus -" . $request->input('tahun') . "." . $data['format']);
-        } catch (\Throwable $th) {
-            //throw $th;
-            throw new WebException($th->getMessage());
-        }
+    
+        // try {
+        //     //code...
+        //     return Excel::download(new QuisionerAkreditasiExport($request->input('tahun')), "Tracer Study-Tahun Lulus -" . $request->input('tahun') . "." . $data['format']);
+        // } catch (\Throwable $th) {
+        //     //throw $th;
+        //     throw new WebException($th->getMessage());
+        // }
     }
 
 
@@ -101,16 +108,10 @@ class QuisionerController extends Controller
 
 
 
-    public function detailQuisioner($level, $userId)
+    public function detailQuisioner($quesioner_answer_detail_id)
     {
-        $data = $this->quisionerService->findQuisionerByUser($userId, $level);
-        foreach ($data as $key => $value) {
-            # code...
-            if (sizeof($value['quisioner_level']) == 0) {
-                throw new WebException('Ops , data quisioner tidak dimteukan');
-            }
-        }
-        return view('admin.quisioner.detail', ['data' => $data[0]]);
+        $data = QuesionerAnswer::with('QuesinerAnswerDetail', 'QuesinerAnswerDetail.users','detail')->where("quesioner_answer_detail_id",$quesioner_answer_detail_id)->get();
+        return view('admin.quisioner.detail',compact('data'));
     }
 
     public function detailQuisionerProdi($level, $userId)

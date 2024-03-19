@@ -48,6 +48,7 @@
                                         <th>Judul</th>
                                         <th>Tipe</th>
                                         <th>Tanggal Dibuat</th>
+                                        <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -56,23 +57,38 @@
                                         <tr>
                                             <td>{{ $paketKuesioner->judul }}</td>
                                             <td>{{ $paketKuesioner->tipe }}</td>
-                                            <td>{{ $paketKuesioner->tanggal_dibuat }}</td>
+                                            <td>{{ $paketKuesioner->created_at->format('Y M d') }}</td>
+                                            <td>
+                                                @if ($paketKuesioner->status == 1)
+                                                    <span class="badge bg-success">Active</span>
+                                                @else
+                                                    <span class="badge bg-danger">Non-Active</span>
+                                                @endif
+                                            </td>
+
                                             <td>
                                                 <div class="d-flex justify-content-center">
+                                                    <a href="{{ route('paket_kuesioner.duplicateData', $paketKuesioner->id) }}"
+                                                        class="btn btn-info me-2">Duplicate</a>
+                                                    @if ($paketKuesioner->status == 1)
+                                                        <a href="{{ route('paket_kuesioner.changeStatus', [$paketKuesioner->id, $paketKuesioner->status == '1' ? '0' : '1']) }}"
+                                                            class="btn btn-danger me-2">Inactive</a>
+                                                    @else
+                                                        <a href="{{ route('paket_kuesioner.changeStatus', [$paketKuesioner->id, $paketKuesioner->status == '1' ? '0' : '1']) }}"
+                                                            class="btn btn-success me-2">Activate</a>
+                                                    @endif
                                                     <a href="{{ route('paket_kuesioner.edit', $paketKuesioner->id) }}"
-                                                        class="btn btn-primary me-2">Edit</a>
-                                                    <a href="{{ route('paket_kuesioner.view') }}">
-                                                        <div class="btn btn-info me-2">
+                                                        class="btn btn-warning me-2">Edit</a>
+                                                    <a href="{{ route('paket_kuesioner.view', $paketKuesioner->id) }}">
+                                                        <div class="btn btn-secondary me-2">
                                                             Lihat
                                                         </div>
                                                     </a>
-                                                    <form
-                                                        action="{{ route('paket_kuesioner.destroy', $paketKuesioner->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger" type="submit">Hapus</button>
-                                                    </form>
+
+                                                    <a href="{{ route('paket_kuesioner.destroy', $paketKuesioner->id) }}"
+                                                        class="btn btn-danger" type="submit"
+                                                        data-confirm-delete="true">Hapus</a>
+
 
                                                 </div>
                                             </td>

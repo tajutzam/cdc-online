@@ -1,8 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+    {{-- {{ $data['paket'][0] }} --}}
 
     <body>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+
         <div class="container-fluid">
             @if ($errors->any())
                 <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
@@ -112,14 +116,14 @@
                         <div class="col-md-6 text-md-end">
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example"
                                 style="padding: 1%">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#export-pdf">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
                                         <path
                                             d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0z" />
                                     </svg> Export PDF
-                                </button>
+                                </button> --}}
                                 <!-- Example single danger button -->
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success" data-bs-toggle="modal"
@@ -128,11 +132,11 @@
                                             fill="currentColor" class="bi bi-file-earmark-spreadsheet" viewBox="0 0 16 16">
                                             <path
                                                 d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V9H3V2a1 1 0 0 1 1-1h5.5v2zM3 12v-2h2v2H3zm0 1h2v2H4a1 1 0 0 1-1-1v-1zm3 2v-2h3v2H6zm4 0v-2h3v1a1 1 0 0 1-1 1h-2zm3-3h-3v-2h3v2zm-7 0v-2h3v2H6z" />
-                                        </svg> Export Excel
+                                        </svg> Export
                                     </button>
                                 </div>
 
-                                <button type="button" class="btn btn-secondary" data-bs-target="#upload-excel"
+                                {{-- <button type="button" class="btn btn-secondary" data-bs-target="#upload-excel"
                                     data-bs-toggle="modal">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-file-earmark-arrow-up" viewBox="0 0 16 16">
@@ -141,7 +145,7 @@
                                         <path
                                             d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
                                     </svg> Haluskan
-                                </button>
+                                </button> --}}
                             </div>
                         </div>
                     </div>
@@ -153,8 +157,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="example"
-                                    class="table table-striped table-bordered table-hover table-condensed"
+                                <table id="example" class="table table-striped table-bordered table-hover table-condensed"
                                     style="width:100%">
                                     <thead>
                                         <tr>
@@ -170,50 +173,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($data['quisioners'] as $item)
+                                        @foreach ($data['data'] as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item['fullname'] }}</td>
-                                                <td>{{ $item['prodi']['nama_prodi'] }}</td>
-                                                <td>{{ $item['email'] }}</td>
+                                                <td>{{ $item['users']['alumni'][0]['nama_lengkap'] }}</td>
+                                                <td>{{ $item['users']['alumni'][0]['program_studi'] }}</td>
+                                                <td>{{ $item['users']['alumni'][0]['email'] }}</td>
                                                 <td><img style="max-height: 50px" class="img-fluid"
-                                                        src="{{ $item['foto'] }}" alt="foto_user"
+                                                        src="{{ $item['users']['foto'] }}" alt="foto_user"
                                                         onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/user.jpg';">
                                                 </td>
-                                                <td>{{ $item['tahun_masuk'] }}</td>
-                                                <td>{{ $item['tahun_lulus'] }}</td>
+                                                <td>{{ $item['users']['alumni'][0]['angkatan'] }}</td>
+                                                <td>{{ $item['users']['alumni'][0]['tahun_lulus'] }}</td>
                                                 <td class="text-center">
-                                                    @if ($item['account_status'])
-                                                        <i class="fa-solid fa-circle-check" style="color: #005eff;"></i>
-                                                    @else
-                                                        <i class="fa-solid fa-circle-xmark" style="color: #ff0000;"></i>
-                                                    @endif
+                                                    {{ $item['level'] }}
                                                 </td>
                                                 <td>
                                                     <div class="dropdown px-3" class="text-center">
-                                                        <a class="d-flex align-items-center nav-link  gap-3 dropdown-toggle-nocaret"
-                                                            href="#" role="button" data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
-                                                            <div class="btn-group">
-                                                                <button type="button"
-                                                                    class="btn btn-success">Detail</button>
-                                                                <button type="button"
-                                                                    class="btn btn-success dropdown-toggle dropdown-toggle-split"
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false"></button>
-                                                            </div>
-                                                        </a>
-                                                        <ul class="dropdown-menu dropdown-menu-end ">
-                                                            @foreach ($item['quisioner'] as $itemQuisioner)
-                                                                <li><a class="dropdown-item d-flex align-items-center"
-                                                                        href="{{ route('detail-quisioner', ['level' => $itemQuisioner['level'], 'userId' => $item['id']]) }}"><i></i><span>Level
-                                                                            {{ $itemQuisioner['level'] }} </span></a>
-                                                                </li>
-                                                            @endforeach
-                                                            <li>
-                                                                <div class="dropdown-divider mb-0"></div>
-                                                            </li>
-                                                        </ul>
+                                                        <a href="{{ route('detail-quisioner', $item['id']) }}"
+                                                            class="btn btn-success">Detail</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -236,9 +214,11 @@
                 <form action="{{ route('export') }}" method="post">
                     <label for="tahun-level-excel" style="font-weight: bold"> Tahun Level Kuesioner</label> <br>
                     <label for="jenex">Jenis Export</label>
-                    <select name="type" id="jenex" class="form-select form-select-sm mb-3">
-                        <option value="akademik">Tracer Study</option>
-                        <option value="laporan">Akreditasi</option>
+                    <select name="type" id="jenex" class="form-select form-select-sm mb-3 select-2 col-md">
+
+                        @foreach ($data['paket'] as $p)
+                            <option value="{{ $p->paket->id }}">{{ $p->paket->judul }}-{{ $p->paket->tipe }}</option>
+                        @endforeach
                     </select>
 
                     <label for="tahun-level-excel">Pilih Tahun</label>
@@ -316,13 +296,13 @@
             </x-slot>
         </x-modal-medium>
 
-
         <script>
             $(function() {
+
                 var e = {
                     series: [{
                         name: "Verify Quesioner",
-                        data: {!! json_encode($data['countPerDay']) !!}
+                        data: {{ $data['filled'] }},
                     }],
                     chart: {
                         type: "area",
@@ -469,6 +449,11 @@
         </script>
         <script>
             $(document).ready(function() {
+
+                $('.select-2').select2({
+                    dropdownParent: $("#export")
+                });
+
                 // Tangani klik pada tombol bulan
                 $('#bulan-0, #bulan-6, #bulan-12').on('click', function(e) {
                     e.preventDefault(); // Mencegah tindakan default tautan
@@ -507,6 +492,7 @@
                     if (!results[2]) return '';
                     return decodeURIComponent(results[2].replace(/\+/g, " "));
                 }
+
             });
         </script>
     @endsection
