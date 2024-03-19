@@ -35,14 +35,22 @@ class JurusanDetailSeeder extends Seeder
         ]);
         Jurusan_detail::create([
             'quesioner_jurusans_id' => 2,
+            'quis_identitas_prodi_id' => 54357
+        ]);
+        Jurusan_detail::create([
+            'quesioner_jurusans_id' => 2,
             'quis_identitas_prodi_id' => 54412
         ]);
         Jurusan_detail::create([
             'quesioner_jurusans_id' => 2,
             'quis_identitas_prodi_id' => 54471
         ]);
+        Jurusan_detail::create([
+            'quesioner_jurusans_id' => 2,
+            'quis_identitas_prodi_id' => 41331
+        ]);
 
-        //pertanian
+        //peternakan
         Jurusan_detail::create([
             'quesioner_jurusans_id' => 3,
             'quis_identitas_prodi_id' => 54331
@@ -50,6 +58,10 @@ class JurusanDetailSeeder extends Seeder
         Jurusan_detail::create([
             'quesioner_jurusans_id' => 3,
             'quis_identitas_prodi_id' => 54432
+        ]);
+        Jurusan_detail::create([
+            'quesioner_jurusans_id' => 3,
+            'quis_identitas_prodi_id' => 54317
         ]);
 
         //manajemen agribisnis
@@ -63,7 +75,15 @@ class JurusanDetailSeeder extends Seeder
         ]);
         Jurusan_detail::create([
             'quesioner_jurusans_id' => 4,
+            'quis_identitas_prodi_id' => 54402
+        ]);
+        Jurusan_detail::create([
+            'quesioner_jurusans_id' => 4,
             'quis_identitas_prodi_id' => 41311
+        ]);
+        Jurusan_detail::create([
+            'quesioner_jurusans_id' => 4,
+            'quis_identitas_prodi_id' => 41312
         ]);
 
         //kesehatan
@@ -73,10 +93,22 @@ class JurusanDetailSeeder extends Seeder
         ]);
         Jurusan_detail::create([
             'quesioner_jurusans_id' => 5,
+            'quis_identitas_prodi_id' => 13363
+        ]);
+        Jurusan_detail::create([
+            'quesioner_jurusans_id' => 5,
+            'quis_identitas_prodi_id' => 13331
+        ]);
+        Jurusan_detail::create([
+            'quesioner_jurusans_id' => 5,
             'quis_identitas_prodi_id' => 13362
         ]);
 
         //teknologi informasi
+        Jurusan_detail::create([
+            'quesioner_jurusans_id' => 6,
+            'quis_identitas_prodi_id' => 61316
+        ]);
         Jurusan_detail::create([
             'quesioner_jurusans_id' => 6,
             'quis_identitas_prodi_id' => 57401
@@ -87,10 +119,22 @@ class JurusanDetailSeeder extends Seeder
         ]);
         Jurusan_detail::create([
             'quesioner_jurusans_id' => 6,
+            'quis_identitas_prodi_id' => 55302
+        ]);
+        Jurusan_detail::create([
+            'quesioner_jurusans_id' => 6,
+            'quis_identitas_prodi_id' => 55304
+        ]);
+        Jurusan_detail::create([
+            'quesioner_jurusans_id' => 6,
             'quis_identitas_prodi_id' => 56401
         ]);
 
         //teknik
+        Jurusan_detail::create([
+            'quesioner_jurusans_id' => 7,
+            'quis_identitas_prodi_id' => 21301
+        ]);
         Jurusan_detail::create([
             'quesioner_jurusans_id' => 7,
             'quis_identitas_prodi_id' => 21306
@@ -105,11 +149,19 @@ class JurusanDetailSeeder extends Seeder
             'quesioner_jurusans_id' => 8,
             'quis_identitas_prodi_id' => 79402
         ]);
+        Jurusan_detail::create([
+            'quesioner_jurusans_id' => 8,
+            'quis_identitas_prodi_id' => 93304
+        ]);
 
         //bisnis
         Jurusan_detail::create([
             'quesioner_jurusans_id' => 9,
             'quis_identitas_prodi_id' => 62303
+        ]);
+        Jurusan_detail::create([
+            'quesioner_jurusans_id' => 9,
+            'quis_identitas_prodi_id' => 93308
         ]);
     }
 }
