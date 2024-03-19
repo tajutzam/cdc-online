@@ -90,6 +90,7 @@
                 // Initialize DataTables for all 9 tables
                 for (var i = 1; i <= 9; i++) {
                     $('#table' + i).DataTable({
+                        ordering: false,
                         // Opsi yang bisa Anda tambahkan
                         searching: true, // Aktifkan opsi pencarian
                         lengthChange: true, // Aktifkan opsi filter jumlah data per halaman

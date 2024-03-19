@@ -12,12 +12,18 @@
                         <div class="h5" style="color: white"> <i class="fas fa-eye"></i> Test Form | {{ $data[0]->judul }}
                         </div>
                     </div>
-                    <div class="card-body px-5">
+                    <div class="card-body col-md-11 mx-auto">
                         <form action="{{ route('paket_kuesioner_detail.create') }}" method="POST">
                             @csrf
                             @method('POST')
                             {{-- <input type="hidden" name="user_id" value="{{ Auth::guard('admin')->user()->id }}"> --}}
-                            <input type="hidden" name="user_id" value="f217f260-b91f-463b-a6f8-0b96e45bcedf">
+                            <div class="form-group" class="font-weight-bold">
+                                <label for="user_id" class="font-weight-bold">User Id</label>
+                                <input type="text" name="user_id" class="form-control" value="">
+                                @if ($errors->has('user_id'))
+                                    <span class="text-danger text-left">{{ $errors->first('user_id') }}</span>
+                                @endif
+                            </div>
                             <input type="hidden" name="id_paket_kuesioner" value="{{ $data[0]->id }}">
                             <input type="hidden" name="id_paket_quesioner_detail"
                                 value="{{ $data[0]->id_quis_identitas_prodi }}">

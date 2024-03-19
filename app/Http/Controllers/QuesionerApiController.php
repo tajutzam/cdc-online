@@ -64,21 +64,6 @@ class QuesionerApiController extends Controller
     {
         $data = PaketKuesioner::with(["prodi", "detail.tipe"])->where("id", $request->id_paket_kuesioner)->get();
 
-        // $validationData = [];
-        // foreach ($data[0]->detail as $res) {
-        //     $validationData[$res->kode_pertanyaan] = $res->is_required == "1" ? "required" : "";
-        // }
-
-        // $messages = [
-        //     'required' => 'Field :attribute Wajib Di Isi',
-        // ];
-
-        // $validator = Validator::make($request->all(), $validationData, $messages);
-
-        // if ($validator->fails()) {
-        //     return ResponseHelper::errorResponse('Validation Error', $validator->errors()->all(), 422);
-        // }
-
         $validationData = [];
         foreach ($data[0]->detail as $res) {
             $question = PaketQuesionerDetail::where('kode_pertanyaan', $res->kode_pertanyaan)->first();

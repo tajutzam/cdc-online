@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\PaketKuesioner;
 use App\Models\PaketQuesionerDetail;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class PaketKuesionerDetailSeeder extends Seeder
@@ -122,13 +123,25 @@ class PaketKuesionerDetailSeeder extends Seeder
             'is_required' => 1,
             'index' => 6,
         ]);
+
+        $now = Carbon::now();
+        $yearsArray = [];
+        for ($i = 0; $i < 6; $i++) {
+            $year = $now->subYears(1)->year;
+            $yearsArray[] = $year;
+        }
+
+        $now = Carbon::now();
+        $yearsArray = array_reverse($yearsArray);
+
+
         PaketQuesionerDetail::create([
             'kode_pertanyaan' => 'tahun_lulus',
             'pertanyaan' => 'Tahun Lulus',
             'tipe_id' => 8,
             'id_paket_quesioners' => 2,
             'is_required' => 1,
-            'options' => json_encode(["2022"]),
+            'options' => json_encode($yearsArray),
             'index' => 7,
         ]);
         PaketQuesionerDetail::create([
@@ -855,7 +868,7 @@ class PaketKuesionerDetailSeeder extends Seeder
         PaketQuesionerDetail::create([
             'kode_pertanyaan' => 'f18d',
             'pertanyaan' => 'Tanggal Masuk Awal Studi Lanjut Anda?',
-            'tipe_id' => 5,
+            'tipe_id' => 6,
             'id_paket_quesioners' => 2,
             'is_required' => 1,
             'index' => 25,

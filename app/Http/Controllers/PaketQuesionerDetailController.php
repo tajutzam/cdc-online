@@ -58,6 +58,29 @@ class PaketQuesionerDetailController extends Controller
         $detail_id = $detail->id;
 
         try {
+            $latestDetail = QuesionerAnswerDetail::where('user_id', $request->user_id)
+                ->orderBy('id', 'desc')
+                ->first();
+
+            $count = "";
+            if (isset($latestDetail)) {
+                if ($latestDetail->level == "6") {
+                    $count = "12";
+                } else {
+                    $count = "6";
+                }
+            } else {
+                $count = "0";
+            }
+
+            $detail = QuesionerAnswerDetail::create([
+                "user_id" => $request->user_id,
+                "id_paket_kuesioner" => $request->id_paket_kuesioner,
+                "level" => $count
+            ]);
+
+            $detail_id = $detail->id;
+
             foreach ($data[0]->detail as $res) {
                 $id_paket_quesioner_detail = $res->id;
                 $kode_pertanyaan = $res->kode_pertanyaan;
@@ -69,7 +92,7 @@ class PaketQuesionerDetailController extends Controller
             }
             return redirect()->route('quisioner-index')->with('success', 'Jawaban telah tersimpan!!');
         } catch (\Throwable $th) {
-            return redirect()->route('paket_kuesioner.index')->withInput()->with('error', $th->getMessage());
+            return redirect()->route('paket_kuesioner.index')->withInput()->with('error', $th->getMessage())->withInput();
         }
         // return $request;
     }

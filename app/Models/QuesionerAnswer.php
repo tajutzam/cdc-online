@@ -15,7 +15,7 @@ class QuesionerAnswer extends Model
 
     public function detail(): BelongsTo
     {
-        return $this->belongsTo(PaketQuesionerDetail::class, 'id_paket_quesioner_detail');
+        return $this->belongsTo(PaketQuesionerDetail::class, 'id_paket_quesioner_detail')->orderBy('index');
     }
 
     function QuesinerAnswerDetail(): BelongsTo
