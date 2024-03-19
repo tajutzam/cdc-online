@@ -792,7 +792,7 @@ Route::prefix('admin')->middleware(IsAdminMiddleware::class)->group(function () 
 
     Route::post('paket_kuesioner_detail/create', [PaketQuesionerDetailController::class, 'create']);
 
-    Route::resource('paket_kuesioner_detail', PaketQuesionerDetailController::class)->names('paket_kuesioner_detail');
+    Route::resource('paket_kuesioner_detail', PaketQuesionerDetailController::class)->except(['index'])->names('paket_kuesioner_detail');
 });
 
 
