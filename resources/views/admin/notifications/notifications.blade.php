@@ -47,7 +47,7 @@
                                 <th>Program Studi</th>
                                 <th>Foto</th>
                                 <th>Status Akun</th>
-                                <th>Kemajuan</th>
+                                {{-- <th>Kemajuan</th> --}}
                                 <th>Level Quisioner</th>
                                 {{-- <th>Detail Kuesioner</th> --}}
                             </tr>
@@ -56,21 +56,22 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td style="text-align: start">{{ $item['nim'] }}</td style="text-align: start">
-                                    <td style="text-align: start">{{ $item['fullname'] }}</td style="text-align: start">
+                                    <td style="text-align: start">{{ $item['users']['nim'] }}</td style="text-align: start">
+                                    <td style="text-align: start">{{ $item['users']['fullname'] }}</td
+                                        style="text-align: start">
                                     <td style="text-align: start" style="text-align: start">
-                                        {{ $item['prodi']['nama_prodi'] ?? '-' }}</td>
-                                    <td><img style="height: 100px" src="{{ $item['foto'] }}" alt="foto alumni"
+                                        {{ $item['users']['prodi']['nama_prodi'] ?? '-' }}</td>
+                                    <td><img style="height: 100px" src="{{ $item['users']['foto'] }}" alt="foto alumni"
                                             onerror="this.onerror=null;this.src='{{ asset('/') }}assets/images/user.jpg';">
                                     </td>
                                     <td>
-                                        @if ($item['account_status'])
+                                        @if ($item['users']['account_status'])
                                             <span class="badge badge-success">Terverifikasi</span>
                                         @else
                                             <span class="badge badge-warning">Tidak Terverifikasi</span>
                                         @endif
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         @php
                                             if ($item['presentasi'] == 0) {
                                                 $presentasi = 25;
@@ -84,11 +85,11 @@
                                                 {{ $item['presentasi'] }}/9
                                             </div>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                     <td>
                                         <p class="text-facebook">
-                                            @if (isset($item['quisioner_level'][0]))
-                                                {{ $item['quisioner_level'][0]['level'] }} Bulan
+                                            @if (isset($item['level']))
+                                                {{ $item['level'] }} Bulan
                                             @else
                                                 0 Bulan
                                             @endif

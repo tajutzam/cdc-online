@@ -5,6 +5,8 @@ namespace App\Services;
 
 use App\Exceptions\WebException;
 use App\Models\Notifications;
+use App\Models\PaketKuesioner;
+use App\Models\QuesionerAnswerDetail;
 use App\Models\QuisionerLevel;
 use App\Models\User;
 use Carbon\Carbon;
@@ -37,69 +39,38 @@ class NotificationService
     }
 
 
-    public function findAllUserNeedNotifications()
+    public function findAllUserNeedNotifications() //todo
     {
-        /*
-        kriteria quisioner
-        1. user belum mengisi quisioner , quisioner == null
-        2. masa isi quisioner habis
-        3, 
-        */
-        $relations = [
-            "identitas_section",
-            "main_section",
-            "furthe_study_section",
-            "competent_level_section",
-            "study_method_section",
-            "jobs_street_section",
-            "how_find_jobs_section",
-            "company_applied_section",
-            "job_suitability_section"
-        ];
-        // cari data user yang educations tahun lulus > 5PP
+        $data = [];
+        //1. cek user dengan table kuesioner 
+        $userQuesioner = User::with('prodi','alumni', 'answer_detail', 'answer_detail.paket')->get();
+  
+        foreach ($userQuesioner as $key => $value) {
+            // $data[$key] = $value;
+            if (isset($value->answer_detail)) {
+                // //1. jika ada kuesionernya maka, cek kesionernya sudah boleh mengisi atau tidak, jika sudha boleh mengisi ambil data
+                    foreach ($value->answer_detail as $key1 => $value1) {
+                        //keluarkan semua anser detail milik user
+                        if (isset($value1->id_paket_kuesioner)) {
+                            //apakah ada datanya?
+                            $bolehMengisi = $this->cekStatusKuesionerUser($value->id, $value1->id_paket_kuesioner);
 
-        $userId = $this->user
-            ->whereHas('educations', function ($query) {
-                $query->where('perguruan', 'Politeknik Negeri Jember')
-                    ->where('tahun_lulus', '>=', Carbon::now()->subYears(5)->year);
-            })
-            ->select('id')
-            ->get()->toArray();
-
-        $dataUser = $this->user->with([
-            'quisioner_level' => function ($query) {
-                $query->orderBy('created_at', 'desc')->first();
-            },
-            'prodi',
-            'educations'
-        ])->whereIn('id', $userId)->whereNotNull('fcm_token')
-            ->where('required_to_fill', true)
-            ->where(function ($query) {
-                $query->orWhereDoesntHave('quisioner_level')
-                    ->orWhereHas('quisioner_level', function ($subquery) {
-                        $subquery->where('expired', '<', now());
-                    });
-            })
-            ->get()
-            ->toArray();
-
-        foreach ($dataUser as $key => $value) {
-            # code...
-            if (sizeof($value['quisioner_level']) == 0) {
-                $dataUser[$key]['presentasi'] = 0;
-                $dataUser[$key]['status_quisioner'] = false;
-            } else {
-                $countPresentasi = 0;
-                foreach ($relations as $valueQuisioner) {
-                    # code...
-                    if (isset($value['quisioner_level'][0][$valueQuisioner])) {
-                        $countPresentasi++;
+                            //cek satus boleh mengisi atau tidak, jika 1 sudah boleh mengisi lagi
+                            if ($bolehMengisi == 1) {
+                                //tampilkan data yang sudah saatnya mengisi lagi?
+                                $data[$key1]["users"] = $value;
+                                $data[$key1]["quesioner_name"] = $value1->paket->judul;
+                                $data[$key1]["level"] = $value1->level;
+                            }
+                        // $data[$key1]["users"] = $value;
+                        // $data[$key1]["quesioner_name"] = $value1->paket->judul;
+                        // $data[$key1]["level"] = $value1->level;
+                        }
                     }
-                }
-                $dataUser[$key]['presentasi'] = $countPresentasi;
             }
         }
-        return $dataUser;
+
+        return $data;
     }
 
     public function findAllUpdateNotification()
@@ -157,9 +128,9 @@ class NotificationService
     {
         Db::beginTransaction();
         foreach ($data as $key => $value) {
-            $user = $this->user->where('id', $value->id)->first();
+            $user = $this->user->where('id', $value->users->id)->first();
             # code...
-            if (isset($value->fcm_token)) {
+            if (isset($value->users->fcm_token)) {
                 try {
                     $user->update([
                         'account_status' => false
@@ -167,10 +138,10 @@ class NotificationService
                     Db::commit();
 
                     //code...
-                    $messageBody = 'Halo, Silahkan Mengisi Quisioner Kemajuan Quisioner Sekarang ' . $value->presentasi . "/9";
+                    $messageBody = 'Halo, Sudah saatnya anda mengisi Kuesioner ' . $value->quesioner_name . "/9";
 
                     $message = CloudMessage::new()
-                        ->withTarget('token', $value->fcm_token) // Replace with the recipient's FCM token
+                        ->withTarget('token', $value->users->fcm_token) // Replace with the recipient's FCM token
                         ->withNotification([
                             'title' => 'Quisioner',
                             'body' => $messageBody,
@@ -181,7 +152,7 @@ class NotificationService
                     $created = $this->notifications->create(
                         [
                             'type' => 'quisioner',
-                            'user_id' => $value->id,
+                            'user_id' => $value->users->id,
                             'message' => $messageBody,
                             'id_body' => null
                         ]
@@ -329,5 +300,55 @@ class NotificationService
             'account_status' => $user['account_status'],
             'notifications' => $user['notifications']->toArray()
         ];
+    }
+
+    public function cekStatusKuesionerUser($user_id, $id_paket)
+    {
+        //status 1: boleh mengisi
+        //status 2: tidak bisa mengisi
+
+        $jenisQuesioner = PaketKuesioner::where('id', $id_paket)->first()->tipe;
+
+        if ($jenisQuesioner == "Tracer Study") {
+            //tracer study di isi 3 kali (bulan 1, bulan 6, bulan 12)
+            //apakah sudah mengisi?
+            $cekTracerStudy = QuesionerAnswerDetail::where('user_id', $user_id)
+                ->where('id_paket_kuesioner', $id_paket)->count();
+            if ($cekTracerStudy > 0) {
+                //jika sudah
+                if ($cekTracerStudy >= 3) {
+                    //sudah mengisi 3 kali
+                    $created_at_terakhir = QuesionerAnswerDetail::where('user_id', $user_id)
+                        ->where('id_paket_kuesioner', $id_paket)->latest('id')->first()->created_at;
+                    return 0;
+                } else {
+                    //baru mengisi 1 atau 2
+                    //cek bulan pengisian terakhir, apakah jika ditambah 3 bulan sudah sama denga bulan sekarang
+                    $created_at_terakhir = QuesionerAnswerDetail::where('user_id', $user_id)
+                        ->where('id_paket_kuesioner', $id_paket)->latest('id')->first()->created_at;
+
+                    $JadwalMengisi = Carbon::parse($created_at_terakhir)->addMonths(6);
+                    $current_date_time = Carbon::now();
+                    if ($current_date_time->gte($JadwalMengisi)) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            } else {
+                //jka belum
+                //megnisi yang pertama
+                return 1;
+            }
+        } else {
+            //survey khsuus di isi 1 kali
+            $cekSurveyKhusus = QuesionerAnswerDetail::where('user_id', $user_id)
+                ->where('id_paket_kuesioner', $id_paket)->count();
+            if ($cekSurveyKhusus < 1) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
     }
 }

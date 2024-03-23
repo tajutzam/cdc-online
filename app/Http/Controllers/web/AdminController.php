@@ -42,8 +42,6 @@ class AdminController extends Controller
             $values = array_values($lastFiveYearsHaveWorker);
             $users = $this->userService->findAll();
 
-
-
             foreach ($categories as $key => $value) {
                 # code...
                 $categories[$key] = "Angkatan " . $value;

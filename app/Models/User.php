@@ -78,6 +78,11 @@ class User extends Authenticatable
         return $this->hasMany(Alumni::class, 'nim', 'nim');
     }
 
+    public function answer_detail(): HasMany
+    {
+        return $this->hasMany(QuesionerAnswerDetail::class, 'user_id', 'id');
+    }
+
     public function followers()
     {
         return $this->hasMany(Follower::class, 'user_id');

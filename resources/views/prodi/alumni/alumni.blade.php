@@ -120,7 +120,6 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($data['alumni'] as $item)
-                                    
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
 
@@ -131,15 +130,15 @@
                                             <td>{{ $item['nim'] }}</td>
                                             <td>{{ $item['nik'] }}</td>
                                             <td>{{ $item['fullname'] }}</td>
-                                            @if ($item['prodi'] != null)
-                                                <td>{{ $item['prodi']['nama_prodi'] }}</td>
-                                            @else
-                                                <td>-</td>
-                                                <td>-</td>
-                                            @endif
+
+                                            <td>{{ $item['prodi']['nama_prodi'] }}</td>
+
                                             <td>{{ $item['email'] }}</td>
-                                            <td>{{ $item['educations'][0]['tahun_lulus'] }}</td>
-                                            <td>{{ $item['educations'][0]['tahun_masuk'] }}</td>
+
+                                            <td>{{ isset($item['alumni'][0]['tahun_lulus']) ? $item['alumni'][0]['tahun_lulus'] : 'Tidak ada data' }}
+                                            </td>
+                                            <td>{{ isset($item['alumni'][0]['angkatan']) ? $item['alumni'][0]['angkatan'] : 'Tidak ada data' }}
+                                            </td>
                                             @if ($item['account_status'])
                                                 <td>
                                                     <div class="badge rounded-pill bg-primary w-100">Terverifikasi</div>

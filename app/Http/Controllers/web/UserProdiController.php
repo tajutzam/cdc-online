@@ -20,7 +20,9 @@ class UserProdiController extends Controller
     public function index(Request $request)
     {
         $data = $this->userService->findAllByProdi($request->get('active'), \Illuminate\Support\Facades\Auth::guard('prodi')->user()->prodi_id);
-        
+
+        // dd($data);
+
         return view('prodi.alumni.alumni', ['data' => $data]);
     }
 }
