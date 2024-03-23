@@ -543,200 +543,57 @@ class QuisionerService
             'paket' => $paket,
             'filled' => $filledCount
         ];
-    
 
-        // $users = $this->user->has('quisioner_level')
-        //     ->has('quisioner_level.identity')
-        //     ->has('quisioner_level.main')
-        //     ->has('quisioner_level.furthe_study')
-        //     ->has('quisioner_level.studymethod')
-        //     ->has('quisioner_level.startsearchjobs')
-        //     ->has('quisioner_level.howtofindjobs')
-        //     ->has('quisioner_level.companyapplied')
-        //     ->has('quisioner_level.jobsuitability')
-        //     ->has('educations') // Filter hanya pengguna yang memiliki pendidikan
-        //     ->with('quisioner_level', function ($query) {
-        //         $query->with('identity');
-        //         $query->with('main');
-        //         $query->with('furthe_study');
-        //         $query->with('competence');
-        //         $query->with('studymethod');
-        //         $query->with('startsearchjobs');
-        //         $query->with('howtofindjobs');
-        //         $query->with('companyapplied');
-        //         $query->with('jobsuitability');
-        //     })
-        //     ->with('educations')
-        //     ->with('prodi')
-        //     ->get()
-        //     ->toArray();
-
-
-
-        // $data['countPerDay'] = [];
-        // $startDate = now()->startOfWeek(); // Mendapatkan awal minggu (Minggu)
-        // $endDate = now()->endOfWeek(); // Mendapatkan akhir minggu (Sabtu)
-
-        // while ($startDate <= $endDate) {
-        //     $count = 0; // Inisialisasi jumlah kuesioner menjadi 0
-        //     foreach ($users as $user) {
-        //         $quizzes = $user['quisioner_level']; // Mengambil data kuesioner pengguna
-        //         foreach ($quizzes as $quiz) {
-        //             $quizDate = Carbon::parse($quiz['created_at'])->startOfDay();
-
-        //             // Memeriksa apakah tanggal kuesioner berada dalam rentang minggu yang diinginkan
-        //             if ($quizDate->format('Y-m-d') == $startDate->format('Y-m-d')) {
-        //                 $count++;
-        //             }
-        //         }
-        //     }
-        //     $data['countPerDay'][$startDate->format('Y-m-d')] = $count;
-        //     $startDate->addDay();
-        // }
-
-
-        // $userFilled = $this->user->has('quisioner_level')->has('quisioner_level.identity')->has('quisioner_level.main')->has('quisioner_level.furthe_study')->has('quisioner_level.competence')->has('quisioner_level.studymethod')->has('quisioner_level.startsearchjobs')->has('quisioner_level.howtofindjobs')->has('quisioner_level.companyapplied')->has('quisioner_level.jobsuitability')->count();
-        // $userBlank = $this->user->whereDoesntHave('quisioner_level')->count();
-
-        // $data['quisioners'] = collect($users)->filter(function ($user) use ($tahun, $bulan) {
-        //     $tahunMasuk = null; // Initialize the tahun_masuk variable
-        //     $tahunLulus = null; // Initialize the tahun_lulus variable
-
-        //     $hasMatchingEducation = false; // Initialize a flag
-        //     $hasMatchingQuisioner = false; // Initialize a flag for matching quisioner level
-
-        //     collect($user['educations'])->each(function ($education) use (&$tahunMasuk, &$tahunLulus, $tahun, &$hasMatchingEducation) {
-        //         if ($education['perguruan'] === 'Politeknik Negeri Jember') {
-        //             $tahunMasuk = $education['tahun_masuk'];
-        //             $tahunLulus = $education['tahun_lulus'];
-        //             if ($education['tahun_masuk'] == $tahun) {
-        //                 $hasMatchingEducation = true;
-        //             }
-        //         }
-        //     });
-
-        //     if ($bulan == 0) {
-        //         $hasMatchingQuisioner = true; // If $bulan is 0, consider quisioner level a match
-        //     } else {
-        //         $userQuisioners = collect($user['quisioner_level']);
-        //         if ($userQuisioners->contains('level', $bulan)) {
-        //             $hasMatchingQuisioner = true; // Set the flag to true when quisioner level matches $bulan
-        //         }
-        //     }
-        //     return ($tahun == 0 || $hasMatchingEducation) && $hasMatchingQuisioner;
-        // })->map(function ($user) {
-        //     // Modify the items here
-        //     $tempUser = $this->castToUserResponseFromArray($user);
-        //     return $tempUser;
-        // })->toArray();
-        // $data['filled'] = $userFilled;
-        // $data['blank'] = $userBlank;
-        // $data['countPerDay'] = array_values($data['countPerDay']); // hapus , key tanggal
         return $data;
     }
 
 
 
-    public function findAllQuisionerUserStudyProgram($idProdi, $tahun = 0, $bulan = 0)
+    public function findAllQuisionerUserStudyProgram($idProdi, $tahun = 0, $bulan = 0) //todo
     {
-        $users = $this->user->has('quisioner_level')
-            ->has('quisioner_level.identity')
-            ->has('quisioner_level.main')
-            ->has('quisioner_level.furthe_study')
-            ->has('quisioner_level.studymethod')
-            ->has('quisioner_level.startsearchjobs')
-            ->has('quisioner_level.howtofindjobs')
-            ->has('quisioner_level.companyapplied')
-            ->has('quisioner_level.jobsuitability')
-            ->has('educations') // Filter hanya pengguna yang memiliki pendidikan
-            ->with('quisioner_level', function ($query) {
-                $query->with('identity');
-                $query->with('main');
-                $query->with('furthe_study');
-                $query->with('competence');
-                $query->with('studymethod');
-                $query->with('startsearchjobs');
-                $query->with('howtofindjobs');
-                $query->with('companyapplied');
-                $query->with('jobsuitability');
-            })
-            ->with('educations')
-            ->with('prodi')
-            ->where('kode_prodi', $idProdi)
-            ->get()
-            ->toArray();
+        $paket = QuesionerAnswerDetail::select('id_paket_kuesioner')->with('paket')->groupBy('id_paket_kuesioner')->get();
+        $query = QuesionerAnswerDetail::with('paket', 'quesioner_answer', 'quesioner_answer.detail', 'users', 'users.alumni');
 
-
-
-        $data['countPerDay'] = [];
-        $startDate = now()->startOfWeek(); // Mendapatkan awal minggu (Minggu)
-        $endDate = now()->endOfWeek(); // Mendapatkan akhir minggu (Sabtu)
-
-        while ($startDate <= $endDate) {
-            $count = 0; // Inisialisasi jumlah kuesioner menjadi 0
-            foreach ($users as $user) {
-                $quizzes = $user['quisioner_level']; // Mengambil data kuesioner pengguna
-                foreach ($quizzes as $quiz) {
-                    $quizDate = Carbon::parse($quiz['created_at'])->startOfDay();
-
-                    // Memeriksa apakah tanggal kuesioner berada dalam rentang minggu yang diinginkan
-                    if ($quizDate->format('Y-m-d') == $startDate->format('Y-m-d')) {
-                        $count++;
-                    }
-                }
-            }
-            $data['countPerDay'][$startDate->format('Y-m-d')] = $count;
-            $startDate->addDay();
+        if ($idProdi != null) {
+            $query->whereHas('users',function($query) use ($idProdi){
+                $query->where('kode_prodi', $idProdi);
+            });
+        }
+        if ($tahun != 0) {
+            $query->whereYear('created_at', $tahun);
+        }
+        if ($bulan != 0) {
+            $query->where('level', $bulan);
         }
 
+        $answer = $query->get();
 
-        $userFilled = $this->user->has('quisioner_level')->has('quisioner_level.identity')->has('quisioner_level.main')->has('quisioner_level.furthe_study')->has('quisioner_level.competence')->has('quisioner_level.studymethod')->has('quisioner_level.startsearchjobs')->has('quisioner_level.howtofindjobs')->has('quisioner_level.companyapplied')->has('quisioner_level.jobsuitability')->count();
-        $userBlank = $this->user->whereDoesntHave('quisioner_level')->count();
+        $filled = QuesionerAnswerDetail::select('user_id')
+            ->groupBy('user_id')
+            ->get();
 
-        $data['quisioners'] = collect($users)->filter(function ($user) use ($tahun, $bulan) {
-            $tahunMasuk = null; // Initialize the tahun_masuk variable
-            $tahunLulus = null; // Initialize the tahun_lulus variable
+        $filledCount = $filled->count();
 
-            $hasMatchingEducation = false; // Initialize a flag
-            $hasMatchingQuisioner = false; // Initialize a flag for matching quisioner level
+        $data = [
+            'data' => $answer,
+            'paket' => $paket,
+            'filled' => $filledCount
+        ];
 
-            collect($user['educations'])->each(function ($education) use (&$tahunMasuk, &$tahunLulus, $tahun, &$hasMatchingEducation) {
-                if ($education['perguruan'] === 'Politeknik Negeri Jember') {
-                    $tahunMasuk = $education['tahun_masuk'];
-                    $tahunLulus = $education['tahun_lulus'];
-                    if ($education['tahun_masuk'] == $tahun) {
-                        $hasMatchingEducation = true;
-                    }
-                }
-            });
-
-            if ($bulan == 0) {
-                $hasMatchingQuisioner = true; // If $bulan is 0, consider quisioner level a match
-            } else {
-                $userQuisioners = collect($user['quisioner_level']);
-                if ($userQuisioners->contains('level', $bulan)) {
-                    $hasMatchingQuisioner = true; // Set the flag to true when quisioner level matches $bulan
-                }
-            }
-            return ($tahun == 0 || $hasMatchingEducation) && $hasMatchingQuisioner;
-        })->map(function ($user) {
-            // Modify the items here
-            $tempUser = $this->castToUserResponseFromArray($user);
-            return $tempUser;
-        })->toArray();
-        $data['filled'] = $userFilled;
-        $data['blank'] = $userBlank;
-        $data['countPerDay'] = array_values($data['countPerDay']); // hapus , key tanggal
         return $data;
     }
 
-    public function exrportToExcel($tahunBulan, $type)
+    public function exrportToExcel($tahunBulan, $kodeProdi, $type) //todo
     {
 
         list($year, $bulan) = explode('-', $tahunBulan);
 
         $query = QuesionerAnswerDetail::with('paket', 'quesioner_answer', 'quesioner_answer.detail', 'users', 'users.alumni')->where('id_paket_kuesioner', $type);
-
+        if ($kodeProdi != null || $kodeProdi != 0) {
+            $query->whereHas('users', function ($query) use ($kodeProdi) {
+                $query->where('kode_prodi', $kodeProdi);
+            });
+        }
         if ($year != 0) {
             $query->whereYear('created_at', $year);
         }
@@ -745,6 +602,8 @@ class QuisionerService
         }
 
         $data = $query->get();
+
+        // dd($data);
 
         $export = [];
 

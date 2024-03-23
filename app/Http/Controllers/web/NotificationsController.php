@@ -25,8 +25,6 @@ class NotificationsController extends Controller
 
 
         $data = $this->notificationService->findAllUserNeedNotifications();
-        
-
 
         return view('admin.notifications.notifications', ['data' => $data]);
     }
@@ -43,8 +41,13 @@ class NotificationsController extends Controller
 
         $this->validate($request, $rules, $customMessages);
         $users = json_decode($request->input('users'));
-        $this->notificationService->sendNotificationQuisioner($users);
-        Alert::success("Sukses", "Sukses Mengirim Notifikasi User");
+
+        if ($this->notificationService->sendNotificationQuisioner($users)
+        ) {
+            Alert::success("Sukses", "Sukses Mengirim Notifikasi User");
+        }
+            Alert::error("Error", "Gagal Mengirim notifikasi");
+        
         return back();
     }
 }

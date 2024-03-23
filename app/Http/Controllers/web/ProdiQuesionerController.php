@@ -44,8 +44,7 @@ class ProdiQuesionerController extends Controller
         ];
         $data = $this->validate($request, $rules, $customMessages);
         try {
-            //code...
-            return Excel::download(new QuisionerExport($request->input('tahun'), Auth::guard('prodi')->user()->prodi->id), "rekap_kuisioner_" . $request->input('tahun') . "." . $data['format']);
+            return Excel::download(new QuisionerExport($request->input('tahun'), Auth::guard('prodi')->user()->prodi->id, $request->input('type')), "CDC-Tahun Lulus-" . $request->input('tahun') . "." . $data['format']);
         } catch (\Throwable $th) {
             //throw $th;
             throw new WebException($th->getMessage());

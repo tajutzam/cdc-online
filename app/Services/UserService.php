@@ -11,6 +11,8 @@ use App\Helper\ResponseHelper;
 use App\Models\Education;
 use App\Models\Followed;
 use App\Models\Follower;
+use App\Models\QuesionerAnswer;
+use App\Models\QuesionerAnswerDetail;
 use App\Models\User;
 use Cloudinary\Api\Exception\BadRequest;
 use Cloudinary\Api\Exception\NotFound;
@@ -276,50 +278,37 @@ class UserService
         return $response;
     }
 
-    public function findAllByProdi($active, $kodeProdi)
+    public function findAllByProdi($active, $kodeProdi) //todo
     {
-        $query = $this->userModel->with('jobs', 'educations', 'prodi');
-        $response = [];
-        $response['alumni'] = $query->when(isset($active), function ($query) use ($active) {
-            $query->where('account_status', $active);
-        })->whereHas('educations', function ($educationQuery) {
-            $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
-        })->whereHas('prodi', function ($prodiQuery) use ($kodeProdi) {
-            $prodiQuery->where('id', $kodeProdi); // Gunakan nilai $kodeProdi dari parameter
-        })->get()->map(function ($user) {
-            return $user;
-        })->toArray();
+        $alumni = User::with('alumni','prodi')
+        ->where('kode_prodi', $kodeProdi);
 
-
-        $statusCounts = $this->userModel
-            ->select('account_status', DB::raw('COUNT(*) as count'))
-            ->when(isset($active), function ($query) use ($active) {
-                $query->where('account_status', $active);
-            })
-            ->whereHas('educations', function ($educationQuery) {
-                $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
-            })->whereHas('prodi', function ($prodiQuery) use ($kodeProdi) {
-                $prodiQuery->where('id', $kodeProdi); // Gunakan nilai $kodeProdi dari parameter
-            })
-            ->groupBy('account_status')
-            ->get();
-
-        $active = 0;
-        $nonActive = 0;
-        foreach ($statusCounts as $statusCount) {
-            if ($statusCount->account_status == 1) {
-                $active = $statusCount->count;
-            } else {
-                $nonActive = $statusCount->count;
-            }
+        if (isset($active) != null) {
+            $alumni->where('account_status',$active);
         }
 
-        $response['count'] = [
-            'active' => $active,
-            'nonactive' => $nonActive
+        $alumniList = $alumni->get();
+
+
+        $active = User::with('alumni')
+            ->where('kode_prodi', $kodeProdi)
+            ->where('account_status', 1)->count();
+
+        $nonActive = User::with('alumni')
+            ->where('kode_prodi', $kodeProdi)
+            ->where('account_status', 0)->count();
+
+
+        $data = [
+            'alumni' => $alumniList,
+            'count' => [
+                'active' => $active,
+                'nonactive' => $nonActive
+            ]
         ];
 
-        return $response;
+        return $data;
+
     }
 
     public function updateVisible($request, $token)
@@ -553,49 +542,103 @@ class UserService
         })->values()->take(20)->all();
 
         $response = collect($data)->map(function ($user) {
+            // dd($user);
             $lastJob = collect($user['jobs'])->where('pekerjaan_saatini', 1)->first();
+            $user_id = $user['id'];
+            $jobs = QuesionerAnswerDetail::with('paket', 'quesioner_answer', 'quesioner_answer.detail', 'users', 'users.alumni')
+                ->whereHas('users', function ($query) use ($user_id) {
+                    $query->where('id', $user_id); //ubah user_id
+                })
+                ->select('quesioner_answer_details.*')
+                ->join(DB::raw('(SELECT user_id, MAX(level) AS max_level FROM quesioner_answer_details GROUP BY user_id) AS max_levels'), function ($join) {
+                    $join->on('quesioner_answer_details.user_id', '=', 'max_levels.user_id')
+                        ->on('quesioner_answer_details.level', '=', 'max_levels.max_level');
+                })
+                ->get();
+
+            // Assuming $jobs is your collection
+            $job = null;
+            $company = null;
+
+            if ($jobs->isNotEmpty() && isset($jobs->first()['quesioner_answer'])) {
+                $quesioner_answer = $jobs->first()['quesioner_answer'];
+
+                foreach ($quesioner_answer as $answer) {
+                    if ($answer->detail->kode_pertanyaan === 'f5c') {
+                        $job = $answer->answer_value; // Assuming 'answer_value' holds job information
+                        break;
+                    }
+                }
+
+                foreach ($quesioner_answer as $answer) {
+                    if ($answer->detail->kode_pertanyaan === 'f5b') {
+                        $company = $answer->answer_value; // Assuming 'answer_value' holds company information
+                        break;
+                    }
+                }
+            }
+
+            $parts = explode(' - ', json_decode($job));
+            $job_name = isset($parts[1]) ? $parts[1] : null;
+
 
             $tempData = $this->castToUserResponseFromArray($user);
             $tempData['followers'] = $user['followers'];
             $tempData['total_followers'] = sizeof($user['followers']);
-            $tempData['job'] = $lastJob ? $lastJob['jabatan'] : null;
-            $tempData['company'] = $lastJob ? $lastJob['perusahaan'] : null;
+            $tempData['job'] = $job_name;
+            $tempData['company'] = json_decode($company);
             return $tempData;
         })->toArray();
+        // dd($response); die;
         return $response;
     }
 
     public function getTopUserBySalary()
     {
-        $data = $this->userModel->with([
-            'jobs' => function ($query) {
-                $query->where('pekerjaan_saatini', true);
+        $data = [];
+
+        $detail = QuesionerAnswerDetail::with('paket', 'quesioner_answer', 'quesioner_answer.detail', 'users', 'users.alumni')
+            ->select('quesioner_answer_details.*')
+            ->join(DB::raw('(SELECT user_id, MAX(level) AS max_level FROM quesioner_answer_details GROUP BY user_id) AS max_levels'), function ($join) {
+                $join->on('quesioner_answer_details.user_id', '=', 'max_levels.user_id')
+                    ->on('quesioner_answer_details.level', '=', 'max_levels.max_level');
+            })
+            ->get();
+
+        foreach ($detail as $key => $value) {
+            $data[$key]['fullname'] = $value->users->fullname;
+
+            $lastPosition = '';
+            $highestSalary = '';
+            $company = '';
+
+         foreach ($value->quesioner_answer as $key2 => $quesionerAnswer) {  
+            //jabatan
+            if ($quesionerAnswer->detail->kode_pertanyaan == 'f5c') {
+                    $lastPosition = $quesionerAnswer->answer_value;
             }
-        ])->get()->toArray();
-
-        // Gunakan metode koleksi untuk mengambil nama posisi pekerjaan terakhir dan gaji tertinggi
-        return collect($data)->filter(function ($user) {
-            return count($user['jobs']) > 0; // Filter pengguna yang memiliki setidaknya satu pekerjaan.
-        })->map(function ($user) {
-            if (isset($user['jobs'])) {
-                $lastJob = collect($user['jobs'])->where('pekerjaan_saatini', 1)->first();
-
-                $formattedCurrency = 0;
-
-                if (isset($lastJob)) {
-                    $formattedCurrency = number_format($lastJob['gaji'], 2); // 2 decimal places for cents
-                    return [
-                        'fullname' => $user['fullname'],
-                        'last_position' => $lastJob ? $lastJob['jabatan'] : null,
-                        'highest_salary' => $lastJob ? $formattedCurrency : null,
-                        'company' => $lastJob['perusahaan'],
-                        'account_status' => $user['account_status'],
-                        'image' => url('/') . '/users/' . $user['foto']
-                    ];
-                }
+            //salary
+            if ($quesionerAnswer->detail->kode_pertanyaan == 'f505') {
+                    $highestSalary = $quesionerAnswer->answer_value;
             }
+            //company
+            if ($quesionerAnswer->detail->kode_pertanyaan == 'f5b') {
+                    $company = $quesionerAnswer->answer_value;
+            }
+         }
 
-        })->sortByDesc('highest_salary')->values()->take(20)->toArray();
+            $parts = explode(' - ', $lastPosition);
+            $lastPositionName = isset($parts[1]) ? $parts[1] : null;
+
+            $data[$key]['last_position'] =  $lastPositionName;
+            $data[$key]['highest_salary'] = json_decode($highestSalary);
+            $data[$key]['company'] = json_decode($company);
+
+            $data[$key]['account_status'] = $value->users->account_status;
+            $data[$key]['image'] = $value->users->foto;
+        }
+
+        return $data;
     }
 
     private function castToEducations($education)
@@ -1051,46 +1094,33 @@ class UserService
         $currentYear = date('Y'); // Tahun saat ini
         $yearsAgo = $currentYear - 4; // Lima tahun yang lalu
 
-        $users = $this->userModel
-            ->whereHas('educations', function ($query) use ($yearsAgo) {
-                $query->select(DB::raw('MAX(tahun_masuk) as latest_year'))
-                    ->groupBy('user_id')
-                    ->having('latest_year', '>=', $yearsAgo);
-            })
-            ->whereHas('quisioner_level', function ($query) {
-                $query->whereHas('main', function ($mainQuery) {
-                    $mainQuery->orWhere('f8', 'Bekerja (full time/part time)');
-                    $mainQuery->orWhere('f8', 'Wiraswasta');
-                });
-            })
-            ->with([
-                'educations' => function ($query) use ($yearsAgo) {
-                    $query->where('tahun_masuk', '>=', $yearsAgo);
-                },
-                'quisioner_level'
-            ])
-            ->get();
+        $users = QuesionerAnswerDetail::with('paket', 'quesioner_answer', 'quesioner_answer.detail', 'users', 'users.alumni')
+        ->whereHas('quesioner_answer', function ($query) {
+            $query->where('answer_value', '1 - Bekerja (full time/part time)');
+        })
+        ->whereHas('users.alumni', function ($query) use ($yearsAgo) {
+            $query->where('angkatan','>=', $yearsAgo);
+        })
+        ->whereRaw('YEAR(created_at) >= ?', $yearsAgo)
+        ->get();
+
 
 
         $groupedUsers = $users->groupBy(function ($user) {
-            return $user->educations->first()->tahun_masuk;
+            return $user->users->alumni->first()->angkatan;
         })->map(function ($users) {
             $zero = 0;
             $six = 0;
             $twelve = 0;
 
             foreach ($users as $value) {
-                # code...
-                foreach ($value->toArray()['quisioner_level'] as $valueQuisioner) {
-                    # code...
-                    if ($valueQuisioner['level'] == '0') {
+                    if ($value['level'] == '0') {
                         $zero++;
-                    } else if ($valueQuisioner['level'] == '6') {
+                    } else if ($value['level'] == '6') {
                         $six++;
-                    } else if ($valueQuisioner['level'] == '12') {
+                    } else if ($value['level'] == '12') {
                         $twelve++;
                     }
-                }
             }
             return [
                 '0' => $zero,
@@ -1111,6 +1141,8 @@ class UserService
                 ; // Tambahkan array kosong
             }
         }
+
+        // dd($groupedUsers);
         return $groupedUsers;
     }
 
@@ -1120,49 +1152,32 @@ class UserService
         $currentYear = date('Y'); // Tahun saat ini
         $yearsAgo = $currentYear - 4; // Lima tahun yang lalu
 
-        $users = $this->userModel
-            ->whereHas('educations', function ($query) use ($yearsAgo) {
-                $query->select(DB::raw('MAX(tahun_masuk) as latest_year'))
-                    ->groupBy('user_id')
-                    ->having('latest_year', '>=', $yearsAgo);
+        $users = QuesionerAnswerDetail::with('paket', 'quesioner_answer', 'quesioner_answer.detail', 'users', 'users.alumni')
+            ->whereHas('quesioner_answer', function ($query) {
+                $query->where('answer_value', '1 - Bekerja (full time/part time)');
             })
-            ->whereHas('quisioner_level', function ($query) {
-                $query->whereHas('main', function ($mainQuery) {
-                    $mainQuery->orWhere('f8', 'Bekerja (full time/part time)');
-                    $mainQuery->orWhere('f8', 'Wiraswasta');
-                });
+            ->whereHas('users.alumni', function ($query) use ($yearsAgo) {
+                $query->where('angkatan', '>=', $yearsAgo);
             })
-            ->with([
-                'educations' => function ($query) use ($yearsAgo) {
-                    $query->where('tahun_masuk', '>=', $yearsAgo);
-                },
-                'quisioner_level'
-            ])
-            ->where(
-                'kode_prodi',
-                $idProdi
-            )
+            ->whereHas('users', function ($query) use ($idProdi) {
+                $query->where('kode_prodi', $idProdi);
+            })
             ->get();
 
-
         $groupedUsers = $users->groupBy(function ($user) {
-            return $user->educations->first()->tahun_masuk;
+            return $user->users->alumni->first()->angkatan;
         })->map(function ($users) {
             $zero = 0;
             $six = 0;
             $twelve = 0;
 
             foreach ($users as $value) {
-                # code...
-                foreach ($value->toArray()['quisioner_level'] as $valueQuisioner) {
-                    # code...
-                    if ($valueQuisioner['level'] == '0') {
-                        $zero++;
-                    } else if ($valueQuisioner['level'] == '6') {
-                        $six++;
-                    } else if ($valueQuisioner['level'] == '12') {
-                        $twelve++;
-                    }
+                if ($value['level'] == '0') {
+                    $zero++;
+                } else if ($value['level'] == '6') {
+                    $six++;
+                } else if ($value['level'] == '12') {
+                    $twelve++;
                 }
             }
             return [
@@ -1180,10 +1195,11 @@ class UserService
                     '0' => 0,
                     '6' => 0,
                     '12' => 0
-                ];
-                ; // Tambahkan array kosong
+                ];; // Tambahkan array kosong
             }
         }
+
+        // dd($groupedUsers);
         return $groupedUsers;
     }
 
@@ -1228,7 +1244,7 @@ class UserService
     public function applicationEnrollmentProgress()
     {
 
-        $year = 2023; // Ganti dengan tahun yang sesuai
+        $year = Carbon::now()->year;// Ganti dengan tahun yang sesuai
         $monthlyCounts = User::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
             ->whereYear('created_at', $year)
             ->groupBy('month')

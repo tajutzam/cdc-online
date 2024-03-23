@@ -163,7 +163,7 @@ class PaketKuesionerDetailSeeder extends Seeder
         PaketQuesionerDetail::create([
             'kode_pertanyaan' => 'f8',
             'pertanyaan' => 'Jelaskan status Anda saat ini?',
-            'tipe_id' => 1,
+            'tipe_id' => 8,
             'id_paket_quesioners' => 2,
             'is_required' => 1,
             'options' => json_encode([
