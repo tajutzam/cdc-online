@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             ProvinceSeeder::class,
             RegencySeeder::class,
             AdminSeeder::class,
-            ProdiAdministrator::class,
+            ProdiAdministratorSeeder::class,
             UserSeeder::class,
             MitraSeeder::class,
             QuesionerTypeSeeder::class,
