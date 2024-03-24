@@ -4,15 +4,29 @@
 namespace App\Services;
 
 use App\Mail\EmailVeriviedMail;
+use App\Mail\InformationAcceptMail;
+use App\Mail\InformationMitraRejectedMail;
+use App\Mail\MitraMail;
+use App\Mail\MitraRejected;
+use App\Mail\RecoveryPasswordMail;
+use App\Mail\SubmissionsEmail;
+use App\Mail\SuccessUpdatePasswordMail;
+use Illuminate\Support\Facades\Mail;
 
 class EmailService
 {
 
     private EmailVeriviedMail $emailVeriviedMail;
+    private SubmissionsEmail $submissionsEmail;
+    private RecoveryPasswordMail $recoveryPasswordMail;
+    private SuccessUpdatePasswordMail $successUpdatePasswordMail;
 
     public function __construct()
     {
         $this->emailVeriviedMail = new EmailVeriviedMail();
+        $this->submissionsEmail = new SubmissionsEmail();
+        $this->recoveryPasswordMail = new RecoveryPasswordMail();
+        $this->successUpdatePasswordMail = new SuccessUpdatePasswordMail();
     }
 
     public function sendEmailVerifikasi($to, $link, $expired)
@@ -28,8 +42,54 @@ class EmailService
 
         $this->emailVeriviedMail->details = $details;
 
-        \Mail::to($to)->send($this->emailVeriviedMail);
+        Mail::to($to)->send($this->emailVeriviedMail);
 
+    }
+
+
+    public function sendEmailSubmissions($to, $message)
+    {
+        $details = [
+            'title' => 'Pengajuan Alumni',
+            'body' => $message,
+        ];
+        $this->submissionsEmail->details = $details;
+        Mail::to($to)->send($this->submissionsEmail);
+
+    }
+
+
+    public function sendEmailRecovery($to, $link, $expired)
+    {
+        $data = [
+            'url' => $link,
+            'expired' => $expired
+        ];
+        $this->recoveryPasswordMail->data = $data;
+        Mail::to($to)->send($this->recoveryPasswordMail);
+    }
+
+    public function sendEmailSuccessUpdatePassword($user)
+    {
+        $this->successUpdatePasswordMail->user = $user;
+        Mail::to($user->email)->send($this->successUpdatePasswordMail);
+    }
+
+    public function sendMailMitra($to, $type)
+    {
+        if ($type) {
+            Mail::to($to)->send(new MitraMail());
+        }else{
+            Mail::to($to)->send(new MitraRejected());
+        }
+    }
+
+    public function sendMailMitraInformationAccpet($mitra){
+        Mail::to($mitra->email)->send(new InformationAcceptMail($mitra));
+    }
+
+    public function sendMailMitraInformationReject($mitra , $alasan){
+        Mail::to($mitra->email)->send(new InformationMitraRejectedMail($mitra , $alasan));
     }
 
 

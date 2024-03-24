@@ -14,11 +14,11 @@ class CreateStartSearchJobsTable extends Migration
     public function up()
     {
         Schema::create('start_search_jobs', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('f301');
             $table->integer('f302');
             $table->integer('f303');
-            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
+         
             $table->timestamps();
         });
     }

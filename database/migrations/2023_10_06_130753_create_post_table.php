@@ -17,8 +17,9 @@ class CreatePostTable extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->nullable(true)->references('id')->on('users')->onDelete('cascade')->cascadeOnUpdate();
             $table->foreignUuid('admin_id')->nullable(true)->references('id')->on('admin')->onDelete('cascade')->cascadeOnUpdate();
-            $table->string('link_apply')->nullable(false);
-            $table->string('description')->nullable(false);
+            $table->foreignUuid('mitra_id')->nullable(true)->references('id')->on('mitra')->onDelete('cascade')->cascadeOnUpdate();
+            $table->text('link_apply')->nullable(false);
+            $table->text('description')->nullable(false);
             $table->string('company')->nullable(false);
             $table->string('position')->nullable(false);
             $table->timestamp('expired')->nullable(false);
@@ -26,6 +27,7 @@ class CreatePostTable extends Migration
             $table->string('image')->nullable(false);
             $table->string('type_jobs', );
             $table->boolean('can_comment')->default(true);
+            $table->string('bukti')->nullable();
             $table->enum('verified', ['waiting', 'verified', 'rejected'])->default('waiting');
             $table->timestamps();
         });

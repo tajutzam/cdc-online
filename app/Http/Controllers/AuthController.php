@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\BadRequestException;
+
+use App\Helper\ResponseHelper;
+
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Services\AdminService;
+use App\Services\AlumniService;
 use App\Services\AuthService;
+use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,12 +24,13 @@ class AuthController extends Controller
 {
 
     private AuthService $authService;
-    private AdminService $adminService;
+    private UserService $userService;
+
 
     public function __construct()
     {
         $this->authService = new AuthService();
-        $this->adminService = new AdminService();
+        $this->userService = new UserService();
     }
 
     public function login(LoginRequest $request)
@@ -34,26 +40,7 @@ class AuthController extends Controller
         return $this->authService->login($request->input('emailOrNik'), $request->input('password'));
     }
 
-    public function loginAdmin(Request $request)
-    {
 
-        $rules = [
-            'email' => 'required|email',
-            'password' => 'required|max:250',
-        ];
-
-        $customMessages = [
-            'required' => ':attribute Dibutuhkan.',
-        ];
-
-
-        $data = $this->validate($request, $rules, $customMessages);
-        $isLogin = $this->adminService->login($data['email'], $data['password']);
-        if ($isLogin) {
-            return redirect('/admin/dashboard');
-        }
-        return redirect()->back()->withErrors('Gagal Logi , harap check email atau password anda');
-    }
 
     public function registerUser(RegisterRequest $request)
     {
@@ -87,11 +74,6 @@ class AuthController extends Controller
     }
 
 
-    public function generateTokenApiPolije()
-    {
-        return $this->authService->generateToken();
-    }
-
     public function updateEmailVerified(Request $request)
     {
         $id = $request->get('id');
@@ -99,18 +81,44 @@ class AuthController extends Controller
     }
 
 
+    public function verifikasiEmail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ]);
+        if ($validator->fails()) {
+            throw new BadRequestException($validator->errors()->first());
+        }
+        $response = $this->authService->verifikasiEmail($request->all());
+        return ResponseHelper::successResponse($response['message'], $response['data'], $response['code']);
+    }
+
+
     public function verifikasi(Request $request)
     {
 
-        // $validator = Validator::make(, [
-        //     'nim' => 'required'
-        // ]);
+        $service = new AlumniService();
+        return $service->updateDataAlumni();
+    }
 
-        // if ($validator->fails()) {
-        //     throw new BadRequestException($validator->errors()->first());
-        // }
+    public function checkAlumniData()
+    {
+        $service = new AlumniService();
+        return $service->findAllAlumni();
+    }
 
-        return $this->authService->verifikasiNim($request->get('nim'));
+    public function recovery(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ]);
+        if ($validator->fails()) {
+            throw new BadRequestException($validator->errors()->first());
+        }
+        $response = $this->authService->sendRecovery($request->input('email'));
+        return ResponseHelper::successResponse($response['message'], $response['data'], $response['code']);
+
+        // $this->userService->recovery();
     }
 
 }

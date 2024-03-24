@@ -47,6 +47,7 @@ return new class extends Migration {
             $table->foreign('kode_prodi')->references('id')->on('quis_identitas_prodi')->onDelete('set null');
             $table->string('longtitude')->nullable();
             $table->string('latitude')->nullable();
+            $table->boolean('required_to_fill')->default(true);
             $table->timestamps();
         });
     }

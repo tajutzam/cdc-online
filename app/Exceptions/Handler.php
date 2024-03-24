@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->renderable(function (Throwable $e) {
+        $this->renderable(function (Throwable $e, $request) {
             if ($e instanceof BadRequestException) {
                 DB::rollBack();
                 return response()->json([
@@ -57,6 +57,7 @@ class Handler extends ExceptionHandler
                     'message' => $e->getMessage()
                 ], 400);
             }
+
             if ($e instanceof NotFoundException) {
                 DB::rollBack();
                 return response()->json([
@@ -68,7 +69,8 @@ class Handler extends ExceptionHandler
             }
             if ($e instanceof NotFoundHttpException) {
                 // Menampilkan halaman 404
-                return response()->view('errors.404', [], 404);
+
+                return response()->view('errors.404', ['message' => $e->getMessage()], 404);
             }
             if ($e instanceof WebException) {
                 // mengirim error sesuai message web exceptions
@@ -76,11 +78,9 @@ class Handler extends ExceptionHandler
                 return back()->withErrors($e->getMessage());
             }
 
-
             if ($e instanceof BadMethodCallException) {
-                return response()->view('errors.500', ["errors" => $e->getMessage()], 500);
+                return response()->view('errors.500', ["message" => $e->getMessage()], 500);
             }
-            // dd($e);
             if ($e instanceof ForbiddenException) {
                 return response()->json([
                     'status' => false,
@@ -102,15 +102,19 @@ class Handler extends ExceptionHandler
                 return back()->withErrors($e->validator)->withInput();
             }
             DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'code' => 500,
-                'data' => null,
-                'message' => $e->getMessage()
-            ], 500);
+            return $request->expectsJson()
+                ? $this->jsonResponse($e->getMessage(), 500)
+                : response()->view('errors.500', ["message" => $e->getMessage()], 500);
         }, );
-
     }
 
-
+    protected function jsonResponse($message, $statusCode)
+    {
+        return response()->json([
+            'status' => false,
+            'code' => $statusCode,
+            'data' => null,
+            'message' => $message
+        ], $statusCode);
+    }
 }

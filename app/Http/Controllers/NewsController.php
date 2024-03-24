@@ -24,9 +24,9 @@ class NewsController extends Controller
     }
 
 
-    public function findAllActive()
+    public function findLastInserted()
     {
-        $data = $this->newsService->findAllActive();
+        $data = $this->newsService->findLastInserted();
         return ResponseHelper::successResponse('success fetch data', $data, 200);
     }
 
@@ -34,6 +34,12 @@ class NewsController extends Controller
     {
         $data = $this->newsService->findById($id);
         return ResponseHelper::successResponse('success fetch data', $data, 200);
+    }
+
+    public function findAll()
+    {
+        $data = $this->newsService->findAll();
+        return ResponseHelper::successResponse("success fetch data", $data['data'], 200);
     }
 
 }

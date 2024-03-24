@@ -30,7 +30,6 @@ class AddNewJobsRequest extends FormRequest
             'gaji' => 'required|numeric',
             'jenis_pekerjaan' => 'required',
             'tahun_masuk' => 'required|numeric',
-            "tahun_keluar" => 'required',
             'is_jobs_now' => 'required'
         ];
     }

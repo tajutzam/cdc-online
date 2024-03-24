@@ -1,0 +1,598 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API JOBS DOCUMENTATIONS",
+        "version": "1.0",
+        "contact": {
+            "email": "mohammadtajutzamzami07@gmail.com",
+            "name": "Mohammad Tajut Zamzami",
+            "url": "https://github.com/tajutzam"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
+    "paths": {
+        "/user/jobs/count/{id}": {
+            "get": {
+                "tags": ["Jobs"],
+                "parameters": [
+                    {
+                        "required": true,
+                        "in": "path",
+                        "name": "id",
+                        "example": "123123123",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success fetch data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "0"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sucess fetch data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "user not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "404"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "format": "nullable"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ops , user tidak ditemukan"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/jobs": {
+            "post": {
+                "tags": ["Jobs"],
+                "responses": {
+                    "201": {
+                        "description": "Success add jobs user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "user_id": {
+                                                    "type": "string",
+                                                    "example": "988f966a-20ff-4f53-9b9c-26a25e12f85a"
+                                                },
+                                                "perusahaan": {
+                                                    "type": "string",
+                                                    "example": "Jember Cdc Online"
+                                                },
+                                                "jabatan": {
+                                                    "type": "string",
+                                                    "example": "Backend developer"
+                                                },
+                                                "gaji": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "20000"
+                                                },
+                                                "jenis_pekerjaan": {
+                                                    "type": "string",
+                                                    "example": "kontrak"
+                                                },
+                                                "tahun_masuk": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "2016"
+                                                },
+                                                "tahun_keluar": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "2021"
+                                                },
+                                                "pekerjaan_saatini": {
+                                                    "type": "boolean"
+                                                },
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "34084e1e-eae8-4985-8a93-d68653e71590"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2023-11-27T08:22:02.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-11-27T08:22:02.000000Z"
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Berhasil Menambahkan pekerjaan"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "201"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "bad request jobs"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "perusahaan": {
+                                        "type": "string",
+                                        "example": "Jember Cdc Online"
+                                    },
+                                    "jabatan": {
+                                        "type": "string",
+                                        "example": "Backend developer"
+                                    },
+                                    "gaji": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "20000"
+                                    },
+                                    "jenis_pekerjaan": {
+                                        "type": "string",
+                                        "example": "kontrak"
+                                    },
+                                    "tahun_masuk": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "2016"
+                                    },
+                                    "tahun_keluar": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "2021"
+                                    },
+                                    "is_jobs_now": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Jobs"],
+                "responses": {
+                    "200": {
+                        "description": "success fetch data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "34084e1e-eae8-4985-8a93-d68653e71590"
+                                                    },
+                                                    "user_id": {
+                                                        "type": "string",
+                                                        "example": "988f966a-20ff-4f53-9b9c-26a25e12f85a"
+                                                    },
+                                                    "perusahaan": {
+                                                        "type": "string",
+                                                        "example": "Jember Cdc Online"
+                                                    },
+                                                    "jabatan": {
+                                                        "type": "string",
+                                                        "example": "Backend developer"
+                                                    },
+                                                    "gaji": {
+                                                        "type": "integer",
+                                                        "format": "int32",
+                                                        "example": "20000"
+                                                    },
+                                                    "jenis_pekerjaan": {
+                                                        "type": "string",
+                                                        "example": "kontrak"
+                                                    },
+                                                    "tahun_masuk": {
+                                                        "type": "string",
+                                                        "example": "2016"
+                                                    },
+                                                    "tahun_keluar": {
+                                                        "type": "string",
+                                                        "example": "2021"
+                                                    },
+                                                    "pekerjaan_saatini": {
+                                                        "type": "integer",
+                                                        "format": "int32",
+                                                        "example": "0"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2023-11-27T08:22:02.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2023-11-27T08:22:02.000000Z"
+                                                    }
+                                                }
+                                            },
+                                            "example": [
+                                                {
+                                                    "id": "34084e1e-eae8-4985-8a93-d68653e71590",
+                                                    "user_id": "988f966a-20ff-4f53-9b9c-26a25e12f85a",
+                                                    "perusahaan": "Jember Cdc Online",
+                                                    "jabatan": "Backend developer",
+                                                    "gaji": 20000,
+                                                    "jenis_pekerjaan": "kontrak",
+                                                    "tahun_masuk": "2016",
+                                                    "tahun_keluar": "2021",
+                                                    "pekerjaan_saatini": 0,
+                                                    "created_at": "2023-11-27T08:22:02.000000Z",
+                                                    "updated_at": "2023-11-27T08:22:02.000000Z"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success fetch data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Jobs"],
+                "responses": {
+                    "200": {
+                        "description": "succes update jobs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "d380c99a-56c4-4bf6-92a8-eb6b2ca4a202"
+                                                },
+                                                "user_id": {
+                                                    "type": "string",
+                                                    "example": "988f966a-20ff-4f53-9b9c-26a25e12f85a"
+                                                },
+                                                "perusahaan": {
+                                                    "type": "string",
+                                                    "example": "Jember Cdc Online"
+                                                },
+                                                "jabatan": {
+                                                    "type": "string",
+                                                    "example": "Senior Backend developer"
+                                                },
+                                                "gaji": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "20000"
+                                                },
+                                                "jenis_pekerjaan": {
+                                                    "type": "string",
+                                                    "example": "kontrak"
+                                                },
+                                                "tahun_masuk": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "2016"
+                                                },
+                                                "tahun_keluar": {
+                                                    "type": "string",
+                                                    "example": "2019"
+                                                },
+                                                "pekerjaan_saatini": {
+                                                    "type": "boolean"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-11-27T08:23:23.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2023-11-27T08:34:26.000000Z"
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Berhasil memperbarui pekerjaan"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "perusahaan": {
+                                        "type": "string",
+                                        "example": "Jember Cdc Online"
+                                    },
+                                    "jabatan": {
+                                        "type": "string",
+                                        "example": "Senior Backend developer"
+                                    },
+                                    "gaji": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "20000"
+                                    },
+                                    "jenis_pekerjaan": {
+                                        "type": "string",
+                                        "example": "kontrak"
+                                    },
+                                    "tahun_masuk": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "2016"
+                                    },
+                                    "tahun_keluar": {
+                                        "type": "string",
+                                        "example": "2019"
+                                    },
+                                    "is_jobs_now": {
+                                        "type": "boolean"
+                                    },
+                                    "jobs_id": {
+                                        "type": "string",
+                                        "example": "916ca106-b2d5-47a2-8933-75d28adef2s39"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Jobs"],
+                "responses": {
+                    "200": {
+                        "description": "success delete jobs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Berhasil memperbarui pekerjaan"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "jobs not found"
+                    },
+                    "403": {
+                        "description": "forbiden"
+                    },
+                    "400": {
+                        "description": "bad request validation"
+                    }
+                }
+            }
+        },
+        "/user/jobs/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "description": "id for jobs",
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "34084e1e-eae8-4985-8a93-d68653e71590"
+                                                },
+                                                "user_id": {
+                                                    "type": "string",
+                                                    "example": "988f966a-20ff-4f53-9b9c-26a25e12f85a"
+                                                },
+                                                "perusahaan": {
+                                                    "type": "string",
+                                                    "example": "Jember Cdc Online"
+                                                },
+                                                "jabatan": {
+                                                    "type": "string",
+                                                    "example": "Backend developer"
+                                                },
+                                                "gaji": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "20000"
+                                                },
+                                                "jenis_pekerjaan": {
+                                                    "type": "string",
+                                                    "example": "kontrak"
+                                                },
+                                                "tahun_masuk": {
+                                                    "type": "string",
+                                                    "example": "2016"
+                                                },
+                                                "tahun_keluar": {
+                                                    "type": "string",
+                                                    "example": "2021"
+                                                },
+                                                "pekerjaan_saatini": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "0"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-11-27T08:22:02.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2023-11-27T08:22:02.000000Z"
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success fetch data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "jobs not found"
+                    },
+                    "403": {
+                        "description": "forbiden"
+                    },
+                    "400": {
+                        "description": "bad request validation"
+                    }
+                },
+                "tags": ["Jobs"]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer_token": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearer_token": []
+        }
+    ]
+}

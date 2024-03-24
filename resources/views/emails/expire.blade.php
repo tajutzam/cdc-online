@@ -17,8 +17,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* Membuat kontainer email mengisi tinggi seluruh viewport */
+            height: 100vh;
+            /* Membuat kontainer email mengisi tinggi seluruh viewport */
         }
+
         .container {
             background-color: #ffffff;
             max-width: 600px;
@@ -27,12 +29,15 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         h1 {
             color: #333;
         }
+
         p {
             color: #666;
         }
+
         .cta-button {
             display: inline-block;
             padding: 10px 20px;
@@ -43,11 +48,18 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Ops, Your Verification Link Has Expired</h1>
         <p>Your verification link has expired. Please click the button below to resend the verification email:</p>
-        <a href="{{ $resendLink }}" class="cta-button">Resend Verification Email</a>
+        <form action="{{ route('resend') }}" method="post">
+            @csrf
+            
+            <input type="text" name="email" value="{{ $data->email }}">
+            <button type="submit" class="cta-button">Resend Verification Email</button>
+        </form>
     </div>
 </body>
+
 </html>

@@ -5,7 +5,8 @@
 /storage/*.key
 /vendor
 /public/images
-/public/users
+/public/users/post
+# /public/users
 /public/news
 
 .env

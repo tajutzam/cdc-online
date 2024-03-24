@@ -5,6 +5,7 @@ namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
 use App\Services\PostService;
+use Carbon\Carbon;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,36 +26,46 @@ class PostController extends Controller
 
     public function index()
     {
-        $data = $this->postService->findAllPostFromAdmin();
-        $tempActive = 0;
-        $tempNonActive = 0;
 
+        $data = $this->postService->findVerivyVacancy();
 
-        foreach ($data as $value) {
-            # code...
-            if ($value['verified'] == true) {
-                $tempActive += 1;
-            } else {
-                $tempNonActive += 1;
-            }
-        }
+        // Extract the counts and dates from the $countsByDay array
+        $dates = array_keys($data['count_by_day']);
+        $counts_by_day = array_values($data['count_by_day']);
 
-        $total = [
-            'active' => $tempActive,
-            'nonactive' => $tempNonActive
-        ];
         return view('admin.vacancy.verify-vacancy', [
-            'data' => $data,
-            'total' => [
-                'active' => $total['active'],
-                'nonactive' => $total['nonactive'],
-                'total' => sizeof($data)
-            ]
+            'data' => $data['vacancy'],
+            'total_of_week' => $data['total_of_week'],
+            'count_by_day' => $counts_by_day,
+            'total' => sizeOf($data['vacancy'])
         ]);
     }
+
+    public function verivyMitraVacancy()
+    {
+        $data = $this->postService->findVerifyVacancyMitra();
+        // dd($data);
+
+
+        // Extract the counts and dates from the $countsByDay array
+        $dates = array_keys($data['count_by_day']);
+        $counts_by_day = array_values($data['count_by_day']);
+
+
+
+        return view('admin.vacancy.mitra-vacancy', [
+            'data' => $data['vacancy'],
+            'total_of_week' => $data['total_of_week'],
+            'count_by_day' => $counts_by_day,
+            'total' => sizeOf($data['vacancy'])
+        ]);
+    }
+
     public function history()
     {
-        return view('admin.vacancy.history-vacancy');
+        $data = $this->postService->findHistoryVacancy();
+        // dd($data);
+        return view('admin.vacancy.history-vacancy', ['data' => $data]);
     }
     public function store(Request $request)
     {
@@ -68,11 +79,9 @@ class PostController extends Controller
             'type_jobs' => 'required|in:Purnawaktu,Paruh Waktu,Wiraswasta,Pekerja Lepas,Kontrak,Musiman'
         ];
 
-
         $customMessages = [
             'required' => ':attribute Dibutuhkan.',
         ];
-
 
 
         $data = $this->validate($request, $rules, $customMessages);
@@ -84,7 +93,7 @@ class PostController extends Controller
         $adminId = $this->checkLogin();
         $data = $this->postService->addPostJobAdmin($request->file('image'), $adminId, $request->all(), $isCanComment);
         if ($data['status']) {
-            Alert::success('Success', $data['message']);
+            Alert::success('Sukses', $data['message']);
             return back();
         }
         return back()->withErrors($data['message']);
@@ -96,8 +105,37 @@ class PostController extends Controller
         if (Auth::guard('admin')->check()) {
             return Auth::guard('admin')->user()->id;
         }
-        return redirect('admin/login')->withErrors('ops sesi login kamu sudah habis');
+        return redirect('admin/login')->withErrors('Ops sesi Anda sudah habis');
     }
+
+
+    public function verifyOrReject(Request $request, $id)
+    {
+        $data = [
+            'verified' => $request->input('verified'),
+            'id' => $id
+        ];
+        $response = $this->postService->updateVerified($data);
+        // dd($response);
+        Alert::success('Success', 'Berhasil Memperbarui');
+        return back();
+    }
+
+
+    public function verifyOrRejectMitra(Request $request, $id)
+    {
+        $data = [
+            'verified' => $request->input('verified'),
+            'id' => $id
+        ];
+        $response = $this->postService->updateVerified($data, 'mitra');
+        // dd($response);
+        Alert::success('Success', 'Berhasil Memperbarui status lowonga');
+        return back();
+    }
+
+
+
 
     private function getDataFromJson($data): array
     {

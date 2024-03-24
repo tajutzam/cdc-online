@@ -27,7 +27,7 @@ class PostController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'image' => 'required|image|mimes:jpeg,png,jpg|max:1048',
-            'link_apply' => 'required',
+            'link_apply' => 'required|url',
             'company' => 'required',
             'description' => 'required',
             'expired' => 'required|date_format:Y-m-d',
@@ -142,7 +142,21 @@ class PostController extends Controller
         }
 
         $userId = $this->userService->extractUserId($request->bearerToken());
-        $response = $this->postService->findByPosition($request->all(), $userId);
-        return ResponseHelper::successResponse('success fetch data', $response, 200);
+        return $this->postService->findByPosition($request->all(), $userId);
     }
+
+
+    public function findById($id)
+    {
+        $data = $this->postService->findByIdCast($id);
+        return ResponseHelper::successResponse("Success fetch data", $data, 200);
+    }
+
+
+    public function countPost($id)
+    {
+        $data = $this->postService->countPostByUserId($id);
+        return ResponseHelper::successResponse("Sucess fetch data", $data, 200);
+    }
+
 }

@@ -28,14 +28,14 @@ class UpdateProfileRequest extends FormRequest
             'fullname' => 'required|string',
             'ttl' => 'required|string',
             'about' => 'required|string',
-            'linkedin' => 'required|string',
-            'instagram' => 'required|string',
-            'x' => 'required|string',
-            'facebook' => 'required|string',
+            'linkedin' => 'nullable|string',
+            'instagram' => 'nullable|string',
+            'x' => 'nullable|string',
+            'facebook' => 'nullable|string',
             'no_telp' => 'required|max:13',
-            'gender' => 'required|in:male,female',
+            'gender' => 'required',
             'alamat' => 'required',
-            'nik' => 'required|unique:users,email'
+            'nik' => 'required'
         ];
     }
 

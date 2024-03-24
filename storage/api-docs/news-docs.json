@@ -1,0 +1,296 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API News User DOCUMENTATIONS",
+        "version": "1.0",
+        "contact": {
+            "email": "mohammadtajutzamzami07@gmail.com",
+            "name": "Mohammad Tajut Zamzami",
+            "url": "https://github.com/tajutzam"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
+    "paths": {
+       "/user/news-all":{
+            "get":{
+                "responses": {
+                    "200":{
+                        "description": "succes fetch data" , 
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "f27cc88f-fbfa-4c34-9145-13082a8b40a9"
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Polije Disnatalis"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "<div>Perayaan disnatalis di polije meghadirkan bintang tamu yang sangat membantu polije<br><br></div>"
+                                                    },
+                                                    "image": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:8000/news/1701147078.png"
+                                                    },
+                                                    "admin_id": {
+                                                        "type": "string",
+                                                        "example": "18de78bf-03a2-4440-9bf3-71ff62fe0290"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2023-11-28T04:51:18.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2023-11-28T04:51:18.000000Z"
+                                                    },
+                                                    "admin": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "18de78bf-03a2-4440-9bf3-71ff62fe0290"
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "admin-1"
+                                                            },
+                                                            "npwp": {
+                                                                "type": "string",
+                                                                "example": "12312k123123"
+                                                            },
+                                                            "alamat": {
+                                                                "type": "string",
+                                                                "example": "banyuwangi"
+                                                            },
+                                                            "email": {
+                                                                "type": "string",
+                                                                "example": "admin@gmail.com"
+                                                            },
+                                                            "role": {
+                                                                "type": "string",
+                                                                "example": "admin"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "example": "2023-11-27T08:13:26.000000Z"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "example": "2023-11-27T08:13:26.000000Z"
+                                                            }
+                                                        }
+                                                    },
+                                                    "interval": {
+                                                        "type": "string",
+                                                        "example": "5 seconds ago"
+                                                    }
+                                                }
+                                            },
+                                            "example": [
+                                                {
+                                                    "id": "f27cc88f-fbfa-4c34-9145-13082a8b40a9",
+                                                    "title": "Polije Disnatalis",
+                                                    "description": "<div>Perayaan disnatalis di polije meghadirkan bintang tamu yang sangat membantu polije<br><br></div>",
+                                                    "image": "http://localhost:8000/news/1701147078.png",
+                                                    "admin_id": "18de78bf-03a2-4440-9bf3-71ff62fe0290",
+                                                    "created_at": "2023-11-28T04:51:18.000000Z",
+                                                    "updated_at": "2023-11-28T04:51:18.000000Z",
+                                                    "admin": {
+                                                        "id": "18de78bf-03a2-4440-9bf3-71ff62fe0290",
+                                                        "name": "admin-1",
+                                                        "npwp": "12312k123123",
+                                                        "alamat": "banyuwangi",
+                                                        "email": "admin@gmail.com",
+                                                        "role": "admin",
+                                                        "created_at": "2023-11-27T08:13:26.000000Z",
+                                                        "updated_at": "2023-11-27T08:13:26.000000Z"
+                                                    },
+                                                    "interval": "5 seconds ago"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success fetch data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401":{
+                        "description": "unauthenticated"
+                    }
+                }
+            }
+       },
+       "/user/news":{
+        "get":{
+            "responses": {
+                "200":{
+                    "description": "success fetch data" , 
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "properties": {
+                                    "data": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "f27cc88f-fbfa-4c34-9145-13082a8b40a9"
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Polije Disnatalis"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "<div>Perayaan disnatalis di polije meghadirkan bintang tamu yang sangat membantu polije<br><br></div>"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "http://localhost:8000/news/1701147078.png"
+                                                },
+                                                "admin_id": {
+                                                    "type": "string",
+                                                    "example": "18de78bf-03a2-4440-9bf3-71ff62fe0290"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-11-28T04:51:18.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2023-11-28T04:51:18.000000Z"
+                                                },
+                                                "admin": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "example": "18de78bf-03a2-4440-9bf3-71ff62fe0290"
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "admin-1"
+                                                        },
+                                                        "npwp": {
+                                                            "type": "string",
+                                                            "example": "12312k123123"
+                                                        },
+                                                        "alamat": {
+                                                            "type": "string",
+                                                            "example": "banyuwangi"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "admin@gmail.com"
+                                                        },
+                                                        "role": {
+                                                            "type": "string",
+                                                            "example": "admin"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "example": "2023-11-27T08:13:26.000000Z"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "example": "2023-11-27T08:13:26.000000Z"
+                                                        }
+                                                    }
+                                                },
+                                                "interval": {
+                                                    "type": "string",
+                                                    "example": "5 seconds ago"
+                                                }
+                                            }
+                                        },
+                                        "example": [
+                                            {
+                                                "id": "f27cc88f-fbfa-4c34-9145-13082a8b40a9",
+                                                "title": "Polije Disnatalis",
+                                                "description": "<div>Perayaan disnatalis di polije meghadirkan bintang tamu yang sangat membantu polije<br><br></div>",
+                                                "image": "http://localhost:8000/news/1701147078.png",
+                                                "admin_id": "18de78bf-03a2-4440-9bf3-71ff62fe0290",
+                                                "created_at": "2023-11-28T04:51:18.000000Z",
+                                                "updated_at": "2023-11-28T04:51:18.000000Z",
+                                                "admin": {
+                                                    "id": "18de78bf-03a2-4440-9bf3-71ff62fe0290",
+                                                    "name": "admin-1",
+                                                    "npwp": "12312k123123",
+                                                    "alamat": "banyuwangi",
+                                                    "email": "admin@gmail.com",
+                                                    "role": "admin",
+                                                    "created_at": "2023-11-27T08:13:26.000000Z",
+                                                    "updated_at": "2023-11-27T08:13:26.000000Z"
+                                                },
+                                                "interval": "5 seconds ago"
+                                            }
+                                        ]
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "success fetch data"
+                                    },
+                                    "code": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "200"
+                                    },
+                                    "status": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "401":{
+                    "description": "unauthenticated"
+                }
+            }
+        }
+       }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer_token": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearer_token": []
+        }
+    ]
+}

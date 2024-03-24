@@ -22,14 +22,22 @@ class Post extends Model
         'expired',
         'image',
         'can_comment',
-        'verivied',
+        'verified',
         'type_jobs',
-        'admin_id'
+        'admin_id',
+        'post_at',
+        'mitra_id',
+        'bukti'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, "user_id");
+    }
+
+    public function mitra()
+    {
+        return $this->belongsTo(Mitra::class, "mitra_id");
     }
 
     public function admin()

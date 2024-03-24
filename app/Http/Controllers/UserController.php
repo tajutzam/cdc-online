@@ -16,6 +16,9 @@ use Illuminate\Support\Str;
 
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
+
+
+
 class UserController extends Controller
 {
     //
@@ -28,11 +31,6 @@ class UserController extends Controller
     }
 
 
-    /**
-     * @OA\PathItem(
-     *   path="/api/user",
-     * )
-     */
     public function getOneUser(Request $request)
     {
         $token = $request->header('Authorization');
@@ -44,7 +42,6 @@ class UserController extends Controller
             'data' => $data
         ], 200);
     }
-
     public function findAllUser(Request $request)
     {
         $userId = $this->userService->extractUserId($request->bearerToken());
@@ -56,6 +53,7 @@ class UserController extends Controller
             'data' => $data
         ], 200);
     }
+
 
     public function updateVisibility(UpdateVisibleRequest $updateVisibleRequest)
     {
@@ -228,6 +226,21 @@ class UserController extends Controller
         $userId = $this->userService->extractUserId($request->bearerToken());
         $response = $this->userService->updateLongtitudeLangtitude($request->all(), $userId);
         return ResponseHelper::successResponse('success update latitude', $response, 200);
+
+    }
+
+    public function logout(Request $request)
+    {
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        $response = $this->userService->logout($userId);
+        return ResponseHelper::successResponse($response['message'], $response['data'], $response['code']);
+    }
+
+    public function card(Request $request)
+    {
+        $userId = $this->userService->extractUserId($request->bearerToken());
+        $response = $this->userService->userCard($userId);
+        return ResponseHelper::successResponse('success fetch data', $response, 200);
 
     }
 

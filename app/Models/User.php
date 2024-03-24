@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,7 +52,8 @@ class User extends Authenticatable
         'state_quisioner',
         'fcm_token',
         'longtitude',
-        'latitude'
+        'latitude',
+        'required_to_fill'
     ];
 
     /**
@@ -71,6 +73,16 @@ class User extends Authenticatable
         'password'
     ];
 
+    public function alumni(): HasMany
+    {
+        return $this->hasMany(Alumni::class, 'nim', 'nim');
+    }
+
+    public function answer_detail(): HasMany
+    {
+        return $this->hasMany(QuesionerAnswerDetail::class, 'user_id', 'id');
+    }
+
     public function followers()
     {
         return $this->hasMany(Follower::class, 'user_id');
@@ -89,7 +101,6 @@ class User extends Authenticatable
     public function followed()
     {
         return $this->hasMany(Followed::class, 'folowed_id');
-
     }
 
     public function post()
@@ -157,6 +168,13 @@ class User extends Authenticatable
     }
 
 
+    public function quisioner_level()
+    {
+        return $this->hasMany(QuisionerLevel::class, "user_id");
+    }
 
-
+    public function notifications()
+    {
+        return $this->hasMany(Notifications::class, "user_id");
+    }
 }

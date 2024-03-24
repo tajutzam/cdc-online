@@ -16,8 +16,9 @@ class CreateNotificationsTable extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('type', );
+            $table->enum('type', ['quisioner', 'news', 'post']);
             $table->string('message');
+            $table->string('id_body')->nullable();
             $table->timestamps();
         });
     }

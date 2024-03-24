@@ -21,9 +21,10 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-
-
         $data = $this->userService->findAll($request->get('active'));
-        return view('admin.alumni.alumni', ['data' => $data]);
+        $countNonActive = array_values($this->userService->countPerDayNonActive());
+        $countActive = array_values($this->userService->countPerDayActive());
+
+        return view('admin.alumni.alumni', ['data' => $data, 'active' => $countActive, 'nonActive'=> $countNonActive]);
     }
 }

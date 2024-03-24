@@ -12,7 +12,7 @@ class Province extends Model
     protected $table = 'province';
 
     protected $fillable = [
-        'id',
-        'province_name'
+        'kode_provinsi',
+        'nama_provinsi'
     ];
 }

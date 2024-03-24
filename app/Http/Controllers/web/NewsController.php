@@ -24,30 +24,36 @@ class NewsController extends Controller
     {
         $data = $this->newsService->findAll($request->get('page'));
 
+        // dd($data);
+
+        // $counts_by_day_active = array_values($data['count_by_active']);
+        // $counts_by_day_non_active = array_values($data['count_by_day_nonactive']);
+        // $counts_by_day_all = array_values($data['count_all']);
+
+
 
         $tempActive = 0;
         $tempNonActive = 0;
 
 
-        foreach ($data['data'] as $value) {
-            # code...
-            if ($value['active'] == true) {
-                $tempActive += 1;
-            } else {
-                $tempNonActive += 1;
-            }
-        }
+
 
         $total = [
             'active' => $tempActive,
             'nonactive' => $tempNonActive
         ];
+
         return view('admin.berita.berita', [
             'data' => $data,
             'total' => [
                 'active' => $total['active'],
                 'nonactive' => $total['nonactive'],
                 'total' => sizeof($data['data']),
+            ],
+            'count' => [
+                'active' => [],
+                'non_active' => [],
+                'all' => array_values($data['count_all'])
             ]
         ]);
     }
@@ -56,9 +62,9 @@ class NewsController extends Controller
     {
 
         $rules = [
-            'title' => 'required|max:100',
-            'description' => 'required|max:500',
-            'image' => 'required|max:1024|mimes:jpeg,png,jpg',
+            'title' => 'required|max:1000',
+            'description' => 'required|max:10000',
+            'image' => 'required|max:3072|mimes:jpeg,png,jpg',
         ];
 
 
@@ -71,7 +77,7 @@ class NewsController extends Controller
 
         $response = $this->newsService->addNews($data, $data['image']);
 
-        Alert::success('Success', $response['message']);
+        Alert::success('Sukses', $response['message']);
         return back();
     }
 
@@ -87,9 +93,9 @@ class NewsController extends Controller
         $rules = [];
         if (isset($image)) {
             $rules = [
-                'title' => 'required|max:100',
+                'title' => 'required|max:1000',
                 'description' => 'required|max:10000',
-                'image-update' => 'required|max:1024|mimes:jpeg,png,jpg',
+                'image-update' => 'required|max:3072|mimes:jpeg,png,jpg',
                 'id' => 'required'
             ];
         } else {
@@ -97,7 +103,6 @@ class NewsController extends Controller
                 'title' => 'required|max:100',
                 'description' => 'required|max:10000',
                 'id' => 'required'
-
             ];
         }
         $customMessages = [
@@ -120,5 +125,17 @@ class NewsController extends Controller
         ];
         $data = $this->validate($request, $rules, $customMessages);
         return $this->newsService->delete($data['id']);
+    }
+
+    public function findAllBlog(Request $request)
+    {
+        $data = $this->newsService->findAll($request->get('page'));
+        $latest = $this->newsService->findLastInserted();
+        unset($data['count_all']);
+        return view('landing-page.blog', ['data' => $data, 'lastest' => $latest]);
+    }
+
+    public function detailBlog($id)
+    {
     }
 }

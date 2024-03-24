@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\NotFoundException;
 use App\Models\Education;
 use App\Models\User;
 
@@ -177,9 +178,9 @@ class EducationService
     {
         $data = $this->education->where('id', $educationId)->where('user_id', $userId)->get()->toArray();
         if (sizeof($data) != 0) {
-            return response()->json(["status" => true, "message" => "Succes fetch data", "data" => $this->castToEducationFromArrayToPojo($data[0]), 'code' => 200], 200);
+            return $data;
         } else {
-            return response()->json(["status" => true, "message" => "data not found", "data" => [], 'code' => 404], 404);
+            throw new NotFoundException("Ops Data pendidikan tidak ditemukan");
         }
     }
 

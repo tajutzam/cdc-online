@@ -46,9 +46,8 @@ class ProdiController extends Controller
         $data = $this->validate($request, $rules, $customMessages);
 
         $response = $this->prodiService->addProdi($data);
-        Alert::success('Success', $response['message']);
+        Alert::success('Sukses', $response['message']);
         return back();
-
     }
 
     public function updateProdi(Request $request)
@@ -66,8 +65,6 @@ class ProdiController extends Controller
         $response = $this->prodiService->updateProdi($data);
         Alert::success('Success', $response['message']);
         return back();
-
-
     }
 
     public function deleteProdi(Request $request)
@@ -82,10 +79,9 @@ class ProdiController extends Controller
             'required' => ':attribute Dibutuhkan.',
         ];
         // $data = $this->validate($request, $rules, $customMessages);
-     
+
         $response = $this->prodiService->deleteProdi($request->only('id_delete'));
         Alert::success('Success', $response['message']);
         return back();
     }
-
 }

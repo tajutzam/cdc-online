@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Competence extends Model
 {
-    use HasFactory;
+    use HasFactory ,Uuids;
 
     protected $table = 'competence';
 
@@ -26,11 +27,11 @@ class Competence extends Model
         'f1772',
         'f1773',
         'f1774',
-        'user_id',
     ];
 
-    public function user()
+    public function quisionerLevel()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasOne(QuisionerLevel::class);
     }
+
 }

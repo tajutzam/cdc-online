@@ -6,10 +6,13 @@ namespace App\Services;
 use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\UnauthorizedException;
+use App\Exceptions\WebException;
 use App\Helper\ResponseHelper;
 use App\Models\Education;
 use App\Models\Followed;
 use App\Models\Follower;
+use App\Models\QuesionerAnswer;
+use App\Models\QuesionerAnswerDetail;
 use App\Models\User;
 use Cloudinary\Api\Exception\BadRequest;
 use Cloudinary\Api\Exception\NotFound;
@@ -17,7 +20,9 @@ use Exception;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserService
@@ -44,7 +49,7 @@ class UserService
         $data = $this->userModel->with('jobs', 'educations', 'followers')->where('token', $token)->get()->toArray();
         $responsePojo = [];
 
-        $user = $this->userModel->where('token', $token)->first();
+        $user = $this->userModel->with('prodi')->where('token', $token)->first();
 
         $userPojo = $this->castToUserResponse($user);
         foreach ($data as $key => $value) {
@@ -105,7 +110,7 @@ class UserService
         }
 
         $userPojo = $this->castToUserResponse($user);
-        $userPojo['$isFollow'] = $isFollow;
+        $userPojo['isFollow'] = $isFollow;
 
         $followersIds = collect($data['followers'])->pluck('folowers_id')->toArray();
         $followers = [];
@@ -137,7 +142,6 @@ class UserService
 
         return ResponseHelper::successResponse('success fetch data', $responsePojo, 200);
     }
-
 
     public function findAllUser($pageNumber, $angkatan, $prodi, $id) // need pagination 
     {
@@ -208,17 +212,20 @@ class UserService
 
 
 
-    public function findAll($active)
+    public function findAll($active = null)
     {
 
         $query = $this->userModel->with('jobs', 'educations', 'prodi');
         $response = [];
 
         $response['alumni'] = $query->when(isset($active), function ($query) use ($active) {
-            $query->where('account_status', $active);
+            if (isset($active)) {
+                $query->where('account_status', $active);
+            }
         })->whereHas('educations', function ($educationQuery) {
             $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
         })->get()->toArray();
+
 
 
         $statusCounts = $this->userModel
@@ -242,14 +249,67 @@ class UserService
             }
         }
 
+
+        $now = now(); // Tanggal sekarang
+        $today = $now->dayOfWeek; // Mendapatkan hari dalam format 0 (Minggu) hingga 6 (Sabtu)
+
+        // Menghitung tanggal awal (Minggu) dalam seminggu tertentu
+        $startDate = $now->subDays($today)->startOfDay();
+
+        // Menghitung tanggal akhir (Sabtu) dalam seminggu tertentu
+        $endDate = $startDate->copy()->addDays(6)->endOfDay();
+
+        $addedActiveInWeek = $this->userModel
+            ->where('account_status', true) // Hanya data dengan account_status true
+            ->whereBetween('created_at', [$startDate, $endDate]) // Filter data yang dibuat dalam rentang waktu (Minggu hingga Sabtu)
+            ->count(); // Menghitung jumlah data
+
+        $addedNonActiveInWeek = $this->userModel
+            ->where('account_status', false) // Hanya data dengan account_status true
+            ->whereBetween('created_at', [$startDate, $endDate]) // Filter data yang dibuat dalam rentang waktu (Minggu hingga Sabtu)
+            ->count(); // Menghitung jumlah data
+
         $response['count'] = [
             'active' => $active,
-            'nonactive' => $nonActive
+            'nonactive' => $nonActive,
+            'actviceWeek' => $addedActiveInWeek,
+            'nonActiveWeek' => $addedNonActiveInWeek
         ];
-
         return $response;
     }
 
+    public function findAllByProdi($active, $kodeProdi) //todo
+    {
+        $alumni = User::with('alumni','prodi')
+        ->where('kode_prodi', $kodeProdi);
+
+        if (isset($active) != null) {
+            $alumni->where('account_status',$active);
+        }
+
+        $alumniList = $alumni->get();
+
+
+        $active = User::with('alumni')
+            ->where('kode_prodi', $kodeProdi)
+            ->where('account_status', 1)->count();
+
+        $nonActive = User::with('alumni')
+            ->where('kode_prodi', $kodeProdi)
+            ->where('account_status', 0)->count();
+
+
+        $data = [
+            'alumni' => $alumniList,
+            'count' => [
+                'active' => $active,
+                'nonactive' => $nonActive
+            ]
+        ];
+
+        return $data;
+
+    }
 
     public function updateVisible($request, $token)
     {
@@ -306,7 +366,6 @@ class UserService
             return ResponseHelper::successResponse('Berhsail memperbarui visibility', $updated, 200);
         }
         throw new Exception('ops , gagal memperbarui visibility terjadi kesalahan');
-
     }
 
 
@@ -400,22 +459,52 @@ class UserService
             "nik" => $user->visible_nik == 1 ? $user->nik : "***",
             "no_telp" => $user->visible_no_telp == 1 ? $user->no_telp : "***",
             "foto" => $url,
-            'ttl' => $user->ttl,
+            'ttl' => $user->visible_ttl == 1 ? $user->ttl : '***',
             'alamat' => $user->visible_alamat == 1 ? $user->alamat : "***",
             "about" => $user->about,
-            "gender" => $user->gender,
+            "gender" => $user->gender == 'male' ? "Laki-Laki" : "Perempuan",
             "level" => $user->level,
             "linkedin" => $user->linkedin,
             "facebook" => $user->facebook,
             "instagram" => $user->instagram,
             'twiter' => $user->twiter,
             'account_status' => $user->account_status,
+            'prodi' => $user->prodi->id,
             "latitude" => $user->latitude,
-            "longtitude" => $user->longtitude
+            "longtitude" => $user->longtitude,
+            'state_quisioner' => $user->state_quisioner
         ];
     }
 
     public function castToUserResponseFromArray($user)
+    {
+
+        $url = url('/') . "/users/" . $user['foto'];
+        return [
+            "id" => $user['id'],
+            'nim' => $user['nim'],
+            "fullname" => $user['visible_fullname'] == 1 ? $user['fullname'] : "***",
+            "email" => $user['visible_email'] == 1 ? $user['email'] : "***",
+            "nik" => $user['visible_nik'] == 1 ? $user['nik'] : "***",
+            "no_telp" => $user['visible_no_telp'] == 1 ? $user['no_telp'] : "***",
+            "foto" => $url,
+            'ttl' => $user['visible_ttl'] == 1 ? $user['ttl'] : "***",
+            'alamat' => $user['visible_alamat'] == 1 ? $user['alamat'] : "***",
+            "about" => $user['about'],
+            "gender" => $user['gender'] == "male" ? "Laki-Laki" : "Perempuan",
+            "level" => $user['level'],
+            "linkedin" => $user['linkedin'],
+            "facebook" => $user['facebook'],
+            "instagram" => $user['instagram'],
+            'twiter' => $user['twiter'],
+            'account_status' => $user['account_status'],
+            'latitude' => $user['latitude'],
+            'longtitude' => $user['longtitude'],
+            'state_quisioner' => $user['state_quisioner']
+        ];
+    }
+
+    public function castToUserResponseFromArrayWithJoin($user)
     {
 
         $url = url('/') . "/users/" . $user['foto'];
@@ -426,10 +515,10 @@ class UserService
             "nik" => $user['visible_nik'] == 1 ? $user['nik'] : "***",
             "no_telp" => $user['visible_no_telp'] == 1 ? $user['no_telp'] : "***",
             "foto" => $url,
-            'ttl' => $user['ttl'],
+            'ttl' => $user['visible_ttl'] == 1 ? $user['ttl'] : "***",
             'alamat' => $user['visible_alamat'] == 1 ? $user['alamat'] : "***",
             "about" => $user['about'],
-            "gender" => $user['gender'],
+            "gender" => $user['gender'] == "male" ? "Laki-Laki" : "Perempuan",
             "level" => $user['level'],
             "linkedin" => $user['linkedin'],
             "facebook" => $user['facebook'],
@@ -437,43 +526,119 @@ class UserService
             'twiter' => $user['twiter'],
             'account_status' => $user['account_status'],
             'latitude' => $user['latitude'],
-            'longtitude' => $user['longtitude']
+            'longtitude' => $user['longtitude'],
+            'state_quisioner' => $user['state_quisioner'],
+            'educations' => $user['educations']->toArray(),
+            'prodi' => $user['prodi']->toArray()
         ];
     }
 
     public function getTopUser()
     {
-        $data = $this->userModel->with('followers')->get()->toArray();
+        $data = $this->userModel->with('followers', 'jobs')->get()->toArray();
 
         $data = collect($data)->sortByDesc(function ($user) {
             return count($user['followers']);
         })->values()->take(20)->all();
 
         $response = collect($data)->map(function ($user) {
+            // dd($user);
+            $lastJob = collect($user['jobs'])->where('pekerjaan_saatini', 1)->first();
+            $user_id = $user['id'];
+            $jobs = QuesionerAnswerDetail::with('paket', 'quesioner_answer', 'quesioner_answer.detail', 'users', 'users.alumni')
+                ->whereHas('users', function ($query) use ($user_id) {
+                    $query->where('id', $user_id); //ubah user_id
+                })
+                ->select('quesioner_answer_details.*')
+                ->join(DB::raw('(SELECT user_id, MAX(level) AS max_level FROM quesioner_answer_details GROUP BY user_id) AS max_levels'), function ($join) {
+                    $join->on('quesioner_answer_details.user_id', '=', 'max_levels.user_id')
+                        ->on('quesioner_answer_details.level', '=', 'max_levels.max_level');
+                })
+                ->get();
+
+            // Assuming $jobs is your collection
+            $job = null;
+            $company = null;
+
+            if ($jobs->isNotEmpty() && isset($jobs->first()['quesioner_answer'])) {
+                $quesioner_answer = $jobs->first()['quesioner_answer'];
+
+                foreach ($quesioner_answer as $answer) {
+                    if ($answer->detail->kode_pertanyaan === 'f5c') {
+                        $job = $answer->answer_value; // Assuming 'answer_value' holds job information
+                        break;
+                    }
+                }
+
+                foreach ($quesioner_answer as $answer) {
+                    if ($answer->detail->kode_pertanyaan === 'f5b') {
+                        $company = $answer->answer_value; // Assuming 'answer_value' holds company information
+                        break;
+                    }
+                }
+            }
+
+            $parts = explode(' - ', json_decode($job));
+            $job_name = isset($parts[1]) ? $parts[1] : null;
+
+
             $tempData = $this->castToUserResponseFromArray($user);
             $tempData['followers'] = $user['followers'];
             $tempData['total_followers'] = sizeof($user['followers']);
+            $tempData['job'] = $job_name;
+            $tempData['company'] = json_decode($company);
             return $tempData;
         })->toArray();
+        // dd($response); die;
         return $response;
     }
 
     public function getTopUserBySalary()
     {
-        $data = $this->userModel->with('jobs')->get()->toArray();
+        $data = [];
 
-        // Gunakan metode koleksi untuk mengambil nama posisi pekerjaan terakhir dan gaji tertinggi
-        return collect($data)->filter(function ($user) {
-            return count($user['jobs']) > 0; // Filter pengguna yang memiliki setidaknya satu pekerjaan.
-        })->map(function ($user) {
-            $lastJob = collect($user['jobs'])->where('pekerjaan_saatini', 1)->first();
-            return [
-                'fullname' => $user['fullname'],
-                'last_position' => $lastJob ? $lastJob['jabatan'] : null,
-                'highest_salary' => $lastJob ? $lastJob['gaji'] : null,
-                'company' => $lastJob['perusahaan']
-            ];
-        })->sortByDesc('highest_salary')->values()->take(20)->toArray();
+        $detail = QuesionerAnswerDetail::with('paket', 'quesioner_answer', 'quesioner_answer.detail', 'users', 'users.alumni')
+            ->select('quesioner_answer_details.*')
+            ->join(DB::raw('(SELECT user_id, MAX(level) AS max_level FROM quesioner_answer_details GROUP BY user_id) AS max_levels'), function ($join) {
+                $join->on('quesioner_answer_details.user_id', '=', 'max_levels.user_id')
+                    ->on('quesioner_answer_details.level', '=', 'max_levels.max_level');
+            })
+            ->get();
+
+        foreach ($detail as $key => $value) {
+            $data[$key]['fullname'] = $value->users->fullname;
+
+            $lastPosition = '';
+            $highestSalary = '';
+            $company = '';
+
+         foreach ($value->quesioner_answer as $key2 => $quesionerAnswer) {  
+            //jabatan
+            if ($quesionerAnswer->detail->kode_pertanyaan == 'f5c') {
+                    $lastPosition = $quesionerAnswer->answer_value;
+            }
+            //salary
+            if ($quesionerAnswer->detail->kode_pertanyaan == 'f505') {
+                    $highestSalary = $quesionerAnswer->answer_value;
+            }
+            //company
+            if ($quesionerAnswer->detail->kode_pertanyaan == 'f5b') {
+                    $company = $quesionerAnswer->answer_value;
+            }
+         }
+
+            $parts = explode(' - ', $lastPosition);
+            $lastPositionName = isset($parts[1]) ? $parts[1] : null;
+
+            $data[$key]['last_position'] =  $lastPositionName;
+            $data[$key]['highest_salary'] = json_decode($highestSalary);
+            $data[$key]['company'] = json_decode($company);
+
+            $data[$key]['account_status'] = $value->users->account_status;
+            $data[$key]['image'] = $value->users->foto;
+        }
+
+        return $data;
     }
 
     private function castToEducations($education)
@@ -510,7 +675,6 @@ class UserService
             "id" => $education['id'],
             "no_ijasah" => $education['no_ijasah'],
         ];
-
     }
 
     public function followUser($idUserLogin, $userId)
@@ -518,6 +682,9 @@ class UserService
         $userFollower = $this->userModel->where('id', $userId)->first();
         DB::beginTransaction();
         if (isset($userFollower)) {
+            if ($idUserLogin == $userId) {
+                throw new BadRequestException("Ops , Kamu tidak bisa mengikuti diri sendiri");
+            }
             try {
                 $isFolowed = $this->followed->where('user_id', $userId)->where('folowed_id', $idUserLogin)->first();
                 if (isset($isFolowed)) {
@@ -614,23 +781,18 @@ class UserService
     public function updateUserLogin($request, $userId)
     {
         DB::beginTransaction();
+        $filteredKeys = array_filter(array_keys($request), function ($key) use ($request) {
+            return $request[$key] !== '***';
+        });
+
+        $dataBasedOnFilteredKeys = array_intersect_key($request, array_flip($filteredKeys));
+        $dataBasedOnFilteredKeys['twiter'] = $dataBasedOnFilteredKeys['x'];
+        unset($dataBasedOnFilteredKeys['x']);
+
         try {
             //code...
-            $isUpdate = $this->userModel->where('id', $userId)->update([
-
-                'fullname' => $request['fullname'],
-                'ttl' => $request['ttl'],
-                'about' => $request['about'],
-                'linkedin' => $request['linkedin'],
-                'instagram' => $request['instagram'],
-                'twiter' => $request['x'],
-                'facebook' => $request['facebook'],
-                'no_telp' => $request['no_telp'],
-                'gender' => $request['gender'],
-                'alamat' => $request['alamat'],
-                'nik' => $request['nik']
-
-            ]);
+            // check 4 visibility
+            $isUpdate = $this->userModel->where('id', $userId)->update($dataBasedOnFilteredKeys);
             if ($isUpdate) {
                 DB::commit();
                 return ResponseHelper::successResponse('success memberbarui profile', $isUpdate, 200);
@@ -791,14 +953,391 @@ class UserService
     {
 
         $userId = $this->extractUserId($token);
-        $user = $this->userModel->where('id', $userId)->first();
-
-        if (isset($user)) {
-            return $user->account_status;
+        $user = $this->userModel->where('id', $userId)
+            ->with(['educations' => function ($query) {
+                $query->orderBy('created_at', 'asc');
+            }])
+            ->first();
+        if ($user) {
+            // Ambil educations yang pertama kali diinsert
+            $firstEducation = $user->educations->first();
+            if (!isset($firstEducation)) {
+                return $user->account_status;
+            }
+            $graduated = $firstEducation->tahun_lulus;
+            if ($graduated == date('Y') - 5) {
+                return true;
+            } else {
+                return $user->account_status;
+            }
         } else {
             throw new NotFoundException('ops , Nampaknya user yang kamu cari tidak ditemukan');
         }
-
     }
+
+    public function updateLongtitudeLatitude($request, $userId)
+    {
+        Db::beginTransaction();
+        $user = $this->userModel->where('id', $userId)->first();
+        if (!isset($user)) {
+            throw new NotFoundException('ops , user tidak ditemukan');
+        }
+        $isUpdateed = $user->update([
+            'latitude' => $request['latitude'],
+            'longtitude' => $request['longtitude']
+        ]);
+        if ($isUpdateed) {
+            DB::commit();
+            return [
+                'status' => true,
+                'code' => 200,
+                'message' => ' success update lotitude'
+            ];
+        }
+        throw new Exception('');
+    }
+
+    public function updatePassword($email, $password)
+    {
+        $user = $this->userModel->where('email', $email)->first();
+        Db::beginTransaction();
+        if (isset($user)) {
+            $updated = $user->update(
+                [
+                    'password' => Hash::make($password)
+                ]
+            );
+            if ($updated) {
+                Db::commit();
+                return true;
+            }
+            throw new WebException("Ops , gagal memperbarui password terjadi kesalahan");
+        }
+        throw new WebException('Ops , token kamu tidak valid , email tidak ditemukan');
+    }
+
+    public function logout($userId)
+    {
+        $user = $this->userModel->where('id', $userId)->first();
+        if (isset($user)) {
+            $updated = $user->update([
+                'token' => null
+            ]);
+            if ($updated) {
+                return [
+                    'status' => true,
+                    'message' => 'Sukses Logout',
+                    'code' => 200,
+                    'data' => true
+                ];
+            } else {
+                throw new Exception('Ops , terjadi kesalahan saat logout');
+            }
+        }
+    }
+
+    public function countPerDayActive()
+    {
+        $startDate = now()->startOfWeek(); // Mendapatkan awal minggu (Minggu)
+        $endDate = now()->endOfWeek(); // Mendapatkan akhir minggu (Sabtu)
+
+        $data = [];
+
+        while ($startDate <= $endDate) {
+            $count = $this->userModel
+                ->whereDate('created_at', $startDate->toDateString())
+                ->where('account_status', true)
+                ->with('educations')
+                ->whereHas('educations', function ($educationQuery) {
+                    $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
+                })
+                ->count();
+            $data[$startDate->format('Y-m-d')] = $count;
+
+            $startDate->addDay();
+        }
+        return $data;
+    }
+
+    public function countPerDayNonActive()
+    {
+        $startDate = now()->startOfWeek(); // Mendapatkan awal minggu (Minggu)
+        $endDate = now()->endOfWeek(); // Mendapatkan akhir minggu (Sabtu)
+
+        $data = [];
+
+        while ($startDate <= $endDate) {
+            $count = $this->userModel
+                ->whereDate('created_at', $startDate->toDateString())
+                ->where('account_status', false)
+                ->with('educations')
+                ->whereHas('educations', function ($educationQuery) {
+                    $educationQuery->where('perguruan', 'Politeknik Negeri Jember');
+                })
+                ->count();
+            $data[$startDate->format('Y-m-d')] = $count;
+
+            $startDate->addDay();
+        }
+        return $data;
+    }
+
+    public function findByEmail($email)
+    {
+        return $this->userModel->where('email', $email)->first();
+    }
+
+
+    // find user yang sudah bekerja setiap angkatan
+    public function findLastFiveYearsAlumniWhoHaveWorked()
+    {
+        $currentYear = date('Y'); // Tahun saat ini
+        $yearsAgo = $currentYear - 4; // Lima tahun yang lalu
+
+        $users = QuesionerAnswerDetail::with('paket', 'quesioner_answer', 'quesioner_answer.detail', 'users', 'users.alumni')
+        ->whereHas('quesioner_answer', function ($query) {
+            $query->where('answer_value', '1 - Bekerja (full time/part time)');
+        })
+        ->whereHas('users.alumni', function ($query) use ($yearsAgo) {
+            $query->where('angkatan','>=', $yearsAgo);
+        })
+        ->whereRaw('YEAR(created_at) >= ?', $yearsAgo)
+        ->get();
+
+
+
+        $groupedUsers = $users->groupBy(function ($user) {
+            return $user->users->alumni->first()->angkatan;
+        })->map(function ($users) {
+            $zero = 0;
+            $six = 0;
+            $twelve = 0;
+
+            foreach ($users as $value) {
+                    if ($value['level'] == '0') {
+                        $zero++;
+                    } else if ($value['level'] == '6') {
+                        $six++;
+                    } else if ($value['level'] == '12') {
+                        $twelve++;
+                    }
+            }
+            return [
+                '0' => $zero,
+                '6' => $six,
+                '12' => $twelve
+            ];
+        })->toArray();
+
+        // Tambahkan tahun-tahun yang tidak memiliki data
+        $missingYears = range($currentYear, $yearsAgo);
+        foreach ($missingYears as $year) {
+            if (!isset($groupedUsers[$year])) {
+                $groupedUsers[$year] = [
+                    '0' => 0,
+                    '6' => 0,
+                    '12' => 0
+                ];
+                ; // Tambahkan array kosong
+            }
+        }
+
+        // dd($groupedUsers);
+        return $groupedUsers;
+    }
+
+
+    public function findLastFiveYearsAlumniWhoHaveWorkedByStudyProgram($idProdi)
+    {
+        $currentYear = date('Y'); // Tahun saat ini
+        $yearsAgo = $currentYear - 4; // Lima tahun yang lalu
+
+        $users = QuesionerAnswerDetail::with('paket', 'quesioner_answer', 'quesioner_answer.detail', 'users', 'users.alumni')
+            ->whereHas('quesioner_answer', function ($query) {
+                $query->where('answer_value', '1 - Bekerja (full time/part time)');
+            })
+            ->whereHas('users.alumni', function ($query) use ($yearsAgo) {
+                $query->where('angkatan', '>=', $yearsAgo);
+            })
+            ->whereHas('users', function ($query) use ($idProdi) {
+                $query->where('kode_prodi', $idProdi);
+            })
+            ->get();
+
+        $groupedUsers = $users->groupBy(function ($user) {
+            return $user->users->alumni->first()->angkatan;
+        })->map(function ($users) {
+            $zero = 0;
+            $six = 0;
+            $twelve = 0;
+
+            foreach ($users as $value) {
+                if ($value['level'] == '0') {
+                    $zero++;
+                } else if ($value['level'] == '6') {
+                    $six++;
+                } else if ($value['level'] == '12') {
+                    $twelve++;
+                }
+            }
+            return [
+                '0' => $zero,
+                '6' => $six,
+                '12' => $twelve
+            ];
+        })->toArray();
+
+        // Tambahkan tahun-tahun yang tidak memiliki data
+        $missingYears = range($currentYear, $yearsAgo);
+        foreach ($missingYears as $year) {
+            if (!isset($groupedUsers[$year])) {
+                $groupedUsers[$year] = [
+                    '0' => 0,
+                    '6' => 0,
+                    '12' => 0
+                ];; // Tambahkan array kosong
+            }
+        }
+
+        // dd($groupedUsers);
+        return $groupedUsers;
+    }
+
+
+
+    public function countUsersPerStudyProgram()
+    {
+        $data = $this->userModel->whereHas('prodi', function ($query) {
+            $query->groupBy('nama_prodi');
+        })
+            ->with('prodi')
+            ->get()
+            ->toArray();
+
+        // Inisialisasi array untuk menyimpan jumlah data per program studi
+        $totalPerStudyProgram = [];
+
+        // Mengelompokkan data berdasarkan program studi
+        foreach ($data as $user) {
+            $namaProdi = $user['prodi']['nama_prodi'];
+
+            // Jika program studi belum ada dalam array, inisialisasi dengan 1
+            if (!isset($jumlahDataPerProdi[$namaProdi])) {
+                $totalPerStudyProgram[$namaProdi] = 1;
+            } else {
+                // Jika program studi sudah ada dalam array, tambahkan 1 ke jumlahnya
+                $totalPerStudyProgram[$namaProdi]++;
+            }
+        }
+        $result = [];
+        foreach ($totalPerStudyProgram as $key => $count) {
+            $temp = [
+                'name' => $key,
+                'y' => $count
+            ];
+            array_push($result, $temp);
+        }
+        // Hasilnya akan berisi jumlah data per program studi
+        return $result;
+    }
+
+    public function applicationEnrollmentProgress()
+    {
+
+        $year = Carbon::now()->year;// Ganti dengan tahun yang sesuai
+        $monthlyCounts = User::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        $months = [
+            1 => 'January',
+            2 => 'February',
+            3 => 'March',
+            4 => 'April',
+            5 => 'May',
+            6 => 'June',
+            7 => 'July',
+            8 => 'August',
+            9 => 'September',
+            10 => 'October',
+            11 => 'November',
+            12 => 'December',
+        ];
+
+        $monthlyData = [];
+        foreach ($monthlyCounts as $count) {
+            $monthName = $months[$count->month];
+            $monthlyData[$monthName] = $count->count;
+        }
+
+        // Tampilkan jumlah pengguna yang mendaftar pada setiap bulan
+        $result = [];
+        foreach ($months as $monthNumber => $monthName) {
+            $count = isset($monthlyData[$monthName]) ? $monthlyData[$monthName] : 0;
+            $temp = [
+                'name' => $monthName,
+                'y' => $count
+            ];
+            array_push($result, $temp);
+        }
+        return $result;
+    }
+
+    public function totalUsers()
+    {
+        return $this->userModel->count();
+    }
+
+    public function findAllUserHaveWork()
+    {
+        return $this->userModel
+            ->whereHas('quisioner_level', function ($query) {
+                $query->whereHas('main', function ($mainQuery) {
+                    $mainQuery->orWhere('f8', 'Bekerja (full time/part time)');
+                    $mainQuery->orWhere('f8', 'Wiraswasta');
+                });
+            })->count();
+    }
+
+    public function findAllUserHaveNotWork()
+    {
+        return $this->userModel
+            ->whereDoesntHave('quisioner_level') // Equivalent to orWhereNotHas for absence of related models
+            ->orWhereHas('quisioner_level', function ($query) {
+                $query->whereHas('main', function ($mainQuery) {
+                    $mainQuery->where(function ($mainWhere) {
+                        $mainWhere->where('f8', 'Belum memungkinkan bekerja')
+                            ->orWhere('f8', 'Tidak kerja tetapi sedang mencari kerja');
+                    });
+                });
+            })
+            ->count();
+    }
+
+    public function userCard($userId)
+    {
+        $user = $this->userModel
+            ->with([
+                'educations' => function ($query) {
+                    $query->where('perguruan', 'Politeknik Negeri Jember')->first();
+                }
+            ])
+            ->where('id', $userId)
+            ->first();
+
+        $response = $this->castToUserResponseFromArray($user);
+        if (isset($user['educations'][0])) {
+            $response['educations'] = $user['educations'][0]->toArray();
+        } else {
+            $response['educations'] = [];
+        }
+        return $response;
+    }
+
+
+
+
 
 }

@@ -1,0 +1,233 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API AUTH DOCUMENTATIONS",
+        "version": "1.0",
+        "contact": {
+            "email": "mohammadtajutzamzami07@gmail.com",
+            "name": "Mohammad Tajut Zamzami",
+            "url": "https://github.com/tajutzam"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
+    "paths": {
+        "/auth/user/register": {
+            "post": {
+                "tags": ["Auth"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "safiraput77@gmail.com"
+                                    },
+                                    "nik": {
+                                        "type": "string",
+                                        "example": "0922221as12sa422"
+                                    },
+                                    "fullname": {
+                                        "type": "string",
+                                        "example": "okasdasd"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "rahasia"
+                                    },
+                                    "no_telp": {
+                                        "type": "string",
+                                        "example": "0876123123123"
+                                    },
+                                    "alamat": {
+                                        "type": "string",
+                                        "example": "banyuwangi jawa timur"
+                                    },
+                                    "nim": {
+                                        "type": "string",
+                                        "example": "e4121223s2"
+                                    },
+                                    "kode_prodi": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "13311"
+                                    },
+                                    "tahun_lulus": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "2022"
+                                    },
+                                    "angkatan": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "2017"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success registrasi",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "201"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Berhasil Registrasi silahkan login"
+                                        },
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation exception"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": ["Auth"],
+                "description": "login api",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "emailOrNik": {
+                                        "type": "string",
+                                        "example": "second@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "rahasia"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Berhasil Login"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string",
+                                                    "example": "lDiU8TjcfWxgxAUW7BMJ7wLSOu3o8t3gYCaqQXfSQvK6JhQ08JSxhxOtkw0oDDzW5t7U3E2RYA0F0Fo2LVDycGHY1MhnHai9ysaJHO7Yv3EFAGW3sg7WTc3gaiFhzMyjdV02PH9sxS8IPWqCJzhVCh"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation exception"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated "
+                    }
+                }
+            }
+        },
+        "/auth/recovery": {
+            "description": "api untuk recovery password",
+            "post": {
+                "tags": ["Auth"],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "safiraput66@gmail.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },  
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "success recovery email sendit",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Berhasil Mengirim Password Reset Url"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        } 
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation invalid or bad request"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        }
+    }
+}

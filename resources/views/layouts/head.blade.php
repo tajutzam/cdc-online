@@ -19,10 +19,10 @@
                         <a class="nav-link" href="avascript:;"><i class='bx bx-search'></i>
                         </a>
                     </li> --}}
-                    <li class="nav-item dark-mode  d-sm-flex">
+                    {{-- <li class="nav-item dark-mode  d-sm-flex">
                         <a class="nav-link dark-mode-icon" href="javascript:;"><i class='bx bx-moon'></i>
                         </a>
-                    </li>
+                    </li> --}}
 
                     <li class="nav-item dropdown dropdown-app">
                         {{-- <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown"
@@ -614,15 +614,13 @@
                         <p class="designattion mb-0">role : {{ Auth::guard('admin')->user()->role }}</p>
                     </div>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                class="bx bx-user fs-5"></i><span>Profile</span></a>
-                    </li>
-                    <li>
-                        <div class="dropdown-divider mb-0"></div>
-                    </li>
-                    <li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                class="bx bx-log-out-circle"></i><span>Logout</span></a>
+                <ul class="dropdown-menu dropdown-menu-end"; ">
+
+                    <li class="text-center">
+                        <form action="{{ route('admin-logout', ['id' => 1]) }}" method="post">
+                            <button href="" type="submit" class="btn"> <i
+                                    class="bx bx-arrow-back"></i>Logout</button>
+                        </form>
                     </li>
                 </ul>
             </div>

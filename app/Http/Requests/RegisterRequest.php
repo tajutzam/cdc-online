@@ -31,7 +31,9 @@ class RegisterRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'alamat' => 'required',
             'nim' => 'required|string|unique:users,nim',
-            'kode_prodi' => 'required|numeric'
+            'kode_prodi' => 'required|numeric',
+            "tahun_lulus" => 'required|numeric',
+            'angkatan' => 'required|numeric'
         ];
     }
 

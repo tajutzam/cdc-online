@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Identity extends Model
 {
-    use HasFactory , Uuids;
+    use HasFactory, Uuids;
 
     protected $table = 'quis_identitas';
 
@@ -22,7 +22,11 @@ class Identity extends Model
         'tahun_lulus',
         'nik',
         'npwp',
-        'user_id',
     ];
+
+    public function quisionerLevel()
+    {
+        return $this->hasOne(QuisionerLevel::class);
+    }
 
 }

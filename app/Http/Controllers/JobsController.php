@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\ResponseHelper;
 use App\Http\Middleware\TokenMiddleware;
 use App\Http\Middleware\VeriviedMiddleware;
 use App\Http\Requests\AddNewJobsRequest;
@@ -77,6 +78,13 @@ class JobsController extends Controller
             );
         }
         return $this->jobsService->removeJobsUserLogin($request->input('jobs_id'), $userId);
+    }
+
+
+    public function countJobs(Request $request, $id)
+    {
+        $data = $this->jobsService->countJobByUserId($id);
+        return ResponseHelper::successResponse("Sucess fetch data", $data, 200);
     }
 
 }

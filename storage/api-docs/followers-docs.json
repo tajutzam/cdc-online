@@ -1,0 +1,433 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Followers User DOCUMENTATIONS",
+        "version": "1.0",
+        "contact": {
+            "email": "mohammadtajutzamzami07@gmail.com",
+            "name": "Mohammad Tajut Zamzami",
+            "url": "https://github.com/tajutzam"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
+    "paths": {
+        "/user/followers": {
+            "get": {
+                "description": "get followers user login",
+                "responses": {
+                    "200": {
+                        "description": "success fetch data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "total_followers": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "1"
+                                                },
+                                                "followers": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "988f966a-20ff-4f53-9b9c-26a25e12f85a"
+                                                            },
+                                                            "fullname": {
+                                                                "type": "string",
+                                                                "example": "second user"
+                                                            },
+                                                            "email": {
+                                                                "type": "string",
+                                                                "example": "second@gmail.com"
+                                                            },
+                                                            "nik": {
+                                                                "type": "string",
+                                                                "example": "***"
+                                                            },
+                                                            "no_telp": {
+                                                                "type": "string",
+                                                                "example": "***"
+                                                            },
+                                                            "foto": {
+                                                                "type": "string",
+                                                                "example": "http://localhost:8000/users/foto.png"
+                                                            },
+                                                            "ttl": {
+                                                                "type": "string",
+                                                                "format": "nullable"
+                                                            },
+                                                            "alamat": {
+                                                                "type": "string",
+                                                                "example": "jawa timur , banyuwangi"
+                                                            },
+                                                            "about": {
+                                                                "type": "string",
+                                                                "example": "second abour"
+                                                            },
+                                                            "gender": {
+                                                                "type": "string",
+                                                                "example": "Laki-Laki"
+                                                            },
+                                                            "level": {
+                                                                "type": "string",
+                                                                "example": "user"
+                                                            },
+                                                            "linkedin": {
+                                                                "type": "string",
+                                                                "example": "linkedin.com/zam"
+                                                            },
+                                                            "facebook": {
+                                                                "type": "string",
+                                                                "format": "nullable"
+                                                            },
+                                                            "instagram": {
+                                                                "type": "string",
+                                                                "format": "nullable"
+                                                            },
+                                                            "twiter": {
+                                                                "type": "string",
+                                                                "format": "nullable"
+                                                            },
+                                                            "account_status": {
+                                                                "type": "integer",
+                                                                "format": "int32",
+                                                                "example": "1"
+                                                            },
+                                                            "latitude": {
+                                                                "type": "string",
+                                                                "format": "nullable"
+                                                            },
+                                                            "longtitude": {
+                                                                "type": "string",
+                                                                "format": "nullable"
+                                                            },
+                                                            "state_quisioner": {
+                                                                "type": "string",
+                                                                "example": "0"
+                                                            }
+                                                        }
+                                                    },
+                                                    "example": [
+                                                        {
+                                                            "id": "988f966a-20ff-4f53-9b9c-26a25e12f85a",
+                                                            "fullname": "second user",
+                                                            "email": "second@gmail.com",
+                                                            "nik": "***",
+                                                            "no_telp": "***",
+                                                            "foto": "http://localhost:8000/users/foto.png",
+                                                            "ttl": null,
+                                                            "alamat": "jawa timur , banyuwangi",
+                                                            "about": "second abour",
+                                                            "gender": "Laki-Laki",
+                                                            "level": "user",
+                                                            "linkedin": "linkedin.com/zam",
+                                                            "facebook": null,
+                                                            "instagram": null,
+                                                            "twiter": null,
+                                                            "account_status": 1,
+                                                            "latitude": null,
+                                                            "longtitude": null,
+                                                            "state_quisioner": "0"
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success fetch data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthenticated"
+                    },
+                    "403": {
+                        "description": "forbiden"
+                    }
+                }
+            }
+        },
+        "/user/followers/{userId}": {
+            "get": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success fetch data",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "total_followers": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": "1"
+                                                },
+                                                "user": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "example": "a81a1c60-b2dc-432d-a885-b91ccdea2c89"
+                                                        },
+                                                        "fullname": {
+                                                            "type": "string",
+                                                            "example": "mohammad tajut zamzami"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "test@gmail.com"
+                                                        },
+                                                        "nik": {
+                                                            "type": "string",
+                                                            "example": "***"
+                                                        },
+                                                        "no_telp": {
+                                                            "type": "string",
+                                                            "example": "***"
+                                                        },
+                                                        "foto": {
+                                                            "type": "string",
+                                                            "example": "http://localhost:8000/users/foto.png"
+                                                        },
+                                                        "ttl": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "alamat": {
+                                                            "type": "string",
+                                                            "example": "jawa timur , banyuwangi"
+                                                        },
+                                                        "about": {
+                                                            "type": "string",
+                                                            "example": "saya adalah orang yang memiliki tekat tinggi"
+                                                        },
+                                                        "gender": {
+                                                            "type": "string",
+                                                            "example": "Laki-Laki"
+                                                        },
+                                                        "level": {
+                                                            "type": "string",
+                                                            "example": "user"
+                                                        },
+                                                        "linkedin": {
+                                                            "type": "string",
+                                                            "example": "linkedin.com/zam"
+                                                        },
+                                                        "facebook": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "instagram": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "twiter": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "account_status": {
+                                                            "type": "integer",
+                                                            "format": "int32",
+                                                            "example": "1"
+                                                        },
+                                                        "latitude": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "longtitude": {
+                                                            "type": "string",
+                                                            "format": "nullable"
+                                                        },
+                                                        "state_quisioner": {
+                                                            "type": "string",
+                                                            "example": "0"
+                                                        },
+                                                        "followers": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string",
+                                                                        "example": "988f966a-20ff-4f53-9b9c-26a25e12f85a"
+                                                                    },
+                                                                    "fullname": {
+                                                                        "type": "string",
+                                                                        "example": "second user"
+                                                                    },
+                                                                    "email": {
+                                                                        "type": "string",
+                                                                        "example": "second@gmail.com"
+                                                                    },
+                                                                    "nik": {
+                                                                        "type": "string",
+                                                                        "example": "***"
+                                                                    },
+                                                                    "no_telp": {
+                                                                        "type": "string",
+                                                                        "example": "***"
+                                                                    },
+                                                                    "foto": {
+                                                                        "type": "string",
+                                                                        "example": "http://localhost:8000/users/foto.png"
+                                                                    },
+                                                                    "ttl": {
+                                                                        "type": "string",
+                                                                        "format": "nullable"
+                                                                    },
+                                                                    "alamat": {
+                                                                        "type": "string",
+                                                                        "example": "jawa timur , banyuwangi"
+                                                                    },
+                                                                    "about": {
+                                                                        "type": "string",
+                                                                        "example": "second abour"
+                                                                    },
+                                                                    "gender": {
+                                                                        "type": "string",
+                                                                        "example": "Laki-Laki"
+                                                                    },
+                                                                    "level": {
+                                                                        "type": "string",
+                                                                        "example": "user"
+                                                                    },
+                                                                    "linkedin": {
+                                                                        "type": "string",
+                                                                        "example": "linkedin.com/zam"
+                                                                    },
+                                                                    "facebook": {
+                                                                        "type": "string",
+                                                                        "format": "nullable"
+                                                                    },
+                                                                    "instagram": {
+                                                                        "type": "string",
+                                                                        "format": "nullable"
+                                                                    },
+                                                                    "twiter": {
+                                                                        "type": "string",
+                                                                        "format": "nullable"
+                                                                    },
+                                                                    "account_status": {
+                                                                        "type": "integer",
+                                                                        "format": "int32",
+                                                                        "example": "1"
+                                                                    },
+                                                                    "latitude": {
+                                                                        "type": "string",
+                                                                        "format": "nullable"
+                                                                    },
+                                                                    "longtitude": {
+                                                                        "type": "string",
+                                                                        "format": "nullable"
+                                                                    },
+                                                                    "state_quisioner": {
+                                                                        "type": "string",
+                                                                        "example": "0"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "example": [
+                                                                {
+                                                                    "id": "988f966a-20ff-4f53-9b9c-26a25e12f85a",
+                                                                    "fullname": "second user",
+                                                                    "email": "second@gmail.com",
+                                                                    "nik": "***",
+                                                                    "no_telp": "***",
+                                                                    "foto": "http://localhost:8000/users/foto.png",
+                                                                    "ttl": null,
+                                                                    "alamat": "jawa timur , banyuwangi",
+                                                                    "about": "second abour",
+                                                                    "gender": "Laki-Laki",
+                                                                    "level": "user",
+                                                                    "linkedin": "linkedin.com/zam",
+                                                                    "facebook": null,
+                                                                    "instagram": null,
+                                                                    "twiter": null,
+                                                                    "account_status": 1,
+                                                                    "latitude": null,
+                                                                    "longtitude": null,
+                                                                    "state_quisioner": "0"
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success fetch data"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthenticated"
+                    },
+                    "404": {
+                        "description": "user not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer_token": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearer_token": []
+        }
+    ]
+}
